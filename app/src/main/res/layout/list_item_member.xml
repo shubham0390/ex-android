@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingTop="?android:attr/listPreferredItemPaddingLeft">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/list_image_icon"
+            style="@style/ListItemIcon"
+            android:src="@drawable/ic_home_black_24dp"
+            app:border_color="@color/colorAccent"
+            app:border_width="2dp"/>
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/member_name"
+            style="@style/ListItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_toEndOf="@id/list_image_icon"
+            android:layout_toRightOf="@id/list_image_icon"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tool:text="Subham Tyagi"/>
+
+        <TextView
+            android:id="@+id/member_email"
+            style="@style/ListItemText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/member_name"
+            android:layout_toEndOf="@id/list_image_icon"
+            android:layout_toRightOf="@id/list_image_icon"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tool:text="Subham.k.tyagi@gmail.com"/>
+    </RelativeLayout>
+
+    <!-- <View
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="?android:attr/selectableItemBackground"/>-->
+</FrameLayout>

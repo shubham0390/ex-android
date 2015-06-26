@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="http://schemas.android.com/apk/res/android">
+
+    <!-- Comman and app specific string -->
+    <string name="app_name">Expense Manager</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="please_wait">Please wait …</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="description_title">Description</string>
+
+    <!-- Erorr message -->
+    <string name="error_empty_expense_name">Name can\'t be empty</string>
+    <string name="error_empty_expense_amount">Expense amount can\'t be empty</string>
+    <string name="error_empty_place_name">Place can\'t be empty</string>
+    <string name="error_duplicate_member">Memebr with this email already present</string>
+
+    <!-- Application Global end here -->
+
+
+    <!-- Screen or component specific strings start from here -->
+
+
+    <!-- menu item string -->
+    <string name="action_add_expense">Add Expense</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_add_member">Add Member</string>
+    <string name="action_sort">Sort By</string>
+    <!-- menu item strings end here -->
+
+
+    <!-- Title strings -->
+    <string name="home_title">Home</string>
+    <string name="expense_tile">Expense</string>
+    <string name="member_title">Member</string>
+    <string name="add_group_title">Add ExpenseBook</string>
+    <string name="add_Expense_tile">Add Expense</string>
+    <string name="add_member_title">Add Member</string>
+    <string name="group_detail_title">ExpenseBook Detail</string>
+    <string name="expense_detail_tile">Expense Detail</string>
+    <string name="member_detail_title">Member Detail</string>
+    <string name="summary">Summary</string>
+    <string name="distribution">Distribution</string>
+    <string name="expense_book">ExpenseBook</string>
+    <string name="spend_summary">Spend Summary</string>
+
+
+    <!-- Add EXPENSE fragment -->
+    <string name="expense_category_title">Category</string>
+    <string name="expense_subcategory_title">SubCategory</string>
+    <string name="no_image">No Image</string>
+
+    <!-- Member list fragment strings -->
+    <string name="add_member">Add Member</string>
+
+    <!-- ExpenseBook related string -->
+    <string name="add_expense_book">Add Expense Book</string>
+    <string name="expense_book_name">Expense Book Name</string>
+    <string name="error_empty_expense_book_name">Expense book Name can\'t be empty</string>
+    <string name="error_expense_book_name_short_length">Expense book Name lenth can\'t less than 4</string>
+    <string name="error_expense_book_already_exists">Expense book already exists</string>
+    <string name="expense_book_create_successfull">Expense book Successfully Created</string>
+
+    <!-- Add expese related Strings -->
+    <string name="expense_name_title">Expense Name</string>
+    <string name="expense_amount_title">Amount</string>
+    <string name="expense_place_title">Place</string>
+    <string name="date">Date: %1$s</string>
+    <string name="time">Time: %1$s</string>
+
+    <!-- Navigation header strings -->
+    <string name="navigation_header_accounts">ACCOUNTS</string>
+    <string name="navigation_header_navigation">INBOX</string>
+    <string name="navigation_header_settings">SETTINGS</string>
+    <!-- Navigation Specific -->
+    <string name="logout">LOGOUT</string>
+    <string name="user_preference">USER SETTINGS</string>
+
+    <!-- Setting fregment Strings -->
+
+    <string name="dialog_title_list_preference">List Diloge</string>
+    <string name="summary_list_preference">List Demo</string>
+    <string name="title_list_preference">List Title</string>
+    <string name="launch_preferences">launch title</string>
+    <string name="title_screen_preference">screen title</string>
+    <string name="summary_screen_preference">screen summry</string>
+    <string name="title_next_screen_toggle_preference">check box toggle title</string>
+    <string name="summary_next_screen_toggle_preference">toggle summry</string>
+    <string name="title_intent_preference">intnet title</string>
+    <string name="summary_intent_preference">intent summry</string>
+    <string name="preference_attributes">attribute title</string>
+    <string name="title_parent_preference">parent title</string>
+    <string name="summary_parent_preference">parent summry</string>
+    <string name="title_child_preference">child title</string>
+    <string name="summary_child_preference">child summry</string>
+    <string name="title_edittext_preference">edit text title</string>
+    <string name="summary_edittext_preference">edit text summry</string>
+    <string name="dialog_title_edittext_preference">edit text dialog</string>
+    <string name="dialog_based_preferences">edit text</string>
+    <string name="inline_preferences">inline</string>
+    <string name="title_checkbox_preference">inline checkbox title</string>
+    <string name="summary_checkbox_preference">inline checkbox summry</string>
+
+    <!-- Setting fragment strings end here -->
+
+    <string name="member_list">Members List</string>
+    <string name="empty_text_no_member">No Member</string>
+    <string name="member_name">Member Name</string>
+    <string name="member_email_address">Email Address</string>
+
+    <!-- Date time picker -->
+    <string name="done_label">Done</string>
+    <string name="day_picker_description">Month grid of days</string>
+    <string name="year_picker_description">Year list</string>
+    <string name="select_day">Select month and day</string>
+    <string name="select_year">Select year</string>
+    <string name="item_is_selected">%1$s selected</string>
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <string name="day_of_week_label_typeface" translatable="false">sans-serif</string>
+    <string name="time_placeholder" translatable="false">--</string>
+    <string name="time_separator" translatable="false">:</string>
+
+    <!-- Accessibility announcement when a number that had been typed in is deleted [CHAR_LIMIT=NONE] -->
+    <string name="deleted_key"><xliff:g example="4" id="key">%1$s</xliff:g>         deleted</string>
+    <!--
+         Content description for the hour selector in the time picker, which displays
+         selectable hours of the day along the inside edge of a circle, as in an analog clock.
+         [CHAR LIMIT=50]
+    -->
+    <string name="hour_picker_description">Hours circular slider</string>
+    <!--
+         Content description for the minute selector in the time picker, which displays
+         selectable five-minute intervals along the inside edge of a circle, as in an analog clock.
+         [CHAR LIMIT=50]
+    -->
+    <string name="minute_picker_description">Minutes circular slider</string>
+    <string name="radial_numbers_typeface" translatable="false">sans-serif</string>
+    <string name="select_hours">Select hours</string>
+    <string name="select_minutes">Select minutes</string>
+    <string name="expense_date">Date</string>
+    <string name="exapnse_time">Time</string>
+    <string name="add_account">Add Account</string>
+    <string name="add_account_title">ADD ACCOUNT</string>
+    <string name="expense_book_members_hint">Start typing members name</string>
+    <!-- Date time picker related strinhs end here -->
+
+    <string name="help">HELP</string>
+    <string name="feedback">FEEDBACK</string>
+    <string name="shared">Shared</string>
+    <string name="personal">Personal</string>
+
+    <!-- Image crop activity -->
+    <string name="title">Cropper</string>
+    <string name="fixedAspectRatio">fixedAspectRatio =</string>
+    <string name="aspectRatioX">\u002010</string>
+    <string name="aspectRatioXHeader">aspectRatioX =</string>
+    <string name="aspectRatioY">\u002010</string>
+    <string name="aspectRatioYHeader">aspectRatioY =</string>
+    <string name="showGuidelines">showGuidelines = </string>
+    <string name="crop">Crop</string>
+    <string name="rotate">Rotate</string>
+    <string name="croppedImageDesc">The cropped image.</string>
+
+    <string-array name="showGuidelinesArray">
+        <item>Off</item>
+        <item>On Touch</item>
+        <item>On</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expense_fragment_title">Expenses</string>
+    <string name="task_fragment_title">Tasks</string>
+    <string name="open_content_drawer">Open the main menu</string>
+    <string name="close_content_drawer">Close the main menu</string>
+
+    <!--GCM String -->
+    <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
+        send downstream messages to this app.</string>
+    <string name="registering_message">Generating InstanceID token...</string>
+    <string name="token_error_message">An error occurred while either fetching the InstanceID token,
+        sending the fetched token to the server or subscribing to the PubSub topic. Please try
+        running the sample again.</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="plus_sign_out">Switch Google+ account</string>
+    <string name="plus_disconnect">Disconnect from Google+</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="about">About</string>
+
+    <string name="title_activity_expense_book_detail">ExpenseBookDetailActivity</string>
+
+    <string name="more">More</string>
+    <string name="no_expense">No Expense</string>
+</resources>

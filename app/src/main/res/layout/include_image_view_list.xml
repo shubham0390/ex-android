@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/list_image_icon"
+    style="@style/ListItemIcon"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:src="@drawable/ic_home_black_24dp"
+    app:border_color="@color/colorAccent"
+    app:border_width="2dp"/>

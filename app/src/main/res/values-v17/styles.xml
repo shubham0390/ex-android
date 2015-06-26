@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ListItem" parent="BaseListItem">
+        <item name="android:paddingEnd">?android:attr/listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?android:attr/listPreferredItemPaddingStart</item>
+    </style>
+
+    <style name="ListItemIcon">
+        <item name="android:layout_marginEnd">@dimen/list_item_icon_margin_start</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="ListItemText">
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+</resources>

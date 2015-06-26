@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/spacing_medium"
+              android:paddingStart="@dimen/spacing_medium"
+              android:paddingTop="@dimen/spacing_medium"
+              tools:context="com.mmt.shubh.expensemanager.ui.fragment.AddExpenseBookFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/expense_book_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/darker_gray"/>
+
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/expense_book_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_toEndOf="@id/expense_book_image"
+            android:layout_toRightOf="@id/expense_book_image"
+            android:hint="@string/expense_book_name"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/expense_book_name_edittext"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_toEndOf="@id/expense_book_image"
+            android:layout_toRightOf="@id/expense_book_image"
+            >
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:text="Shared"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Private"/>
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/expense_book_description_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/description_title"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:text="Members"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:id="@+id/expense_book_member_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ListView
+            android:id="@+id/expense_book_member_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_book_member_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:drawableStart="@drawable/ic_add_black_24dp"
+            android:gravity="center_vertical"
+            android:hint="@string/expense_book_members_hint"
+            android:text="Add member"
+            />
+    </LinearLayout>
+</LinearLayout>

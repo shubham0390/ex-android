@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_medium"
+    >
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/distribution_expense_book_filter"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/distribution_date_filter"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/distribution_member_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

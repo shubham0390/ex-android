@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/milky_white</item>
+    </style>
+
+    <style name="root_layout_style">
+        <item name="android:layout_marginLeft">@dimen/root_layout_left_margin</item>
+        <item name="android:layout_marginRight">@dimen/root_layout_right_margin</item>
+    </style>
+
+    <style name="style_group_name_text_view">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/group_name_text_size</item>
+    </style>
+
+    <style name="BaseListItem">
+        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/spacing_medium</item>
+        <item name="android:paddingTop">?android:attr/listPreferredItemPaddingLeft</item>
+    </style>
+
+    <style name="ListItem" parent="BaseListItem">
+        <item name="android:paddingLeft">?android:attr/listPreferredItemPaddingLeft</item>
+        <item name="android:paddingRight">?android:attr/listPreferredItemPaddingRight</item>
+    </style>
+
+    <style name="ListItemIcon">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginRight">@dimen/list_item_icon_margin_start</item>
+    </style>
+
+    <style name="ListItemText">
+        <item name="android:layout_gravity">center_vertical</item>
+
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>

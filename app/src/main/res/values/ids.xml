@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="done">false</item>
+    <item type="id" name="date_picker_header">false</item>
+    <item type="id" name="day_picker_selected_date_layout">false</item>
+    <item type="id" name="date_picker_month_and_day">false</item>
+    <item type="id" name="date_picker_month">false</item>
+    <item type="id" name="date_picker_day">false</item>
+    <item type="id" name="date_picker_year">false</item>
+    <item type="id" name="animator">false</item>
+    <item type="id" name="month_text_view">false</item>
+
+    <item type="id" name="member_name"/>
+    <item type="id" name="expense_book_name"/>
+    <item type="id" name="expense_amount"/>
+    <item type="id" name="date_text_view"/>
+    <item type="id" name="time_text_view"/>
+    <item type="id" name="total_expense_amount"/>
+    <item type="id" name="email_id"/>
+    <item type="id" name="user_name"/>
+    <item type="id" name="profile_image"/>
+
+
+</resources>
