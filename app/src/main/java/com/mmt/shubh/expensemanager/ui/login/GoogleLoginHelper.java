@@ -25,7 +25,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by styagi on 6/4/2015.
  */
-public class GoogleLoginHelper implements BaseLoginHelper, GoogleApiClient.ConnectionCallbacks,
+public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
     private static final String TAG = GoogleLoginHelper.class.getSimpleName();
 
@@ -62,13 +62,13 @@ public class GoogleLoginHelper implements BaseLoginHelper, GoogleApiClient.Conne
                         .build();
     }
 
-    public void setUp(SignInButton plusSignInButton) {
+    public void setUp(Object plusSignInButton) {
+        SignInButton signInButton = (SignInButton) plusSignInButton;
         if (!supportsGooglePlayServices()) {
-            plusSignInButton.setVisibility(View.GONE);
+            signInButton.setVisibility(View.GONE);
             return;
         } else {
-
-            plusSignInButton.setOnClickListener(mGoogleLoginClickListener);
+            signInButton.setOnClickListener(mGoogleLoginClickListener);
         }
     }
 
@@ -216,7 +216,7 @@ public class GoogleLoginHelper implements BaseLoginHelper, GoogleApiClient.Conne
         mPlusClient.connect();
     }
 
-    public GoogleApiClient getPlusClient() {
+    public GoogleApiClient getClient() {
         return mPlusClient;
     }
 

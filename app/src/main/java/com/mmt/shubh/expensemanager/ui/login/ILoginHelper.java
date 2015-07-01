@@ -6,7 +6,7 @@ import android.widget.Button;
 /**
  * Created by styagi on 6/4/2015.
  */
-public interface BaseLoginHelper {
+public interface ILoginHelper {
 
     enum Type {
         GOOGLE,
@@ -14,11 +14,14 @@ public interface BaseLoginHelper {
         TWITEER,
     }
 
+    void setUp(Object object);
     void signIn();
 
     void signOut();
 
     void revokeAccess();
+
+    Object getClient();
 
     void onActivityResult(int requestCode, int responseCode, Intent intent);
 }

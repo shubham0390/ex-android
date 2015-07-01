@@ -2,7 +2,7 @@ package com.mmt.shubh.expensemanager.ui.login;
 
 import android.content.Context;
 
-import com.mmt.shubh.expensemanager.database.content.Account;
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
 /**
  * Created by styagi on 6/4/2015.
@@ -10,7 +10,7 @@ import com.mmt.shubh.expensemanager.database.content.Account;
 public class FacebookProfileFetcher implements ProfileFetcher {
 
     @Override
-    public Account fetchUserAccountDetails(Context context) {
+    public UserInfo fetchUserAccountDetails(Context context) {
         return null;
     }
 }

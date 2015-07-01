@@ -8,6 +8,6 @@ import junit.framework.TestCase;
  * 10:28 AM
  * TODO:Add class comment.
  */
-public class AccountSQLDataAdapterTest extends TestCase {
+public class UserInfoSQLDataAdapterTest extends TestCase {
 
 }

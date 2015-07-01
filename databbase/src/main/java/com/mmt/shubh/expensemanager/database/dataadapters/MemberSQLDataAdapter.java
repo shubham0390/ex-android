@@ -8,7 +8,6 @@ import api.MemberDataAdapter;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
 import java.util.ArrayList;
@@ -29,15 +28,14 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
         ContentValues values = new ContentValues();
         values.put(MEMBER_NAME, member.getMemberName());
         values.put(MEMBER_EMAIL, member.getMemberEmail());
-        values.put(EXPENSE_BOOK_KEY, member.getExpenseBook().getId());
         return values;
     }
 
     public void restore(Cursor cursor, Member member) {
-        member.setId(cursor.getLong(MEMBER_ID_COLUMN));
+       /* member.setId(cursor.getLong(MEMBER_ID_COLUMN));
         member.setMemberName(cursor.getString(MEMBER_NAME_COLUMN));
         member.setMemberEmail(cursor.getString(MEMBER_EMAIL_COLUMN));
-        member.setExpenseBook(getExpenseBook(cursor.getLong(MEMBER_GROUP_KEY_COLUMN)));
+        member.setExpenseBook(getExpenseBook(cursor.getLong(MEMBER_GROUP_KEY_COLUMN)));*/
     }
 
     private ExpenseBook getExpenseBook(long aLong) {
@@ -52,7 +50,7 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
      */
     public boolean isExists(Context context, Member member) {
 
-        String SELECTION = ExpenseDataEntity.MemberEntity.MEMBER_EMAIL + "= ?";
+        String SELECTION = MemberContract.MEMBER_EMAIL + "= ?";
 
         Cursor cursor = null;
         try {

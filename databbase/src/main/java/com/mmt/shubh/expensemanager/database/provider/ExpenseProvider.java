@@ -13,20 +13,16 @@ import android.net.Uri;
 import android.os.Build;
 
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.ExpenseBookEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.AccountEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.CategoryEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.ExpenseEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.MemberEntity;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity.MemberExpenseBookEntity;
-import com.mmt.shubh.expensemanager.database.content.Category;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookContract;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContract;
+import com.mmt.shubh.expensemanager.database.content.contract.TransactionContract;
+import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
 import com.mmt.shubh.expensemanager.database.dataadapters.BaseSQLDataAdapter;
 
 public class ExpenseProvider extends ContentProvider {
@@ -37,11 +33,14 @@ public class ExpenseProvider extends ContentProvider {
     private static final int EXPENSE_ID = EXPENSE + 1;
     private static final int EXPENSE_BOOK_EXPENSE = EXPENSE + 2;
     private static final int MEMBER_EXPENSE = EXPENSE + 3;
+    private static final int EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR = EXPENSE + 4;
 
     private static final String MEMBER_BASE_PATH = MemberContract.PATH_MEMBER;
     private static final int MEMBER_BASE = 0x1000;
     private static final int MEMBER = MEMBER_BASE;
     private static final int MEMBER_ID = MEMBER + 1;
+    private static final int MEMBER_EXPENSE_BOOK_ID = MEMBER + 2;
+
 
     private static final String EXPENSE_BOOK_BASE_PATH = ExpenseBookContract.PATH_EXPENSE_BOOK;
     private static final int EXPENSE_BOOK_BASE = 0x2000;
@@ -49,7 +48,7 @@ public class ExpenseProvider extends ContentProvider {
     private static final int EXPENSE_BOOK_ID = EXPENSE_BOOK + 1;
     private static final int EXPENSE_BOOK_MEMBER = EXPENSE_BOOK + 2;
 
-    private static final String USER_BASE_PATH = AccountContract.PATH_USER;
+    private static final String USER_BASE_PATH = UserInfoContract.PATH_USER;
     private static final int USER_BASE = 0x3000;
     private static final int USER = USER_BASE;
     private static final int USER_ID = USER + 1;
@@ -79,23 +78,32 @@ public class ExpenseProvider extends ContentProvider {
             ExpenseContract.TABLE_NAME,
             MemberContract.TABLE_NAME,
             ExpenseBookContract.TABLE_NAME,
-            AccountContract.TABLE_NAME,
+            UserInfoContract.TABLE_NAME,
             CategoryContract.TABLE_NAME,
-            ExpenseDataEntity.MemberExpenseBookEntity.TABLE_NAME,
-            MemberContract.TABLE_NAME
-
+            MemberExpenseBookContract.TABLE_NAME,
+            MemberContract.TABLE_NAME,
+            MemberExpenseContract.TABLE_NAME,
+            TransactionContract.TABLE_NAME
     };
 
     private static final UriMatcher sURIMatcher = new UriMatcher(
             UriMatcher.NO_MATCH);
 
     static {
+
         // Email URI matching table
         UriMatcher matcher = sURIMatcher;
         /*Get all Expense*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH, EXPENSE);
         /*Get Single Expense with id*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH + "/#", EXPENSE_ID);
+
+        matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE
+                        + "/" + MemberContract.PATH_MEMBER
+                        + "/" + ExpenseBookContract.PATH_EXPENSE_BOOK
+                        + "/" + ExpenseContract.PATH_MONTH
+                        + "/" + ExpenseContract.PATH_YEAR,
+                EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR);
 
         /*Get all member*/
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_BASE_PATH, MEMBER);
@@ -109,8 +117,9 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BOOK_BASE_PATH, EXPENSE_BOOK);
         /*Get single expense book with id*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BOOK_BASE_PATH + "/#", EXPENSE_BOOK_ID);
-
-        //  matcher.addURI(BaseContract.AUTHORITY, ContentPath.PATH_EXPENSE_BOOK_FOR_MEMBER + "/#", EXPENSE_BOOK_FOR_MEMBER_ID);
+        /*Get all expense book for a member */
+        matcher.addURI(BaseContract.AUTHORITY, MEMBER_BASE_PATH + "/" + ExpenseBookContract.PATH_EXPENSE_BOOK
+                , MEMBER_EXPENSE_BOOK_ID);
 
 		/* User */
         // All Users
@@ -154,38 +163,12 @@ public class ExpenseProvider extends ContentProvider {
                 result = db.delete(TABLE_NAMES[table], selection, selectionArgs);
                 break;
             case EXPENSE_ID:
-                id = uri.getPathSegments().get(1);
-                result = db.delete(TABLE_NAMES[table],
-                        ExpenseDataEntity.ExpenseEntity._ID + " =?",
-                        new String[]{id});
-                break;
             case MEMBER_ID:
-
-                id = uri.getPathSegments().get(1);
-                result = db.delete(TABLE_NAMES[table],
-                        ExpenseDataEntity.MemberEntity._ID + " =?",
-                        new String[]{id});
-                break;
             case EXPENSE_BOOK_ID:
-
-                id = uri.getPathSegments().get(1);
-                result = db.delete(TABLE_NAMES[table],
-                        ExpenseDataEntity.ExpenseBookEntity._ID + " =?",
-                        new String[]{id});
-                break;
             case USER_ID:
-
-                id = uri.getPathSegments().get(1);
-                result = db.delete(TABLE_NAMES[table],
-                        AccountEntity._ID + " =?",
-                        new String[]{id});
-                break;
             case CATEGORY_ID:
                 id = uri.getPathSegments().get(1);
-                result = db.delete(TABLE_NAMES[table],
-                        ExpenseDataEntity.CategoryEntity._ID + " =?",
-                        new String[]{id});
-                break;
+                result = db.delete(TABLE_NAMES[table], BaseContract._ID + " =?", new String[]{id});
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
         }
@@ -305,18 +288,19 @@ public class ExpenseProvider extends ContentProvider {
                         + ExpenseContract.EXPENSE_AMOUNT + " , "
                         + "( SELECT "
                         + ExpenseBookContract.EXPENSE_BOOK_NAME
-                        + " FROM " + ExpenseBookEntity.TABLE_NAME
+                        + " FROM " + ExpenseBookContract.TABLE_NAME
                         + " WHERE " + ExpenseBookContract._ID + " = " + ExpenseContract.EXPENSE_BOOK_KEY + " ) "
                         + " AS " + ExpenseBookContract.EXPENSE_BOOK_NAME + " , "
 
-                        + " ( SELECT " + CategoryEntity.CATEGORY_NAME
-                        + " FROM " + CategoryEntity.TABLE_NAME
-                        + " WHERE " + CategoryEntity._ID + " = " + ExpenseContract.CATEGORY_KEY + " )"
-                        + " AS " + CategoryEntity.CATEGORY_NAME + ","
+                        + " ( SELECT " + CategoryContract.CATEGORY_NAME
+                        + " FROM " + CategoryContract.TABLE_NAME
+                        + " WHERE " + CategoryContract._ID + " = " + ExpenseContract.CATEGORY_KEY + " )"
+                        + " AS " + CategoryContract.CATEGORY_NAME + ","
 
                         + " ( SELECT " + MemberContract.MEMBER_NAME
                         + " FROM " + MemberContract.TABLE_NAME
-                        + " WHERE " + MemberContract._ID + " = " + ExpenseContract.MEMBER_KEY + " )"
+                        + " WHERE " + MemberContract._ID + " = 2"
+                        + ")"
                         + " AS " + MemberContract.MEMBER_NAME
                         + " FROM " + ExpenseContract.TABLE_NAME;
                 c = db.rawQuery(selectQuery, null);
@@ -328,89 +312,45 @@ public class ExpenseProvider extends ContentProvider {
                 c = db.query(TABLE_NAMES[table], projection, selection,
                         selectionArgs, null, null, sortOrder, limit);
                 break;
-            case EXPENSE_ID:
-                id = uri.getPathSegments().get(1);
-                c = db.query(TABLE_NAMES[table], projection, ExpenseEntity._ID
-                                + " = ?", new String[]{id}, null, null, sortOrder,
-                        limit
-                );
-                break;
-            case MEMBER_ID:
-                id = uri.getPathSegments().get(1);
-                c = db.query(TABLE_NAMES[table], projection, MemberEntity._ID
-                                + " = ?", new String[]{id}, null, null, sortOrder,
-                        limit
-                );
-                break;
+
+
             case EXPENSE_BOOK_MEMBER:
                 id = uri.getPathSegments().get(3);
 
                 String selectQuery1 = " SELECT "
-                        + MemberEntity.TABLE_NAME + "." + MemberEntity._ID + " , "
-                        + MemberEntity.TABLE_NAME + "." + MemberEntity.MEMBER_NAME + " , "
-                        + MemberEntity.TABLE_NAME + "." + MemberEntity.MEMBER_EMAIL + " , "
-                        + MemberEntity.TABLE_NAME + "." + MemberEntity.EXPENSE_BOOK_KEY
+                        + MemberContract.TABLE_NAME + "." + MemberContract._ID + " , "
+                        + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_NAME + " , "
+                        + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_EMAIL + " , "
                         + " FROM "
-                        + MemberEntity.TABLE_NAME
+                        + MemberContract.TABLE_NAME
                         + " WHERE "
-                        + MemberEntity.TABLE_NAME + "." + MemberEntity._ID
+                        + MemberContract.TABLE_NAME + "." + MemberContract._ID
                         + " IN "
                         + "( SELECT "
-                        + ExpenseDataEntity.MemberExpenseBookEntity.TABLE_NAME + " ." + MemberExpenseBookEntity.MEMBER_KEY
+                        + MemberExpenseBookContract.TABLE_NAME + " ." + MemberExpenseBookContract.MEMBER_KEY
                         + " FROM "
-                        + MemberExpenseBookEntity.TABLE_NAME
+                        + MemberExpenseBookContract.TABLE_NAME
                         + " WHERE "
-                        + MemberExpenseBookEntity.TABLE_NAME + " ." + MemberExpenseBookEntity
+                        + MemberExpenseBookContract.TABLE_NAME + " ." + MemberExpenseBookContract
                         .EXPENSE_BOOK_KEY + " = " + id
                         + ")";
                 c = db.rawQuery(selectQuery1, null);
-
                 break;
 
             case EXPENSE_BOOK_ID:
-                id = uri.getPathSegments().get(1);
-                c = db.query(TABLE_NAMES[table], projection, ExpenseDataEntity.ExpenseBookEntity._ID
-                                + " = ?", new String[]{id}, null, null, sortOrder,
-                        limit
-                );
-                break;
-            /*case EXPENSE_BOOK_FOR_MEMBER_ID:
-                id = uri.getPathSegments().get(3);
-
-                String expenseBookForMemberQuery = "SELECT "
-                        + ExpenseBookEntity.TABLE_NAME + "." + ExpenseBookEntity._ID + " , "
-                        + ExpenseBookEntity.TABLE_NAME + "." + ExpenseBookEntity.EXPENSE_BOOK_NAME + " , "
-                        + ExpenseBookEntity.TABLE_NAME + "." + ExpenseBookEntity.EXPENSE_BOOK_PROFILE_IMAGE
-                        + " FROM "
-                        + ExpenseBookEntity.TABLE_NAME
-                        + " WHERE "
-                        + ExpenseBookEntity.TABLE_NAME + "." + ExpenseBookEntity._ID
-                        + " IN "
-                        + "( SELECT "
-                        + MemberExpenseBookEntity.TABLE_NAME + " ." + MemberExpenseBookEntity.EXPENSE_BOOK_KEY
-                        + " FROM "
-                        + MemberExpenseBookEntity.TABLE_NAME
-                        + " WHERE "
-                        + MemberExpenseBookEntity.TABLE_NAME + " ." + MemberExpenseBookEntity
-                        .MEMBER_KEY + " = " + id
-                        + ")";
-                c = db.rawQuery(expenseBookForMemberQuery, null);
-
-
-                break;*/
             case USER_ID:
-                id = uri.getPathSegments().get(1);
-                c = db.query(TABLE_NAMES[table], projection, AccountEntity._ID
-                                + " = ?", new String[]{id}, null, null, sortOrder,
-                        limit
-                );
-                break;
             case CATEGORY_ID:
-                id = uri.getPathSegments().get(1);
-                c = db.query(TABLE_NAMES[table], projection, CategoryEntity._ID
-                                + " = ?", new String[]{id}, null, null, sortOrder,
-                        limit
-                );
+            case EXPENSE_ID:
+            case MEMBER_ID:
+                c = db.query(TABLE_NAMES[table], projection, selection, selectionArgs, null, null, sortOrder, limit);
+                break;
+            /*case MEMBER_EXPENSE_BOOK_ID:
+                c = db.query(MemberContract.EXPNESE_EXPNSE_BOOK_JOINED_TABLE_NAME, projection, selection,
+                        selectionArgs, MemberContract.GROUP_BY_MONTH_AND_YEAR_MEMBER_EXEPENSE_BOOK,
+                        null, null);
+                break;*/
+            case EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR:
+                c = db.query(TABLE_NAMES[table], projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
@@ -436,23 +376,15 @@ public class ExpenseProvider extends ContentProvider {
             case CATEGORY:
             case MEMBER_EXPANSE:
             case MEMBER_EXPANSE_BOOK:
-                result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
-                break;
             case EXPENSE_ID:
-                result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
-                break;
             case MEMBER_ID:
-                result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
-                break;
             case EXPENSE_BOOK_ID:
-                result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
-                break;
             case USER_ID:
-                result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
-                break;
             case CATEGORY_ID:
                 result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
                 break;
+
+
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
         }

@@ -8,9 +8,9 @@ import android.net.Uri;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
+import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
 /**
  * Created by styagi on 6/4/2015.
@@ -28,9 +28,9 @@ public class GoogleProfileFetcher implements ProfileFetcher {
     }
 
     @Override
-    public Account fetchUserAccountDetails(Context context) {
+    public UserInfo fetchUserAccountDetails(Context context) {
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        Account.Builder builder = new Account.Builder();
+        UserInfo.Builder builder = new UserInfo.Builder();
         if (currentPerson != null) {
             builder.setUserName(currentPerson.getNickname());
             builder.setDisplayName(currentPerson.getDisplayName());
@@ -43,18 +43,18 @@ public class GoogleProfileFetcher implements ProfileFetcher {
 
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
             builder.setEmailAddress(email);
-            builder.setStatus(Account.Status.ACTIVE);
-            Account account = builder.build();
-            AsyncQueryHandler queryHandler = new AccountAsyncQueryHandler(context.getContentResolver());
-            AccountSQLDataAdapter accountSQLDataAdapter = new AccountSQLDataAdapter(context);
-            queryHandler.startInsert(1, null, AccountContract.ACCOUNT_URI, accountSQLDataAdapter.toContentValues(account));
-            return account;
+            builder.setStatus(UserInfo.Status.ACTIVE);
+            UserInfo userInfo = builder.build();
+            AsyncQueryHandler queryHandler = new UserInfoAsyncQueryHandler(context.getContentResolver());
+            UserInfoSQLDataAdapter userInfoSQLDataAdapter = new UserInfoSQLDataAdapter(context);
+            queryHandler.startInsert(1, null, UserInfoContract.ACCOUNT_URI, userInfoSQLDataAdapter.toContentValues(userInfo));
+            return userInfo;
         }
         return null;
     }
 
-    static class AccountAsyncQueryHandler extends AsyncQueryHandler {
-        public AccountAsyncQueryHandler(ContentResolver cr) {
+    static class UserInfoAsyncQueryHandler extends AsyncQueryHandler {
+        public UserInfoAsyncQueryHandler(ContentResolver cr) {
             super(cr);
         }
 

@@ -8,11 +8,8 @@ import android.net.Uri;
 import api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.ExpenseDataEntity;
-import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +37,7 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
 
         try {
             cursor = context.getContentResolver().query(EXPENSE_BOOK_URI,
-                    BaseSQLDataAdapter.ID_PROJECTION, ExpenseDataEntity.ExpenseBookEntity.EXPENSE_BOOK_NAME + " = ?",
+                    BaseSQLDataAdapter.ID_PROJECTION, ExpenseBookContract.EXPENSE_BOOK_NAME + " = ?",
                     new String[]{groupName}, null);
             if (cursor == null || cursor.getCount() <= 0) {
                 return false;
@@ -57,13 +54,12 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
 
     public static Cursor getAllGroup(Context context) {
         return context.getContentResolver().query(EXPENSE_BOOK_URI, null, null, null,
-                ExpenseDataEntity.ExpenseBookEntity.EXPENSE_BOOK_NAME);
+                ExpenseBookContract.EXPENSE_BOOK_NAME);
     }
 
     public ContentValues toContentValues(ExpenseBook expenseBook) {
         ContentValues values = new ContentValues();
         values.put(EXPENSE_BOOK_NAME, expenseBook.getName());
-        values.put(USER_KEY, expenseBook.getAccount().getId());
         values.put(EXPENSE_BOOK_PROFILE_IMAGE, expenseBook.getProfileImagePath());
         values.put(EXPENSE_BOOK_DESCRIPTION, expenseBook.getDescription());
         values.put(EXPENSE_BOOK_TYPE, expenseBook.getType());
@@ -73,7 +69,6 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
     public void restore(Cursor cursor, ExpenseBook expenseBook) {
         expenseBook.setId(cursor.getLong(cursor.getColumnIndex(_ID)));
         expenseBook.setName(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_NAME)));
-        expenseBook.setAccount(getUser(cursor.getLong(cursor.getColumnIndex(USER_KEY))));
         expenseBook.setDescription(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_DESCRIPTION)));
         expenseBook.setType(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_TYPE)));
         expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE)));
@@ -123,7 +118,7 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
 
     @Override
     public List<ExpenseBook> getAll() {
-        List<ExpenseBook> expenseBooks = new ArrayList<>();
+      /*  List<ExpenseBook> expenseBooks = new ArrayList<>();
         Cursor cursor = mContext.getContentResolver().query(AccountContract.ACCOUNT_URI,
                 AccountContract.USER_PROJECTION, null, null, null);
         if (cursor != null) {
@@ -138,8 +133,8 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
                     cursor.close();
                 }
             }
-        }
-        return expenseBooks;
+        }*/
+        return null;
     }
 
     @Override

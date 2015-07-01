@@ -70,13 +70,9 @@ public class MemberListFragment extends BaseFragment implements AppFragment, Mem
     }
 
     @Override
-    public void onMemberItemClick(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndex(MemberContract._ID));
-        String name = cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME));
+    public void onMemberItemClick(long id) {
         Intent intent = new Intent(getActivity(), MemberDetailActivity.class);
         intent.putExtra(Constants.KEY_MEMBER_ID, id);
-        intent.putExtra(Constants.KEY_MEMBER_NAME,name);
-
         startActivity(intent);
     }
 
