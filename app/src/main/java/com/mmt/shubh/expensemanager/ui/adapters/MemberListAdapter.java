@@ -35,11 +35,12 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
     @Override
     public void onBindViewHolder(MemberViewHolder holder, final Cursor cursor) {
         holder.bindView(cursor);
-
+        final long id = cursor.getLong(cursor.getColumnIndex(MemberContract._ID));
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemClickListener.onMemberItemClick(cursor);
+
+                mItemClickListener.onMemberItemClick(id);
             }
         });
     }
@@ -86,6 +87,6 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
     }
 
     public interface OnMemberItemClickListener {
-        void onMemberItemClick(Cursor cursor);
+        void onMemberItemClick(long id);
     }
 }

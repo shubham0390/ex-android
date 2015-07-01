@@ -94,15 +94,12 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <View
+            <LinearLayout
+                android:id="@+id/expense_book_list"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/group_details_divider_height"
-                android:background="@android:color/darker_gray"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/member_details_expense_book_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

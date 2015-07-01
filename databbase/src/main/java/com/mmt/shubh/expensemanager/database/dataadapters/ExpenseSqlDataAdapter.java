@@ -1,6 +1,7 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import api.ExpenseDataAdapter;
@@ -10,7 +11,9 @@ import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -89,4 +92,12 @@ public class ExpenseSqlDataAdapter implements ExpenseDataAdapter<Expense>, Expen
     public List<Expense> getAll() {
         return null;
     }
+
+    /*public List<Exp> getAllExpenseForMemberAndExpenseBookGroupByDate(Context context, long expenseBookId, long memberId) {
+        Calendar calendar = Calendar.getInstance();
+        return context.getContentResolver().query(MemberContract.MEMBER_EXPENSE_BOOK_URI,
+                MemberContract.PROJECTION_MEMBER_EXPENSE_BOOK,
+                MemberContract.SELECTION_EXPENSE_MEMBER_KEY_AND_DATE,
+                new String[]{String.valueOf(memberId), String.valueOf(calendar.get(Calendar.YEAR))}, null);
+    }*/
 }

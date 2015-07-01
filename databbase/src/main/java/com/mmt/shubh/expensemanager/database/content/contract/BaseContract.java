@@ -3,7 +3,10 @@ package com.mmt.shubh.expensemanager.database.content.contract;
 import android.provider.BaseColumns;
 
 /**
- * Created by styagi on 5/31/2015.
+ * Created by Subham Tyagi,
+ * on 01/Jul/2015,
+ * 10:57 AM
+ * TODO:Add class comment.
  */
 public interface BaseContract extends BaseColumns {
 

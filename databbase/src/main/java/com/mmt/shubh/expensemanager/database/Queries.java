@@ -19,10 +19,5 @@ package com.mmt.shubh.expensemanager.database;
  * Created by STyagi on 4/1/14.
  */
 public class Queries {
-    String queryString = String.format(
-            "SELECT SUM(%s) FROM %s WHERE %s = ?",
-            ExpenseDataEntity.ExpenseEntity.EXPENSE_AMOUNT, ExpenseDataEntity.ExpenseEntity.TABLE_NAME,
-            ExpenseDataEntity.ExpenseEntity.EXPENSE_BOOK_KEY);
-
 
 }

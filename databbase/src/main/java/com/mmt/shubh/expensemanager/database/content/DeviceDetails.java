@@ -9,15 +9,15 @@ public class DeviceDetails {
 
     private String gcmToken;
 
-    private Account account;
+    private UserInfo account;
 
-    public DeviceDetails(Account account, String deviceUUID, String gcmToken) {
+    public DeviceDetails(UserInfo account, String deviceUUID, String gcmToken) {
         this.account = account;
         this.deviceUUID = deviceUUID;
         this.gcmToken = gcmToken;
     }
 
-    public Account getAccount() {
+    public UserInfo getAccount() {
         return account;
     }
 

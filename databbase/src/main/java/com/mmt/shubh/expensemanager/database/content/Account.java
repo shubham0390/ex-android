@@ -18,16 +18,16 @@ package com.mmt.shubh.expensemanager.database.content;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Account extends BaseContent implements Parcelable{
+public class Account extends BaseContent implements Parcelable {
 
+    private String mAccountName;
+
+    private String mAccountBalance;
 
     protected Account(Parcel in) {
-        mUserName = in.readString();
-        mUserPassword = in.readString();
-        mEmailAddress = in.readString();
-        mDisplayName = in.readString();
-        mCoverPhotoUrl = in.readString();
-        mProfilePhotoUrl = in.readString();
+        mId = in.readLong();
+        mAccountName = in.readString();
+        mAccountBalance = in.readString();
     }
 
     public static final Creator<Account> CREATOR = new Creator<Account>() {
@@ -49,35 +49,9 @@ public class Account extends BaseContent implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mUserName);
-        dest.writeString(mUserPassword);
-        dest.writeString(mEmailAddress);
-        dest.writeString(mDisplayName);
-        dest.writeString(mCoverPhotoUrl);
-        dest.writeString(mProfilePhotoUrl);
-    }
-
-    public enum Status {
-        ACTIVE,
-        LOG_OUT
-    }
-
-    private String mUserName;
-
-    private String mUserPassword;
-
-    private String mEmailAddress;
-
-    private String mDisplayName;
-
-    private String mCoverPhotoUrl;
-
-    private String mProfilePhotoUrl;
-
-    private Status mStatus;
-
-
-    private Account() {
+        dest.writeLong(mId);
+        dest.writeString(mAccountName);
+        dest.writeString(mAccountBalance);
     }
 
     @Override
@@ -85,94 +59,19 @@ public class Account extends BaseContent implements Parcelable{
         return mId;
     }
 
-
-    public String getCoverPhotoUrl() {
-        return mCoverPhotoUrl;
+    public String getAccountName() {
+        return mAccountName;
     }
 
-    public String getDisplayName() {
-        return mDisplayName;
+    public String getAccountBalance() {
+        return mAccountBalance;
     }
 
-    public String getEmailAddress() {
-        return mEmailAddress;
+    public void setAccountBalance(String accountBalance) {
+        mAccountBalance = accountBalance;
     }
 
-    public String getProfilePhotoUrl() {
-        return mProfilePhotoUrl;
-    }
-
-    public Status getStatus() {
-        return mStatus;
-    }
-
-    public String getUserName() {
-        return mUserName;
-    }
-
-    public String getUserPassword() {
-        return mUserPassword;
-    }
-
-    public Builder buildUpon() {
-        Builder builder = new Builder(this);
-        return builder;
-    }
-
-    public static class Builder {
-
-        private Account mAccount;
-
-        public Builder() {
-            mAccount = new Account();
-        }
-
-        private Builder(Account account) {
-            mAccount = account;
-        }
-
-        public Builder setId(long id) {
-            mAccount.setId(id);
-            return this;
-        }
-
-        public Builder setCoverPhotoUrl(String coverPhotoUrl) {
-            mAccount.mCoverPhotoUrl = coverPhotoUrl;
-            return this;
-        }
-
-        public Builder setDisplayName(String displayName) {
-            mAccount.mDisplayName = displayName;
-            return this;
-        }
-
-        public Builder setEmailAddress(String emailAddress) {
-            mAccount.mEmailAddress = emailAddress;
-            return this;
-        }
-
-        public Builder setProfilePhotoUrl(String profilePhotoUrl) {
-            mAccount.mProfilePhotoUrl = profilePhotoUrl;
-            return this;
-        }
-
-        public Builder setStatus(Status status) {
-            mAccount.mStatus = status;
-            return this;
-        }
-
-        public Builder setUserName(String userName) {
-            mAccount.mUserName = userName;
-            return this;
-        }
-
-        public Builder setUserPassword(String userPassword) {
-            mAccount.mUserPassword = userPassword;
-            return this;
-        }
-
-        public Account build() {
-            return mAccount;
-        }
+    public void setAccountName(String accountName) {
+        mAccountName = accountName;
     }
 }

@@ -2,20 +2,19 @@ package com.airwatch.databbase;
 
 import android.test.AndroidTestCase;
 
-import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
 /**
  * Created by styagi on 5/31/2015.
  */
 public class TestAccountSQLDataAdapter extends AndroidTestCase /*implements TestDataAdapter*/ {
 
-    private AccountSQLDataAdapter mDataAdapter;
+    private UserInfoSQLDataAdapter mDataAdapter;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        mDataAdapter = new AccountSQLDataAdapter(getContext());
+        mDataAdapter = new UserInfoSQLDataAdapter(getContext());
     }
 
   /*  @Override
@@ -38,7 +37,7 @@ public class TestAccountSQLDataAdapter extends AndroidTestCase /*implements Test
         long id = mDataAdapter.create(account);
         account.setUserName("shubham1");
         mDataAdapter.update(account);
-        assertEquals(account.getUserName(), mDataAdapter.get(id).getUserName());
+        assertEquals(account.getAccountName(), mDataAdapter.get(id).getAccountName());
     }
 
     @Override
@@ -69,7 +68,7 @@ public class TestAccountSQLDataAdapter extends AndroidTestCase /*implements Test
         account.setStatus(Account.Status.ACTIVE);
         long result = mDataAdapter.create(account);
         Account account1 = mDataAdapter.get(result);
-        assertEquals(account.getUserName(), account1.getUserName());
+        assertEquals(account.getAccountName(), account1.getAccountName());
     }
 
     @Override

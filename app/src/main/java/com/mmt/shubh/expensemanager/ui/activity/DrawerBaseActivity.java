@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.content.Account;
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
 /**
  * Created by Subham Tyagi,
@@ -31,7 +31,7 @@ public class DrawerBaseActivity extends ToolBarActivity {
 
     private boolean mToolbarInitialized;
 
-    Account mAccount;
+    UserInfo mUserInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,27 +128,27 @@ public class DrawerBaseActivity extends ToolBarActivity {
     }
 
     private void populateDrawerItems() {
-        mAccount = getIntent().getParcelableExtra("Account");
+        mUserInfo = getIntent().getParcelableExtra("Account");
         ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
         ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
         TextView displayName = (TextView) findViewById(R.id.account_name);
         TextView emailId = (TextView) findViewById(R.id.email_id);
 
-        if (!TextUtils.isEmpty(mAccount.getCoverPhotoUrl())) {
+        if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
             Glide.with(this)
-                    .load(mAccount.getCoverPhotoUrl())
+                    .load(mUserInfo.getCoverPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(coverImage);
 
         }
 
-        Glide.with(this).load(mAccount.getProfilePhotoUrl())
+        Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
                 .placeholder(R.drawable.member_avatar_white_48dp)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImage);
 
-        displayName.setText(mAccount.getDisplayName());
-        emailId.setText(mAccount.getEmailAddress());
+        displayName.setText(mUserInfo.getDisplayName());
+        emailId.setText(mUserInfo.getEmailAddress());
 
     }
 

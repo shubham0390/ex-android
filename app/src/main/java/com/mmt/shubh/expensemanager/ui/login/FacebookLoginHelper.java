@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * Created by styagi on 6/5/2015.
  */
-public class FacebookLoginHelper implements BaseLoginHelper, FacebookCallback<LoginResult> {
+public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<LoginResult> {
 
     private Context mContext;
 
@@ -28,11 +28,13 @@ public class FacebookLoginHelper implements BaseLoginHelper, FacebookCallback<Lo
         mCallback = (LoginCallback) context;
     }
 
-    public void setUp(LoginButton loginButton) {
+    public void setUp(Object object) {
+        LoginButton loginButton = (LoginButton) object;
         mCallbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(mCallbackManager, this);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_status", "user_friends"));
     }
+
 
     @Override
     public void signIn() {
@@ -47,6 +49,11 @@ public class FacebookLoginHelper implements BaseLoginHelper, FacebookCallback<Lo
     @Override
     public void revokeAccess() {
 
+    }
+
+    @Override
+    public Object getClient() {
+        return null;
     }
 
     @Override

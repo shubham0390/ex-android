@@ -27,4 +27,6 @@ public class Constants {
     public static final String MODE_EDIT_DETAILS = "details";
     public static final String MODE_NEW = "new";
     public static final String KEY_MEMBER_NAME = "member_name";
+    public static final java.lang.String EXTRA_MEMBER_ID = "memberId";
+    public static final java.lang.String EXTRA_EXPENSE_BOOK_ID = "expenseBookId";
 }

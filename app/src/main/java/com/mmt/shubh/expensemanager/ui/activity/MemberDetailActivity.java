@@ -10,15 +10,19 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+
+import java.util.Calendar;
 
 /**
  * Created by Subham Tyagi,
@@ -27,8 +31,10 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
  * TODO:Add class comment.
  */
 public class MemberDetailActivity extends AppCompatActivity {
-    private ImageView mImageView;
 
+    private static final int LOADER_ID_MEMBER_WITH_EXPENSE = 10004;
+
+    private ImageView mImageView;
 
     @Nullable
     @Override
@@ -40,13 +46,10 @@ public class MemberDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            String name = getIntent().getStringExtra(Constants.KEY_MEMBER_NAME);
-            actionBar.setTitle(name);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         mImageView = (ImageView) findViewById(R.id.backdrop);
-
     }
 
     @Override
@@ -55,26 +58,36 @@ public class MemberDetailActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra(Constants.KEY_MEMBER_ID, 1);
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.KEY_MEMBER_ID, id);
-        getSupportLoaderManager().restartLoader(2, bundle, mLoaderCallbacks);
+        getSupportLoaderManager().restartLoader(LOADER_ID_MEMBER_WITH_EXPENSE, bundle, mLoaderCallbacks);
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             long memberId = args.getLong(Constants.KEY_MEMBER_ID);
-            return new MemberLoader(getApplicationContext(), MemberContract.MEMBER_URI, null,
-                    MemberContract.ID_SELECTION, new String[]{String.valueOf(memberId)}, null);
+            switch (id) {
+                case LOADER_ID_MEMBER_WITH_EXPENSE:
+                    return new MemberLoader(getApplicationContext(), MemberContract.MEMBER_URI,
+                            null, MemberContract.ID_SELECTION, new String[]{String.valueOf(memberId)}, null);
+                default:
+                    throw new UnsupportedOperationException("Invalid Loader ID");
+            }
         }
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-
-            if (data.moveToNext()) {
-                Glide.with(getApplicationContext())
-                        .load(data.getString(data.getColumnIndex(MemberContract.MEMBER_IMAGE_URI)))
-                        .into(mImageView);
+            switch (loader.getId()) {
+                case LOADER_ID_MEMBER_WITH_EXPENSE:
+                    if (data.moveToNext()) {
+                        Glide.with(getApplicationContext())
+                                .load(data.getString(data.getColumnIndex(MemberContract.MEMBER_IMAGE_URI)))
+                                .centerCrop()
+                                .fitCenter()
+                                .into(mImageView);
+                    }
+                    break;
             }
+
         }
 
         @Override
@@ -87,11 +100,6 @@ public class MemberDetailActivity extends AppCompatActivity {
 
         public MemberLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
             super(context, uri, projection, selection, selectionArgs, sortOrder);
-        }
-
-        @Override
-        public Cursor loadInBackground() {
-            return super.loadInBackground();
         }
     }
 

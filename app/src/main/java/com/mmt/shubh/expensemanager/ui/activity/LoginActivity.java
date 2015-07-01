@@ -7,12 +7,12 @@ import android.view.View;
 
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.gsm.RegistrationIntentService;
-import com.mmt.shubh.expensemanager.ui.login.BaseLoginHelper;
-import com.mmt.shubh.expensemanager.ui.login.FacebookLoginHelper;
+import com.mmt.shubh.expensemanager.ui.login.ILoginHelper;
 import com.mmt.shubh.expensemanager.ui.login.FacebookProfileFetcher;
 import com.mmt.shubh.expensemanager.ui.login.GoogleLoginHelper;
 import com.mmt.shubh.expensemanager.ui.login.GoogleProfileFetcher;
@@ -28,11 +28,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     private SignInButton mPlusSignInButton;
 
-    private GoogleLoginHelper mGoogleLoginHelper;
-
-    private FacebookLoginHelper mFacebookLoginHelper;
-
-    private BaseLoginHelper mLoginHelper;
+    private ILoginHelper mLoginHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +40,16 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         mProgressView = findViewById(R.id.login_progress);
         //LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
-        mGoogleLoginHelper = new GoogleLoginHelper(this);
-        mGoogleLoginHelper.setUp(mPlusSignInButton);
+        mLoginHelper = new GoogleLoginHelper(this);
+        mLoginHelper.setUp(mPlusSignInButton);
 
 
        /* mFacebookLoginHelper = new FacebookLoginHelper(this);
         mFacebookLoginHelper.setUp(faceBookLoginButton);*/
 
-        AccountSQLDataAdapter sqlDataAdapter = new AccountSQLDataAdapter(this);
-        List<Account> accounts = sqlDataAdapter.getAll();
-        if (accounts.size() > 0) {
+        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(this);
+        List<UserInfo> accounts = sqlDataAdapter.getAll();
+        if (accounts != null && accounts.size() > 0) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("Account", accounts.get(0));
             startActivity(intent);
@@ -69,19 +65,17 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     }
 
     @Override
-    public void onSignInComplete(BaseLoginHelper.Type type) {
+    public void onSignInComplete(ILoginHelper.Type type) {
         ProfileFetcher profileFetcher = null;
         switch (type) {
             case GOOGLE:
-                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getPlusClient());
+                profileFetcher = new GoogleProfileFetcher((GoogleApiClient) mLoginHelper.getClient());
                 break;
             case FACEBOOK:
                 profileFetcher = new FacebookProfileFetcher();
                 break;
         }
-
-
-        Account account = profileFetcher.fetchUserAccountDetails(this);
+        UserInfo account = profileFetcher.fetchUserAccountDetails(this);
         Intent intent1 = new Intent(this, RegistrationIntentService.class);
         intent1.putExtra("Account", account);
         startService(intent1);
@@ -110,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        mLoginHelper.onActivityResult(requestCode, responseCode, intent);
     }
 
 }

@@ -5,7 +5,7 @@ public interface LoginCallback {
     /**
      * Called when the PlusClient is successfully connected.
      */
-    void onSignInComplete(BaseLoginHelper.Type type);
+    void onSignInComplete(ILoginHelper.Type type);
 
     void onSignInFailed(String message);
 
