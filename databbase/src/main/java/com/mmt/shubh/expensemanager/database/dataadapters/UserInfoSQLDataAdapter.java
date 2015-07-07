@@ -115,6 +115,6 @@ public class UserInfoSQLDataAdapter implements UserInfoDataAdapter<UserInfo>, Us
                 cursor.close();
             }
         }
-        return null;
+        return userInfoList;
     }
 }

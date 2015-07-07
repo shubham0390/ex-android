@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.login;
+package com.mmt.shubh.expensemanager.setup;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
@@ -15,7 +15,7 @@ import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter
 /**
  * Created by styagi on 6/4/2015.
  */
-public class GoogleProfileFetcher implements ProfileFetcher {
+public class GoogleProfileFetcher extends ProfileFetcher {
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -38,30 +38,16 @@ public class GoogleProfileFetcher implements ProfileFetcher {
             builder.setProfilePhotoUrl(personPhoto.getUrl());
             Person.Cover personCover = currentPerson.getCover();
 
-            if(personCover!=null && personCover.hasCoverPhoto())
-            builder.setCoverPhotoUrl(personCover.getCoverPhoto().getUrl());
+            if (personCover != null && personCover.hasCoverPhoto())
+                builder.setCoverPhotoUrl(personCover.getCoverPhoto().getUrl());
 
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
             builder.setEmailAddress(email);
             builder.setStatus(UserInfo.Status.ACTIVE);
             UserInfo userInfo = builder.build();
-            AsyncQueryHandler queryHandler = new UserInfoAsyncQueryHandler(context.getContentResolver());
-            UserInfoSQLDataAdapter userInfoSQLDataAdapter = new UserInfoSQLDataAdapter(context);
-            queryHandler.startInsert(1, null, UserInfoContract.ACCOUNT_URI, userInfoSQLDataAdapter.toContentValues(userInfo));
             return userInfo;
         }
         return null;
-    }
-
-    static class UserInfoAsyncQueryHandler extends AsyncQueryHandler {
-        public UserInfoAsyncQueryHandler(ContentResolver cr) {
-            super(cr);
-        }
-
-        @Override
-        protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            super.onInsertComplete(token, cookie, uri);
-        }
     }
 
 

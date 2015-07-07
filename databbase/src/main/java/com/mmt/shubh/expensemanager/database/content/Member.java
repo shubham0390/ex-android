@@ -15,36 +15,46 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-public class Member extends BaseContent{
+public class Member extends BaseContent {
 
-    public String mMemberName;
-    public String mMemberEmail;
-    public ExpenseBook mExpenseBook;
+    private String mMemberName;
 
-    public String getMemberName() {
-        return mMemberName;
+    private String mMemberEmail;
+
+    private String mCoverPhotoUrl;
+
+    private String mProfilePhotoUrl;
+
+    public String getCoverPhotoUrl() {
+        return mCoverPhotoUrl;
     }
 
-    public Member setMemberName(String memberName) {
-        mMemberName = memberName;
-        return this;
+    public void setCoverPhotoUrl(String coverPhotoUrl) {
+        mCoverPhotoUrl = coverPhotoUrl;
     }
 
     public String getMemberEmail() {
         return mMemberEmail;
     }
 
-    public Member setMemberEmail(String memberEmail) {
+    public void setMemberEmail(String memberEmail) {
         mMemberEmail = memberEmail;
-        return this;
     }
 
-    public ExpenseBook getExpenseBook() {
-        return mExpenseBook;
+    public String getMemberName() {
+        return mMemberName;
     }
 
-    public Member setExpenseBook(ExpenseBook expenseBook) {
-        mExpenseBook = expenseBook;
-        return this;
+    public void setMemberName(String memberName) {
+        mMemberName = memberName;
     }
+
+    public String getProfilePhotoUrl() {
+        return mProfilePhotoUrl;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        mProfilePhotoUrl = profilePhotoUrl;
+    }
+
 }

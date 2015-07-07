@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.login;
+package com.mmt.shubh.expensemanager.login;
 
 import android.app.Activity;
 import android.content.Context;

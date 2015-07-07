@@ -106,7 +106,6 @@ public final class ExpenseDDL {
                 + MemberContract.MEMBER_NAME + " TEXT NOT NULL, "
                 + MemberContract.MEMBER_EMAIL + " TEXT NOT NULL, "
                 + MemberContract.MEMBER_IMAGE_URI + " TEXT, "
-                + MemberContract.MEMBER_DISPLAY_NAME + " TEXT,"
                 + MemberContract.MEMBER_USER_NAME + " TEXT,"
                 + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT" +
                 ");";

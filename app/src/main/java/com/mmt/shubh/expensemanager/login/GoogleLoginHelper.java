@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.login;
+package com.mmt.shubh.expensemanager.login;
 
 import android.app.Activity;
 import android.content.Context;
@@ -184,7 +184,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     public void onConnected(Bundle connectionHint) {
         setProgressBarVisible(false);
          /* This Line is the key */
-        Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
+       // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
         mCallback.onSignInComplete(Type.GOOGLE);
     }
 

@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
+
 
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
-import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
@@ -407,6 +409,32 @@ public class ExpenseProvider extends ContentProvider {
                     + uri + ", match is " + match);*/
         }
         return match;
+    }
+
+
+    @Override
+    public int bulkInsert(Uri uri, @NonNull ContentValues[] values) {
+        int match = findMatch(uri, "insert");
+        Context context = getContext();
+        int numInserted = 0;
+        SQLiteDatabase db = getWritableableDatabase(context);
+        int table = match >> BASE_SHIFT;
+
+        db.beginTransaction();
+        try {
+            for (ContentValues cv : values) {
+                long newID = db.insertOrThrow(TABLE_NAMES[table], null, cv);
+                if (newID <= 0) {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+            }
+            db.setTransactionSuccessful();
+            getContext().getContentResolver().notifyChange(uri, null);
+            numInserted = values.length;
+        } finally {
+            db.endTransaction();
+        }
+        return numInserted;
     }
 
     /**

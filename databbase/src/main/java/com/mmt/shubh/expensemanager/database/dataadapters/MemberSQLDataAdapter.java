@@ -14,28 +14,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by styagi on 5/28/2015.
+ * Created by Subham Tyagi,
+ * on 06/Jul/2015,
+ * 6:31 PM
+ * TODO:Add class comment.
  */
-public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberContract {
+public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements MemberDataAdapter, MemberContract {
 
-    private Context mContext;
 
     public MemberSQLDataAdapter(Context context) {
-        mContext = context;
+        super(context);
     }
 
     public ContentValues toContentValues(Member member) {
         ContentValues values = new ContentValues();
         values.put(MEMBER_NAME, member.getMemberName());
         values.put(MEMBER_EMAIL, member.getMemberEmail());
+        values.put(MEMBER_IMAGE_URI, member.getProfilePhotoUrl());
+        values.put(MEMBER_COVER_IMAGE_URL, member.getCoverPhotoUrl());
         return values;
     }
 
+
     public void restore(Cursor cursor, Member member) {
-       /* member.setId(cursor.getLong(MEMBER_ID_COLUMN));
-        member.setMemberName(cursor.getString(MEMBER_NAME_COLUMN));
-        member.setMemberEmail(cursor.getString(MEMBER_EMAIL_COLUMN));
-        member.setExpenseBook(getExpenseBook(cursor.getLong(MEMBER_GROUP_KEY_COLUMN)));*/
+        member.setId(cursor.getLong(cursor.getColumnIndex(_ID)));
+        member.setMemberName(cursor.getString(cursor.getColumnIndex(MEMBER_NAME)));
+        member.setMemberEmail(cursor.getString(cursor.getColumnIndex(MEMBER_EMAIL)));
+        member.setProfilePhotoUrl(cursor.getString(cursor.getColumnIndex(MEMBER_IMAGE_URI)));
+        member.setCoverPhotoUrl(cursor.getString(cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL)));
     }
 
     private ExpenseBook getExpenseBook(long aLong) {
@@ -43,10 +49,10 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
     }
 
     /**
-     * Check if memeber already exists for given email and group
+     * Check if member already exists for given email and group
      *
-     * @param context
-     * @return
+     * @param context - Application context.
+     * @return - true if Exists otherwise falls.
      */
     public boolean isExists(Context context, Member member) {
 
@@ -70,11 +76,13 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
 
     @Override
     public long create(Member member) {
+        super.save(member);
         return 0;
     }
 
     @Override
     public int update(Member member) {
+
         return 0;
     }
 
@@ -90,6 +98,7 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
 
     @Override
     public int deleteAll() {
+        super.delete();
         return 0;
     }
 
@@ -111,9 +120,7 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
                     accountList.add(account);
                 }
             } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+                cursor.close();
             }
         }
         return accountList;
@@ -122,7 +129,7 @@ public class MemberSQLDataAdapter implements MemberDataAdapter<Member>, MemberCo
     @Override
     public long create(List<Member> list) {
         ContentValues[] contentValues = new ContentValues[list.size()];
-        for (int i = 0; i > list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             contentValues[i] = toContentValues(list.get(i));
         }
         mContext.getContentResolver().bulkInsert(MemberContract.MEMBER_URI, contentValues);

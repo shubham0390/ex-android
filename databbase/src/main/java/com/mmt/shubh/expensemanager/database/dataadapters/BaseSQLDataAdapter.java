@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by STyagi on 3/20/14.
  */
-public abstract class BaseSQLDataAdapter {
+public abstract class BaseSQLDataAdapter<T> {
 
     public static final String PARAMETER_LIMIT = "limit";
 
@@ -54,6 +54,12 @@ public abstract class BaseSQLDataAdapter {
     // Lazily initialized uri for this Content
     private Uri mUri = null;
 
+    protected Context mContext;
+
+    public BaseSQLDataAdapter(Context context) {
+        mContext = context;
+    }
+
     /**
      * Restore a subclass of ExpenseContent from the database
      *
@@ -65,7 +71,7 @@ public abstract class BaseSQLDataAdapter {
      * @return the instantiated object
      */
     public static <T extends BaseSQLDataAdapter> T restoreContentWithId(Context context,
-                                                                    Class<T> klass, Uri contentUri, String[] contentProjection, long id) throws IllegalArgumentException {
+                                                                        Class<T> klass, Uri contentUri, String[] contentProjection, long id) throws IllegalArgumentException {
         long token = Binder.clearCallingIdentity();
         if (context == null) {
             throw new IllegalArgumentException("Application Context cannot be null");
@@ -96,7 +102,7 @@ public abstract class BaseSQLDataAdapter {
      * @return the instantiated object
      */
     public static <T extends BaseSQLDataAdapter> List<T> restoreContent(Context context,
-                                                                    Class<T> klass, Uri contentUri, String[] contentProjection) {
+                                                                        Class<T> klass, Uri contentUri, String[] contentProjection) {
         List<T> list = new ArrayList<T>();
         Cursor c = context.getContentResolver().query(contentUri, contentProjection, null, null, null);
         if (c == null) throw new ProviderUnavailableException();
@@ -115,7 +121,7 @@ public abstract class BaseSQLDataAdapter {
         try {
             T content = klass.newInstance();
             content.mRecordId = cursor.getLong(0);
-            content.restore(cursor);
+            content.restore(cursor, content);
             return content;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -138,22 +144,21 @@ public abstract class BaseSQLDataAdapter {
     /**
      * Generic count method that can be used for any ContentProvider
      *
-     * @param context       the calling Context
      * @param uri           the Uri for the provider query
      * @param selection     as with a query call
      * @param selectionArgs as with a query call
      * @return the number of items matching the query (or zero)
      */
-    static public int count(Context context, Uri uri, String selection, String[] selectionArgs) {
-        return DatabaseUtility.getFirstRowLong(context,
+    public int count(Uri uri, String selection, String[] selectionArgs) {
+        return DatabaseUtility.getFirstRowLong(mContext,
                 uri, COUNT_COLUMNS, selection, selectionArgs, null, 0, Long.valueOf(0)).intValue();
     }
 
     /**
-     * Same as {@link #count(Context, Uri, String, String[])} without selection.
+     * Same as {@link BaseSQLDataAdapter#count(Uri)} (Context, Uri, String, String[])} without selection.
      */
-    static public int count(Context context, Uri uri) {
-        return count(context, uri, null, null);
+    public int count(Uri uri) {
+        return count(uri, null, null);
     }
 
     static public Uri uriWithLimit(Uri uri, int limit) {
@@ -162,10 +167,11 @@ public abstract class BaseSQLDataAdapter {
     }
 
     // Write the Content into a ContentValues container
-    public abstract ContentValues toContentValues();
+    // Write the Content into a ContentValues container
+    public abstract ContentValues toContentValues(T t);
 
     // Read the Content from a ContentCursor
-    public abstract void restore(Cursor cursor);
+    public abstract void restore(Cursor cursor, T t);
 
     // The Uri is lazily initialized
     public Uri getUri() {
@@ -179,25 +185,25 @@ public abstract class BaseSQLDataAdapter {
         return mRecordId != NOT_SAVED;
     }
 
-    public Uri save(Context context) {
+    public Uri save(T t) {
         if (isSaved()) {
             throw new UnsupportedOperationException();
         }
-        Uri res = context.getContentResolver().insert(mBaseUri, toContentValues());
+
+        Uri res = mContext.getContentResolver().insert(mBaseUri, toContentValues(t));
         mRecordId = Long.parseLong(res.getLastPathSegment());
         return res;
     }
 
-    public int update(Context context, ContentValues contentValues) {
+    public int update(ContentValues contentValues) {
         if (!isSaved()) {
             throw new UnsupportedOperationException();
         }
-        return context.getContentResolver().update(getUri(), contentValues, null, null);
+        return mContext.getContentResolver().update(getUri(), contentValues, null, null);
     }
 
-    public int delete(Context context) {
-        return context.getContentResolver()
-                .delete(getUri(), null, null);
+    public int delete() {
+        return mContext.getContentResolver().delete(getUri(), null, null);
     }
 
 }

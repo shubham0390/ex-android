@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.login;
+package com.mmt.shubh.expensemanager.login;
 
 public interface LoginCallback {
 

@@ -1,6 +1,7 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import api.CategoryDataAdapter;
@@ -12,8 +13,12 @@ import java.util.List;
 /**
  * Created by styagi on 5/28/2015.
  */
-public class CategorySQLDataAdapter implements CategoryDataAdapter<Category>, CategoryContract {
+public class CategorySQLDataAdapter extends BaseSQLDataAdapter<Category> implements CategoryDataAdapter<Category>, CategoryContract {
 
+
+    public CategorySQLDataAdapter(Context context) {
+        super(context);
+    }
 
     public ContentValues toContentValues(Category category) {
         ContentValues values = new ContentValues();
@@ -29,12 +34,13 @@ public class CategorySQLDataAdapter implements CategoryDataAdapter<Category>, Ca
 
     @Override
     public long create(Category category) {
-        return 0;
+        super.save(category);
+        return 0 ;
     }
 
     @Override
     public int update(Category category) {
-        return 0;
+        return update(category);
     }
 
     @Override
