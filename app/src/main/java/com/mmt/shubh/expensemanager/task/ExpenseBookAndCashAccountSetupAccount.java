@@ -1,7 +1,10 @@
 package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
+import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
@@ -18,6 +21,7 @@ import java.util.List;
  * on 03/Jul/2015,
  * 12:04 AM
  */
+
 public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.mmt.shubh.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
@@ -33,18 +37,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         TaskResult result;
         if (userInfos != null && !userInfos.isEmpty()) {
             UserInfo userInfo = userInfos.get(0);
-            ExpenseBookSQLDataAdapter expenseBookSQLDataAdapter = new ExpenseBookSQLDataAdapter(mContext);
-            List<Member> members = new ArrayList<>();
-            members.add(createMember());
-
-            ExpenseBook expenseBook = new ExpenseBook();
-            expenseBook.setType("Private");
-            expenseBook.setDescription("This is personal expense book of" + userInfo.getEmailAddress());
-            expenseBook.setName(userInfo.getDisplayName());
-            expenseBook.setProfileImagePath(userInfo.getProfilePhotoUrl());
-            expenseBook.setMemberList(members);
-            expenseBookSQLDataAdapter.create(expenseBook);
-            expenseBookSQLDataAdapter.addMembers(members);
+            createPrivateExpenseBook(userInfo);
             createAccount();
             return new TaskResult(true, "", 4);
         }
@@ -52,16 +45,48 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         return new TaskResult(false, "", 4);
     }
 
-    private void createAccount() {
+    @VisibleForTesting
+    public boolean createPrivateExpenseBook(UserInfo userInfo) {
+        ExpenseBookSQLDataAdapter expenseBookSQLDataAdapter = new ExpenseBookSQLDataAdapter(mContext);
+        List<Member> members = new ArrayList<>();
+        members.add(createMember());
+
+        ExpenseBook expenseBook = new ExpenseBook();
+        expenseBook.setType("Private");
+        expenseBook.setDescription("This is personal expense book of" + userInfo.getEmailAddress());
+        expenseBook.setName(userInfo.getDisplayName());
+        expenseBook.setProfileImagePath(userInfo.getProfilePhotoUrl());
+        expenseBook.setMemberList(members);
+        long id = expenseBookSQLDataAdapter.create(expenseBook);
+        expenseBookSQLDataAdapter.addMembers(members);
+        if (id > 0) {
+            Log.d(Constants.LOG_TAG, "Created private expense book  successfully");
+            return true;
+        } else {
+            Log.d(Constants.LOG_TAG, "Expense book creating failed");
+        }
+        return false;
+    }
+
+    @VisibleForTesting
+    public boolean createAccount() {
         AccountSQLDataAdapter dataAdapter = new AccountSQLDataAdapter(mContext);
 
         Account account = new Account();
         account.setAccountName("Cash");
         account.setAccountBalance(10000);
-        dataAdapter.create(account);
+        long id = dataAdapter.create(account);
+        if (id > 0) {
+            Log.d(Constants.LOG_TAG, "Created Account successfully");
+            return true;
+        } else {
+            Log.d(Constants.LOG_TAG, "Account creating failed");
+        }
+        return false;
     }
 
-    private Member createMember() {
+    @VisibleForTesting
+    public Member createMember() {
         UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
         Member member = new Member();
         UserInfo userInfo = sqlDataAdapter.getAll().get(0);

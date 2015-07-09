@@ -23,7 +23,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
 
     public MemberSQLDataAdapter(Context context) {
-        super(context);
+        super(MemberContract.MEMBER_URI,context);
     }
 
     public ContentValues toContentValues(Member member) {
@@ -82,7 +82,6 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
     @Override
     public int update(Member member) {
-
         return 0;
     }
 

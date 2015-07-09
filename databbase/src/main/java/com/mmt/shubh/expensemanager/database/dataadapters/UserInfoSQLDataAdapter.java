@@ -20,11 +20,12 @@ import java.util.List;
  * 7:26 AM
  * TODO:Add class comment.
  */
-public class UserInfoSQLDataAdapter implements UserInfoDataAdapter<UserInfo>, UserInfoContract {
+public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> implements UserInfoDataAdapter<UserInfo>, UserInfoContract {
 
     private Context mContext;
 
     public UserInfoSQLDataAdapter(Context context) {
+        super(UserInfoContract.ACCOUNT_URI,context);
         mContext = context;
     }
 
@@ -54,7 +55,7 @@ public class UserInfoSQLDataAdapter implements UserInfoDataAdapter<UserInfo>, Us
 
     @Override
     public long create(UserInfo userInfo) {
-        Uri uri = mContext.getContentResolver().insert(UserInfoContract.ACCOUNT_URI, toContentValues(userInfo));
+        Uri uri = super.save(userInfo);
         List paths = uri.getPathSegments();
         return Long.parseLong((String) paths.get(paths.size() - 1));
     }

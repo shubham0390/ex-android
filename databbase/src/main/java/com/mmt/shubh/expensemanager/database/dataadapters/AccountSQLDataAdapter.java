@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
@@ -21,7 +22,7 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
 
 
     public AccountSQLDataAdapter(Context context) {
-        super(context);
+        super(AccountContract.ACCOUNT_URI, context);
     }
 
     @Override
@@ -40,8 +41,9 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
 
     @Override
     public long create(Account account) {
-        super.save(account);
-        return 0;
+        Uri uri = super.save(account);
+        List paths = uri.getPathSegments();
+        return Long.parseLong((String) paths.get(paths.size() - 1));
     }
 
     @Override

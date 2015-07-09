@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import api.ExpenseDataAdapter;
 
@@ -19,8 +20,12 @@ import java.util.List;
 /**
  * Created by styagi on 5/28/2015.
  */
-public class ExpenseSqlDataAdapter implements ExpenseDataAdapter<Expense>, ExpenseContract {
+public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter<Expense>, ExpenseContract {
 
+
+    public ExpenseSqlDataAdapter(Context context) {
+        super(ExpenseContract.EXPENSE_URI, context);
+    }
 
     public ContentValues toContentValues(Expense expense) {
         ContentValues values = new ContentValues();
@@ -60,6 +65,7 @@ public class ExpenseSqlDataAdapter implements ExpenseDataAdapter<Expense>, Expen
 
     @Override
     public long create(Expense expense) {
+        save(expense);
         return 0;
     }
 

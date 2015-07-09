@@ -56,8 +56,9 @@ public abstract class BaseSQLDataAdapter<T> {
 
     protected Context mContext;
 
-    public BaseSQLDataAdapter(Context context) {
+    public BaseSQLDataAdapter(Uri baseUri,Context context) {
         mContext = context;
+        mBaseUri = baseUri;
     }
 
     /**

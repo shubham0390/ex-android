@@ -17,7 +17,7 @@ public class CategorySQLDataAdapter extends BaseSQLDataAdapter<Category> impleme
 
 
     public CategorySQLDataAdapter(Context context) {
-        super(context);
+        super(CategoryContract.CATEGORY_URI,context);
     }
 
     public ContentValues toContentValues(Category category) {

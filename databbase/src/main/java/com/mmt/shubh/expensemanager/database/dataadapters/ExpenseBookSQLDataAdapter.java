@@ -24,7 +24,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
 
 
     public ExpenseBookSQLDataAdapter(Context context) {
-        super(context);
+        super(ExpenseBookContract.EXPENSE_BOOK_URI,context);
     }
 
     /**
@@ -88,7 +88,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
 
     @Override
     public long create(ExpenseBook expenseBook) {
-        Uri uri = mContext.getContentResolver().insert(ExpenseBookContract.EXPENSE_BOOK_URI, toContentValues(expenseBook));
+        Uri uri = save(expenseBook);
         List paths = uri.getPathSegments();
         return Long.parseLong((String) paths.get(paths.size() - 1));
     }
