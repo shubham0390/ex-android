@@ -74,35 +74,8 @@
     <string name="navigation_header_navigation">INBOX</string>
     <string name="navigation_header_settings">SETTINGS</string>
     <!-- Navigation Specific -->
-    <string name="logout">LOGOUT</string>
+    <string name="logout">Logout</string>
     <string name="user_preference">USER SETTINGS</string>
-
-    <!-- Setting fregment Strings -->
-
-    <string name="dialog_title_list_preference">List Diloge</string>
-    <string name="summary_list_preference">List Demo</string>
-    <string name="title_list_preference">List Title</string>
-    <string name="launch_preferences">launch title</string>
-    <string name="title_screen_preference">screen title</string>
-    <string name="summary_screen_preference">screen summry</string>
-    <string name="title_next_screen_toggle_preference">check box toggle title</string>
-    <string name="summary_next_screen_toggle_preference">toggle summry</string>
-    <string name="title_intent_preference">intnet title</string>
-    <string name="summary_intent_preference">intent summry</string>
-    <string name="preference_attributes">attribute title</string>
-    <string name="title_parent_preference">parent title</string>
-    <string name="summary_parent_preference">parent summry</string>
-    <string name="title_child_preference">child title</string>
-    <string name="summary_child_preference">child summry</string>
-    <string name="title_edittext_preference">edit text title</string>
-    <string name="summary_edittext_preference">edit text summry</string>
-    <string name="dialog_title_edittext_preference">edit text dialog</string>
-    <string name="dialog_based_preferences">edit text</string>
-    <string name="inline_preferences">inline</string>
-    <string name="title_checkbox_preference">inline checkbox title</string>
-    <string name="summary_checkbox_preference">inline checkbox summry</string>
-
-    <!-- Setting fragment strings end here -->
 
     <string name="member_list">Members List</string>
     <string name="empty_text_no_member">No Member</string>
@@ -128,16 +101,7 @@
          selectable hours of the day along the inside edge of a circle, as in an analog clock.
          [CHAR LIMIT=50]
     -->
-    <string name="hour_picker_description">Hours circular slider</string>
-    <!--
-         Content description for the minute selector in the time picker, which displays
-         selectable five-minute intervals along the inside edge of a circle, as in an analog clock.
-         [CHAR LIMIT=50]
-    -->
-    <string name="minute_picker_description">Minutes circular slider</string>
-    <string name="radial_numbers_typeface" translatable="false">sans-serif</string>
-    <string name="select_hours">Select hours</string>
-    <string name="select_minutes">Select minutes</string>
+
     <string name="expense_date">Date</string>
     <string name="exapnse_time">Time</string>
     <string name="add_account">Add Account</string>
@@ -200,4 +164,6 @@
 
     <string name="more">More</string>
     <string name="no_expense">No Expense</string>
+    <string name="account">Account</string>
+    <string name="cash_management">Cash Management</string>
 </resources>
