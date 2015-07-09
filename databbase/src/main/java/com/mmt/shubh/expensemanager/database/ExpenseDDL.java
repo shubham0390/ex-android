@@ -180,10 +180,11 @@ public final class ExpenseDDL {
                 " ( "
                 + TransactionContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TransactionContract.TRANSACTION_NAME + " INTEGER NOT NULL, "
-                + TransactionContract.CREDIT_AMOUNT + " INTEGER, "
-                + TransactionContract.DEBIT_AMOUNT + " INTEGER NOT NULL,"
+                + TransactionContract.TRANSACTION_AMOUNT + " INTEGER, "
+                + TransactionContract.TRANSACTION_TYPE + " TEXT NOT NULL,"
                 + TransactionContract.TRANSACTION_DATE + " INTEGER NOT NULL,"
-                + MemberExpenseContract.BALANCE_AMOUNT + " INTEGER NOT NULL " +
+                + TransactionContract.ACCOUNT_KEY + " INTEGER NOT NULL ,"
+                + "FOREIGN KEY (" + TransactionContract.ACCOUNT_KEY+ ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")" +
                 ");";
         database.execSQL(createTable);
     }

@@ -12,7 +12,8 @@ public interface TransactionContract extends BaseContract {
     String PATH = "Transaction";
 
     String TRANSACTION_NAME = "transaction_name";
-    String CREDIT_AMOUNT = "credit_amount";
-    String DEBIT_AMOUNT = "debit_amount";
+    String TRANSACTION_AMOUNT = "transaction_amount";
     String TRANSACTION_DATE = "transaction_date";
+    String TRANSACTION_TYPE = "transaction_type";
+    String ACCOUNT_KEY = "account_key";
 }
