@@ -128,28 +128,29 @@ public class DrawerBaseActivity extends ToolBarActivity {
     }
 
     private void populateDrawerItems() {
-        mUserInfo = getIntent().getParcelableExtra("Account");
-        ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
-        ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
-        TextView displayName = (TextView) findViewById(R.id.account_name);
-        TextView emailId = (TextView) findViewById(R.id.email_id);
+        if (mUserInfo != null) {
+            mUserInfo = getIntent().getParcelableExtra("Account");
+            ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
+            ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
+            TextView displayName = (TextView) findViewById(R.id.account_name);
+            TextView emailId = (TextView) findViewById(R.id.email_id);
 
-        if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
-            Glide.with(this)
-                    .load(mUserInfo.getCoverPhotoUrl())
+            if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
+                Glide.with(this)
+                        .load(mUserInfo.getCoverPhotoUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(coverImage);
+
+            }
+
+            Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
+                    .placeholder(R.drawable.member_avatar_white_48dp)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(coverImage);
+                    .into(profileImage);
 
+            displayName.setText(mUserInfo.getDisplayName());
+            emailId.setText(mUserInfo.getEmailAddress());
         }
-
-        Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
-                .placeholder(R.drawable.member_avatar_white_48dp)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(profileImage);
-
-        displayName.setText(mUserInfo.getDisplayName());
-        emailId.setText(mUserInfo.getEmailAddress());
-
     }
 
 

@@ -8,9 +8,13 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
@@ -66,6 +70,9 @@ public class ExpenseProvider extends ContentProvider {
     private static final int MEMBER_EXPANSE_BASE = 0x7000;
     private static final int MEMBER_EXPANSE = MEMBER_EXPANSE_BASE;
 
+    private static final int ACOOUNT_BASE = 0x8000;
+    private static final int ACCOUNT = ACOOUNT_BASE;
+
 
     private static final int BASE_SHIFT = 12; // 12 bits to the base type: 0,
     // 0x1000, 0x2000, etc.
@@ -83,7 +90,9 @@ public class ExpenseProvider extends ContentProvider {
             MemberExpenseBookContract.TABLE_NAME,
             MemberContract.TABLE_NAME,
             MemberExpenseContract.TABLE_NAME,
-            TransactionContract.TABLE_NAME
+            TransactionContract.TABLE_NAME,
+            AccountContract.TABLE_NAME
+
     };
 
     private static final UriMatcher sURIMatcher = new UriMatcher(
@@ -133,6 +142,8 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_EXPANSE_BOOK_BASE_PATH, MEMBER_EXPANSE_BOOK);
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_EXPANSE_BASE_PATH, MEMBER_EXPANSE);
 
+
+        matcher.addURI(BaseContract.AUTHORITY,AccountContract.PATH_ACCOUNT,ACCOUNT);
     }
 
     private SQLiteDatabase mReadDatabase;
@@ -178,6 +189,7 @@ public class ExpenseProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         int match = findMatch(uri, "getType");
+        Log.d("ExManager", uri.toString());
         switch (match) {
             case EXPENSE:
                 return "vnd.android.cursor.dir/vnd.Expenseprovider.EXPENSE";
@@ -201,8 +213,6 @@ public class ExpenseProvider extends ContentProvider {
                 return "vnd.android.cursor.item/vnd.Expenseprovider.user";
             case CATEGORY_ID:
                 return "vnd.android.cursor.item/vnd.Expenseprovider.category";
-
-
         }
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -225,6 +235,7 @@ public class ExpenseProvider extends ContentProvider {
             case CATEGORY:
             case MEMBER_EXPANSE:
             case MEMBER_EXPANSE_BOOK:
+            case ACCOUNT:
                 longId = db.insert(TABLE_NAMES[table], "foo", values);
                 break;
             case EXPENSE_ID:
@@ -407,6 +418,32 @@ public class ExpenseProvider extends ContentProvider {
                     + uri + ", match is " + match);*/
         }
         return match;
+    }
+
+
+    @Override
+    public int bulkInsert(Uri uri, @NonNull ContentValues[] values) {
+        int match = findMatch(uri, "insert");
+        Context context = getContext();
+        int numInserted = 0;
+        SQLiteDatabase db = getWritableableDatabase(context);
+        int table = match >> BASE_SHIFT;
+
+        db.beginTransaction();
+        try {
+            for (ContentValues cv : values) {
+                long newID = db.insertOrThrow(TABLE_NAMES[table], null, cv);
+                if (newID <= 0) {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+            }
+            db.setTransactionSuccessful();
+            getContext().getContentResolver().notifyChange(uri, null);
+            numInserted = values.length;
+        } finally {
+            db.endTransaction();
+        }
+        return numInserted;
     }
 
     /**

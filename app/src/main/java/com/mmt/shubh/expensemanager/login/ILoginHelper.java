@@ -1,7 +1,6 @@
-package com.mmt.shubh.expensemanager.ui.login;
+package com.mmt.shubh.expensemanager.login;
 
 import android.content.Intent;
-import android.widget.Button;
 
 /**
  * Created by styagi on 6/4/2015.

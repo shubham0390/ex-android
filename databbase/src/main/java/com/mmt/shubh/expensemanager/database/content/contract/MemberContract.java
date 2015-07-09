@@ -13,7 +13,6 @@ public interface MemberContract extends BaseColumns, BaseContract {
     String PATH_MEMBER = "member";
 
     String MEMBER_USER_NAME = "user_name";
-    String MEMBER_DISPLAY_NAME = "display_name";
     String MEMBER_NAME = "member_name";
     String MEMBER_EMAIL = "member_email";
     String MEMBER_IMAGE_URI = "profile_image_uri";

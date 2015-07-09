@@ -5,23 +5,26 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.database.content.Account;
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
 import java.util.List;
 
+import api.ExpenseBookDataAdapter;
+
 /**
- * Created by styagi on 5/28/2015.
+ * Created by Subham Tyagi,
+ * on 03/Jul/2015,
+ * 4:04 PM
+ * TODO:Add class comment.
  */
-public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<ExpenseBook>, ExpenseBookContract {
+public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> implements ExpenseBookDataAdapter<ExpenseBook>, ExpenseBookContract {
 
 
-    private Context mContext;
 
     public ExpenseBookSQLDataAdapter(Context context) {
-        mContext = context;
+        super(ExpenseBookContract.EXPENSE_BOOK_URI,context);
     }
 
     /**
@@ -32,7 +35,7 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
      * @return <code>true</code> if {@link  ExpenseBook} already present otherwise
      * <code>false</code>.
      */
-    public boolean isGroupExsist(Context context, String groupName) {
+    public boolean isExpenseBookExsist(Context context, String groupName) {
         Cursor cursor = null;
 
         try {
@@ -52,7 +55,7 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
         }
     }
 
-    public static Cursor getAllGroup(Context context) {
+    public static Cursor getAllExpenseBook(Context context) {
         return context.getContentResolver().query(EXPENSE_BOOK_URI, null, null, null,
                 ExpenseBookContract.EXPENSE_BOOK_NAME);
     }
@@ -74,20 +77,19 @@ public class ExpenseBookSQLDataAdapter implements ExpenseBookDataAdapter<Expense
         expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE)));
     }
 
-    private Account getUser(long aLong) {
+    private UserInfo getUser(long aLong) {
         return null;
     }
 
-    public void addMembers(ExpenseBook expenseBook) {
+    public void addMembers(List members) {
         MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
-        sqlDataAdapter.create(expenseBook.getMemberList());
+        sqlDataAdapter.create(members);
     }
 
     @Override
     public long create(ExpenseBook expenseBook) {
-        Uri uri = mContext.getContentResolver().insert(ExpenseBookContract.EXPENSE_BOOK_URI, toContentValues(expenseBook));
+        Uri uri = save(expenseBook);
         List paths = uri.getPathSegments();
-        addMembers(expenseBook);
         return Long.parseLong((String) paths.get(paths.size() - 1));
     }
 

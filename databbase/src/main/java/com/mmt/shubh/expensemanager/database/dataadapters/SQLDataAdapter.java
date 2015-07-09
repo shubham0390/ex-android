@@ -7,10 +7,12 @@ import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.BaseContent;
 
+import api.DataAdapter;
+
 /**
  * Created by styagi on 6/1/2015.
  */
-public abstract class SQLDataAdapter<T extends BaseContent> {
+public abstract class SQLDataAdapter<T extends BaseContent> implements DataAdapter<T> {
     // Newly created objects get this id
     public static final int NOT_SAVED = -1;
 

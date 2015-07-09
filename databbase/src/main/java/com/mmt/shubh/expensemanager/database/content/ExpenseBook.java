@@ -24,7 +24,6 @@ public class ExpenseBook extends BaseContent {
     public String mProfileImagePath;
     public String mDescription;
     public String mType;
-    public Account mAccount;
     public List<Member> mMemberList;
 
     public String getName() {
@@ -63,21 +62,11 @@ public class ExpenseBook extends BaseContent {
         return this;
     }
 
-    public com.mmt.shubh.expensemanager.database.content.Account getAccount() {
-        return mAccount;
-    }
-
-    public ExpenseBook setAccount(com.mmt.shubh.expensemanager.database.content.Account account) {
-        mAccount = account;
-        return this;
-    }
-
-
-    public List<com.mmt.shubh.expensemanager.database.content.Member> getMemberList() {
+    public List<Member> getMemberList() {
         return mMemberList;
     }
 
-    public ExpenseBook setMemberList(List<com.mmt.shubh.expensemanager.database.content.Member> memberList) {
+    public ExpenseBook setMemberList(List<Member> memberList) {
         mMemberList = memberList;
         return this;
     }

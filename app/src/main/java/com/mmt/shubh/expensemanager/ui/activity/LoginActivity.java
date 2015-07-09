@@ -11,18 +11,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
-import com.mmt.shubh.expensemanager.gsm.RegistrationIntentService;
-import com.mmt.shubh.expensemanager.ui.login.ILoginHelper;
-import com.mmt.shubh.expensemanager.ui.login.FacebookProfileFetcher;
-import com.mmt.shubh.expensemanager.ui.login.GoogleLoginHelper;
-import com.mmt.shubh.expensemanager.ui.login.GoogleProfileFetcher;
-import com.mmt.shubh.expensemanager.ui.login.LoginCallback;
-import com.mmt.shubh.expensemanager.ui.login.ProfileFetcher;
+import com.mmt.shubh.expensemanager.login.GoogleLoginHelper;
+import com.mmt.shubh.expensemanager.login.ILoginHelper;
+import com.mmt.shubh.expensemanager.login.LoginCallback;
+import com.mmt.shubh.expensemanager.setup.AccountSetupHelper;
+import com.mmt.shubh.expensemanager.setup.FacebookProfileFetcher;
+import com.mmt.shubh.expensemanager.setup.GoogleProfileFetcher;
+import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
 
 import java.util.List;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginCallback {
+public class LoginActivity extends AppCompatActivity implements LoginCallback, AccountSetupHelper.AccountSetupListener {
 
     private View mProgressView;
 
@@ -75,15 +75,10 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
                 profileFetcher = new FacebookProfileFetcher();
                 break;
         }
-        UserInfo account = profileFetcher.fetchUserAccountDetails(this);
-        Intent intent1 = new Intent(this, RegistrationIntentService.class);
-        intent1.putExtra("Account", account);
-        startService(intent1);
 
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("Account", account);
-        startActivity(intent);
-        finish();
+        AccountSetupHelper helper = new AccountSetupHelper(getApplicationContext(), profileFetcher);
+        helper.setSetupListener(this);
+        helper.setUpUserAccount();
     }
 
     @Override
@@ -107,5 +102,16 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         mLoginHelper.onActivityResult(requestCode, responseCode, intent);
     }
 
+    @Override
+    public void updateProgress(String message) {
+
+    }
+
+    @Override
+    public void onAccountSetupComplete() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
 

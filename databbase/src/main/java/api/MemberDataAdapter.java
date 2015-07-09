@@ -1,11 +1,13 @@
 package api;
 
+import com.mmt.shubh.expensemanager.database.content.Member;
+
 import java.util.List;
 
 /**
  * Created by styagi on 5/28/2015.
  */
-public interface MemberDataAdapter <T> extends DataAdapter<T>{
+public interface MemberDataAdapter extends DataAdapter<Member>{
 
-    long create(List<T> list);
+    long create(List<Member> list);
 }
