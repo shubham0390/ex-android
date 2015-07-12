@@ -20,41 +20,19 @@ import android.os.Parcelable;
 
 public class Account extends BaseContent implements Parcelable {
 
+    public static final String TYPE_BANK = "bank";
+    public static final String TYPE_CREDIT_CARD = "credit_card";
+    public static final String TYPE_CASH = "cash";
+
     private String mAccountName;
 
     private long mAccountBalance;
 
+    private String mType;
+
+    private String mAccountNumber;
+
     public Account() {
-    }
-
-    protected Account(Parcel in) {
-        mId = in.readLong();
-        mAccountName = in.readString();
-        mAccountBalance = in.readLong();
-    }
-
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel in) {
-            return new Account(in);
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mId);
-        dest.writeString(mAccountName);
-        dest.writeLong(mAccountBalance);
     }
 
     @Override
@@ -76,5 +54,33 @@ public class Account extends BaseContent implements Parcelable {
 
     public void setAccountName(String accountName) {
         mAccountName = accountName;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public Account setType(String type) {
+        mType = type;
+        return this;
+    }
+
+    public String getAccountNumber() {
+        return mAccountNumber;
+    }
+
+    public Account setAccountNumber(String accountNumber) {
+        mAccountNumber = accountNumber;
+        return this;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
