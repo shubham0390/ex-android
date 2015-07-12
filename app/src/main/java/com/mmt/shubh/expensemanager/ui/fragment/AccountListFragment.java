@@ -1,11 +1,9 @@
 package com.mmt.shubh.expensemanager.ui.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -19,14 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
-import com.mmt.shubh.expensemanager.ui.activity.AccountActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.AccountListAdapter;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
-import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -35,8 +30,6 @@ public class AccountListFragment extends Fragment implements ListRecyclerView.On
 
     private AccountListAdapter mAccountListAdapter;
     protected RecyclerView mRecyclerView;
-    private FloatingActionButton mFloatingActionButton;
-    private AccountFragmentIntractionListener mListener;
 
     public AccountListFragment() {
     }
@@ -46,26 +39,11 @@ public class AccountListFragment extends Fragment implements ListRecyclerView.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.account_list);
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         return view;
     }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mListener = (AccountFragmentIntractionListener) activity;
-    }
-
-    private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,10 +55,6 @@ public class AccountListFragment extends Fragment implements ListRecyclerView.On
 
     @Override
     public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-        long itemId = mAccountListAdapter.getItemId(position);
-        Bundle bundle = new Bundle();
-        bundle.putLong(Constants.KEY_ITEM_ID, itemId);
-        mListener.onFragmentIntraction(AccountActivity.MODE_VIEW, bundle);
         return false;
     }
 
