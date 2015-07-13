@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.login.FacebookLoginHelper;
 import com.mmt.shubh.expensemanager.login.GoogleLoginHelper;
 import com.mmt.shubh.expensemanager.login.ILoginHelper;
 import com.mmt.shubh.expensemanager.login.LoginCallback;
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
     private SignInButton mPlusSignInButton;
 
     private ILoginHelper mLoginHelper;
+    private FacebookLoginHelper mFacebookLoginHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +41,14 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
         mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
         mProgressView = findViewById(R.id.login_progress);
-        //LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
         mLoginHelper = new GoogleLoginHelper(this);
         mLoginHelper.setUp(mPlusSignInButton);
 
 
-       /* mFacebookLoginHelper = new FacebookLoginHelper(this);
-        mFacebookLoginHelper.setUp(faceBookLoginButton);*/
+        mFacebookLoginHelper = new FacebookLoginHelper(this);
+        mFacebookLoginHelper.setUp(faceBookLoginButton);
 
         UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(this);
         List<UserInfo> accounts = sqlDataAdapter.getAll();
