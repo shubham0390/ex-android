@@ -32,8 +32,30 @@ public class Account extends BaseContent implements Parcelable {
 
     private String mAccountNumber;
 
+    private String mBankName;
+
     public Account() {
     }
+
+    protected Account(Parcel in) {
+        mAccountName = in.readString();
+        mAccountBalance = in.readLong();
+        mType = in.readString();
+        mAccountNumber = in.readString();
+        mBankName = in.readString();
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
 
     @Override
     public long getId() {
@@ -74,6 +96,14 @@ public class Account extends BaseContent implements Parcelable {
         return this;
     }
 
+    public String getBankName() {
+        return mBankName;
+    }
+
+    public void setBankName(String bankName) {
+        mBankName = bankName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -81,6 +111,10 @@ public class Account extends BaseContent implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(mAccountName);
+        dest.writeLong(mAccountBalance);
+        dest.writeString(mType);
+        dest.writeString(mAccountNumber);
+        dest.writeString(mBankName);
     }
 }

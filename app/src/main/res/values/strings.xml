@@ -168,4 +168,7 @@
     <string name="cash_management">Cash Management</string>
     <string name="title_activity_account">Accounts</string>
     <string name="hello_world">Hello world!</string>
+    <string name="hint_account_name">Account Name</string>
+    <string name="hint_account_balance">Account Balance</string>
+    <string name="hint_account_number">Account Number</string>
 </resources>
