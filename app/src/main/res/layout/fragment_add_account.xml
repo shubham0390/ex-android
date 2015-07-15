@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/spacing_medium">
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/account_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:background="@drawable/spinner_background_light"
+        android:drawableLeft="@drawable/ic_action_cash"
+        android:drawablePadding="@dimen/spacing_medium"
+        android:drawableStart="@dimen/spacing_large"
+        android:gravity="center_vertical"
+        android:text="State Bank of india"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/account_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:hint="@string/hint_account_name"/>
+
+    <EditText
+        android:id="@+id/account_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:hint="@string/hint_account_number"/>
+
+    <EditText
+        android:id="@+id/account_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:hint="@string/hint_account_balance"/>
+
+
+</LinearLayout>
