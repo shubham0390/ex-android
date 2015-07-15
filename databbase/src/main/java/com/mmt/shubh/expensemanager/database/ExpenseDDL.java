@@ -186,7 +186,7 @@ public final class ExpenseDDL {
                 + TransactionContract.TRANSACTION_TYPE + " TEXT NOT NULL,"
                 + TransactionContract.TRANSACTION_DATE + " INTEGER NOT NULL,"
                 + TransactionContract.ACCOUNT_KEY + " INTEGER NOT NULL ,"
-                + "FOREIGN KEY (" + TransactionContract.ACCOUNT_KEY + ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")" +
+                + "FOREIGN KEY (" + TransactionContract.ACCOUNT_KEY+ ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")" +
                 ");";
         database.execSQL(createTable);
     }
