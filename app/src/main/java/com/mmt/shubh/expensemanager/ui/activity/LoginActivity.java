@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
     private SignInButton mPlusSignInButton;
 
-    private ILoginHelper mLoginHelper;
+    private GoogleLoginHelper mGoogleLoginHelper;
     private FacebookLoginHelper mFacebookLoginHelper;
 
     @Override
@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
         mProgressView = findViewById(R.id.login_progress);
         LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
-        mLoginHelper = new GoogleLoginHelper(this);
-        mLoginHelper.setUp(mPlusSignInButton);
+        mGoogleLoginHelper = new GoogleLoginHelper(this);
+        mGoogleLoginHelper.setUp(mPlusSignInButton);
 
 
         mFacebookLoginHelper = new FacebookLoginHelper(this);
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
         ProfileFetcher profileFetcher = null;
         switch (type) {
             case GOOGLE:
-                profileFetcher = new GoogleProfileFetcher((GoogleApiClient) mLoginHelper.getClient());
+                profileFetcher = new GoogleProfileFetcher((GoogleApiClient) mGoogleLoginHelper.getClient());
                 break;
             case FACEBOOK:
                 profileFetcher = new FacebookProfileFetcher();
@@ -102,7 +102,11 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        mLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
+            mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        }else {
+            mFacebookLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        }
     }
 
     @Override

@@ -19,11 +19,11 @@ import android.content.Context;
  */
 public abstract class AbstractTask implements ITask {
 
-    public static final String ACTION_SDK_INITIALIZATION = "com.airwtach.core.login.ACTION_SDK_INITIALIZATION";
+    public static final String ACTION_SDK_INITIALIZATION = "com.mmt.shubh.expensemanager.ACTION_SDK_INITIALIZATION";
 
-    public static final String ACTION_FETCH_SDK_SETTINGS = "com.airwtach.core.login.ACTION_FETCH_SDK_SETTINGS";
+    public static final String ACTION_FETCH_SDK_SETTINGS = "com.mmt.shubh.expensemanager.ACTION_FETCH_SDK_SETTINGS";
 
-    public static final String ACTION_FETCH_APP_SETTINGS = "com.airwtach.core.login.ACTION_FETCH_APP_SETTINGS";
+    public static final String ACTION_FETCH_APP_SETTINGS = "com.mmt.shubh.expensemanager.ACTION_FETCH_APP_SETTINGS";
 
     public static final String EXTRA_TASK_RESULT = "taskResult";
 

@@ -30,7 +30,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     private static final String TAG = GoogleLoginHelper.class.getSimpleName();
 
     // A magic number we will use to know that our sign-in error resolution activity has completed
-    private static final int OUR_REQUEST_CODE = 49404;
+    public static final int OUR_REQUEST_CODE = 49404;
 
     // A flag to stop multiple dialogues appearing for the user
     private boolean mAutoResolveOnFail;

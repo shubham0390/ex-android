@@ -16,7 +16,6 @@ package com.mmt.shubh.expensemanager.database;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CardContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
@@ -41,8 +40,8 @@ public final class ExpenseDDL {
                         + UserInfoContract.USER_STATUS + " TEXT NOT_NULL, "
                         + UserInfoContract.USER_DISPLAY_NAME + " TEXT NOT_NULL, "
                         + UserInfoContract.USER_EMAIL_ADDRESS + " TEXT NOT_NULL, "
-                        + UserInfoContract.USER_PROFILE_IMAGE_URL + " TEXT , "
-                        + UserInfoContract.USER_COVER_IMAGE_URL + " TEXT NOT_NULL " +
+                        + UserInfoContract.USER_PROFILE_IMAGE_URL + " TEXT NOT_NULL, "
+                        + UserInfoContract.USER_COVER_IMAGE_URL + " TEXT " +
                         " );";
         database.execSQL(createTable);
     }
