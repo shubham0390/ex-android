@@ -32,7 +32,7 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
         LoginButton loginButton = (LoginButton) object;
         mCallbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(mCallbackManager, this);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_status", "user_friends"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_friends"));
     }
 
 

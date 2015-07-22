@@ -166,4 +166,6 @@
     <string name="no_expense">No Expense</string>
     <string name="account">Account</string>
     <string name="cash_management">Cash Management</string>
+
+    <string name="facebook_app_id">409420569245230</string>
 </resources>

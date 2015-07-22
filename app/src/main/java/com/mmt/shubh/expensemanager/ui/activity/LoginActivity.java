@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.login.FacebookLoginHelper;
 import com.mmt.shubh.expensemanager.login.GoogleLoginHelper;
 import com.mmt.shubh.expensemanager.login.ILoginHelper;
 import com.mmt.shubh.expensemanager.login.LoginCallback;
@@ -28,7 +30,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
     private SignInButton mPlusSignInButton;
 
-    private ILoginHelper mLoginHelper;
+    private GoogleLoginHelper mGoogleLoginHelper;
+    private FacebookLoginHelper mFacebookLoginHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +41,14 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
         mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
         mProgressView = findViewById(R.id.login_progress);
-        //LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
-        mLoginHelper = new GoogleLoginHelper(this);
-        mLoginHelper.setUp(mPlusSignInButton);
+        mGoogleLoginHelper = new GoogleLoginHelper(this);
+        mGoogleLoginHelper.setUp(mPlusSignInButton);
 
 
-       /* mFacebookLoginHelper = new FacebookLoginHelper(this);
-        mFacebookLoginHelper.setUp(faceBookLoginButton);*/
+        mFacebookLoginHelper = new FacebookLoginHelper(this);
+        mFacebookLoginHelper.setUp(faceBookLoginButton);
 
         UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(this);
         List<UserInfo> accounts = sqlDataAdapter.getAll();
@@ -69,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
         ProfileFetcher profileFetcher = null;
         switch (type) {
             case GOOGLE:
-                profileFetcher = new GoogleProfileFetcher((GoogleApiClient) mLoginHelper.getClient());
+                profileFetcher = new GoogleProfileFetcher((GoogleApiClient) mGoogleLoginHelper.getClient());
                 break;
             case FACEBOOK:
                 profileFetcher = new FacebookProfileFetcher();
@@ -99,7 +102,11 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        mLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
+            mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        }else {
+            mFacebookLoginHelper.onActivityResult(requestCode, responseCode, intent);
+        }
     }
 
     @Override
