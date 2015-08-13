@@ -57,9 +57,11 @@
     <!-- ExpenseBook related string -->
     <string name="add_expense_book">Add Expense Book</string>
     <string name="expense_book_name">Expense Book Name</string>
-    <string name="error_empty_expense_book_name">Expense book Name can\'t be empty</string>
-    <string name="error_expense_book_name_short_length">Expense book Name lenth can\'t less than 4</string>
-    <string name="error_expense_book_already_exists">Expense book already exists</string>
+    <string name="error_empty_expense_book_name">Expense name cannot be blank. Please enter a name</string>
+    <string name="error_expense_book_name_short_length">Expense book Name length can\'t less than
+        4</string>
+    <string name="error_expense_book_already_exists">Expense name already exists. Please
+        enter another name</string>
     <string name="expense_book_create_successfull">Expense book Successfully Created</string>
 
     <!-- Add expese related Strings -->
@@ -168,4 +170,12 @@
     <string name="cash_management">Cash Management</string>
 
     <string name="facebook_app_id">409420569245230</string>
+    <string name="title_activity_expense_book">Expense Book</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="add_new_expense">Add New</string>
+    <string name="title_activity_create_new_expense_book">Create New</string>
+    <string name="expense_group_creation_message">Please provide new group name and optional group icon</string>
+    <string name="action_next">Next</string>
+    <string name="ok">Ok</string>
 </resources>

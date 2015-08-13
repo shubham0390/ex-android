@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.ui.adapters;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,13 +73,14 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
             mMemberEmail.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_EMAIL)));
             String imageUrl = cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_IMAGE_URI));
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
-
-            Glide.with(mProfileImage.getContext())
-                    .load(imageUrl)
-                    .animate(anim)
-                    .centerCrop()
-                    .fitCenter()
-                    .into(mProfileImage);
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Glide.with(mProfileImage.getContext())
+                        .load(imageUrl)
+                        .animate(anim)
+                        .centerCrop()
+                        .fitCenter()
+                        .into(mProfileImage);
+            }
         }
 
         public void setOnClickListener(View.OnClickListener listener) {

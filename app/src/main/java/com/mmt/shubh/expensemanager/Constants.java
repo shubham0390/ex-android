@@ -31,4 +31,6 @@ public interface Constants {
      String KEY_MEMBER_NAME = "member_name";
      java.lang.String EXTRA_MEMBER_ID = "memberId";
      java.lang.String EXTRA_EXPENSE_BOOK_ID = "expenseBookId";
+
+     int ADDING_MEMBER_FRAGMENT = 1;
 }
