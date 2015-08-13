@@ -1,57 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.ExManager.Toolbar.Toolbar"
+            android:layout_height="228dp"
+            android:minHeight="56dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/expense4"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
-
-
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Expense Manager"
-            android:textStyle="italic"
-            android:textColor="@color/milky_white"
-            android:textSize="48sp"/>
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
+                android:layout_marginLeft="16dp"
                 android:orientation="vertical">
 
-            <com.google.android.gms.common.SignInButton
-                    android:id="@+id/plus_sign_in_button"
+                <Space
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"/>
+                    android:layout_height="56dp"/>
 
-             <com.facebook.login.widget.LoginButton
-                 android:id="@+id/facebook_login_button"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center_horizontal"
-                 android:layout_marginBottom="30dp"
-                 android:layout_marginTop="30dp"/>
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/coins"/>
+                <!-- Second divider space -->
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"/>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+        <fragment
+            android:name="com.mmt.shubh.expensemanager.ui.fragment.LoginFragment"
+            android:id="@+id/login_fragment"
+            android:tag="LoginFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_login"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/plus_sign_in_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"/>
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/facebook_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                />
         </LinearLayout>
         <!-- Login progress -->
         <ProgressBar
-                android:id="@+id/login_progress"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone"/>
-    </FrameLayout>
-</RelativeLayout>
+            android:id="@+id/login_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"/>
 
+    </LinearLayout>
+
+</ScrollView>

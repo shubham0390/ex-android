@@ -73,5 +73,11 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-
+    <style name="LoginScreen" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="SplashScreen" parent="AppTheme">
+        <item name="android:textColor">@color/milky_white</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
 </resources>

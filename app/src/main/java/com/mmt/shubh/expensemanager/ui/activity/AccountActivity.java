@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.fragment.AccountAddFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.AccountListFragment;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 
@@ -64,6 +65,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         switch (mode) {
             case MODE_ADD:
                 mCurrentMode = mode;
+                fragment = new AccountAddFragment();
                 break;
             case MODE_LIST:
                 mCurrentMode = mode;
@@ -72,6 +74,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
                 mCurrentMode = mode;
                 break;
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.account_fragment, fragment).commit();
     }
 
 

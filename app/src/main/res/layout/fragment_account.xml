@@ -6,7 +6,7 @@
     tools:context="com.mmt.shubh.expensemanager.ui.fragment.AccountListFragment">
 
     <com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView
-        android:id="@+id/account_list"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadeScrollbars="true"
@@ -20,5 +20,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_black_24dp"/>
 
+    <include layout="@layout/include_list_empty_view"/>
 
 </FrameLayout>

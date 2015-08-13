@@ -3,10 +3,8 @@ package com.mmt.shubh.expensemanager.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -16,8 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -28,43 +24,32 @@ import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AccountListFragment extends Fragment implements ListRecyclerView.OnItemClickListener {
+public class AccountListFragment extends RecyclerViewFragment implements ListRecyclerView.OnItemClickListener {
 
     private AccountListAdapter mAccountListAdapter;
-    protected RecyclerView mRecyclerView;
-    private FloatingActionButton mFloatingActionButton;
+
     private AccountFragmentIntractionListener mListener;
 
     public AccountListFragment() {
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.account_list);
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        return view;
+    protected int getLayoutId() {
+        return R.layout.fragment_account;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mListener = (AccountFragmentIntractionListener) activity;
     }
-
-    private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 
 
     @Override
@@ -74,6 +59,12 @@ public class AccountListFragment extends Fragment implements ListRecyclerView.On
         mRecyclerView.setAdapter(mAccountListAdapter);
         getLoaderManager().restartLoader(12, null, mLoaderCallbacks);
     }
+
+    @OnClick(R.id.fab)
+    public void onFabClick() {
+        mListener.onFragmentIntraction(AccountActivity.MODE_ADD, null);
+    }
+
 
     @Override
     public boolean onItemClick(RecyclerView parent, View view, int position, long id) {

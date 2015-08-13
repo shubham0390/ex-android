@@ -10,8 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.StringsUtils;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by Subham Tyagi,
@@ -43,21 +47,22 @@ public class AccountListAdapter extends CursorRecyclerAdapter<AccountListAdapter
     }
 
     public static class AccountListViewHolder extends RecyclerView.ViewHolder {
-        private TextView mAccountType;
-        private TextView mAccountBalance;
-        private TextView mBankName;
-        private TextView mAccountNumber;
-        private CheckBox mShowCardCheckbox;
-        private LinearLayout mCardContainer;
+        @Bind(R.id.account_type)
+        TextView mAccountType;
+        @Bind(R.id.account_balance)
+        TextView mAccountBalance;
+        @Bind(R.id.account_name)
+        TextView mBankName;
+        @Bind(R.id.account_number)
+        TextView mAccountNumber;
+        @Bind(R.id.show_card_checkbox)
+        CheckBox mShowCardCheckbox;
+        @Bind(R.id.card_container)
+        LinearLayout mCardContainer;
 
         public AccountListViewHolder(View itemView) {
             super(itemView);
-            mAccountType = (TextView) itemView.findViewById(R.id.account_type);
-            mAccountBalance = (TextView) itemView.findViewById(R.id.account_balance);
-            mBankName = (TextView) itemView.findViewById(R.id.account_name);
-            mAccountNumber = (TextView) itemView.findViewById(R.id.account_number);
-            mShowCardCheckbox = (CheckBox) itemView.findViewById(R.id.show_card_checkbox);
-            mCardContainer = (LinearLayout) itemView.findViewById(R.id.card_container);
+            ButterKnife.bind(this, itemView);
            /* mShowCardCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -73,7 +78,10 @@ public class AccountListAdapter extends CursorRecyclerAdapter<AccountListAdapter
         public void bindView(Cursor cursor) {
             mBankName.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
             mAccountType.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
-            mAccountBalance.setText(cursor.getInt(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE))+"");
+            mAccountBalance.setText(StringsUtils.getLocalisedAmountString(
+                    cursor.getInt(
+                            cursor.getColumnIndex(
+                                    AccountContract.ACCOUNT_BALANCE)) + ""));
             mAccountNumber.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NUMBER)));
         }
     }

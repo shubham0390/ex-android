@@ -23,14 +23,20 @@ import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class LoginActivity extends AppCompatActivity implements LoginCallback, AccountSetupHelper.AccountSetupListener {
 
-    private View mProgressView;
+    @Bind(R.id.login_progress)
+     View mProgressView;
 
-    private SignInButton mPlusSignInButton;
+    @Bind(R.id.plus_sign_in_button)
+    SignInButton mPlusSignInButton;
 
     private GoogleLoginHelper mGoogleLoginHelper;
+
     private FacebookLoginHelper mFacebookLoginHelper;
 
     @Override
@@ -38,9 +44,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
-        mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
-        mProgressView = findViewById(R.id.login_progress);
         LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
         mGoogleLoginHelper = new GoogleLoginHelper(this);
@@ -49,15 +54,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
 
         mFacebookLoginHelper = new FacebookLoginHelper(this);
         mFacebookLoginHelper.setUp(faceBookLoginButton);
-
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(this);
-        List<UserInfo> accounts = sqlDataAdapter.getAll();
-        if (accounts != null && accounts.size() > 0) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("Account", accounts.get(0));
-            startActivity(intent);
-            finish();
-        }
     }
 
     /**
@@ -104,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
             mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
-        }else {
+        } else {
             mFacebookLoginHelper.onActivityResult(requestCode, responseCode, intent);
         }
     }

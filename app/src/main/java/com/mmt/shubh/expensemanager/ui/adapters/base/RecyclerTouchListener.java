@@ -128,8 +128,9 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
                 final int position = mHostView.getChildAdapterPosition(mTargetChild);
                 final long id = mHostView.getAdapter().getItemId(position);
-                handled = mItemClickListener.onItemClick(mHostView, mTargetChild, position, id);
-
+                if (mItemLongClickListener != null) {
+                    handled = mItemClickListener.onItemClick(mHostView, mTargetChild, position, id);
+                }
                 mTargetChild = null;
             }
 
@@ -150,14 +151,17 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         @Override
         public void onLongPress(MotionEvent event) {
+            boolean handled = false;
             if (mTargetChild == null) {
                 return;
             }
 
             final int position = mHostView.getChildAdapterPosition(mTargetChild);
             final long id = mHostView.getAdapter().getItemId(position);
-            final boolean handled = mItemLongClickListener.onItemLongClick(mHostView, mTargetChild, position, id);
 
+            if(mItemLongClickListener!=null) {
+                handled = mItemLongClickListener.onItemLongClick(mHostView, mTargetChild, position, id);
+            }
             if (handled) {
                 mTargetChild.setPressed(false);
                 mTargetChild = null;
