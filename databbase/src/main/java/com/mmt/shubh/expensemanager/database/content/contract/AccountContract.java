@@ -15,11 +15,15 @@ public interface AccountContract extends BaseContract {
     String TABLE_NAME = "account";
 
     String ACCOUNT_NAME = "account_name";
+    String ACCOUNT_TYPE = "account_type";
     String ACCOUNT_BALANCE = "account_balance";
+    String ACCOUNT_NUMBER = "account_number";
 
     Uri ACCOUNT_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(AUTHORITY)
             .path(PATH_ACCOUNT)
             .build();
+
+
 }

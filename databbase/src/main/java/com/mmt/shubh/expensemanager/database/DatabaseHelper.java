@@ -44,6 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ExpenseDDL.createMemberExpenseTable(database);
         ExpenseDDL.createMemberExpenseBookTable(database);
         ExpenseDDL.createTransactionTable(database);
+        ExpenseDDL.createCardTable(database);
     }
 
     @Override

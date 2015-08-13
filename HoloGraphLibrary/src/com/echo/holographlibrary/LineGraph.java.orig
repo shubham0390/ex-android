@@ -583,8 +583,8 @@ public class LineGraph extends View {
         return true;
     }
 
-    public void setOnPointClickedListener(OnPointClickedListener listener) {
-        mListener = listener;
+    public void setOnPointClickedListener(OnPointClickedListener mItemClickListener) {
+        mListener = mItemClickListener;
     }
 
     public interface OnPointClickedListener {
@@ -1165,8 +1165,8 @@ public class LineGraph extends View {
         return true;
     }
 
-    public void setOnPointClickedListener(OnPointClickedListener listener) {
-        mListener = listener;
+    public void setOnPointClickedListener(OnPointClickedListener mItemClickListener) {
+        mListener = mItemClickListener;
     }
 
     public interface OnPointClickedListener {

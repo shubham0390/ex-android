@@ -20,17 +20,29 @@ import android.os.Parcelable;
 
 public class Account extends BaseContent implements Parcelable {
 
+    public static final String TYPE_BANK = "bank";
+    public static final String TYPE_CREDIT_CARD = "credit_card";
+    public static final String TYPE_CASH = "cash";
+
     private String mAccountName;
 
     private long mAccountBalance;
+
+    private String mType;
+
+    private String mAccountNumber;
+
+    private String mBankName;
 
     public Account() {
     }
 
     protected Account(Parcel in) {
-        mId = in.readLong();
         mAccountName = in.readString();
         mAccountBalance = in.readLong();
+        mType = in.readString();
+        mAccountNumber = in.readString();
+        mBankName = in.readString();
     }
 
     public static final Creator<Account> CREATOR = new Creator<Account>() {
@@ -44,18 +56,6 @@ public class Account extends BaseContent implements Parcelable {
             return new Account[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mId);
-        dest.writeString(mAccountName);
-        dest.writeLong(mAccountBalance);
-    }
 
     @Override
     public long getId() {
@@ -76,5 +76,45 @@ public class Account extends BaseContent implements Parcelable {
 
     public void setAccountName(String accountName) {
         mAccountName = accountName;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public Account setType(String type) {
+        mType = type;
+        return this;
+    }
+
+    public String getAccountNumber() {
+        return mAccountNumber;
+    }
+
+    public Account setAccountNumber(String accountNumber) {
+        mAccountNumber = accountNumber;
+        return this;
+    }
+
+    public String getBankName() {
+        return mBankName;
+    }
+
+    public void setBankName(String bankName) {
+        mBankName = bankName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mAccountName);
+        dest.writeLong(mAccountBalance);
+        dest.writeString(mType);
+        dest.writeString(mAccountNumber);
+        dest.writeString(mBankName);
     }
 }

@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,11 +26,9 @@ import com.mmt.shubh.expensemanager.database.content.UserInfo;
  */
 public class DrawerBaseActivity extends ToolBarActivity {
 
-    private Toolbar mToolbar;
 
     private DrawerLayout mDrawerLayout;
 
-    private boolean mToolbarInitialized;
 
     UserInfo mUserInfo;
 
@@ -38,15 +37,6 @@ public class DrawerBaseActivity extends ToolBarActivity {
         super.onCreate(savedInstanceState);
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!mToolbarInitialized) {
-            throw new IllegalStateException("You must run super.initializeToolbar at " +
-                    "the end of your onCreate method");
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,38 +56,15 @@ public class DrawerBaseActivity extends ToolBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle(title);
-        mToolbar.setTitle(title);
-    }
 
-    @Override
-    public void setTitle(int titleId) {
-        super.setTitle(titleId);
-        mToolbar.setTitle(titleId);
-    }
-
-    protected void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar == null) {
-            throw new IllegalStateException("Layout is required to include a Toolbar with id " +
-                    "'toolbar'");
-        }
-
+    protected void initializeNavigationDrawer() {
+        initializeToolbar();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        setSupportActionBar(mToolbar);
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
-        mToolbarInitialized = true;
         populateDrawerItems();
     }
 
@@ -108,8 +75,12 @@ public class DrawerBaseActivity extends ToolBarActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
+                        Intent intent = null;
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
+                                break;
+                            case R.id.nav_account:
+                                intent =  new Intent(getApplicationContext(),AccountActivity.class);
                                 break;
                             case R.id.nav_distribution:
                                 break;
@@ -122,7 +93,9 @@ public class DrawerBaseActivity extends ToolBarActivity {
                             case R.id.nav_about_app:
                                 break;
                         }
+                        startActivity(intent);
                         return true;
+
                     }
                 });
     }
