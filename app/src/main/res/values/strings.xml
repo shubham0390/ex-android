@@ -146,4 +146,6 @@
     <string name="full_name">Full name</string>
     <string name="bank_name"><![CDATA[Bank & Name]]></string>
 
+
+    <string name="facebook_app_id">409420569245230</string>
 </resources>

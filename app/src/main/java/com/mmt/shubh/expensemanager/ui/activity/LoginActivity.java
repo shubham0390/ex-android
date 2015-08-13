@@ -30,13 +30,13 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity implements LoginCallback, AccountSetupHelper.AccountSetupListener {
 
     @Bind(R.id.login_progress)
-     View mProgressView;
+    View mProgressView;
 
     @Bind(R.id.plus_sign_in_button)
     SignInButton mPlusSignInButton;
 
-    private GoogleLoginHelper mGoogleLoginHelper;
 
+    private GoogleLoginHelper mGoogleLoginHelper;
     private FacebookLoginHelper mFacebookLoginHelper;
 
     @Override
@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
         ButterKnife.bind(this);
 
         LoginButton faceBookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
+        mProgressView = findViewById(R.id.login_progress);
 
         mGoogleLoginHelper = new GoogleLoginHelper(this);
         mGoogleLoginHelper.setUp(mPlusSignInButton);
@@ -100,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, A
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
             mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
+
         } else {
             mFacebookLoginHelper.onActivityResult(requestCode, responseCode, intent);
         }

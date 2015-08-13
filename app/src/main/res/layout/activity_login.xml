@@ -40,11 +40,11 @@
         </android.support.v7.widget.Toolbar>
 
         <fragment
-            android:name="com.mmt.shubh.expensemanager.ui.fragment.LoginFragment"
             android:id="@+id/login_fragment"
-            android:tag="LoginFragment"
+            android:name="com.mmt.shubh.expensemanager.ui.fragment.LoginFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:tag="LoginFragment"
             tools:layout="@layout/fragment_login"/>
 
         <LinearLayout
@@ -65,6 +65,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 />
+
         </LinearLayout>
         <!-- Login progress -->
         <ProgressBar
