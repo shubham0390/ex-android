@@ -136,13 +136,6 @@
     <string name="hint_account_name">Account Name</string>
     <string name="hint_account_balance">Account Balance</string>
     <string name="hint_account_number">Account Number</string>
-
-    <string name="facebook_app_id">409420569245230</string>
-    <string name="title_activity_account">Accounts</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="hint_account_name">Account Name</string>
-    <string name="hint_account_balance">Account Balance</string>
-    <string name="hint_account_number">Account Number</string>
     <string name="submit">Submit</string>
     <string name="account_name_empty_error">Account name can\'t be empty</string>
     <string name="account_number_empty_error">Account number cannot be empty</string>
