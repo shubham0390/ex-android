@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.component.BezelImageView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
@@ -51,7 +52,9 @@ public class AddNewExpenseBookFragment extends Fragment {
     private final int SELECT_IMAGE = 1;
     private EditText mExpenseName;
     private BezelImageView mExpenseImage;
+    private EditText mExpenseDescription;
     private Uri mOutputFileUri;
+    private IFragmentDataSharer mFragmentDataSharer;
 
     public AddNewExpenseBookFragment() {
         // Required empty public constructor
@@ -62,7 +65,8 @@ public class AddNewExpenseBookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_expense_book, container, false);
-        mExpenseName = (EditText) view.findViewById(R.id.new_expense_name);
+        mExpenseName = (EditText) view.findViewById(R.id.new_expense_book_name);
+        mExpenseDescription = (EditText) view.findViewById(R.id.new_expense_book_description);
         mExpenseImage = (BezelImageView) view.findViewById(R.id.expense_book_image);
         mExpenseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +102,25 @@ public class AddNewExpenseBookFragment extends Fragment {
             mExpenseName.requestFocus();
             return;
         }
+        Bundle expenseBookInfo = new Bundle();
+        expenseBookInfo.putString(Constants.EXTRA_GROUP_NAME, mExpenseName.getText().toString());
+        String imageURI = mOutputFileUri != null ? mOutputFileUri.toString() : null;
+        expenseBookInfo.putString(Constants.EXTRA_GROUP_IMAGE_URI, imageURI);
+        expenseBookInfo.putString(Constants.EXTRA_GROUP_DESCRIPTION, mExpenseDescription.getText
+                ().toString());
+        mFragmentDataSharer.passData(expenseBookInfo);
         ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT);
+    }
 
-
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mFragmentDataSharer = (IFragmentDataSharer) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement IFragmentDataSharer");
+        }
     }
 
     @Override
@@ -113,46 +133,6 @@ public class AddNewExpenseBookFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_create_new_expense_book, menu);
-    }
-
-    private void openImageIntent() {
-
-        // Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator +
-                "ExpenseManager" + File.separator);
-        root.mkdirs();
-        final String expenseIconName = "expense_icon" + System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory = new File(root, expenseIconName);
-        mOutputFileUri = Uri.fromFile(sdImageMainDirectory);
-
-        // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getActivity().getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for (ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo
-                    .name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-            cameraIntents.add(intent);
-        }
-
-        // Filesystem.
-        final Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_PICK);
-
-        // Chooser of filesystem options.
-        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
-
-        // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new
-                Parcelable[cameraIntents.size()]));
-
-        startActivityForResult(chooserIntent, SELECT_IMAGE);
     }
 
     @Override
@@ -199,5 +179,46 @@ public class AddNewExpenseBookFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void openImageIntent() {
+
+        // Determine Uri of camera image to save.
+        final File root = new File(Environment.getExternalStorageDirectory() + File.separator +
+                "ExpenseManager" + File.separator);
+        root.mkdirs();
+        final String expenseIconName = "expense_icon" + System.currentTimeMillis() + ".jpg";
+        final File sdImageMainDirectory = new File(root, expenseIconName);
+        mOutputFileUri = Uri.fromFile(sdImageMainDirectory);
+
+        // Camera.
+        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        final PackageManager packageManager = getActivity().getPackageManager();
+        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            final String packageName = res.activityInfo.packageName;
+            final Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo
+                    .name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+            cameraIntents.add(intent);
+        }
+
+        // Filesystem.
+        final Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_PICK);
+
+        // Chooser of filesystem options.
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+
+        // Add the camera options.
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new
+                Parcelable[cameraIntents.size()]));
+
+        startActivityForResult(chooserIntent, SELECT_IMAGE);
     }
 }

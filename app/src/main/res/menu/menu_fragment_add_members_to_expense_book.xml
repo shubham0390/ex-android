@@ -7,8 +7,7 @@
           android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
           app:showAsAction="always|collapseActionView"/>
     <item android:id="@+id/action_next"
-          android:title="@string/action_next"
-          android:icon="@drawable/com_facebook_button_like_icon_selected"
+          android:title="@string/done"
           android:orderInCategory="100"
           app:showAsAction="always"/>
 

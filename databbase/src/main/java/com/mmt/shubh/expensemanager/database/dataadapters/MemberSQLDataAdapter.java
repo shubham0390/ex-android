@@ -4,14 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import api.MemberDataAdapter;
-
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import api.MemberDataAdapter;
 
 /**
  * Created by Subham Tyagi,
@@ -32,6 +32,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
         values.put(MEMBER_EMAIL, member.getMemberEmail());
         values.put(MEMBER_IMAGE_URI, member.getProfilePhotoUrl());
         values.put(MEMBER_COVER_IMAGE_URL, member.getCoverPhotoUrl());
+        values.put(MEMBER_PHONE_NUMBER, member.getMemberPhoneNumber());
         return values;
     }
 

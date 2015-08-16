@@ -26,6 +26,7 @@ public interface UserInfoContract extends BaseContract {
     String USER_PROFILE_IMAGE_URL = "profile_image_url";
     String USER_COVER_IMAGE_URL = "cover_image_url";
     String USER_EMAIL_ADDRESS = "email_address";
+    String USER_PHONE_NUMBER = "phone_number";
     String USER_STATUS = "status";
 
     String[] USER_PROJECTION = new String[]{
@@ -36,6 +37,7 @@ public interface UserInfoContract extends BaseContract {
             USER_PROFILE_IMAGE_URL,
             USER_COVER_IMAGE_URL,
             USER_EMAIL_ADDRESS,
+            USER_PHONE_NUMBER,
             USER_STATUS
     };
 

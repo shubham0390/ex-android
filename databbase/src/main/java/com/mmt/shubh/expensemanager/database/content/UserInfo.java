@@ -76,6 +76,7 @@ public class UserInfo extends BaseContent implements Parcelable{
 
     private Status mStatus;
 
+    private String mPhoneNumber;
 
     private UserInfo() {
     }
@@ -112,6 +113,10 @@ public class UserInfo extends BaseContent implements Parcelable{
 
     public String getUserPassword() {
         return mUserPassword;
+    }
+
+    public String getPhoneNumber() {
+        return mPhoneNumber;
     }
 
     public Builder buildUpon() {
@@ -168,6 +173,11 @@ public class UserInfo extends BaseContent implements Parcelable{
 
         public Builder setUserPassword(String userPassword) {
             mUserInfo.mUserPassword = userPassword;
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            mUserInfo.mPhoneNumber = phoneNumber;
             return this;
         }
 

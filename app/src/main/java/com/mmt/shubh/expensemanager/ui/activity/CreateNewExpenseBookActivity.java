@@ -5,15 +5,19 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 
 import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.fragment.AddMembersToExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.AddNewExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.IFragmentSwitcher;
 
-public class CreateNewExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher{
+public class CreateNewExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
+
+    String mGroupName;
+    String mGroupIconURI;
+    String mGroupDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,21 @@ public class CreateNewExpenseBookActivity extends AppCompatActivity implements I
         switch (fragmentId){
             case Constants.ADDING_MEMBER_FRAGMENT:
                 fragment = new AddMembersToExpenseBookFragment();
+                Bundle groupInfo = new Bundle();
+                groupInfo.putString(Constants.EXTRA_GROUP_NAME, mGroupName);
+                groupInfo.putString(Constants.EXTRA_GROUP_IMAGE_URI, mGroupIconURI);
+                groupInfo.putString(Constants.EXTRA_GROUP_DESCRIPTION, mGroupDescription);
+                fragment.setArguments(groupInfo);
                 break;
         }
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();
+    }
+
+    @Override
+    public void passData(Bundle sharedData) {
+        mGroupName = sharedData.getString(Constants.EXTRA_GROUP_NAME);
+        mGroupIconURI = sharedData.getString(Constants.EXTRA_GROUP_IMAGE_URI);
+        mGroupDescription = sharedData.getString(Constants.EXTRA_GROUP_DESCRIPTION);
+
     }
 }

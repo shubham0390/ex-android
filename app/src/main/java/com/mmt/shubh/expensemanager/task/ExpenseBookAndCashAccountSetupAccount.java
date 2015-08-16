@@ -95,6 +95,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
             member.setMemberEmail(userInfo.getEmailAddress());
             member.setMemberName(userInfo.getDisplayName());
             member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
+            member.setMemberPhoneNumber(userInfo.getPhoneNumber());
         }
         return member;
     }

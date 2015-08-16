@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mmt.shubh.expensemanager.ContactsMetaData;
+import com.mmt.shubh.expensemanager.CreateExpenseBook;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.adapters.ContactPickerAdapter;
 
@@ -34,6 +36,7 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
     private RecyclerView mContactsList;
     private ContactPickerAdapter mContactPickerAdapter;
     private List<ContactsMetaData> mContactsMetaDataList;
+    private Bundle mExpenseBookInfo;
 
     public AddMembersToExpenseBookFragment() {
     }
@@ -45,6 +48,7 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         View view = inflater.inflate(R.layout.fragment_add_members_to_expense_book, container,
                 false);
         mContactsList = (RecyclerView) view.findViewById(R.id.contacts_list);
+        mExpenseBookInfo = getArguments();
         setupRecyclerView();
         return view;
     }
@@ -60,6 +64,9 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         int id = item.getItemId();
         if (id == R.id.action_next) {
             Log.d("Selected contacts", mContactPickerAdapter.getSelectedItems().toString());
+            CreateExpenseBook expenseBook = new CreateExpenseBook(getActivity().getApplicationContext(),
+                    mContactsMetaDataList, mContactPickerAdapter.getSelectedItems(), mExpenseBookInfo);
+            expenseBook.create();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -95,29 +102,42 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         mContactsList.setAdapter(mContactPickerAdapter);
     }
 
+    /**
+     * read contacts from system's contact database
+     */
     public void readContacts() {
         Cursor contactsCursor = getActivity().getContentResolver().query(ContactsContract
                 .Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME);
         mContactsMetaDataList = new ArrayList<>();
-        if (contactsCursor.getCount() > 0) {
-            while (contactsCursor.moveToNext()) {
-                String id = contactsCursor.getString(contactsCursor.getColumnIndex
-                        (ContactsContract.Contacts._ID));
-                String name = contactsCursor.getString(contactsCursor.getColumnIndex
-                        (ContactsContract.Contacts.DISPLAY_NAME));
-                String photoURI = contactsCursor.getString(contactsCursor.getColumnIndex
-                        (ContactsContract.Contacts.PHOTO_URI));
-                if (Integer.parseInt(contactsCursor.getString(contactsCursor.getColumnIndex
-                        (ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    mContactsMetaDataList.add(new ContactsMetaData(name, id, photoURI));
+        try {
+            if (contactsCursor.getCount() > 0) {
+                while (contactsCursor.moveToNext()) {
+                    String id = contactsCursor.getString(contactsCursor.getColumnIndex
+                            (ContactsContract.Contacts._ID));
+                    String name = contactsCursor.getString(contactsCursor.getColumnIndex
+                            (ContactsContract.Contacts.DISPLAY_NAME));
+                    String photoURI = contactsCursor.getString(contactsCursor.getColumnIndex
+                            (ContactsContract.Contacts.PHOTO_URI));
+                    if (Integer.parseInt(contactsCursor.getString(contactsCursor.getColumnIndex
+                            (ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        mContactsMetaDataList.add(new ContactsMetaData(name, id, photoURI));
+                    }
                 }
             }
-        }
-        if (contactsCursor != null) {
-            contactsCursor.close();
+        }finally {
+            if (contactsCursor != null) {
+                contactsCursor.close();
+            }
         }
     }
 
+    /**
+     * returns a list ContactsMetaData which match the query string
+     * @param contactList list of contacts to be searched in
+     * @param query string to be searched in
+     * @return list of contacts containing the query string
+     */
+    @Nullable
     private List<ContactsMetaData> filter(List<ContactsMetaData> contactList, String query) {
         query = query.toLowerCase();
 

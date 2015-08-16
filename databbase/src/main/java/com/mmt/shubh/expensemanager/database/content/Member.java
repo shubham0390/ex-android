@@ -21,6 +21,8 @@ public class Member extends BaseContent {
 
     private String mMemberEmail;
 
+    private String mMemberPhoneNumber;
+
     private String mCoverPhotoUrl;
 
     private String mProfilePhotoUrl;
@@ -57,4 +59,11 @@ public class Member extends BaseContent {
         mProfilePhotoUrl = profilePhotoUrl;
     }
 
+    public String getMemberPhoneNumber() {
+        return mMemberPhoneNumber;
+    }
+
+    public void setMemberPhoneNumber(String memberPhoneNumber) {
+        mMemberPhoneNumber = memberPhoneNumber;
+    }
 }

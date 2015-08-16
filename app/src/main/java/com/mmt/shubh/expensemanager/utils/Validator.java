@@ -47,7 +47,7 @@ public class Validator {
             }
         }
         if (expenseBookNames.size() == 0){
-            return true;
+            return false;
         }
         return expenseBookNames.contains(expenseName);
     }

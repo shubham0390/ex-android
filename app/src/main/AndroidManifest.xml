@@ -98,7 +98,10 @@
             android:label="@string/title_activity_expense_book_detail">
         </activity>
         <activity android:name=".ui.activity.MemberDetailActivity"/>
+        <activity android:name=".ui.activity.ExpenseBookActivity"/>
+        <activity android:name=".ui.activity.CreateNewExpenseBookActivity">
 
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges=

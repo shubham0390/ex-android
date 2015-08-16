@@ -56,6 +56,7 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
     public static class MemberViewHolder extends RecyclerView.ViewHolder {
         private TextView mMemberName;
         private TextView mMemberEmail;
+        private TextView mMemberPhoneNumber;
         private ImageView mProfileImage;
         private View mParent;
 
@@ -63,6 +64,7 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
             super(itemView);
             mMemberName = (TextView) itemView.findViewById(R.id.member_name);
             mMemberEmail = (TextView) itemView.findViewById(R.id.member_email);
+            mMemberPhoneNumber = (TextView) itemView.findViewById(R.id.member_phone_number);
             mProfileImage = (ImageView) itemView.findViewById(R.id.list_image_icon);
             mParent = itemView;
         }
@@ -71,6 +73,8 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
         public void bindView(Cursor cursor) {
             mMemberName.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
             mMemberEmail.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_EMAIL)));
+            mMemberPhoneNumber.setText(cursor.getString(cursor.getColumnIndex(MemberContract
+                    .MEMBER_PHONE_NUMBER)));
             String imageUrl = cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_IMAGE_URI));
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
             if (!TextUtils.isEmpty(imageUrl)) {

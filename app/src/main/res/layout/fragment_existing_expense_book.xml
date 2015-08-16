@@ -6,7 +6,7 @@
     tools:context="com.mmt.shubh.expensemanager.ui.fragment.ExistingExpenseBookFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/expense_list"
+        android:id="@+id/expense_book_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

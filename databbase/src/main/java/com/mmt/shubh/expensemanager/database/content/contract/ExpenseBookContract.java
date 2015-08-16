@@ -12,7 +12,7 @@ public interface ExpenseBookContract extends BaseColumns, BaseContract {
     String EXPENSE_BOOK_NAME = "name";
     String EXPENSE_BOOK_TYPE = "expense_book_type";
     String EXPENSE_BOOK_DESCRIPTION = "description";
-    String EXPENSE_BOOK_PROFILE_IMAGE = "profile_image_uri";
+    String EXPENSE_BOOK_PROFILE_IMAGE_URI = "profile_image_uri";
 
     Uri EXPENSE_BOOK_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).path(PATH_EXPENSE_BOOK).build();
 

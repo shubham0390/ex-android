@@ -175,7 +175,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="add_new_expense">Add New</string>
     <string name="title_activity_create_new_expense_book">Create New</string>
-    <string name="expense_group_creation_message">Please provide new group name and optional group icon</string>
+    <string name="expense_group_creation_message">Please provide new expense name,optional expense
+        icon and expense description</string>
     <string name="action_next">Next</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
 </resources>
