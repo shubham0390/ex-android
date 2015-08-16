@@ -68,33 +68,15 @@
     <string name="expense_name_title">Expense Name</string>
     <string name="expense_amount_title">Amount</string>
     <string name="expense_place_title">Place</string>
-    <string name="date">Date: %1$s</string>
-    <string name="time">Time: %1$s</string>
 
-    <!-- Navigation header strings -->
-    <string name="navigation_header_accounts">ACCOUNTS</string>
-    <string name="navigation_header_navigation">INBOX</string>
-    <string name="navigation_header_settings">SETTINGS</string>
     <!-- Navigation Specific -->
     <string name="logout">Logout</string>
     <string name="user_preference">USER SETTINGS</string>
 
     <string name="member_list">Members List</string>
-    <string name="empty_text_no_member">No Member</string>
-    <string name="member_name">Member Name</string>
-    <string name="member_email_address">Email Address</string>
-
-    <!-- Date time picker -->
-    <string name="done_label">Done</string>
-    <string name="day_picker_description">Month grid of days</string>
-    <string name="year_picker_description">Year list</string>
-    <string name="select_day">Select month and day</string>
-    <string name="select_year">Select year</string>
-    <string name="item_is_selected">%1$s selected</string>
-    <string name="sans_serif" translatable="false">sans-serif</string>
-    <string name="day_of_week_label_typeface" translatable="false">sans-serif</string>
-    <string name="time_placeholder" translatable="false">--</string>
-    <string name="time_separator" translatable="false">:</string>
+    <string name="empty_text_no_member">No member</string>
+    <string name="member_name">Member name</string>
+    <string name="email_address_text">Email address</string>
 
     <!-- Accessibility announcement when a number that had been typed in is deleted [CHAR_LIMIT=NONE] -->
     <string name="deleted_key"><xliff:g example="4" id="key">%1$s</xliff:g>         deleted</string>
@@ -116,23 +98,6 @@
     <string name="shared">Shared</string>
     <string name="personal">Personal</string>
 
-    <!-- Image crop activity -->
-    <string name="title">Cropper</string>
-    <string name="fixedAspectRatio">fixedAspectRatio =</string>
-    <string name="aspectRatioX">\u002010</string>
-    <string name="aspectRatioXHeader">aspectRatioX =</string>
-    <string name="aspectRatioY">\u002010</string>
-    <string name="aspectRatioYHeader">aspectRatioY =</string>
-    <string name="showGuidelines">showGuidelines = </string>
-    <string name="crop">Crop</string>
-    <string name="rotate">Rotate</string>
-    <string name="croppedImageDesc">The cropped image.</string>
-
-    <string-array name="showGuidelinesArray">
-        <item>Off</item>
-        <item>On Touch</item>
-        <item>On</item>
-    </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="expense_fragment_title">Expenses</string>
@@ -168,6 +133,20 @@
     <string name="no_expense">No Expense</string>
     <string name="account">Account</string>
     <string name="cash_management">Cash Management</string>
+    <string name="title_activity_account">Accounts</string>
+    <string name="hint_account_name">Account Name</string>
+    <string name="hint_account_balance">Account Balance</string>
+    <string name="hint_account_number">Account Number</string>
+    <string name="submit">Submit</string>
+    <string name="account_name_empty_error">Account name can\'t be empty</string>
+    <string name="account_number_empty_error">Account number cannot be empty</string>
+    <string name="account_balance_empty_error">Account balance is empty</string>
+    <string name="bank_empty_error">No bank is selected</string>
+    <string name="signing_string">Already a user ? Sign In</string>
+    <string name="sign_up">Sign up</string>
+    <string name="full_name">Full name</string>
+    <string name="bank_name"><![CDATA[Bank & Name]]></string>
+
 
     <string name="facebook_app_id">409420569245230</string>
     <string name="title_activity_expense_book">Expense Book</string>

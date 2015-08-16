@@ -1,5 +1,11 @@
+def versionAndroidSupportLib = "22.2.1"
+def versionPlayServiceLib = '7.5.0'
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.android.databinding'
+apply plugin: 'android-apt'
 android {
 
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
@@ -19,9 +25,9 @@ android {
 
     repositories {
         mavenCentral()
-        maven {
-            url "http://repo.mycompany.com/maven2"
-        }
+        /*  maven {
+              url "http://repo.mycompany.com/maven2"
+          }*/
     }
 
     buildTypes {
@@ -33,10 +39,12 @@ android {
 
     packagingOptions {
         exclude 'LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     lintOptions {
         abortOnError false
+        disable 'InvalidPackage'
     }
 
     compileOptions {
@@ -48,16 +56,20 @@ android {
 dependencies {
     /*Module dependency*/
     compile project(':databbase')
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
-    compile 'com.google.android.gms:play-services-plus:7.5.0'
-    compile 'com.google.android.gms:play-services-identity:7.5.0'
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
-    compile 'com.google.android.gms:play-services-gcm:7.5.0'
-    compile 'com.google.android.gms:play-services-ads:7.5.0'
+    /*Android support libs*/
+    compile "com.android.support:appcompat-v7:" + versionAndroidSupportLib
+    compile "com.android.support:support-v4:" + versionAndroidSupportLib
+    compile 'com.android.support:design:' + versionAndroidSupportLib
+    compile 'com.android.support:recyclerview-v7:' + versionAndroidSupportLib
+    compile 'com.android.support:cardview-v7:' + versionAndroidSupportLib
+
+    /*play service dependency*/
+    compile 'com.google.android.gms:play-services-plus:' + versionPlayServiceLib
+    compile 'com.google.android.gms:play-services-identity:' + versionPlayServiceLib
+    compile 'com.google.android.gms:play-services-analytics:' + versionPlayServiceLib
+    compile 'com.google.android.gms:play-services-gcm:' + versionPlayServiceLib
+    compile 'com.google.android.gms:play-services-ads:' + versionPlayServiceLib
+
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     /*Network dependency*/
@@ -67,13 +79,15 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'com.github.bumptech.glide:okhttp-integration:1.3.0'
     /*Utility dependency*/
-    compile 'com.soundcloud.android:android-crop:1.0.0@aar'
     compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+
     /* testCompile 'junit:junit:4.12'*/
     /*Testing library*/
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
     compile project(':HoloGraphLibrary')
+    apt 'com.android.databinding:compiler:1.0-rc0'
 }
 

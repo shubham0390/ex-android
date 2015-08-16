@@ -57,7 +57,9 @@ public final class ExpenseDDL {
                         + "( "
                         + AccountContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + AccountContract.ACCOUNT_NAME + " TEXT NOT_NULL, "
-                        + AccountContract.ACCOUNT_BALANCE + " INTEGER "
+                        + AccountContract.ACCOUNT_BALANCE + " INTEGER ,"
+                        + AccountContract.ACCOUNT_TYPE + " TEXT ,"
+                        + AccountContract.ACCOUNT_NUMBER + " TEXT "
                         + " );";
         database.execSQL(createTable);
     }
@@ -72,8 +74,8 @@ public final class ExpenseDDL {
                         + "( "
                         + CardContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + CardContract.CARD_NO + " TEXT NOT_NULL, "
-                        + CardContract.BALANCE_AMOUNT + " INTEGER "
-                        + CardContract.ACCOUNT_KEY + " INTEGER "
+                        + CardContract.BALANCE_AMOUNT + " INTEGER, "
+                        + CardContract.ACCOUNT_KEY + " INTEGER ,"
                         + "FOREIGN KEY (" + CardContract.ACCOUNT_KEY + ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")"
                         + " );";
         database.execSQL(createTable);

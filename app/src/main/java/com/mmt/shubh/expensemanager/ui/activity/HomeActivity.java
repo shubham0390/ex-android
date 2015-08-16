@@ -20,7 +20,7 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
-        initializeToolbar();
+        initializeNavigationDrawer();
         adapter = new LibraryFragmentAdapter(getSupportFragmentManager(), NumberOfTabs, Titles);
 
         pager = (ViewPager) findViewById(R.id.viewpager);

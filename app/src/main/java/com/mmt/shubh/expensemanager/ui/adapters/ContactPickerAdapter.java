@@ -44,7 +44,7 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         if (!TextUtils.isEmpty(contactPhotoURI)) {
             holder.mContactImage.setImageURI(Uri.parse(contactPhotoURI));
         }else{
-            holder.mContactImage.setImageResource(R.drawable.expense4);
+            holder.mContactImage.setImageResource(R.mipmap.ic_launcher);
         }
         holder.mContactChecked.setOnClickListener(new View.OnClickListener() {
             @Override

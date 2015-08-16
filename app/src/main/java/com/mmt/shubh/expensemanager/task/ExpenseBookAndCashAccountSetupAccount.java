@@ -75,6 +75,8 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         Account account = new Account();
         account.setAccountName("Cash");
         account.setAccountBalance(10000);
+        account.setType(Account.TYPE_CASH);
+        account.setAccountNumber("Cash");
         long id = dataAdapter.create(account);
         if (id > 0) {
             Log.d(Constants.LOG_TAG, "Created Account successfully");
