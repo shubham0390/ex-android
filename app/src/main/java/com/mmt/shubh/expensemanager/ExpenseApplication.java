@@ -30,18 +30,21 @@ import com.google.android.gms.analytics.Tracker;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
 /**
- * Created by STyagi on 4/1/14.
+ * Created by Subham Tyagi,
+ * on 23/Jul/2015,
+ * 8:57 AM
+ * TODO:Add class comment.
  */
 public class ExpenseApplication extends Application {
+    private Tracker mTracker;
 
     @Override
     public void onCreate() {
         super.onCreate();
         generateHashKey();
     }
-
-    private Tracker mTracker;
 
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
@@ -63,7 +66,7 @@ public class ExpenseApplication extends Application {
         MultiDex.install(this);
     }
 
-    public void generateHashKey(){
+    public void generateHashKey() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.mmt.shubh.expensemanager",

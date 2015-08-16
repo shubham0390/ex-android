@@ -70,8 +70,8 @@ public class ExpenseProvider extends ContentProvider {
     private static final int MEMBER_EXPANSE_BASE = 0x7000;
     private static final int MEMBER_EXPANSE = MEMBER_EXPANSE_BASE;
 
-    private static final int ACOOUNT_BASE = 0x8000;
-    private static final int ACCOUNT = ACOOUNT_BASE;
+    private static final int ACCOUNT_BASE = 0x8000;
+    private static final int ACCOUNT = ACCOUNT_BASE;
 
 
     private static final int BASE_SHIFT = 12; // 12 bits to the base type: 0,
@@ -90,8 +90,9 @@ public class ExpenseProvider extends ContentProvider {
             MemberExpenseBookContract.TABLE_NAME,
             MemberContract.TABLE_NAME,
             MemberExpenseContract.TABLE_NAME,
+            AccountContract.TABLE_NAME,
             TransactionContract.TABLE_NAME,
-            AccountContract.TABLE_NAME
+
 
     };
 
@@ -320,6 +321,7 @@ public class ExpenseProvider extends ContentProvider {
             case EXPENSE_BOOK:
             case USER:
             case CATEGORY:
+            case ACCOUNT:
                 c = db.query(TABLE_NAMES[table], projection, selection,
                         selectionArgs, null, null, sortOrder, limit);
                 break;

@@ -21,7 +21,7 @@
             android:layout_height="72dp"
             android:clickable="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/expense4"
+            android:src="@mipmap/ic_launcher"
             app:maskDrawable="@drawable/circle_mask"/>
 
         <TextView
@@ -52,4 +52,15 @@
             android:textSize="24sp"/>
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/expense_book_member_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_add_white_24dp"
+        android:drawableStart="@drawable/ic_add_white_24dp"
+        android:gravity="center_vertical"
+        android:hint="@string/expense_book_members_hint"
+        android:text="Add member"
+        />
 </LinearLayout>

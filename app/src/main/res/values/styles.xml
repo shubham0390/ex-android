@@ -9,11 +9,31 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/milky_white</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="colorControlHighlight">@color/colorControlHighlight</item>
     </style>
 
     <style name="root_layout_style">
         <item name="android:layout_marginLeft">@dimen/root_layout_left_margin</item>
         <item name="android:layout_marginRight">@dimen/root_layout_right_margin</item>
+    </style>
+
+
+    <style name="Widget.ExManager.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="theme">@style/ThemeOverlay.ExManager.Toolbar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="ThemeOverlay.ExManager.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="Widget.ExManager.Toolbar.Toolbar">
+        <item name="android:layout_alignParentLeft">true</item>
     </style>
 
     <style name="style_group_name_text_view">
@@ -42,8 +62,8 @@
 
     <style name="ListItemText">
         <item name="android:layout_gravity">center_vertical</item>
-
     </style>
+
 
     <style name="Widget.CardContent" parent="android:Widget">
         <item name="android:paddingLeft">16dp</item>
@@ -51,5 +71,13 @@
         <item name="android:paddingTop">24dp</item>
         <item name="android:paddingBottom">24dp</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LoginScreen" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="SplashScreen" parent="AppTheme">
+        <item name="android:textColor">@color/milky_white</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 </resources>
