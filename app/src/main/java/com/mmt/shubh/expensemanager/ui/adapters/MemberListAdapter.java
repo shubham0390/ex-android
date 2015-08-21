@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.ui.adapters;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
     public static class MemberViewHolder extends RecyclerView.ViewHolder {
         private TextView mMemberName;
         private TextView mMemberEmail;
+        private TextView mMemberPhoneNumber;
         private ImageView mProfileImage;
         private View mParent;
 
@@ -63,6 +65,7 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
             super(itemView);
             mMemberName = (TextView) itemView.findViewById(R.id.member_name);
             mMemberEmail = (TextView) itemView.findViewById(R.id.member_email);
+            mMemberPhoneNumber = (TextView) itemView.findViewById(R.id.member_phone_number);
             mProfileImage = (ImageView) itemView.findViewById(R.id.list_image_icon);
             mParent = itemView;
         }
@@ -71,15 +74,18 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
         public void bindView(Cursor cursor) {
             mMemberName.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
             mMemberEmail.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_EMAIL)));
+            mMemberPhoneNumber.setText(cursor.getString(cursor.getColumnIndex(MemberContract
+                    .MEMBER_PHONE_NUMBER)));
             String imageUrl = cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_IMAGE_URI));
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
-
-            Glide.with(mProfileImage.getContext())
-                    .load(imageUrl)
-                    .animate(anim)
-                    .centerCrop()
-                    .fitCenter()
-                    .into(mProfileImage);
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Glide.with(mProfileImage.getContext())
+                        .load(imageUrl)
+                        .animate(anim)
+                        .centerCrop()
+                        .fitCenter()
+                        .into(mProfileImage);
+            }
         }
 
         public void setOnClickListener(View.OnClickListener listener) {

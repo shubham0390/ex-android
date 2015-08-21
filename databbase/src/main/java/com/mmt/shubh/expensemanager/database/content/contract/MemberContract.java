@@ -1,11 +1,8 @@
 package com.mmt.shubh.expensemanager.database.content.contract;
 
 import android.content.ContentResolver;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 
 public interface MemberContract extends BaseColumns, BaseContract {
     String TABLE_NAME = "members";
@@ -13,8 +10,9 @@ public interface MemberContract extends BaseColumns, BaseContract {
     String PATH_MEMBER = "member";
 
     String MEMBER_USER_NAME = "user_name";
-    String MEMBER_NAME = "member_name";
-    String MEMBER_EMAIL = "member_email";
+    String MEMBER_NAME = "name";
+    String MEMBER_EMAIL = "email";
+    String MEMBER_PHONE_NUMBER = "phone_number";
     String MEMBER_IMAGE_URI = "profile_image_uri";
     String MEMBER_COVER_IMAGE_URL = "cover_image_uri";
 
@@ -36,7 +34,7 @@ public interface MemberContract extends BaseColumns, BaseContract {
             , ExpenseBookContract.TABLE_NAME + "." + ExpenseBookContract._ID
             , ExpenseBookContract.TABLE_NAME + "." + ExpenseBookContract.EXPENSE_BOOK_NAME
             , ExpenseBookContract.TABLE_NAME + "." + ExpenseBookContract.EXPENSE_BOOK_TYPE
-            , ExpenseBookContract.TABLE_NAME + "." + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE
+            , ExpenseBookContract.TABLE_NAME + "." + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI
     };
 
     String EXPNESE_EXPNSE_BOOK_JOINED_TABLE_NAME = ExpenseContract.TABLE_NAME

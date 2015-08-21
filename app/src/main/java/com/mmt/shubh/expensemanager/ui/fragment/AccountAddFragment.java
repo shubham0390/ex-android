@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.ui.Dialoge;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,8 +53,8 @@ public class AccountAddFragment extends Fragment {
 
     @OnClick(R.id.bank_container)
     public void onSelectBankClick(){
-        Dialoge dialoge =  new Dialoge();
-        dialoge.onCreateDialog(getActivity());
+        /*Dialoge dialoge =  new Dialoge();
+        dialoge.onCreateDialog(getActivity());*/
     }
 
     private Account constructAccount() {

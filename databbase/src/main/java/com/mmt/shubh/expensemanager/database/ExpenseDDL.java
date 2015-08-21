@@ -38,9 +38,10 @@ public final class ExpenseDDL {
                         + UserInfoContract.USER_NAME + " TEXT , "
                         + UserInfoContract.USER_PASSWORD + " TEXT , "
                         + UserInfoContract.USER_STATUS + " TEXT NOT_NULL, "
-                        + UserInfoContract.USER_DISPLAY_NAME + " TEXT NOT_NULL, "
+                        + UserInfoContract.USER_DISPLAY_NAME + " TEXT, "
                         + UserInfoContract.USER_EMAIL_ADDRESS + " TEXT NOT_NULL, "
-                        + UserInfoContract.USER_PROFILE_IMAGE_URL + " TEXT NOT_NULL, "
+                        + UserInfoContract.USER_PHONE_NUMBER + " TEXT, "
+                        + UserInfoContract.USER_PROFILE_IMAGE_URL + " TEXT, "
                         + UserInfoContract.USER_COVER_IMAGE_URL + " TEXT " +
                         " );";
         database.execSQL(createTable);
@@ -92,7 +93,7 @@ public final class ExpenseDDL {
                 + ExpenseBookContract.EXPENSE_BOOK_NAME + " TEXT NOT NULL, "
                 + ExpenseBookContract.EXPENSE_BOOK_TYPE + " TEXT NOT NULL, "
                 + ExpenseBookContract.EXPENSE_BOOK_DESCRIPTION + " TEXT , "
-                + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE + " TEXT  "
+                + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI + " TEXT  "
                 + ")";
         database.execSQL(createTable);
     }
@@ -106,7 +107,8 @@ public final class ExpenseDDL {
                 " ( "
                 + MemberContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberContract.MEMBER_NAME + " TEXT NOT NULL, "
-                + MemberContract.MEMBER_EMAIL + " TEXT NOT NULL, "
+                + MemberContract.MEMBER_EMAIL + " TEXT, "
+                + MemberContract.MEMBER_PHONE_NUMBER + " TEXT, "
                 + MemberContract.MEMBER_IMAGE_URI + " TEXT, "
                 + MemberContract.MEMBER_USER_NAME + " TEXT,"
                 + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT" +

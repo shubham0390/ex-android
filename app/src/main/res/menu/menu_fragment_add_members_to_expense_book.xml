@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_search"
+          android:title="Search"
+          app:actionViewClass="android.support.v7.widget.SearchView"
+          android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+          app:showAsAction="always|collapseActionView"/>
+    <item android:id="@+id/action_next"
+          android:title="@string/done"
+          android:orderInCategory="100"
+          app:showAsAction="always"/>
+
+</menu>

@@ -40,5 +40,16 @@
         android:layout_toRightOf="@id/list_image_icon"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tool:text="Subham.k.tyagi@gmail.com"/>
+
+    <TextView
+        android:id="@+id/member_phone_number"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/member_email"
+        android:layout_toEndOf="@id/list_image_icon"
+        android:layout_toRightOf="@id/list_image_icon"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tool:text="9739340318"/>
 </RelativeLayout>
 

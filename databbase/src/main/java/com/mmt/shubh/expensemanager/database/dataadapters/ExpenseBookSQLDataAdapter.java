@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
@@ -63,7 +64,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
     public ContentValues toContentValues(ExpenseBook expenseBook) {
         ContentValues values = new ContentValues();
         values.put(EXPENSE_BOOK_NAME, expenseBook.getName());
-        values.put(EXPENSE_BOOK_PROFILE_IMAGE, expenseBook.getProfileImagePath());
+        values.put(EXPENSE_BOOK_PROFILE_IMAGE_URI, expenseBook.getProfileImagePath());
         values.put(EXPENSE_BOOK_DESCRIPTION, expenseBook.getDescription());
         values.put(EXPENSE_BOOK_TYPE, expenseBook.getType());
         return values;
@@ -74,14 +75,14 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
         expenseBook.setName(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_NAME)));
         expenseBook.setDescription(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_DESCRIPTION)));
         expenseBook.setType(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_TYPE)));
-        expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE)));
+        expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE_URI)));
     }
 
     private UserInfo getUser(long aLong) {
         return null;
     }
 
-    public void addMembers(List members) {
+    public void addMembers(List<Member> members) {
         MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
         sqlDataAdapter.create(members);
     }
