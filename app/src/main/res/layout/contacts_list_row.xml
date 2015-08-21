@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-    <com.mmt.shubh.expensemanager.ui.component.BezelImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        style="@style/ListItemIcon"
         android:clickable="true"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
-        android:layout_margin="8dp"
-        app:maskDrawable="@drawable/circle_mask"/>
+        android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:id="@+id/contact_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        style="@style/ListItemText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:textSize="20sp"
-        android:text="User"/>
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-    <CheckBox
-        android:id="@+id/contact_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="1.5"
-        android:scaleY="1.5"/>
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="User"
+            android:textSize="18sp"/>
+
+        <CheckBox
+            android:id="@+id/contact_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:scaleX="1.2"
+            android:scaleY="1.2"/>
+    </LinearLayout>
 </LinearLayout>

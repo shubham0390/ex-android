@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.component.BezelImageView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 import com.mmt.shubh.expensemanager.utils.Validator;
 
@@ -40,6 +39,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,9 +53,12 @@ public class AddNewExpenseBookFragment extends Fragment {
 
     private final String TAG = AddNewExpenseBookFragment.class.getSimpleName();
     private final int SELECT_IMAGE = 1;
-    private EditText mExpenseName;
-    private BezelImageView mExpenseImage;
-    private EditText mExpenseDescription;
+    @Bind(R.id.new_expense_book_name)
+    EditText mExpenseName;
+    @Bind(R.id.new_expense_book_description)
+    EditText mExpenseDescription;
+    @Bind(R.id.expense_book_image)
+    de.hdodenhof.circleimageview.CircleImageView mExpenseImage;
     private Uri mOutputFileUri;
     private IFragmentDataSharer mFragmentDataSharer;
 
@@ -65,9 +71,7 @@ public class AddNewExpenseBookFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_expense_book, container, false);
-        mExpenseName = (EditText) view.findViewById(R.id.new_expense_book_name);
-        mExpenseDescription = (EditText) view.findViewById(R.id.new_expense_book_description);
-        mExpenseImage = (BezelImageView) view.findViewById(R.id.expense_book_image);
+        ButterKnife.bind(this, view);
         mExpenseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +185,7 @@ public class AddNewExpenseBookFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @OnClick(R.id.expense_book_image)
     private void openImageIntent() {
 
         // Determine Uri of camera image to save.

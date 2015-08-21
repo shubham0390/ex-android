@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ public class CreateExpenseBook {
     private List<ContactsMetaData> mContactsList;
     private List<Integer> mSelectedContacts;
     private Bundle mExpenseBookInfo;
+    private ExpenseBookSQLDataAdapter mExpenseBookAdapter;
 
     public CreateExpenseBook(Context context, List<ContactsMetaData> contactsList, List<Integer>
             selectedContacts,
@@ -30,6 +33,7 @@ public class CreateExpenseBook {
         this.mContactsList = contactsList;
         this.mSelectedContacts = selectedContacts;
         this.mExpenseBookInfo = expenseBookInfo;
+        mExpenseBookAdapter = new ExpenseBookSQLDataAdapter(mContext);
     }
 
     /**
@@ -50,12 +54,12 @@ public class CreateExpenseBook {
         String expenseBookName = mExpenseBookInfo.getString(Constants.EXTRA_GROUP_NAME);
         String expenseBookImageURI = mExpenseBookInfo.getString(Constants.EXTRA_GROUP_IMAGE_URI);
         String expenseBookDescription = mExpenseBookInfo.getString(Constants.EXTRA_GROUP_DESCRIPTION);
-        ContentValues values = new ContentValues();
-        values.put(ExpenseBookContract.EXPENSE_BOOK_NAME, expenseBookName);
-        values.put(ExpenseBookContract.EXPENSE_BOOK_TYPE, "public");
-        values.put(ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI, expenseBookImageURI);
-        values.put(ExpenseBookContract.EXPENSE_BOOK_DESCRIPTION, expenseBookDescription);
-        mContext.getContentResolver().insert(ExpenseBookContract.EXPENSE_BOOK_URI, values);
+        ExpenseBook expenseBook = new ExpenseBook();
+        expenseBook.setName(expenseBookName);
+        expenseBook.setProfileImagePath(expenseBookImageURI);
+        expenseBook.setDescription(expenseBookDescription);
+        expenseBook.setType("public");
+        mExpenseBookAdapter.create(expenseBook);
         Logger.debug(TAG, "exiting saveExpenseBookDetails()");
     }
 
@@ -64,13 +68,15 @@ public class CreateExpenseBook {
      */
     private void saveMemberDetails() {
         Logger.debug(TAG, "entered saveMemberDetails()");
+        List<Member> memberList = new ArrayList<>();
         for (int selectedIndex : mSelectedContacts) {
             String contactId = mContactsList.get(selectedIndex).getContactId();
             Member memberDetails = fetchContactDetails(contactId);
-            saveMemberDetailsToDB(memberDetails);
-
+            memberList.add(memberDetails);
+//            saveMemberDetailsToDB(memberDetails);
         }
         Logger.debug(TAG, "exiting saveMemberDetails()");
+        mExpenseBookAdapter.addMembers(memberList);
     }
 
     /**

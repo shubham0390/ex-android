@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
@@ -81,7 +82,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
         return null;
     }
 
-    public void addMembers(List members) {
+    public void addMembers(List<Member> members) {
         MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
         sqlDataAdapter.create(members);
     }

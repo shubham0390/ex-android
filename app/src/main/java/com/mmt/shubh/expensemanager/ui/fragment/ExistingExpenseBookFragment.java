@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.activity.CreateNewExpenseBookActivity;
+import com.mmt.shubh.expensemanager.ui.activity.AddExpenseBookActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,7 +55,7 @@ public class ExistingExpenseBookFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_add_expense) {
             Intent intent = new Intent(getActivity().getApplicationContext(),
-                    CreateNewExpenseBookActivity.class);
+                    AddExpenseBookActivity.class);
             startActivity(intent);
             return true;
         }

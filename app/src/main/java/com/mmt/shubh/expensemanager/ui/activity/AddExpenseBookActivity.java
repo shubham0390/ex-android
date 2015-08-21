@@ -13,7 +13,7 @@ import com.mmt.shubh.expensemanager.ui.fragment.AddMembersToExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.AddNewExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.IFragmentSwitcher;
 
-public class CreateNewExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
+public class AddExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
 
     String mGroupName;
     String mGroupIconURI;

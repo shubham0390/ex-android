@@ -7,13 +7,7 @@
     android:orientation="vertical"
     tools:context="com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <include layout="@layout/include_toolbar"/>
 
     <FrameLayout
         android:id="@+id/fragment"
