@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
 import java.util.ArrayList;
@@ -51,14 +52,19 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         List<Member> members = new ArrayList<>();
         members.add(createMember());
 
+        MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
+        sqlDataAdapter.create(members);
+
         ExpenseBook expenseBook = new ExpenseBook();
         expenseBook.setType("Private");
         expenseBook.setDescription("This is personal expense book of" + userInfo.getEmailAddress());
         expenseBook.setName(userInfo.getDisplayName());
         expenseBook.setProfileImagePath(userInfo.getProfilePhotoUrl());
         expenseBook.setMemberList(members);
+
         long id = expenseBookSQLDataAdapter.create(expenseBook);
         expenseBookSQLDataAdapter.addMembers(members);
+
         if (id > 0) {
             Log.d(Constants.LOG_TAG, "Created private expense book  successfully");
             return true;

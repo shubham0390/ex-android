@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 import com.mmt.shubh.expensemanager.DeviceUuidFactory;
-import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.DeviceDetails;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
@@ -14,7 +13,7 @@ import com.mmt.shubh.expensemanager.gsm.QuickstartPreferences;
 
 import java.util.List;
 
-import api.DataAdapter;
+import com.mmt.shubh.expensemanager.database.api.DataAdapter;
 
 public class ExpenseTaskService extends GcmTaskService {
 

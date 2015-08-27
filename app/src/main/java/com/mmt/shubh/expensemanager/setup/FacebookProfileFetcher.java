@@ -48,7 +48,6 @@ public class FacebookProfileFetcher extends ProfileFetcher {
                                     JSONObject jsonObject = response.getJSONObject();
                                     String emailID = jsonObject.getString("email");
                                     userInfo = new UserInfo.Builder()
-                                            .setUserName(profile.getName())
                                             .setEmailAddress(emailID)
                                             .setProfilePhotoUrl(profile.getProfilePictureUri(512,
                                                     512).toString())

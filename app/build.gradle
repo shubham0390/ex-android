@@ -25,9 +25,7 @@ android {
 
     repositories {
         mavenCentral()
-        /*  maven {
-              url "http://repo.mycompany.com/maven2"
-          }*/
+        maven {url "https://clojars.org/repo/"}
     }
 
     buildTypes {
@@ -54,8 +52,6 @@ android {
 }
 
 dependencies {
-    /*Module dependency*/
-    compile project(':databbase')
     /*Android support libs*/
     compile "com.android.support:appcompat-v7:" + versionAndroidSupportLib
     compile "com.android.support:support-v4:" + versionAndroidSupportLib
@@ -81,13 +77,17 @@ dependencies {
     /*Utility dependency*/
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-
-    /* testCompile 'junit:junit:4.12'*/
+    compile "frankiesardo:icepick:3.1.0"
+    provided 'frankiesardo:icepick-processor:3.1.0'
+    compile 'com.google.dagger:dagger:2.0'
+    apt 'com.google.dagger:dagger-compiler:2.0'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
     /*Testing library*/
+
+    /*testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
-    compile project(':HoloGraphLibrary')
-    apt 'com.android.databinding:compiler:1.0-rc0'
+    apt 'com.android.databinding:compiler:1.0-rc0'*/
 }
 
