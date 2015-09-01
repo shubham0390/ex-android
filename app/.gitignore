@@ -1,3 +1,9 @@
 /build
 app/app.iml
 .idea/
+/.iml
+/.idea/workspace.xml
+/local.properties
+.DS_Store
+ExpenseManager.iml
+/.gradle
