@@ -186,7 +186,7 @@ public class AddNewExpenseBookFragment extends Fragment {
     }
 
     @OnClick(R.id.expense_book_image)
-    private void openImageIntent() {
+    public void openImageIntent() {
 
         // Determine Uri of camera image to save.
         final File root = new File(Environment.getExternalStorageDirectory() + File.separator +

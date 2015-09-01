@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
@@ -25,20 +26,36 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
     private Context mContext;
 
     public UserInfoSQLDataAdapter(Context context) {
-        super(UserInfoContract.ACCOUNT_URI,context);
+        super(UserInfoContract.ACCOUNT_URI, context);
         mContext = context;
     }
 
     public ContentValues toContentValues(UserInfo userInfo) {
         ContentValues values = new ContentValues();
-        values.put(USER_NAME, userInfo.getUserName());
-        values.put(USER_PASSWORD, userInfo.getUserPassword());
-        values.put(USER_EMAIL_ADDRESS, userInfo.getEmailAddress());
-        values.put(USER_PHONE_NUMBER, userInfo.getPhoneNumber());
-        values.put(USER_DISPLAY_NAME, userInfo.getDisplayName());
-        values.put(USER_COVER_IMAGE_URL, userInfo.getCoverPhotoUrl());
-        values.put(USER_PROFILE_IMAGE_URL, userInfo.getProfilePhotoUrl());
-        values.put(USER_STATUS, userInfo.getStatus().name());
+        if (!TextUtils.isEmpty(userInfo.getUserName())) {
+            values.put(USER_NAME, userInfo.getUserName());
+        }
+        if (!TextUtils.isEmpty(userInfo.getUserPassword())) {
+            values.put(USER_PASSWORD, userInfo.getUserPassword());
+        }
+        if (!TextUtils.isEmpty(userInfo.getEmailAddress())) {
+            values.put(USER_EMAIL_ADDRESS, userInfo.getEmailAddress());
+        }
+        if (!TextUtils.isEmpty(userInfo.getPhoneNumber())) {
+            values.put(USER_PHONE_NUMBER, userInfo.getPhoneNumber());
+        }
+        if (!TextUtils.isEmpty(userInfo.getDisplayName())) {
+            values.put(USER_DISPLAY_NAME, userInfo.getDisplayName());
+        }
+        if (!TextUtils.isEmpty(userInfo.getCoverPhotoUrl())) {
+            values.put(USER_COVER_IMAGE_URL, userInfo.getCoverPhotoUrl());
+        }
+        if (!TextUtils.isEmpty(userInfo.getProfilePhotoUrl())) {
+            values.put(USER_PROFILE_IMAGE_URL, userInfo.getProfilePhotoUrl());
+        }
+        if (userInfo.getStatus() != null) {
+            values.put(USER_STATUS, userInfo.getStatus().name());
+        }
         return values;
     }
 
