@@ -39,16 +39,12 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     @Override
     public void registerUser(String fullName, String emailAddress, String password, String mobileNo) {
         Logger.debug(TAG, "Adding create user task to task processor");
-        mTaskProcessor.addTask(new CreateUserTask(mContext, fullName, emailAddress, password, mobileNo));
-        mTaskProcessor.addTask(new ExpenseBookAndCashAccountSetupAccount(mContext));
-        mTaskProcessor.startExecution();
+        mTaskProcessor.execute(new CreateUserTask(mContext, fullName, emailAddress, password, mobileNo));
     }
 
     @Override
     public void registerUserWithSocial(ProfileFetcher profileFetcher) {
-        mTaskProcessor.addTask(new ProfileFetchingTask(mContext, profileFetcher));
-        mTaskProcessor.addTask(new ExpenseBookAndCashAccountSetupAccount(mContext));
-        mTaskProcessor.startExecution();
+        mTaskProcessor.execute(new ProfileFetchingTask(mContext, profileFetcher));
     }
 
     @Override
@@ -56,9 +52,11 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
         switch (action) {
             case ProfileFetchingTask.ACTION_PROFILE_FETCH:
                 Logger.debug(TAG, "Profile fetching successful .Starting setup task");
+                mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext));
                 break;
             case CreateUserTask.ACTION_CREATE_USER:
                 Logger.debug(TAG, "User created successful .Starting setup task");
+                mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext));
                 break;
             case ExpenseBookAndCashAccountSetupAccount.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK:
                 Logger.debug(TAG, "Account setup complete.Launching home activity");

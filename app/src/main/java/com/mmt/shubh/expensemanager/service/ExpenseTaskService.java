@@ -30,7 +30,7 @@ public class ExpenseTaskService extends GcmTaskService {
             case GCMTaskConstant.TAG_REGISTRATION:
                 doUserRegistration();
                 break;
-            case GCMTaskConstant.TAG_UPLOAD_EXPENSE:
+            case GCMTaskConstant.TAG_SYNC_EXPENSE:
                 sendExpenseDetails();
                 break;
         }
@@ -48,5 +48,6 @@ public class ExpenseTaskService extends GcmTaskService {
         DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(getApplicationContext());
         List<UserInfo> userInfos = dataAdapter.getAll();
         DeviceDetails details = new DeviceDetails(userInfos.get(0), deviceUuidFactory.getDeviceUuid().toString(), registrationToken);
+
     }
 }

@@ -1,26 +1,29 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.FacebookSdk;
+import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.fragment.SignInFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.SignUpFragment;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MVPActivity {
 
     @Bind(R.id.tabs)
     TabLayout mTabLayout;
@@ -28,12 +31,14 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.viewpager)
     ViewPager mViewPager;
 
+    @Inject
+    SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
 
         if (mViewPager != null) {
             setupViewPager(mViewPager);
@@ -75,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
         }
+    }
+
+    @Override
+    protected void injectDependencies() {
+        ExpenseApplication.component().inject(this);
     }
 }
 

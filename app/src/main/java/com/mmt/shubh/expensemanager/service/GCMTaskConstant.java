@@ -1,10 +1,18 @@
 package com.mmt.shubh.expensemanager.service;
 
 /**
- * Created by styagi on 6/5/2015.
+ * Created by Subham Tyagi,
+ * on 28/Aug/2015,
+ * 8:28 AM
+ * TODO:Add class comment.
  */
-public class GCMTaskConstant {
+public interface GCMTaskConstant {
 
-    public static final String TAG_REGISTRATION = "registration";
-    public static final String TAG_UPLOAD_EXPENSE = "uploadExpense";
+    String TAG_REGISTRATION = "registration";
+
+    String TAG_SYNC_EXPENSE = "syncExpense";
+
+    String TAG_SYNC_EXPENSE_BOOK = "syncExpenseBook";
+
+    String TAG_SEND_LOCAL_CHANGES = "sendLocalChanges";
 }

@@ -29,8 +29,7 @@ public class TaskProcessor {
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
 
-    private WeakReference<OnTaskCompleteListener> mTaskCompleteListeners ;
-
+    private WeakReference<OnTaskCompleteListener> mTaskCompleteListeners;
 
     private ITask mActive;
 
@@ -86,14 +85,14 @@ public class TaskProcessor {
      * Start the execution of tasks
      */
     public void startExecution() {
-        scheduleNext();
+        if (mActive == null) {
+            scheduleNext();
+        }
     }
 
     public void execute(ITask task) {
         mTaskQueue.offer(task);
-        if (mActive == null) {
-            scheduleNext();
-        }
+        startExecution();
     }
 
     private void scheduleNext() {
