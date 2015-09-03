@@ -19,11 +19,15 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.PersonBuffer;
+import com.mmt.shubh.expensemanager.ui.presenters.ISignUpPresenter;
 
 import java.lang.ref.WeakReference;
 
 /**
- * Created by styagi on 6/4/2015.
+ * Created by Subham Tyagi,
+ * on 27/Aug/2015,
+ * 2:03 PM
+ * TODO:Add class comment.
  */
 public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
@@ -43,15 +47,15 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
 
     private ConnectionResult mConnectionResult;
 
-    private LoginCallback mCallback;
+    private SignUpCallback mCallback;
 
     private WeakReference<Activity> mActivityWeakReference;
 
     private Context mContext;
 
-    public GoogleLoginHelper(Activity context) {
+    public GoogleLoginHelper(Activity context, ISignUpPresenter iSignUpPresenter) {
         mActivityWeakReference = new WeakReference<>(context);
-        mCallback = (LoginCallback) context;
+        mCallback = (SignUpCallback) iSignUpPresenter;
         mContext = context.getApplicationContext();
         mPlusClient =
                 new GoogleApiClient.Builder(context)

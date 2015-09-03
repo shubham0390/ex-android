@@ -9,8 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/milky_white</item>
-        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
-        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textColorPrimary">@color/milky_white</item>
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
     </style>
 
@@ -22,18 +21,15 @@
 
     <style name="Widget.ExManager.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="theme">@style/ThemeOverlay.ExManager.Toolbar</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-    </style>
-
-    <style name="ThemeOverlay.ExManager.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Widget.ExManager.Toolbar.Toolbar">
         <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="style_group_name_text_view">
@@ -75,9 +71,26 @@
 
     <style name="LoginScreen" parent="AppTheme">
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
     </style>
     <style name="SplashScreen" parent="AppTheme">
         <item name="android:textColor">@color/milky_white</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabMaxWidth">@dimen/tab_max_width</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
     </style>
 </resources>

@@ -8,6 +8,7 @@
 
 package com.mmt.shubh.expensemanager.task;
 
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 
@@ -29,7 +30,6 @@ public class TaskProcessor {
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
 
     private WeakReference<OnTaskCompleteListener> mTaskCompleteListeners;
-
 
     private ITask mActive;
 
@@ -85,21 +85,14 @@ public class TaskProcessor {
      * Start the execution of tasks
      */
     public void startExecution() {
-        for (final ITask task : mTaskQueue) {
-            mExecutorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    executeTask(task);
-                }
-            });
+        if (mActive == null) {
+            scheduleNext();
         }
     }
 
     public void execute(ITask task) {
         mTaskQueue.offer(task);
-        if (mActive == null) {
-            scheduleNext();
-        }
+        startExecution();
     }
 
     private void scheduleNext() {
@@ -108,6 +101,7 @@ public class TaskProcessor {
                 @Override
                 public void run() {
                     executeTask(mActive);
+                    scheduleNext();
                 }
             });
         }
@@ -126,19 +120,22 @@ public class TaskProcessor {
     }
 
     public void removeOnTaskCompleteListener(OnTaskCompleteListener listener) {
-        mTaskCompleteListeners.clear();
+        if (mTaskCompleteListeners != null)
+            mTaskCompleteListeners.clear();
     }
 
+    @VisibleForTesting
     public ITask getFirstTask() {
         return mTaskQueue.peekFirst();
     }
 
+    @VisibleForTesting
     public ITask getLastTask() {
         return mTaskQueue.peekLast();
     }
 
     public void setOnTaskCompleteListener(OnTaskCompleteListener listener) {
-        mTaskCompleteListeners = new WeakReference<>(listener);
+        mTaskCompleteListeners = new WeakReference<OnTaskCompleteListener>(listener);
     }
 
     public void notifyListener(String action, TaskResult result) {

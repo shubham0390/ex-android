@@ -10,6 +10,10 @@
     <string name="done">Done</string>
     <string name="description_title">Description</string>
 
+    <!-- Provider -->
+    <string name="permission_access_provider_desc">Provide access to expense database</string>
+    <string name="permission_access_provider_label">Expense Provider</string>
+
     <!-- Erorr message -->
     <string name="error_empty_expense_name">Name can\'t be empty</string>
     <string name="error_empty_expense_amount">Expense amount can\'t be empty</string>
@@ -57,11 +61,14 @@
     <!-- ExpenseBook related string -->
     <string name="add_expense_book">Add Expense Book</string>
     <string name="expense_book_name">Expense Book Name</string>
-    <string name="error_empty_expense_book_name">Expense name cannot be blank. Please enter a name</string>
+    <string name="error_empty_expense_book_name">Expense name cannot be blank. Please enter a name
+    </string>
     <string name="error_expense_book_name_short_length">Expense book Name length can\'t less than
-        4</string>
+        4
+    </string>
     <string name="error_expense_book_already_exists">Expense name already exists. Please
-        enter another name</string>
+        enter another name
+    </string>
     <string name="expense_book_create_successfull">Expense book Successfully Created</string>
 
     <!-- Add expese related Strings -->
@@ -79,7 +86,10 @@
     <string name="email_address_text">Email address</string>
 
     <!-- Accessibility announcement when a number that had been typed in is deleted [CHAR_LIMIT=NONE] -->
-    <string name="deleted_key"><xliff:g example="4" id="key">%1$s</xliff:g>         deleted</string>
+    <string name="deleted_key">
+        <xliff:g example="4" id="key">%1$s</xliff:g>
+        deleted
+    </string>
     <!--
          Content description for the hour selector in the time picker, which displays
          selectable hours of the day along the inside edge of a circle, as in an analog clock.
@@ -107,11 +117,13 @@
 
     <!--GCM String -->
     <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
-        send downstream messages to this app.</string>
+        send downstream messages to this app.
+    </string>
     <string name="registering_message">Generating InstanceID token...</string>
     <string name="token_error_message">An error occurred while either fetching the InstanceID token,
         sending the fetched token to the server or subscribing to the PubSub topic. Please try
-        running the sample again.</string>
+        running the sample again.
+    </string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -155,7 +167,9 @@
     <string name="add_new_expense">Add New</string>
     <string name="title_activity_create_new_expense_book">Create New</string>
     <string name="expense_group_creation_message">Please provide new expense name,optional expense
-        icon and expense description</string>
+        icon and expense description
+    </string>
     <string name="action_next">Next</string>
     <string name="ok">OK</string>
+    <string name="phone_no_address_text">Mobile No.</string>
 </resources>

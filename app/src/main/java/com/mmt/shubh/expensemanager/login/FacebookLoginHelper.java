@@ -9,6 +9,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.mmt.shubh.expensemanager.ui.presenters.ISignUpPresenter;
 
 import java.util.Arrays;
 
@@ -21,11 +22,15 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
 
     private CallbackManager mCallbackManager;
 
-    private LoginCallback mCallback;
+    private SignUpCallback mCallback;
 
     public FacebookLoginHelper(Activity context) {
-        mContext = context.getApplicationContext();
-        mCallback = (LoginCallback) context;
+
+    }
+
+    public FacebookLoginHelper(Context applicationContext, ISignUpPresenter iSignUpPresenter) {
+        mContext = applicationContext.getApplicationContext();
+        mCallback = (SignUpCallback) iSignUpPresenter;
     }
 
     public void setUp(Object object) {

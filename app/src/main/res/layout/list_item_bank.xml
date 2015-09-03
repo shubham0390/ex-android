@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/ListItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/bank_image"
+        style="@style/ListItemIcon"
+        android:src="@drawable/ic_account_balance_black_24dp"/>
+
+    <TextView
+        android:id="@+id/bank_name"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:text="@string/bank_name"/>
+</LinearLayout>

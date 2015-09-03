@@ -21,6 +21,8 @@ package com.mmt.shubh.expensemanager.debug;
 
 import android.util.Log;
 
+import com.mmt.shubh.expensemanager.BuildConfig;
+
 /**
  * Wrapper over android logger
  */
@@ -33,7 +35,8 @@ public final class Logger {
     }
 
     public static void debug(String className, String message) {
-        Log.d(LOG_TAG, className + " -" + message);
+        if (BuildConfig.DEBUG)
+            Log.d(LOG_TAG, className + " -" + message);
     }
 
     public static void info(String className, String message) {

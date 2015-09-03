@@ -21,9 +21,13 @@ import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 
 /**
- * Created by STyagi on 4/5/14.
+ * Created by Subham Tyagi,
+ * on 21/Aug/2015,
+ * 6:08 PM
+ * TODO:Add class comment.
  */
 public abstract class BaseFragment extends Fragment implements AppFragment {
     protected Context mContext;

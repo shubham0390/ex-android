@@ -26,9 +26,14 @@ import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.mmt.shubh.expensemanager.dagger.DaggerObjectGraph;
+import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import javax.inject.Inject;
 
 
 /**
@@ -40,11 +45,29 @@ import java.security.NoSuchAlgorithmException;
 public class ExpenseApplication extends Application {
     private Tracker mTracker;
 
+    private static DaggerObjectGraph graph;
+
+    private static ExpenseApplication instance;
+
+    @Inject
+    MemberDataAdapter mDataAdapter;
+
     @Override
     public void onCreate() {
         super.onCreate();
         generateHashKey();
+        instance = this;
+        buildComponentAndInject();
     }
+
+    public static DaggerObjectGraph component() {
+        return graph;
+    }
+
+    public static void buildComponentAndInject() {
+        graph = MainComponent.Initializer.init(instance);
+    }
+
 
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
