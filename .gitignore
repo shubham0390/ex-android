@@ -1,14 +1,8 @@
-/local.properties
+local.properties
 /.idea/workspace.xml
 .DS_Store
 /build
 ExpenseManager.iml
 /.gradle
 /.idea
-/.arr
-/databbase/databbase.iml
-/databbase/build
-/HoloGraphLibrary/HoloGraphLibrary.iml
-/HoloGraphLibrary/build
-/expanse-manager.iml
 /app/app.iml
