@@ -3,7 +3,7 @@ package com.mmt.shubh.expensemanager.ui.presenters;
 import com.mmt.shubh.expensemanager.ui.models.LoginModelImpl;
 import com.mmt.shubh.expensemanager.ui.models.api.ILoginModel;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.ui.views.ILoginView;
+import com.mmt.shubh.expensemanager.ui.views.ISignInView;
 
 /**
  * Created by Subham Tyagi,
@@ -11,13 +11,11 @@ import com.mmt.shubh.expensemanager.ui.views.ILoginView;
  * 5:39 PM
  * TODO:Add class comment.
  */
-public class LoginPresenterImpl extends MVPAbstractPresenter<ILoginView> implements ILoginPresenter<ILoginView>, ILoginModel.LoginModelCallback {
-
+public class SignInPresenterImpl extends MVPAbstractPresenter<ISignInView> implements ISignInPresenter<ISignInView>, ILoginModel.LoginModelCallback {
 
     private ILoginModel mLoginModel;
 
-
-    public LoginPresenterImpl() {
+    public SignInPresenterImpl() {
         mLoginModel = new LoginModelImpl(this);
 
     }
@@ -26,12 +24,6 @@ public class LoginPresenterImpl extends MVPAbstractPresenter<ILoginView> impleme
     public void validateCredentials(String emailAddress, String password) {
         mLoginModel.login(emailAddress, password);
     }
-
-    @Override
-    public void socialLogin() {
-
-    }
-
 
     @Override
     public void resume() {

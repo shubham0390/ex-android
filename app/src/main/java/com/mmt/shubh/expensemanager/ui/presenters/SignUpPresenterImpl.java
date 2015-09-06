@@ -27,15 +27,12 @@ import com.mmt.shubh.expensemanager.ui.views.ISignUpViews;
  * 7:41 AM
  * TODO:Add class comment.
  */
-public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> implements ISignUpPresenter<ISignUpViews>, SignUpCallback, ISignUpModel.SignUpModelCallback {
+public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> implements ISignUpPresenter<ISignUpViews>,  ISignUpModel.SignUpModelCallback {
 
     private final String TAG = getClass().getName();
 
     private ISignUpModel mSignUpModel;
 
-    private GoogleLoginHelper mGoogleLoginHelper;
-
-    private FacebookLoginHelper mFacebookLoginHelper;
 
     private Context mContext;
 
@@ -44,15 +41,7 @@ public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> impl
         mSignUpModel = new SigUpModelImpl(context, this);
     }
 
-    @Override
-    public void socialSignUp(ILoginHelper loginHelper) {
-        if (loginHelper instanceof GoogleLoginHelper) {
-            mGoogleLoginHelper = (GoogleLoginHelper) loginHelper;
-        }
-        if (loginHelper instanceof FacebookLoginHelper) {
-            mFacebookLoginHelper = (FacebookLoginHelper) loginHelper;
-        }
-    }
+
 
     @Override
     public void userSignUp(String fullName, String emailAddress, String password, String mobileNo) {
@@ -60,6 +49,8 @@ public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> impl
         getView().showProgress();
         if (!isEmpty(fullName, emailAddress, password, mobileNo)) {
             mSignUpModel.registerUser(fullName, emailAddress, password, mobileNo);
+        }else {
+            getView().hideProgress();
         }
     }
 
@@ -87,46 +78,6 @@ public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> impl
         return false;
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
-            mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
-        } else {
-            mFacebookLoginHelper.onActivityResult(requestCode, responseCode, intent);
-        }
-    }
-
-    @Override
-    public void setupGoogleLogin(SignInButton plusSignInButton, Activity activity) {
-        Logger.debug(TAG, "Setting Up Google login");
-        mGoogleLoginHelper = new GoogleLoginHelper(activity, this);
-        mGoogleLoginHelper.setUp(plusSignInButton);
-    }
-
-    @Override
-    public void setupFacebookLogin(LoginButton faceBookLoginButton) {
-        Logger.debug(TAG, "Setting Up facebook login");
-        mFacebookLoginHelper = new FacebookLoginHelper(mContext, this);
-        mFacebookLoginHelper.setUp(faceBookLoginButton);
-    }
-
-    @Override
-    public void onSignInComplete(ILoginHelper.Type type) {
-        ProfileFetcher profileFetcher = null;
-        switch (type) {
-            case GOOGLE:
-                Logger.debug(TAG, "Google login finished. Fetching User profile");
-                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getClient());
-                break;
-            case FACEBOOK:
-                Logger.debug(TAG, "Facebook login finished. Fetching User profile");
-                profileFetcher = new FacebookProfileFetcher();
-                break;
-        }
-        mSignUpModel.registerUserWithSocial(profileFetcher);
-    }
-
     @Override
     public void resume() {
 
@@ -137,22 +88,6 @@ public class SignUpPresenterImpl extends MVPAbstractPresenter<ISignUpViews> impl
 
     }
 
-
-    @Override
-    public void onSignInFailed(String message) {
-        getView().hideProgress();
-    }
-
-    @Override
-    public void onSignInCanceled() {
-        getView().hideProgress();
-    }
-
-    @Override
-    public void onBlockingUI(boolean show) {
-        Logger.debug(TAG, "show progressbar");
-        getView().showProgress();
-    }
 
     @Override
     public void onSuccess() {

@@ -3,8 +3,8 @@
     <color name="milky_white">#FEFCFF</color>
     <color name="white">#ffffffff</color>
 
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorPrimary">#00695C</color>
+    <color name="colorPrimaryDark">#004D40</color>
     <color name="colorAccent">#1DE9B6</color>
     <color name="colorControlHighlight">#00BFA5</color>
 

@@ -53,9 +53,9 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
 
     private Context mContext;
 
-    public GoogleLoginHelper(Activity context, ISignUpPresenter iSignUpPresenter) {
+    public GoogleLoginHelper(Activity context, SignUpCallback iSignUpPresenter) {
         mActivityWeakReference = new WeakReference<>(context);
-        mCallback = (SignUpCallback) iSignUpPresenter;
+        mCallback = iSignUpPresenter;
         mContext = context.getApplicationContext();
         mPlusClient =
                 new GoogleApiClient.Builder(context)

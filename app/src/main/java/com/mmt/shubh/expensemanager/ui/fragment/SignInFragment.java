@@ -9,36 +9,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
-import com.mmt.shubh.expensemanager.ui.presenters.ILoginPresenter;
-import com.mmt.shubh.expensemanager.ui.presenters.LoginPresenterImpl;
-import com.mmt.shubh.expensemanager.ui.views.ILoginView;
+import com.mmt.shubh.expensemanager.ui.presenters.ISignInPresenter;
+import com.mmt.shubh.expensemanager.ui.presenters.SignInPresenterImpl;
+import com.mmt.shubh.expensemanager.ui.views.ISignInView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SignInFragment extends MVPFragment<ILoginView, ILoginPresenter<ILoginView>> implements ILoginView {
+public class SignInFragment extends MVPFragment<ISignInView, ISignInPresenter<ISignInView>> implements ISignInView {
 
 
-    ILoginPresenter mILoginPresenter;
-
-    @Bind(R.id.plus_sign_in_button)
-    SignInButton mPlusSignInButton;
-
-    @Bind(R.id.facebook_login_button)
-    LoginButton mFacebookLoginButton;
+    ISignInPresenter mISignInPresenter;
 
     @Bind(R.id.email_edit_text)
     AppCompatEditText mEmailEditText;
@@ -79,14 +69,14 @@ public class SignInFragment extends MVPFragment<ILoginView, ILoginPresenter<ILog
     }
 
     @Override
-    protected ILoginPresenter<ILoginView> createPresenter() {
-        return new LoginPresenterImpl();
+    protected ISignInPresenter<ISignInView> createPresenter() {
+        return new SignInPresenterImpl();
     }
 
 
     @OnClick(R.id.button_submit)
     public void onSubmit() {
-        mILoginPresenter.validateCredentials(mEmailEditText.getText().toString(),
+        mISignInPresenter.validateCredentials(mEmailEditText.getText().toString(),
                 mPasswordEditText.getText().toString());
     }
 

@@ -6,11 +6,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 /**
- * Created by styagi on 6/4/2015.
+ * Created by Subham Tyagi,
+ * on 06/Sep/2015,
+ * 8:48 AM
+ * TODO:Add class comment.
  */
 public class GoogleProfileFetcher extends ProfileFetcher {
+    private final String TAG = getClass().getName();
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -36,6 +41,8 @@ public class GoogleProfileFetcher extends ProfileFetcher {
             builder.setStatus(UserInfo.Status.ACTIVE);
             UserInfo userInfo = builder.build();
             return userInfo;
+        }else{
+            Logger.debug(TAG,"Unable to load user information");
         }
         return null;
     }

@@ -4,7 +4,6 @@ def versionPlayServiceLib = '7.5.0'
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.android.databinding'
 apply plugin: 'android-apt'
 android {
 
@@ -26,7 +25,7 @@ android {
     repositories {
         mavenCentral()
         maven { url "https://clojars.org/repo/" }
-        maven { url "http://repository.codehaus.org/org/codehaus" }
+        /*maven { url "http://repository.codehaus.org/org/codehaus" }*/
     }
 
     buildTypes {
@@ -65,7 +64,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
 
     /*play service dependency*/
-    compile 'com.google.android.gms:play-services-plus:' + versionPlayServiceLib
+    compile 'com.google.android.gms:play-services-plus:'+ versionPlayServiceLib
     compile 'com.google.android.gms:play-services-identity:' + versionPlayServiceLib
     compile 'com.google.android.gms:play-services-analytics:' + versionPlayServiceLib
     compile 'com.google.android.gms:play-services-gcm:' + versionPlayServiceLib

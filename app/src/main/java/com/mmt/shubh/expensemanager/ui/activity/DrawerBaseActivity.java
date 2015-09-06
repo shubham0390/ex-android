@@ -78,13 +78,16 @@ public class DrawerBaseActivity extends ToolBarActivity {
                         Intent intent = null;
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
+                                intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                finish();
                                 break;
                             case R.id.nav_account:
-                                intent =  new Intent(getApplicationContext(),AccountActivity.class);
+                                intent = new Intent(getApplicationContext(), AccountActivity.class);
                                 break;
                             case R.id.nav_distribution:
                                 break;
                             case R.id.nav_expense_book:
+                                intent = new Intent(getApplicationContext(), ExpenseBookActivity.class);
                                 break;
                             case R.id.nav_summary:
                                 break;

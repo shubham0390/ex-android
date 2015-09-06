@@ -19,6 +19,9 @@ import icepick.Icepick;
  */
 public class MVPActivity extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

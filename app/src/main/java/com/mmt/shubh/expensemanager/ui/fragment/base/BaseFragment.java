@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 
 /**
  * Created by Subham Tyagi,

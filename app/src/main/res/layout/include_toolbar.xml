@@ -17,4 +17,5 @@
 <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
     style="@style/Widget.ExManager.Toolbar.Toolbar"
-    xmlns:android="http://schemas.android.com/apk/res/android"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"/>

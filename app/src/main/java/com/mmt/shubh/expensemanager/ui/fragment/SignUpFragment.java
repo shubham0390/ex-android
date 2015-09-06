@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.activity.HomeActivity;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
@@ -31,12 +29,6 @@ import butterknife.OnClick;
  * TODO:Add class comment.
  */
 public class SignUpFragment extends MVPFragment<ISignUpViews, ISignUpPresenter> implements ISignUpViews {
-
-    @Bind(R.id.plus_sign_in_button)
-    SignInButton mPlusSignInButton;
-
-    @Bind(R.id.facebook_login_button)
-    LoginButton faceBookLoginButton;
 
     @Bind(R.id.full_name_edit_text)
     EditText mFullNameEditText;
@@ -78,14 +70,6 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, ISignUpPresenter> 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.setupGoogleLogin(mPlusSignInButton, getActivity());
-        mPresenter.setupFacebookLogin(faceBookLoginButton);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mPresenter.onActivityResult(requestCode, requestCode, data);
     }
 
     @OnClick(R.id.button_submit)

@@ -24,13 +24,9 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
 
     private SignUpCallback mCallback;
 
-    public FacebookLoginHelper(Activity context) {
-
-    }
-
-    public FacebookLoginHelper(Context applicationContext, ISignUpPresenter iSignUpPresenter) {
+    public FacebookLoginHelper(Context applicationContext, SignUpCallback iSignUpPresenter) {
         mContext = applicationContext.getApplicationContext();
-        mCallback = (SignUpCallback) iSignUpPresenter;
+        mCallback = iSignUpPresenter;
     }
 
     public void setUp(Object object) {

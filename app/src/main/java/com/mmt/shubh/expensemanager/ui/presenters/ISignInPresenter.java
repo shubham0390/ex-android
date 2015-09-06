@@ -9,8 +9,6 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
  * 5:26 PM
  * TODO:Add class comment.
  */
-public interface ILoginPresenter<V extends MVPView> extends MVPPresenter<V> {
+public interface ISignInPresenter<V extends MVPView> extends MVPPresenter<V> {
     void validateCredentials(String username, String password);
-
-    void socialLogin();
 }

@@ -11,14 +11,17 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 
 /**
  * Created by Subham Tyagi,
- * on 17/Aug/2015,
- * 7:41 AM
+ * on 04/Sep/2015,
+ * 5:16 PM
  * TODO:Add class comment.
  */
-public interface ISignUpPresenter<V extends MVPView> extends MVPPresenter<V> {
+public interface ILoginActivityPresenter<V extends MVPView> extends MVPPresenter<V> {
 
-    void userSignUp(String FullName, String EmailAddress, String password, String mobileNo);
+    void onActivityResult(int requestCode, int responseCode, Intent intent);
 
+    void setupGoogleLogin(SignInButton plusSignInButton, Activity activity);
 
+    void setupFacebookLogin(LoginButton faceBookLoginButton);
 
+    void socialSignUp(ILoginHelper loginHelper);
 }

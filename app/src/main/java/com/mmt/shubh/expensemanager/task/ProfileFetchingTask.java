@@ -25,6 +25,9 @@ public class ProfileFetchingTask extends AbstractTask {
     @Override
     public TaskResult execute() {
         UserInfo userInfo = mProfileFetcher.fetchUserAccountDetails(mContext);
+        if (userInfo == null) {
+            throw new IllegalStateException("Unable to fetch user details");
+        }
         mProfileFetcher.saveUser(mContext, userInfo);
         return null;
     }

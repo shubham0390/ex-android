@@ -5,31 +5,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:weightSum="1">
-    <LinearLayout
+
+    android:orientation="vertical">
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/plus_sign_in_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/plus_sign_in_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".5"/>
-
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook_login_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            />
-    </LinearLayout>
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:text="OR"/>
+        />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

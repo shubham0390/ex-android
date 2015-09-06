@@ -172,4 +172,5 @@
     <string name="action_next">Next</string>
     <string name="ok">OK</string>
     <string name="phone_no_address_text">Mobile No.</string>
+    <string name="sign_in">SiginIn</string>
 </resources>

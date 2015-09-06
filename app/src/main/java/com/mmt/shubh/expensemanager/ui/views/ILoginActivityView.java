@@ -8,14 +8,10 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
  * 5:32 PM
  * TODO:Add class comment.
  */
-public interface ILoginView extends MVPView {
+public interface ILoginActivityView extends MVPView {
     void showProgress();
 
     void hideProgress();
-
-    void setUsernameError();
-
-    void setPasswordError();
 
     void navigateToHome();
 
