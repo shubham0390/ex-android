@@ -26,7 +26,7 @@ import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.mmt.shubh.expensemanager.dagger.DaggerObjectGraph;
+import com.mmt.shubh.expensemanager.dagger.api.DaggerObjectGraph;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 
@@ -49,8 +49,6 @@ public class ExpenseApplication extends Application {
 
     private static ExpenseApplication instance;
 
-    @Inject
-    MemberDataAdapter mDataAdapter;
 
     @Override
     public void onCreate() {
@@ -91,8 +89,7 @@ public class ExpenseApplication extends Application {
 
     public void generateHashKey() {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.mmt.shubh.expensemanager",
+            PackageInfo info = getPackageManager().getPackageInfo("com.mmt.shubh.expensemanager",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

@@ -28,6 +28,7 @@ public interface ExpenseContract extends BaseColumns, BaseContract {
     String EXPENSE_BOOK_KEY = "expense_book_key";
     String CATEGORY_KEY = "category_key";
     String TRANSACTION_KEY = "transaction_key";
+    String OWNER_KEY = "owner_key";
 
     Uri EXPENSE_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)

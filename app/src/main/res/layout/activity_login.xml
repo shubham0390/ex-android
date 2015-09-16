@@ -6,10 +6,13 @@
     android:background="@color/colorPrimary"
     tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
 
+    <include android:id="@+id/toolbar"
+             layout="@layout/include_toolbar"/>
 
     <ImageView
         android:layout_width="72dp"
         android:layout_height="72dp"
+        android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/spacing_large"
         android:contentDescription="@string/app_name"
@@ -17,7 +20,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:id="@+id/social_container"

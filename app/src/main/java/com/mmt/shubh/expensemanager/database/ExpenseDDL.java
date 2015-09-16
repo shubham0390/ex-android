@@ -37,6 +37,7 @@ public final class ExpenseDDL {
                         + UserInfoContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + UserInfoContract.USER_PASSWORD + " TEXT , "
                         + UserInfoContract.USER_STATUS + " TEXT NOT_NULL, "
+                        + UserInfoContract.MEMBER_KEY + " INTEGER, "
                         + UserInfoContract.USER_DISPLAY_NAME + " TEXT, "
                         + UserInfoContract.USER_EMAIL_ADDRESS + " TEXT NOT_NULL, "
                         + UserInfoContract.USER_PHONE_NUMBER + " TEXT, "
@@ -92,8 +93,11 @@ public final class ExpenseDDL {
                 + ExpenseBookContract.EXPENSE_BOOK_NAME + " TEXT NOT NULL, "
                 + ExpenseBookContract.EXPENSE_BOOK_TYPE + " TEXT NOT NULL, "
                 + ExpenseBookContract.EXPENSE_BOOK_DESCRIPTION + " TEXT , "
-                + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI + " TEXT  "
-                + ")";
+                + ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI + " TEXT , "
+                + ExpenseBookContract.EXPENSE_BOOK_CREATION_TIME + " INTEGER NOT NULL , "
+                + ExpenseBookContract.OWNER_KEY + " INTEGER NOT NULL , "
+                + " FOREIGN KEY( " + ExpenseBookContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + ") "
+                + ");";
         database.execSQL(createTable);
     }
 
@@ -106,12 +110,12 @@ public final class ExpenseDDL {
                 " ( "
                 + MemberContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberContract.MEMBER_NAME + " TEXT NOT NULL, "
-                + MemberContract.MEMBER_EMAIL + " TEXT, "
-                + MemberContract.MEMBER_PHONE_NUMBER + " TEXT, "
+                + MemberContract.MEMBER_EMAIL + " TEXT UNIQUE, "
+                + MemberContract.MEMBER_PHONE_NUMBER + " TEXT UNIQUE, "
                 + MemberContract.MEMBER_IMAGE_URI + " TEXT, "
                 + MemberContract.MEMBER_USER_NAME + " TEXT,"
-                + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT" +
-                ");";
+                + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT"
+                + ");";
         database.execSQL(createTable);
     }
 
@@ -132,9 +136,11 @@ public final class ExpenseDDL {
                 + ExpenseContract.EXPENSE_BOOK_KEY + " INTEGER, "
                 + ExpenseContract.CATEGORY_KEY + " INTEGER, "
                 + ExpenseContract.TRANSACTION_KEY + " INTEGER, "
+                + ExpenseContract.OWNER_KEY + " INTEGER NOT NULL, "
                 + " FOREIGN KEY( " + ExpenseContract.EXPENSE_BOOK_KEY + ") REFERENCES " + ExpenseBookContract.TABLE_NAME + " (" + ExpenseBookContract._ID + ") ,"
-                + " FOREIGN KEY( " + ExpenseContract.CATEGORY_KEY + ") REFERENCES " + CategoryContract.TABLE_NAME + " (" + CategoryContract._ID + ")"
-                + " FOREIGN KEY( " + ExpenseContract.TRANSACTION_KEY + ") REFERENCES " + TransactionContract.TABLE_NAME + " (" + TransactionContract._ID + ")"
+                + " FOREIGN KEY( " + ExpenseContract.CATEGORY_KEY + ") REFERENCES " + CategoryContract.TABLE_NAME + " (" + CategoryContract._ID + ") ,"
+                + " FOREIGN KEY( " + ExpenseContract.TRANSACTION_KEY + ") REFERENCES " + TransactionContract.TABLE_NAME + " (" + TransactionContract._ID + ") ,"
+                + " FOREIGN KEY( " + ExpenseContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + ") "
                 + ");";
         database.execSQL(createTable);
     }
@@ -187,7 +193,7 @@ public final class ExpenseDDL {
                 + TransactionContract.TRANSACTION_TYPE + " TEXT NOT NULL,"
                 + TransactionContract.TRANSACTION_DATE + " INTEGER NOT NULL,"
                 + TransactionContract.ACCOUNT_KEY + " INTEGER NOT NULL ,"
-                + "FOREIGN KEY (" + TransactionContract.ACCOUNT_KEY+ ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")" +
+                + "FOREIGN KEY (" + TransactionContract.ACCOUNT_KEY + ") " + "REFERENCES " + AccountContract.TABLE_NAME + "( " + AccountContract._ID + ")" +
                 ");";
         database.execSQL(createTable);
     }

@@ -13,7 +13,7 @@
 
     <dimen name="root_layout_left_margin">10dp</dimen>
     <dimen name="root_layout_right_margin">10dp</dimen>
-    <dimen name="group_name_text_size">20sp</dimen>
+    <dimen name="text_size_title">20sp</dimen>
     <dimen name="group_details_divider_height">2dp</dimen>
 
     <!-- navigation drawer -->
@@ -57,4 +57,5 @@
     <integer name="button_pressed_animation_delay">100</integer>
     <integer name="disabled_alpha_animation_duration">100</integer>
     <integer name="dock_enter_exit_duration">250</integer>
+    <dimen name="tab_max_width">24dp</dimen>
 </resources>

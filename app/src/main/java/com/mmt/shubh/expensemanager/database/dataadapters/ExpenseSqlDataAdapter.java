@@ -33,6 +33,7 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         values.put(EXPENSE_DESCRIPTION, expense.getExpenseDescription());
         values.put(EXPENSE_BOOK_KEY, expense.getExpenseBook().getId());
         values.put(CATEGORY_KEY, expense.getCategory().getId());
+        values.put(OWNER_KEY,expense.getOwnerId());
         return values;
     }
 
@@ -46,6 +47,7 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         expense.setMemberList(getMemberList(expense.getId()));
         expense.setExpenseBook(getExpenseBook(cursor.getLong(COLUMN_EXPENSE_BOOK)));
         expense.setCategory(getCategory(cursor.getLong(COLUMN_CATEGORY_KEY)));
+        expense.setOwnerId(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
     }
 
     private Category getCategory(long aLong) {

@@ -15,7 +15,10 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-public class Member extends BaseContent {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Member extends BaseContent implements Parcelable {
 
     private String mMemberName;
 
@@ -26,6 +29,30 @@ public class Member extends BaseContent {
     private String mCoverPhotoUrl;
 
     private String mProfilePhotoUrl;
+
+
+    public Member() {
+    }
+
+    protected Member(Parcel in) {
+        mMemberName = in.readString();
+        mMemberEmail = in.readString();
+        mMemberPhoneNumber = in.readString();
+        mCoverPhotoUrl = in.readString();
+        mProfilePhotoUrl = in.readString();
+    }
+
+    public static final Creator<Member> CREATOR = new Creator<Member>() {
+        @Override
+        public Member createFromParcel(Parcel in) {
+            return new Member(in);
+        }
+
+        @Override
+        public Member[] newArray(int size) {
+            return new Member[size];
+        }
+    };
 
     public String getCoverPhotoUrl() {
         return mCoverPhotoUrl;
@@ -65,5 +92,39 @@ public class Member extends BaseContent {
 
     public void setMemberPhoneNumber(String memberPhoneNumber) {
         mMemberPhoneNumber = memberPhoneNumber;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mMemberName);
+        parcel.writeString(mMemberEmail);
+        parcel.writeString(mMemberPhoneNumber);
+        parcel.writeString(mCoverPhotoUrl);
+        parcel.writeString(mProfilePhotoUrl);
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = getMemberName().hashCode();
+        result = 31 * result + getMemberEmail().hashCode();
+        result = 31 * result + getMemberPhoneNumber().hashCode();
+        result = 31 * result + getCoverPhotoUrl().hashCode();
+        result = 31 * result + getProfilePhotoUrl().hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Member member = (Member) o;
+        if (member.getMemberEmail().equalsIgnoreCase(getMemberEmail()) || member.getMemberPhoneNumber() == getMemberPhoneNumber()) {
+            return true;
+        }
+        return false;
     }
 }

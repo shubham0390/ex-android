@@ -32,7 +32,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
 
     public ContentValues toContentValues(UserInfo userInfo) {
         ContentValues values = new ContentValues();
-    
+
         if (!TextUtils.isEmpty(userInfo.getUserPassword())) {
             values.put(USER_PASSWORD, userInfo.getUserPassword());
         }
@@ -54,27 +54,30 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
         if (userInfo.getStatus() != null) {
             values.put(USER_STATUS, userInfo.getStatus().name());
         }
+        values.put(MEMBER_KEY, userInfo.getMemberKey());
         return values;
     }
 
     public void restore(Cursor cursor, UserInfo userInfo) {
-        UserInfo.Builder builder = userInfo.buildUpon();
         userInfo.setId(cursor.getLong(USER_ID_COLUMN));
-        builder.setUserPassword(cursor.getString(USER_PASSWORD_COLUMN));
-        builder.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE_NUMBER)));
-        builder.setEmailAddress(cursor.getString(USER_EMAIL_ADDRESS_COLUMN));
-        builder.setCoverPhotoUrl(cursor.getString(USER_COVER_IMAGE_URL_COLUMN));
-        builder.setProfilePhotoUrl(cursor.getString(USER_PROFILE_IMAGE_URL_COLUMN));
-        builder.setDisplayName(cursor.getString(USER_DISPLAY_NAME_COLUMN));
+        userInfo.setUserPassword(cursor.getString(USER_PASSWORD_COLUMN));
+        userInfo.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE_NUMBER)));
+        userInfo.setEmailAddress(cursor.getString(USER_EMAIL_ADDRESS_COLUMN));
+        userInfo.setCoverPhotoUrl(cursor.getString(USER_COVER_IMAGE_URL_COLUMN));
+        userInfo.setProfilePhotoUrl(cursor.getString(USER_PROFILE_IMAGE_URL_COLUMN));
+        userInfo.setDisplayName(cursor.getString(USER_DISPLAY_NAME_COLUMN));
+        userInfo.setMemberKey(cursor.getLong(MEMBER_KEY_COLUMN));
         /*.valueOf(cursor.getString(USER_STATUS_COLUMN))*/
-        builder.setStatus(UserInfo.Status.ACTIVE);
+        userInfo.setStatus(UserInfo.Status.ACTIVE);
     }
 
     @Override
     public long create(UserInfo userInfo) {
         Uri uri = super.save(userInfo);
         List paths = uri.getPathSegments();
-        return Long.parseLong((String) paths.get(paths.size() - 1));
+        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+        userInfo.setId(id);
+        return id;
     }
 
     @Override
@@ -102,7 +105,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
     public UserInfo get(long id) {
         Cursor cursor = mContext.getContentResolver().query(UserInfoContract.ACCOUNT_URI,
                 UserInfoContract.USER_PROJECTION, ID_SELECTION, new String[]{String.valueOf(id)}, null);
-        UserInfo userInfo = new UserInfo.Builder().build();
+        UserInfo userInfo = new UserInfo();
         try {
             if (cursor == null || !cursor.moveToNext()) {
                 throw new ContentNotFoundException("User not found not found with id " + id);
@@ -125,7 +128,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
-                    UserInfo userInfo = new UserInfo.Builder().build();
+                    UserInfo userInfo = new UserInfo();
                     restore(cursor, userInfo);
                     userInfoList.add(userInfo);
                 }

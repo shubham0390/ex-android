@@ -3,7 +3,10 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
+import com.mmt.shubh.expensemanager.database.DatabaseHelper;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
@@ -23,7 +26,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
 
     public MemberSQLDataAdapter(Context context) {
-        super(MemberContract.MEMBER_URI,context);
+        super(MemberContract.MEMBER_URI, context);
     }
 
     public ContentValues toContentValues(Member member) {
@@ -52,16 +55,15 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
     /**
      * Check if member already exists for given email and group
      *
-     * @param context - Application context.
      * @return - true if Exists otherwise falls.
      */
-    public boolean isExists(Context context, Member member) {
+    public boolean isExists(Member member) {
 
         String SELECTION = MemberContract.MEMBER_EMAIL + "= ?";
 
         Cursor cursor = null;
         try {
-            cursor = context.getContentResolver().query(MEMBER_URI, BaseSQLDataAdapter.ID_PROJECTION,
+            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseSQLDataAdapter.ID_PROJECTION,
                     SELECTION, new String[]{member.getMemberEmail()}, null);
             if (cursor.getCount() > 0) {
                 return true;
@@ -77,8 +79,11 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
     @Override
     public long create(Member member) {
-        super.save(member);
-        return 0;
+        Uri uri = super.save(member);
+        List paths = uri.getPathSegments();
+        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+        member.setId(id);
+        return id;
     }
 
     @Override
@@ -104,7 +109,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
     @Override
     public Member get(long id) {
-        return null;
+        return super.restoreContentWithId(mContext, Member.class, mBaseUri, null, id);
     }
 
     @Override
@@ -128,11 +133,18 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
     @Override
     public long create(List<Member> list) {
-        ContentValues[] contentValues = new ContentValues[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            contentValues[i] = toContentValues(list.get(i));
+        List<Member> dbMemberList = getAll();
+        for (Member member : list) {
+            for (Member dbMember : dbMemberList)
+                if (!dbMember.equals(member)) {
+                    Uri uri = mContext.getContentResolver().insert(mBaseUri, toContentValues(member));
+                    List<String> paths = uri.getPathSegments();
+                    long id = Long.parseLong(paths.get(paths.size() - 1));
+                    member.setId(id);
+                } else {
+                    member.setId(dbMember.getId());
+                }
         }
-        mContext.getContentResolver().bulkInsert(MemberContract.MEMBER_URI, contentValues);
         return 0;
     }
 }

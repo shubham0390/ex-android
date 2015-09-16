@@ -9,7 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.mmt.shubh.expensemanager.ExpenseApplication;
+import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.base.BaseFragment;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import icepick.Icepick;
@@ -34,7 +38,7 @@ import icepick.Icepick;
  * <p/>
  * <p>
  * If you want to use dependency injection libraries like dagger you can override {@link
- * #injectDependencies()} and implement dependency injection right there
+ * #injectDependencies(MainComponent)} and implement dependency injection right there
  * </p>
  *
  * @author Hannes Dorfmann
@@ -42,6 +46,7 @@ import icepick.Icepick;
  */
 public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> extends BaseFragment implements MVPView{
 
+    @Inject
     protected P mPresenter;
 
 
@@ -60,12 +65,6 @@ public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> ext
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // Create the presenter if needed
-        if (mPresenter == null) {
-            mPresenter = createPresenter();
-        }
-        mPresenter.attachView(this);
-
         int layoutRes = getLayoutRes();
         if (layoutRes == 0) {
             throw new IllegalArgumentException(
@@ -82,9 +81,18 @@ public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> ext
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        injectDependencies();
+        MainComponent component = (MainComponent) ExpenseApplication.component();
+        injectDependencies(component);
         ButterKnife.bind(this, view);
+        if(mPresenter==null){
+            mPresenter = getPresenter();
+        }
+        mPresenter.attachView(this);
 
+    }
+
+    protected P getPresenter(){
+        return null;
     }
 
     @Override
@@ -94,12 +102,15 @@ public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> ext
         mPresenter.detachView(getRetainInstance());
     }
 
+
+
+
     /**
      * This method will be called from {@link #onViewCreated(View, Bundle)} and this is the right place to
      * inject
      * dependencies (i.e. by using dagger)
      */
-    protected void injectDependencies() {
+    protected void injectDependencies(MainComponent mainComponent) {
 
     }
 
@@ -113,5 +124,4 @@ public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> ext
         return 0;
     }
 
-    protected abstract P createPresenter();
 }

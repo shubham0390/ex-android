@@ -7,12 +7,13 @@ import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookContract;
 
 /**
  * Created by Subham Tyagi,
@@ -20,12 +21,11 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
  * 4:04 PM
  * TODO:Add class comment.
  */
-public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> implements ExpenseBookDataAdapter<ExpenseBook>, ExpenseBookContract {
-
+public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> implements ExpenseBookDataAdapter, ExpenseBookContract {
 
 
     public ExpenseBookSQLDataAdapter(Context context) {
-        super(ExpenseBookContract.EXPENSE_BOOK_URI,context);
+        super(ExpenseBookContract.EXPENSE_BOOK_URI, context);
     }
 
     /**
@@ -67,6 +67,8 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
         values.put(EXPENSE_BOOK_PROFILE_IMAGE_URI, expenseBook.getProfileImagePath());
         values.put(EXPENSE_BOOK_DESCRIPTION, expenseBook.getDescription());
         values.put(EXPENSE_BOOK_TYPE, expenseBook.getType());
+        values.put(EXPENSE_BOOK_CREATION_TIME, expenseBook.getCreationTime());
+        values.put(OWNER_KEY, expenseBook.getOwner().getId());
         return values;
     }
 
@@ -76,23 +78,32 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
         expenseBook.setDescription(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_DESCRIPTION)));
         expenseBook.setType(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_TYPE)));
         expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE_URI)));
+        expenseBook.setOwner(loadMember(cursor.getLong(cursor.getColumnIndex(OWNER_KEY))));
+        expenseBook.setCreationTime(cursor.getLong(cursor.getColumnIndex(EXPENSE_BOOK_CREATION_TIME)));
     }
 
-    private UserInfo getUser(long aLong) {
-        return null;
-    }
-
-    public void addMembers(List<Member> members) {
-
+    private Member loadMember(long aLong) {
         MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
-        sqlDataAdapter.create(members);
+        return sqlDataAdapter.get(aLong);
+    }
+
+
+    public void addMembers(List<Member> members, ExpenseBook expenseBook) {
+        for (Member member : members) {
+            ContentValues values = new ContentValues();
+            values.put(MemberExpenseBookContract.MEMBER_KEY, member.getId());
+            values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBook.getId());
+            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+        }
     }
 
     @Override
     public long create(ExpenseBook expenseBook) {
         Uri uri = save(expenseBook);
         List paths = uri.getPathSegments();
-        return Long.parseLong((String) paths.get(paths.size() - 1));
+        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+        expenseBook.setId(id);
+        return id;
     }
 
     @Override
@@ -117,14 +128,14 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
 
     @Override
     public ExpenseBook get(long id) {
-        return null;
+        return restoreContentWithId(mContext, ExpenseBook.class, ExpenseBookContract.EXPENSE_BOOK_URI, null, id);
     }
 
     @Override
     public List<ExpenseBook> getAll() {
-      /*  List<ExpenseBook> expenseBooks = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(AccountContract.ACCOUNT_URI,
-                AccountContract.USER_PROJECTION, null, null, null);
+        List<ExpenseBook> expenseBooks = new ArrayList<>();
+        Cursor cursor = mContext.getContentResolver().query(ExpenseBookContract.EXPENSE_BOOK_URI,
+                null, null, null, null);
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
@@ -137,8 +148,8 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter <ExpenseBook> 
                     cursor.close();
                 }
             }
-        }*/
-        return null;
+        }
+        return expenseBooks;
     }
 
     @Override

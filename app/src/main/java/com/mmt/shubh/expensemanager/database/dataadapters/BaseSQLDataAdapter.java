@@ -23,15 +23,19 @@ import android.net.Uri;
 import android.os.Binder;
 
 import com.mmt.shubh.expensemanager.database.DatabaseUtility;
+import com.mmt.shubh.expensemanager.database.content.BaseContent;
 import com.mmt.shubh.expensemanager.database.provider.ProviderUnavailableException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by STyagi on 3/20/14.
+ * Created by Subham Tyagi,
+ * on 06/Sep/2015,
+ * 5:49 PM
+ * TODO:Add class comment.
  */
-public abstract class BaseSQLDataAdapter<T> {
+public abstract class BaseSQLDataAdapter<T extends BaseContent> {
 
     public static final String PARAMETER_LIMIT = "limit";
 
@@ -56,7 +60,7 @@ public abstract class BaseSQLDataAdapter<T> {
 
     protected Context mContext;
 
-    public BaseSQLDataAdapter(Uri baseUri,Context context) {
+    public BaseSQLDataAdapter(Uri baseUri, Context context) {
         mContext = context;
         mBaseUri = baseUri;
     }
@@ -71,8 +75,8 @@ public abstract class BaseSQLDataAdapter<T> {
      * @param id                the unique id of the object
      * @return the instantiated object
      */
-    public static <T extends BaseSQLDataAdapter> T restoreContentWithId(Context context,
-                                                                        Class<T> klass, Uri contentUri, String[] contentProjection, long id) throws IllegalArgumentException {
+    public <T extends BaseContent> T restoreContentWithId(Context context,
+                                                          Class<T> klass, Uri contentUri, String[] contentProjection, long id) throws IllegalArgumentException {
         long token = Binder.clearCallingIdentity();
         if (context == null) {
             throw new IllegalArgumentException("Application Context cannot be null");
@@ -102,9 +106,9 @@ public abstract class BaseSQLDataAdapter<T> {
      * @param contentProjection the content projection for the ExpenseContent subclass
      * @return the instantiated object
      */
-    public static <T extends BaseSQLDataAdapter> List<T> restoreContent(Context context,
-                                                                        Class<T> klass, Uri contentUri, String[] contentProjection) {
-        List<T> list = new ArrayList<T>();
+    public <T extends BaseContent> List<T> restoreContent(Context context,
+                                                          Class<T> klass, Uri contentUri, String[] contentProjection) {
+        List<T> list = new ArrayList();
         Cursor c = context.getContentResolver().query(contentUri, contentProjection, null, null, null);
         if (c == null) throw new ProviderUnavailableException();
         try {
@@ -118,11 +122,11 @@ public abstract class BaseSQLDataAdapter<T> {
     }
 
     // The Content sub class must have a no-arg constructor
-    static public <T extends BaseSQLDataAdapter> T getContent(Cursor cursor, Class<T> klass) {
+    public  <T extends BaseContent> T getContent(Cursor cursor, Class<T> klass) {
         try {
             T content = klass.newInstance();
-            content.mRecordId = cursor.getLong(0);
-            content.restore(cursor, content);
+            content.setId(cursor.getLong(0));
+            //restore(cursor, content);
             return content;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -132,12 +136,12 @@ public abstract class BaseSQLDataAdapter<T> {
         return null;
     }
 
-    static public int update(Context context, Uri baseUri, long id, ContentValues contentValues) {
+    public int update(Context context, Uri baseUri, long id, ContentValues contentValues) {
         return context.getContentResolver()
                 .update(ContentUris.withAppendedId(baseUri, id), contentValues, null, null);
     }
 
-    static public int delete(Context context, Uri baseUri, long id) {
+    public int delete(Context context, Uri baseUri, long id) {
         return context.getContentResolver()
                 .delete(ContentUris.withAppendedId(baseUri, id), null, null);
     }

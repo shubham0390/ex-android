@@ -19,6 +19,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -47,7 +48,7 @@ import com.mmt.shubh.expensemanager.ui.view.ScrollingLinearLayoutManager;
  * 6:37 PM
  * TODO:Add class comment.
  */
-public class ExpenseListFragment extends BaseFragment implements ViewTreeObserver.OnGlobalLayoutListener, ExpenseListAdapter.ListItemClickListener {
+public class ExpenseListFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener, ExpenseListAdapter.ListItemClickListener {
 
     private static final int LOADER_ID = 2;
 
@@ -104,11 +105,6 @@ public class ExpenseListFragment extends BaseFragment implements ViewTreeObserve
                 return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    @Override
-    public String getTitle() {
-        return "Expense List";
     }
 
     @Override

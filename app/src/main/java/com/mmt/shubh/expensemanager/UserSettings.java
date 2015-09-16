@@ -14,11 +14,15 @@
  */
 package com.mmt.shubh.expensemanager;
 
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
+
 public class UserSettings {
 
     private volatile static UserSettings INSTANCE;
 
     private long mUserId;
+
+    private UserInfo mUserInfo;
 
     public static UserSettings getInstance() {
         if (INSTANCE == null) {
@@ -44,4 +48,11 @@ public class UserSettings {
         this.mUserId = mUserId;
     }
 
+    public UserInfo getUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        mUserInfo = userInfo;
+    }
 }

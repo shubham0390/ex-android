@@ -34,7 +34,7 @@
 
     <style name="style_group_name_text_view">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/group_name_text_size</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
     </style>
 
     <style name="BaseListItem">
@@ -69,7 +69,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="LoginScreen" parent="AppTheme">
+    <style name="AppTheme.Dark" parent="AppTheme">
         <!--<item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/colorPrimary</item>-->
     </style>
@@ -93,4 +93,5 @@
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="textAllCaps">true</item>
     </style>
+
 </resources>

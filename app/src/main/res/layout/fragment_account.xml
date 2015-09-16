@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mmt.shubh.expensemanager.ui.fragment.AccountListFragment">
+    tools:context="com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment">
 
     <com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView
         android:id="@+id/recycler_view"

@@ -1,14 +1,21 @@
 package com.mmt.shubh.expensemanager.dagger;
 
 
+import android.content.Context;
+
 import com.mmt.shubh.expensemanager.ExpenseApplication;
+import com.mmt.shubh.expensemanager.dagger.api.DaggerObjectGraph;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
-@Component(modules = {MainModule.class, DataModule.class, ApiModule.class})
+@Component(modules = {
+        MainModule.class,
+        DataModule.class,
+        ApiModule.class
+})
 public interface MainComponent extends DaggerObjectGraph {
     final class Initializer {
         private Initializer() {
@@ -20,4 +27,8 @@ public interface MainComponent extends DaggerObjectGraph {
                     .build();
         }
     }
+
+    /*ExpenseApplication getExpenseApplication();*/
+
+    Context getApplicationContext();
 }

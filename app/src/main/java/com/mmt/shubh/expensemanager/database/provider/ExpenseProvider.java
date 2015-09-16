@@ -61,7 +61,7 @@ public class ExpenseProvider extends ContentProvider {
     private static final int CATEGORY = CATEGORY_BASE;
     private static final int CATEGORY_ID = CATEGORY + 1;
 
-    private static final String MEMBER_EXPANSE_BOOK_BASE_PATH = ContentPath.PATH_MEMBER_EXPENESE_BOOK;
+    private static final String MEMBER_EXPANSE_BOOK_BASE_PATH = MemberExpenseBookContract.PATH;
     private static final int MEMBER_EXPANSE_BOOK_BASE = 0x6000;
     private static final int MEMBER_EXPANSE_BOOK = MEMBER_EXPANSE_BOOK_BASE;
 

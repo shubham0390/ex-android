@@ -16,6 +16,7 @@ public interface MemberContract extends BaseColumns, BaseContract {
     String MEMBER_IMAGE_URI = "profile_image_uri";
     String MEMBER_COVER_IMAGE_URL = "cover_image_uri";
 
+
     Uri MEMBER_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(AUTHORITY)
@@ -25,6 +26,7 @@ public interface MemberContract extends BaseColumns, BaseContract {
     Uri MEMBER_EXPENSE_BOOK_URI = MEMBER_URI.buildUpon()
             .appendPath(ExpenseBookContract.PATH_EXPENSE_BOOK)
             .build();
+
 
    /* String[] PROJECTION_MEMBER_EXPENSE_BOOK = new String[]{
             "SUM(" + ExpenseContract.TABLE_NAME + "." + ExpenseContract.EXPENSE_AMOUNT + ") AS " + MEMBER_TOTAL_EXPENSE

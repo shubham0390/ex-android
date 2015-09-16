@@ -12,6 +12,9 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPActivity;
+
+import butterknife.Bind;
 
 /**
  * Created by Subham Tyagi,
@@ -19,11 +22,12 @@ import com.mmt.shubh.expensemanager.R;
  * 6:40 PM
  * TODO:Add class comment.
  */
-public class ToolBarActivity extends AppCompatActivity {
+public class ToolBarActivity extends MVPActivity {
 
     protected Tracker mTracker;
-    private Toolbar mToolbar;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     private boolean mToolbarInitialized;
 
     @Override
@@ -38,7 +42,7 @@ public class ToolBarActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (!mToolbarInitialized) {
-            throw new IllegalStateException("You must run super.initializeNavigationDrawer at " +
+            throw new IllegalStateException("You must run super.initializeToolbar at " +
                     "the end of your onCreate method");
         }
     }
@@ -63,20 +67,19 @@ public class ToolBarActivity extends AppCompatActivity {
     }
 
     protected void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar == null) {
             throw new IllegalStateException("Layout is required to include a Toolbar with id " +
                     "'toolbar'");
         }
-
-
         setSupportActionBar(mToolbar);
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbarInitialized = true;
+    }
+
+    protected void toggleHomeBackButton(boolean value) {
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        ab.setDisplayHomeAsUpEnabled(value);
     }
 
 }

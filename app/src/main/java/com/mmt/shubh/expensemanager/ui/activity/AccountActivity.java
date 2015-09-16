@@ -7,9 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.fragment.AccountAddFragment;
-import com.mmt.shubh.expensemanager.ui.fragment.AccountListFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AccountAddFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
+
+import butterknife.ButterKnife;
 
 public class AccountActivity extends ToolBarActivity implements AccountFragmentIntractionListener {
 
@@ -23,6 +25,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        ButterKnife.bind(this);
         initializeToolbar();
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -30,10 +33,9 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
             ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
         AccountListFragment listFragment = new AccountListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.account_fragment, listFragment).commit();
+        getFragmentManager().beginTransaction().add(R.id.account_fragment, listFragment).commit();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

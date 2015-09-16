@@ -17,12 +17,12 @@ package com.mmt.shubh.expensemanager.database.content;
 
 import java.util.List;
 
-public class Expense extends BaseContent{
-
+public class Expense extends BaseContent {
 
     private String mExpenseAmount;
     private long mExpenseDate;
     private String mExpenseName;
+    private long mOwnerId;
     private String mExpensePlace;
     private String mExpenseDescription;
     private ExpenseBook mExpenseBook;
@@ -33,6 +33,13 @@ public class Expense extends BaseContent{
 
     }
 
+    public long getOwnerId() {
+        return mOwnerId;
+    }
+
+    public void setOwnerId(long ownerId) {
+        mOwnerId = ownerId;
+    }
 
     public String getExpenseAmount() {
         return mExpenseAmount;

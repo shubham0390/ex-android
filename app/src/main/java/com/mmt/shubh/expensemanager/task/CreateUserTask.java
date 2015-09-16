@@ -32,7 +32,7 @@ public class CreateUserTask extends AbstractTask {
         Logger.debug(TAG, "Adding User to database");
         TaskResult taskResult = new TaskResult();
         UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
-        UserInfo.Builder builder = new UserInfo.Builder();
+        UserInfo builder = new UserInfo();
         builder.setDisplayName(mFullName);
         builder.setEmailAddress(mEmailAddress);
         builder.setUserPassword(mPassword);
@@ -40,7 +40,7 @@ public class CreateUserTask extends AbstractTask {
         builder.setProfilePhotoUrl("");
         builder.setCoverPhotoUrl("");
         builder.setStatus(UserInfo.Status.ACTIVE);
-        long id = sqlDataAdapter.create(builder.build());
+        long id = sqlDataAdapter.create(builder);
         if (id > 0) {
             taskResult.setIsSuccess(true);
             Logger.debug(TAG, "user created successfully");

@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
+import butterknife.Bind;
+
 /**
  * Created by Subham Tyagi,
  * on 19/Jun/2015,
@@ -26,11 +29,15 @@ import com.mmt.shubh.expensemanager.database.content.UserInfo;
  */
 public class DrawerBaseActivity extends ToolBarActivity {
 
-
-    private DrawerLayout mDrawerLayout;
-
+    @Bind(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
 
     UserInfo mUserInfo;
+
+
+    @Nullable
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,12 +66,14 @@ public class DrawerBaseActivity extends ToolBarActivity {
 
     protected void initializeNavigationDrawer() {
         initializeToolbar();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+            ab.setDisplayHomeAsUpEnabled(true);
         }
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-
+        if (mNavigationView != null) {
+            setupDrawerContent(mNavigationView);
+        }
         populateDrawerItems();
     }
 
@@ -78,16 +87,19 @@ public class DrawerBaseActivity extends ToolBarActivity {
                         Intent intent = null;
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
-                                intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                intent = new Intent(DrawerBaseActivity.this, HomeActivity.class);
                                 finish();
                                 break;
                             case R.id.nav_account:
-                                intent = new Intent(getApplicationContext(), AccountActivity.class);
+                                intent = new Intent(DrawerBaseActivity.this, AccountActivity.class);
                                 break;
                             case R.id.nav_distribution:
                                 break;
+                            case R.id.nav_cash_managment:
+                                intent = new Intent(DrawerBaseActivity.this, CashActivity.class);
+                                break;
                             case R.id.nav_expense_book:
-                                intent = new Intent(getApplicationContext(), ExpenseBookActivity.class);
+                                intent = new Intent(DrawerBaseActivity.this, ExpenseBookActivity.class);
                                 break;
                             case R.id.nav_summary:
                                 break;
@@ -103,7 +115,7 @@ public class DrawerBaseActivity extends ToolBarActivity {
                 });
     }
 
-    private void populateDrawerItems() {
+    protected void populateDrawerItems() {
         if (mUserInfo != null) {
             mUserInfo = getIntent().getParcelableExtra("Account");
             ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
@@ -128,6 +140,5 @@ public class DrawerBaseActivity extends ToolBarActivity {
             emailId.setText(mUserInfo.getEmailAddress());
         }
     }
-
 
 }

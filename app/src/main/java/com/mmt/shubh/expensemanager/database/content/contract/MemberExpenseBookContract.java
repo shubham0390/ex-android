@@ -1,5 +1,8 @@
 package com.mmt.shubh.expensemanager.database.content.contract;
 
+import android.content.ContentResolver;
+import android.net.Uri;
+
 /**
  * Created by Subham Tyagi,
  * on 30/Jun/2015,
@@ -15,4 +18,11 @@ public interface MemberExpenseBookContract extends BaseContract {
     String MEMBER_KEY = "member_key";
 
     String EXPENSE_BOOK_KEY = "expense_book_key";
+
+
+    Uri MEMBER_EXPENSE_BOOK_URI = new Uri.Builder()
+            .scheme(ContentResolver.SCHEME_CONTENT)
+            .authority(AUTHORITY)
+            .path(PATH)
+            .build();
 }

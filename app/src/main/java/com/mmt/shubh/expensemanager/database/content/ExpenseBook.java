@@ -15,16 +15,46 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class ExpenseBook extends BaseContent {
-
+public class ExpenseBook extends BaseContent implements Parcelable {
 
     public String mName;
     public String mProfileImagePath;
     public String mDescription;
     public String mType;
+    public long mCreationTime;
+    private Member mOwner;
+
     public List<Member> mMemberList;
+
+    public ExpenseBook() {
+    }
+
+    protected ExpenseBook(Parcel in) {
+        mName = in.readString();
+        mProfileImagePath = in.readString();
+        mDescription = in.readString();
+        mType = in.readString();
+        mCreationTime = in.readLong();
+        mOwner = in.readParcelable(Member.class.getClassLoader());
+        mMemberList = in.createTypedArrayList(Member.CREATOR);
+    }
+
+    public static final Creator<ExpenseBook> CREATOR = new Creator<ExpenseBook>() {
+        @Override
+        public ExpenseBook createFromParcel(Parcel in) {
+            return new ExpenseBook(in);
+        }
+
+        @Override
+        public ExpenseBook[] newArray(int size) {
+            return new ExpenseBook[size];
+        }
+    };
 
     public String getName() {
         return mName;
@@ -70,4 +100,38 @@ public class ExpenseBook extends BaseContent {
         mMemberList = memberList;
         return this;
     }
+
+    public Member getOwner() {
+        return mOwner;
+    }
+
+    public void setOwner(Member ownerId) {
+        mOwner = ownerId;
+    }
+
+    public long getCreationTime() {
+        return mCreationTime;
+    }
+
+    public void setCreationTime(long creationTime) {
+        mCreationTime = creationTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mName);
+        parcel.writeString(mProfileImagePath);
+        parcel.writeString(mDescription);
+        parcel.writeString(mType);
+        parcel.writeLong(mCreationTime);
+        parcel.writeParcelable(mOwner, i);
+        parcel.writeTypedList(mMemberList);
+    }
+
+
 }

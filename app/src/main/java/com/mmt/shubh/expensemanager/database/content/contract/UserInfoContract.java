@@ -19,6 +19,7 @@ public interface UserInfoContract extends BaseContract {
     int USER_COVER_IMAGE_URL_COLUMN = 4;
     int USER_EMAIL_ADDRESS_COLUMN = 5;
     int USER_STATUS_COLUMN = 6;
+    int MEMBER_KEY_COLUMN = 7;
 
     String TABLE_NAME = "user";
 
@@ -29,6 +30,7 @@ public interface UserInfoContract extends BaseContract {
     String USER_EMAIL_ADDRESS = "email_address";
     String USER_PHONE_NUMBER = "phone_number";
     String USER_STATUS = "status";
+    String MEMBER_KEY = "member_key";
 
     String[] USER_PROJECTION = new String[]{
             _ID,
@@ -47,5 +49,6 @@ public interface UserInfoContract extends BaseContract {
             .authority(AUTHORITY)
             .path(PATH_USER)
             .build();
+
 
 }

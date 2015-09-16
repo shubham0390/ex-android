@@ -19,7 +19,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.PersonBuffer;
-import com.mmt.shubh.expensemanager.ui.presenters.ISignUpPresenter;
 
 import java.lang.ref.WeakReference;
 

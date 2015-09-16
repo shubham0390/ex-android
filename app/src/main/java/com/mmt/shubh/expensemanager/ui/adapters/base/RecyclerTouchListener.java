@@ -128,7 +128,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
                 final int position = mHostView.getChildAdapterPosition(mTargetChild);
                 final long id = mHostView.getAdapter().getItemId(position);
-                if (mItemLongClickListener != null) {
+                if (mItemClickListener != null) {
                     handled = mItemClickListener.onItemClick(mHostView, mTargetChild, position, id);
                 }
                 mTargetChild = null;

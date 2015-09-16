@@ -18,46 +18,16 @@ package com.mmt.shubh.expensemanager.database.content;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class UserInfo extends BaseContent implements Parcelable{
+public class UserInfo extends BaseContent implements Parcelable {
 
-
-    protected UserInfo(Parcel in) {
-        mUserPassword = in.readString();
-        mEmailAddress = in.readString();
-        mDisplayName = in.readString();
-        mCoverPhotoUrl = in.readString();
-        mProfilePhotoUrl = in.readString();
-    }
-
-    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
-        @Override
-        public UserInfo createFromParcel(Parcel in) {
-            return new UserInfo(in);
-        }
-
-        @Override
-        public UserInfo[] newArray(int size) {
-            return new UserInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mUserPassword);
-        dest.writeString(mEmailAddress);
-        dest.writeString(mDisplayName);
-        dest.writeString(mCoverPhotoUrl);
-        dest.writeString(mProfilePhotoUrl);
-    }
 
     public enum Status {
         ACTIVE,
         LOG_OUT
+    }
+
+
+    public UserInfo() {
     }
 
     private String mUserPassword;
@@ -74,14 +44,7 @@ public class UserInfo extends BaseContent implements Parcelable{
 
     private String mPhoneNumber;
 
-    private UserInfo() {
-    }
-
-    @Override
-    public long getId() {
-        return mId;
-    }
-
+    private long mMemberKey;
 
     public String getCoverPhotoUrl() {
         return mCoverPhotoUrl;
@@ -112,69 +75,84 @@ public class UserInfo extends BaseContent implements Parcelable{
         return mPhoneNumber;
     }
 
-    public Builder buildUpon() {
-        Builder builder = new Builder(this);
-        return builder;
+    public void setCoverPhotoUrl(String coverPhotoUrl) {
+        this.mCoverPhotoUrl = coverPhotoUrl;
+
     }
 
-    public static class Builder {
-
-        private UserInfo mUserInfo;
-
-        public Builder() {
-            mUserInfo = new UserInfo();
-        }
-
-        private Builder(UserInfo userInfo) {
-            mUserInfo = userInfo;
-        }
-
-        public Builder setId(long id) {
-            mUserInfo.setId(id);
-            return this;
-        }
-
-        public Builder setCoverPhotoUrl(String coverPhotoUrl) {
-            mUserInfo.mCoverPhotoUrl = coverPhotoUrl;
-            return this;
-        }
-
-        public Builder setDisplayName(String displayName) {
-            mUserInfo.mDisplayName = displayName;
-            return this;
-        }
-
-        public Builder setEmailAddress(String emailAddress) {
-            mUserInfo.mEmailAddress = emailAddress;
-            return this;
-        }
-
-        public Builder setProfilePhotoUrl(String profilePhotoUrl) {
-            mUserInfo.mProfilePhotoUrl = profilePhotoUrl;
-            return this;
-        }
-
-        public Builder setStatus(Status status) {
-            mUserInfo.mStatus = status;
-            return this;
-        }
-
-        public Builder setUserPassword(String userPassword) {
-            mUserInfo.mUserPassword = userPassword;
-            return this;
-        }
-
-        public Builder setPhoneNumber(String phoneNumber) {
-            mUserInfo.mPhoneNumber = phoneNumber;
-            return this;
-        }
-
-        public UserInfo build() {
-            return mUserInfo;
-        }
-
-        public void setMobileNo(String mobileNo) {
-
-        }
+    public void setDisplayName(String displayName) {
+        this.mDisplayName = displayName;
     }
+
+    public void setEmailAddress(String emailAddress) {
+        this.mEmailAddress = emailAddress;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.mProfilePhotoUrl = profilePhotoUrl;
+    }
+
+    public void setStatus(Status status) {
+        this.mStatus = status;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.mUserPassword = userPassword;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.mPhoneNumber = phoneNumber;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        mPhoneNumber = mobileNo;
+    }
+
+    public long getMemberKey() {
+        return mMemberKey;
+    }
+
+    public void setMemberKey(long memberKey) {
+        mMemberKey = memberKey;
+    }
+    protected UserInfo(Parcel in) {
+        mId = in.readLong();
+        mUserPassword = in.readString();
+        mEmailAddress = in.readString();
+        mDisplayName = in.readString();
+        mCoverPhotoUrl = in.readString();
+        mProfilePhotoUrl = in.readString();
+        mPhoneNumber = in.readString();
+        mMemberKey = in.readLong();
+    }
+
+    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
+        @Override
+        public UserInfo createFromParcel(Parcel in) {
+            return new UserInfo(in);
+        }
+
+        @Override
+        public UserInfo[] newArray(int size) {
+            return new UserInfo[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(mId);
+        parcel.writeString(mUserPassword);
+        parcel.writeString(mEmailAddress);
+        parcel.writeString(mDisplayName);
+        parcel.writeString(mCoverPhotoUrl);
+        parcel.writeString(mProfilePhotoUrl);
+        parcel.writeString(mPhoneNumber);
+        parcel.writeLong(mMemberKey);
+    }
+
 }

@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,29 +27,31 @@ import butterknife.ButterKnife;
  * 11:16 AM
  * TODO:Add class comment.
  */
-public abstract class RecyclerViewFragment extends Fragment {
+public abstract class RecyclerViewFragment<V extends MVPView, P extends MVPPresenter<V>> extends MVPFragment<V, P> {
 
     @Bind(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
+
     @Bind(R.id.empty_text)
     TextView mEmptyText;
+
     @Bind(R.id.progress_bar)
     ProgressBar mProgressBar;
+
     @Bind(R.id.progress_container)
     View mProgressContainer;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        ButterKnife.bind(this, view);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        return view;
     }
 
-    protected abstract int getLayoutId();
+    protected int getLayoutId() {
+        return 0;
+    }
 
     protected void setEmptyText(int resId) {
         mEmptyText.setText(resId);
@@ -56,7 +61,7 @@ public abstract class RecyclerViewFragment extends Fragment {
         mEmptyText.setText(emptyText);
     }
 
-    protected void setAdapter(CursorRecyclerAdapter adapter) {
+    protected void setAdapter(RecyclerView.Adapter adapter) {
         mRecyclerView.setAdapter(adapter);
     }
 

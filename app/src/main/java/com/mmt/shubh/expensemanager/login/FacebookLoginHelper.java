@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.login;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,12 +8,14 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.mmt.shubh.expensemanager.ui.presenters.ISignUpPresenter;
 
 import java.util.Arrays;
 
 /**
- * Created by styagi on 6/5/2015.
+ * Created by Subham Tyagi,
+ * on 09/Sep/2015,
+ * 12:11 PM
+ * TODO:Add class comment.
  */
 public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<LoginResult> {
 

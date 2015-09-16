@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mmt.shubh.expensemanager.ui.fragment.ExistingExpenseBookFragment">
+    tools:context="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/expense_book_list"
+    <com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <include layout="@layout/include_list_empty_view"/>
 </FrameLayout>

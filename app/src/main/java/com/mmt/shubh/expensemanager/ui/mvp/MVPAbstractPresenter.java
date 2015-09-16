@@ -2,6 +2,9 @@ package com.mmt.shubh.expensemanager.ui.mvp;
 
 import android.support.annotation.Nullable;
 
+import com.mmt.shubh.expensemanager.ExpenseApplication;
+import com.mmt.shubh.expensemanager.dagger.MainComponent;
+
 import java.lang.ref.WeakReference;
 
 public abstract class MVPAbstractPresenter<V extends MVPView> {
@@ -9,7 +12,8 @@ public abstract class MVPAbstractPresenter<V extends MVPView> {
     private WeakReference<V> viewRef;
 
     public void attachView(V view) {
-        viewRef = new WeakReference<V>(view);
+        viewRef = new WeakReference<>(view);
+        injectDependencies((MainComponent) ExpenseApplication.component());
     }
 
     /**
@@ -38,4 +42,10 @@ public abstract class MVPAbstractPresenter<V extends MVPView> {
             viewRef = null;
         }
     }
+
+    protected void injectDependencies(MainComponent mainComponent) {
+
+    }
+
+
 }

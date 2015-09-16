@@ -26,7 +26,7 @@ public class GoogleProfileFetcher extends ProfileFetcher {
     @Override
     public UserInfo fetchUserAccountDetails(Context context) {
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        UserInfo.Builder builder = new UserInfo.Builder();
+        UserInfo builder = new UserInfo();
         if (currentPerson != null) {
             builder.setDisplayName(currentPerson.getDisplayName());
             Person.Image personPhoto = currentPerson.getImage();
@@ -39,8 +39,7 @@ public class GoogleProfileFetcher extends ProfileFetcher {
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
             builder.setEmailAddress(email);
             builder.setStatus(UserInfo.Status.ACTIVE);
-            UserInfo userInfo = builder.build();
-            return userInfo;
+            return builder;
         }else{
             Logger.debug(TAG,"Unable to load user information");
         }

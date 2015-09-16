@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.UserSettings;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
@@ -56,6 +57,8 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void onLoadFinished(Loader<UserInfo> loader, UserInfo data) {
             if (data != null) {
+                UserSettings userSettings = UserSettings.getInstance();
+                userSettings.setUserInfo(data);
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                 intent.putExtra("Account", data);
                 startActivity(intent);

@@ -20,9 +20,6 @@ package com.mmt.shubh.expensemanager.database.provider;
  */
 public final class ContentPath {
 
-
-
-
     public static final String PATH_EXPENSE = "EXPENSE";
     public static final String PATH_SUBCATEGORY = "subcategory";
 

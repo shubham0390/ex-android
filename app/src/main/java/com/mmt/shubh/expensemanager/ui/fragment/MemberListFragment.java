@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,7 +32,7 @@ import com.mmt.shubh.expensemanager.ui.fragment.base.BaseFragment;
  * 11:30 PM
  * TODO:Add class comment.
  */
-public class MemberListFragment extends BaseFragment implements AppFragment, MemberListAdapter.OnMemberItemClickListener {
+public class MemberListFragment extends Fragment implements AppFragment, MemberListAdapter.OnMemberItemClickListener {
 
     private RecyclerView mRecyclerView;
     private MemberListAdapter mListAdapter;

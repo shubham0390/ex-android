@@ -15,9 +15,9 @@
 
 package com.mmt.shubh.expensemanager.ui.fragment.base;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.ExpenseApplication;

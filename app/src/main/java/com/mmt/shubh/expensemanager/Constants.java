@@ -19,7 +19,7 @@ public interface Constants {
 
      String KEY_ITEM_ID = "itemId";
      String KEY_USER_ID = "userId";
-     String KEY_EXPENSE_BOOK_ID = "groupId";
+     String KEY_EXPENSE_BOOK = "groupId";
      String KEY_MEMBER_ID = "memberId";
 
      String KEY_RESULT_CODE = "result_code";
