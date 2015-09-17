@@ -1,6 +1,8 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +19,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
+import butterknife.Bind;
+
 /**
  * Created by Subham Tyagi,
  * on 19/Jun/2015,
@@ -25,28 +29,21 @@ import com.mmt.shubh.expensemanager.database.content.UserInfo;
  */
 public class DrawerBaseActivity extends ToolBarActivity {
 
-    private Toolbar mToolbar;
-
-    private DrawerLayout mDrawerLayout;
-
-    private boolean mToolbarInitialized;
+    @Bind(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
 
     UserInfo mUserInfo;
+
+
+    @Nullable
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!mToolbarInitialized) {
-            throw new IllegalStateException("You must run super.initializeToolbar at " +
-                    "the end of your onCreate method");
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,38 +63,17 @@ public class DrawerBaseActivity extends ToolBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle(title);
-        mToolbar.setTitle(title);
-    }
 
-    @Override
-    public void setTitle(int titleId) {
-        super.setTitle(titleId);
-        mToolbar.setTitle(titleId);
-    }
-
-    protected void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (mToolbar == null) {
-            throw new IllegalStateException("Layout is required to include a Toolbar with id " +
-                    "'toolbar'");
-        }
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-
-        setSupportActionBar(mToolbar);
+    protected void initializeNavigationDrawer() {
+        initializeToolbar();
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setHomeAsUpIndicator(R.drawable.ic_menu);
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        mToolbarInitialized = true;
+        if (mNavigationView != null) {
+            setupDrawerContent(mNavigationView);
+        }
         populateDrawerItems();
     }
 
@@ -108,12 +84,22 @@ public class DrawerBaseActivity extends ToolBarActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
+                        Intent intent = null;
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
+                                intent = new Intent(DrawerBaseActivity.this, HomeActivity.class);
+                                finish();
+                                break;
+                            case R.id.nav_account:
+                                intent = new Intent(DrawerBaseActivity.this, AccountActivity.class);
                                 break;
                             case R.id.nav_distribution:
                                 break;
+                            case R.id.nav_cash_managment:
+                                intent = new Intent(DrawerBaseActivity.this, CashActivity.class);
+                                break;
                             case R.id.nav_expense_book:
+                                intent = new Intent(DrawerBaseActivity.this, ExpenseBookActivity.class);
                                 break;
                             case R.id.nav_summary:
                                 break;
@@ -122,35 +108,37 @@ public class DrawerBaseActivity extends ToolBarActivity {
                             case R.id.nav_about_app:
                                 break;
                         }
+                        startActivity(intent);
                         return true;
+
                     }
                 });
     }
 
-    private void populateDrawerItems() {
-        mUserInfo = getIntent().getParcelableExtra("Account");
-        ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
-        ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
-        TextView displayName = (TextView) findViewById(R.id.account_name);
-        TextView emailId = (TextView) findViewById(R.id.email_id);
+    protected void populateDrawerItems() {
+        if (mUserInfo != null) {
+            mUserInfo = getIntent().getParcelableExtra("Account");
+            ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
+            ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
+            TextView displayName = (TextView) findViewById(R.id.account_name);
+            TextView emailId = (TextView) findViewById(R.id.email_id);
 
-        if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
-            Glide.with(this)
-                    .load(mUserInfo.getCoverPhotoUrl())
+            if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
+                Glide.with(this)
+                        .load(mUserInfo.getCoverPhotoUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(coverImage);
+
+            }
+
+            Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
+                    .placeholder(R.drawable.member_avatar_white_48dp)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(coverImage);
+                    .into(profileImage);
 
+            displayName.setText(mUserInfo.getDisplayName());
+            emailId.setText(mUserInfo.getEmailAddress());
         }
-
-        Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
-                .placeholder(R.drawable.member_avatar_white_48dp)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(profileImage);
-
-        displayName.setText(mUserInfo.getDisplayName());
-        emailId.setText(mUserInfo.getEmailAddress());
-
     }
-
 
 }

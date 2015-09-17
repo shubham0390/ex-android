@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="64dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="image"
+            android:scaleType="centerInside"
+            android:src="@drawable/coins"/>
+
+
+        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Expense Manager"
+            android:textSize="28sp"
+            app:fontStyle="playfairDisplayBoldItalic"/>
+
+        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end|right"
+            android:paddingRight="24sp"
+            android:text="Simplify your expenses"
+            android:textSize="16sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="64dp">
+
+        <ImageButton
+            android:id="@+id/profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_play_arrow_white_48dp"
+            />
+
+        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Get started"
+            android:textSize="24sp"
+            app:fontStyle="playfairDisplayRegular"/>
+
+    </LinearLayout>
+
+    <com.mmt.shubh.expensemanager.ui.view.ExTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="Already experienced? Sign In"
+        android:textSize="24sp"
+        app:fontStyle="playfairDisplayRegular"/>
+
+</LinearLayout>
+

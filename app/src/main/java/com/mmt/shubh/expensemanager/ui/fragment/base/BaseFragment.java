@@ -15,15 +15,18 @@
 
 package com.mmt.shubh.expensemanager.ui.fragment.base;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
 
 /**
- * Created by STyagi on 4/5/14.
+ * Created by Subham Tyagi,
+ * on 21/Aug/2015,
+ * 6:08 PM
+ * TODO:Add class comment.
  */
 public abstract class BaseFragment extends Fragment implements AppFragment {
     protected Context mContext;

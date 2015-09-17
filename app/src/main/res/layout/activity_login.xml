@@ -1,42 +1,61 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:layout_gravity="center"
-             android:gravity="center"
-             android:padding="@dimen/activity_vertical_margin"
-             tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
 
+    <include android:id="@+id/toolbar"
+             layout="@layout/include_toolbar"/>
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/coins"/>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_centerInParent="true">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/plus_sign_in_button"
+        <LinearLayout
+            android:id="@+id/social_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"/>
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/spacing_normal"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <include layout="@layout/include_social_sign_in_view"/>
 
-        <!-- <com.facebook.login.widget.LoginButton
-             android:id="@+id/facebook_login_button"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center_horizontal"
-             android:layout_marginBottom="30dp"
-             android:layout_marginTop="30dp"/>-->
-    </LinearLayout>
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"/>
-</FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+                <Button
+                    android:id="@+id/signup"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".5"
+                    android:text="@string/sign_up"/>
 
+                <Button
+                    android:id="@+id/signin"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".5"
+                    android:text="@string/sign_in"/>
+            </LinearLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+</RelativeLayout>

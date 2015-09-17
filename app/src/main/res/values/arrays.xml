@@ -6,5 +6,87 @@
         <item>@string/shared</item>
         <item>@string/personal</item>
     </string-array>
-
+    <string-array name="bank_name">
+        <item>SBBJ</item>
+        <item>HDFC</item>
+        <item>ICICI</item>
+        <item>Axis</item>
+        <item>SBI</item>
+        <item>HSBC</item>
+        <item>Citi</item>
+        <item>StanChart</item>
+        <item>Kotak</item>
+        <item>IDBI</item>
+        <item>Union</item>
+        <item>Yes</item>
+        <item>IndusInd</item>
+        <item>BOB</item>
+        <item>PNB</item>
+        <item>Canara</item>
+        <item>OBC</item>
+        <item>Federal</item>
+        <item>ING Vysya</item>
+        <item>Maharashtra</item>
+        <item>City Union</item>
+        <item>Corporation</item>
+        <item>Karur Vysya</item>
+        <item>DCB</item>
+        <item>Amex</item>
+        <item>SBI - Tata</item>
+        <item>Indian</item>
+        <item>BOI</item>
+        <item>South Indian</item>
+        <item>Dena</item>
+        <item>Syndicate</item>
+        <item>Central</item>
+        <item>Deutsche</item>
+        <item>Indian Overseas</item>
+        <item>LVB</item>
+        <item>SBP</item>
+        <item>UCO</item>
+        <item>SBI Hyderabad</item>
+        <item>SBI Mysore</item>
+        <item>Sutex</item>
+        <item>TMB</item>
+        <item>RBL</item>
+        <item>Andhra</item>
+        <item>Vijaya Bank</item>
+        <item>UBI</item>
+        <item>DBS</item>
+        <item>Karnataka</item>
+        <item>PMC</item>
+        <item>SBT</item>
+        <item>Cosmos Bank</item>
+        <item>KCCB</item>
+        <item>Allahabad</item>
+        <item>RBS</item>
+        <item><![CDATA[Jammu & Kashmir]]></item>
+        <item>Dhanlaxmi Bank</item>
+        <item>Bhartiya Mahila</item>
+        <item><![CDATA[Punjab & Maharashtra Co-operative Bank]]></item>
+        <item>SVC Bank</item>
+        <item>PSB</item>
+        <item>UBKGB</item>
+        <item>Kalupur</item>
+        <item>Vasai Vikas Sahakari</item>
+        <item>Catholic Syrian</item>
+        <item>Janata Sahakari</item>
+        <item>Manhattan</item>
+        <item>Varachha Co-Operative</item>
+        <item>Bharat Co-Operative</item>
+        <item>Saraswat</item>
+        <item>SBI Group</item>
+        <item>NKGSB</item>
+        <item>Dombivli Nagari Sahakari</item>
+        <item>Apna</item>
+        <item>Janakalyan Sahakari</item>
+        <item>Kalyan Janata Sahakari</item>
+        <item>Bhopal Co-operative Central</item>
+        <item>Rajgurunagar Sahkari Bank Ltd</item>
+        <item>Abhyudaya Co-operative</item>
+        <item>Other</item>
+        <item>TJSB Sahakari</item>
+        <item>M.P. Rajya Sahakari</item>
+        <item>Gopinath Patil Parsik Janata Sahakari</item>
+    </string-array>
 </resources>

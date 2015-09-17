@@ -14,19 +14,28 @@
  */
 package com.mmt.shubh.expensemanager;
 
-public class Constants {
+public interface Constants {
+    String LOG_TAG = "ExManager";
 
-    public static final String KEY_USER_ID = "userId";
-    public static final String KEY_EXPENSE_BOOK_ID = "groupId";
-    public static final String KEY_MEMBER_ID = "memberId";
+    String KEY_ITEM_ID = "itemId";
+    String KEY_USER_ID = "userId";
+    String KEY_EXPENSE_BOOK = "groupId";
+    String KEY_MEMBER_ID = "memberId";
 
-    public static final String KEY_RESULT_CODE = "result_code";
-    public static final String KEY_REQUEST_CODE = "request_code";
-    public static final String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";
-    public static final String KEY_FRAGMENT_START_MODE = "expense_book_mode";
-    public static final String MODE_EDIT_DETAILS = "details";
-    public static final String MODE_NEW = "new";
-    public static final String KEY_MEMBER_NAME = "member_name";
-    public static final java.lang.String EXTRA_MEMBER_ID = "memberId";
-    public static final java.lang.String EXTRA_EXPENSE_BOOK_ID = "expenseBookId";
+    String KEY_RESULT_CODE = "result_code";
+    String KEY_REQUEST_CODE = "request_code";
+    String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";
+    String KEY_FRAGMENT_START_MODE = "expense_book_mode";
+    String MODE_EDIT_DETAILS = "details";
+    String MODE_NEW = "new";
+    String KEY_MEMBER_NAME = "member_name";
+    java.lang.String EXTRA_MEMBER_ID = "memberId";
+    java.lang.String EXTRA_EXPENSE_BOOK_ID = "expenseBookId";
+    String EXTRA_GROUP_NAME = "group_name";
+    String EXTRA_GROUP_IMAGE_URI = "group_image_uri";
+    String EXTRA_GROUP_DESCRIPTION = "group_image_uri";
+
+    int ADDING_MEMBER_FRAGMENT = 1;
+    String KEY_DELETE_MEMBER = "delete_member";
+    java.lang.String KEY_EXPENSE_BOOK_ID = "expense_book_id";
 }

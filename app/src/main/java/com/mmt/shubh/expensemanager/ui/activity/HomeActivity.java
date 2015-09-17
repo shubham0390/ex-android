@@ -5,32 +5,40 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.adapters.LibraryFragmentAdapter;
+import com.mmt.shubh.expensemanager.ui.adapters.HomeFragmentAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPageChangeListener {
-    private ViewPager pager;
-    private LibraryFragmentAdapter adapter;
-    private TabLayout tabs;
-    private CharSequence Titles[] = {"DISTRIBUTION", "SUMMARY"};
-    private int NumberOfTabs = 2;
 
+    @Bind(R.id.viewpager)
+    ViewPager pager;
+
+    @Bind(R.id.tabs)
+    TabLayout tabs;
+
+    private CharSequence Titles[] = {"DISTRIBUTION", "SUMMARY"};
+
+    private int NumberOfTabs = 2;
+    private HomeFragmentAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_home);
-        initializeToolbar();
-        adapter = new LibraryFragmentAdapter(getSupportFragmentManager(), NumberOfTabs, Titles);
-
-        pager = (ViewPager) findViewById(R.id.viewpager);
+        ButterKnife.bind(this);
+        initializeNavigationDrawer();
+        adapter = new HomeFragmentAdapter(getSupportFragmentManager(), NumberOfTabs, Titles);
         pager.setAdapter(adapter);
-
-        tabs = (TabLayout) findViewById(R.id.tabs);
-
         tabs.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNavigationView.setCheckedItem(R.id.home);
     }
 
     @Override

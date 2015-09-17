@@ -3,6 +3,8 @@ package com.mmt.shubh.expensemanager.service.rest;
 import android.content.Context;
 import android.util.Log;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Cache;
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
+import retrofit.converter.JacksonConverter;
 
 /**
  * Created by styagi on 6/5/2015.
@@ -34,7 +37,7 @@ public class RestClient {
 
     private static RestClient mRestClient;
 
-    private static RestClient getRestClient(Context context) {
+    public static RestClient getRestClient(Context context) {
         if (mRestClient == null) {
             synchronized (mRestClient) {
                 if (mRestClient == null) {
@@ -62,18 +65,17 @@ public class RestClient {
         // Create Executor
         Executor executor = Executors.newCachedThreadPool();
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapterFactory(new ItemTypeAdapterFactory())
-                .setDateFormat("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'")
-                .create();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        JacksonConverter converter = new JacksonConverter(objectMapper);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setConverter(converter)
                 .setEndpoint(BASE_URL)
                 .setClient(new OkClient(okHttpClient))
                 .setExecutors(executor, executor)
                 .setRequestInterceptor(new SessionRequestInterceptor())
-                .setConverter(new GsonConverter(gson))
                 .build();
 
         apiService = restAdapter.create(RestService.class);

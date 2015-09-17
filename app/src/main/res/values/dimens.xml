@@ -13,7 +13,7 @@
 
     <dimen name="root_layout_left_margin">10dp</dimen>
     <dimen name="root_layout_right_margin">10dp</dimen>
-    <dimen name="group_name_text_size">20sp</dimen>
+    <dimen name="text_size_title">20sp</dimen>
     <dimen name="group_details_divider_height">2dp</dimen>
 
     <!-- navigation drawer -->
@@ -36,4 +36,26 @@
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="card_margin">16dp</dimen>
+
+    <!-- Elevation when button is pressed -->
+    <dimen name="button_elevation_material">2dp</dimen>
+    <!-- Z translation to apply when button is pressed -->
+    <dimen name="button_pressed_z_material">4dp</dimen>
+    <!-- Default insets (outer padding) around buttons -->
+    <dimen name="button_inset_vertical_material">6dp</dimen>
+    <dimen name="button_inset_horizontal_material">@dimen/control_inset_material</dimen>
+    <!-- Default inner padding within buttons -->
+    <dimen name="button_padding_vertical_material">@dimen/control_padding_material</dimen>
+    <dimen name="button_padding_horizontal_material">8dp</dimen>
+    <!-- Default insets (outer padding) around controls -->
+    <dimen name="control_inset_material">4dp</dimen>
+    <!-- Default inner padding within controls -->
+    <dimen name="control_padding_material">4dp</dimen>
+    <!-- Default rounded corner for controls -->
+    <dimen name="control_corner_material">2dp</dimen>
+    <integer name="button_pressed_animation_duration">100</integer>
+    <integer name="button_pressed_animation_delay">100</integer>
+    <integer name="disabled_alpha_animation_duration">100</integer>
+    <integer name="dock_enter_exit_duration">250</integer>
+    <dimen name="tab_max_width">24dp</dimen>
 </resources>

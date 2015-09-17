@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 /**
- * Created by STyagi on 5/3/2014.
+ * Created by Subham Tyagi,
+ * on 09/Sep/2015,
+ * 12:15 PM
+ * TODO:Add class comment.
  */
 public class IndeterminateProgressBar extends DialogFragment {
 

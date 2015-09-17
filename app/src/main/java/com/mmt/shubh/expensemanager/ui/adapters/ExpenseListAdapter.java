@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
 
 import java.text.SimpleDateFormat;
 

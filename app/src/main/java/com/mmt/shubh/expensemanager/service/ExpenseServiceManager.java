@@ -42,4 +42,8 @@ public final class ExpenseServiceManager {
                 .build();
         mScheduler.schedule(oneoff);
     }
+
+    public void syncExpense() {
+
+    }
 }

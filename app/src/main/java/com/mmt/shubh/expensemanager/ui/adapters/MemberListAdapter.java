@@ -1,19 +1,24 @@
 package com.mmt.shubh.expensemanager.ui.adapters;
 
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.database.content.Member;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by Subham Tyagi,
@@ -21,30 +26,10 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
  * 12:22 AM
  * TODO:Add class comment.
  */
-public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.MemberViewHolder> {
+public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.MemberViewHolder> {
 
-    private OnMemberItemClickListener mItemClickListener;
-    private TextView mEmptyText;
-    private ProgressBar mProgressBar;
-
-    public MemberListAdapter(Cursor c, OnMemberItemClickListener listener) {
-        super(c);
-        mItemClickListener = listener;
-    }
-
-    @Override
-    public void onBindViewHolder(MemberViewHolder holder, final Cursor cursor) {
-        holder.bindView(cursor);
-        final long id = cursor.getLong(cursor.getColumnIndex(MemberContract._ID));
-        holder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mItemClickListener.onMemberItemClick(id);
-            }
-        });
-    }
-
+    List<Member> mMembers =  new ArrayList<>();
+    private boolean mCanDelete;
 
     @Override
     public MemberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,33 +37,57 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
         return new MemberViewHolder(view);
     }
 
+    @Override
+    public void onBindViewHolder(MemberViewHolder holder, int position) {
+        holder.bindView(mMembers.get(position));
+        holder.mDelete.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mMembers.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mMembers.get(position).getId();
+    }
+
     public static class MemberViewHolder extends RecyclerView.ViewHolder {
-        private TextView mMemberName;
-        private TextView mMemberEmail;
-        private ImageView mProfileImage;
+
+        @Bind(R.id.member_name)
+        TextView mMemberName;
+
+        @Bind(R.id.member_email)
+        TextView mMemberEmail;
+
+        @Bind(R.id.list_image_icon)
+        ImageView mProfileImage;
+
+        @Bind(R.id.delete_member)
+        ImageView mDelete;
+
         private View mParent;
 
         public MemberViewHolder(View itemView) {
             super(itemView);
-            mMemberName = (TextView) itemView.findViewById(R.id.member_name);
-            mMemberEmail = (TextView) itemView.findViewById(R.id.member_email);
-            mProfileImage = (ImageView) itemView.findViewById(R.id.list_image_icon);
+            ButterKnife.bind(this, itemView);
             mParent = itemView;
         }
 
-
-        public void bindView(Cursor cursor) {
-            mMemberName.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
-            mMemberEmail.setText(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_EMAIL)));
-            String imageUrl = cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_IMAGE_URI));
+        public void bindView(Member member) {
+            mMemberName.setText(member.getMemberName());
+            mMemberEmail.setText(member.getMemberEmail());
+            String imageUrl = member.getProfilePhotoUrl();
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
-
-            Glide.with(mProfileImage.getContext())
-                    .load(imageUrl)
-                    .animate(anim)
-                    .centerCrop()
-                    .fitCenter()
-                    .into(mProfileImage);
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Glide.with(mProfileImage.getContext())
+                        .load(imageUrl)
+                        .animate(anim)
+                        .centerCrop()
+                        .fitCenter()
+                        .into(mProfileImage);
+            }
         }
 
         public void setOnClickListener(View.OnClickListener listener) {
@@ -86,7 +95,20 @@ public class MemberListAdapter extends CursorRecyclerAdapter<MemberListAdapter.M
         }
     }
 
-    public interface OnMemberItemClickListener {
-        void onMemberItemClick(long id);
+    public boolean isCanDelete() {
+        return mCanDelete;
+    }
+
+    public void setCanDelete(boolean canDelete) {
+        mCanDelete = canDelete;
+    }
+
+    public List<Member> getMembers() {
+        return mMembers;
+    }
+
+    public void setMembers(List<Member> members) {
+        mMembers = members;
+        notifyDataSetChanged();
     }
 }
