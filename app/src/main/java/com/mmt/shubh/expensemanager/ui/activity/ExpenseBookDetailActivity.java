@@ -1,9 +1,8 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -19,11 +18,14 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ExpenseBookDetailFragmentAdapter;
+import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
+import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ExpenseBookDetailActivity extends DrawerBaseActivity implements ViewPager.OnPageChangeListener {
+public class ExpenseBookDetailActivity extends ToolBarActivity implements
+        ViewPager.OnPageChangeListener, IFragmentSwitcher {
 
     private ExpenseBook mExpenseBook;
 
@@ -102,19 +104,18 @@ public class ExpenseBookDetailActivity extends DrawerBaseActivity implements Vie
                 onBackPressed();
                 return true;
             case R.id.action_settings:
-                if (mDrawerLayout != null)
-                    mDrawerLayout.openDrawer(GravityCompat.END);
+                installSettingFragment();
                 break;
         }
         return true;
     }
 
-    private void installCategoryGraphFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-       /* transaction.add(R.id.expense_book_graph, new ExpenseBookGraphFragment());
-        transaction.add(R.id.your_expense_graph, new MemberExpenseGraphFragment());
-        transaction.add(R.id.category_expense_graph, new CategoryExpenseGraphFragment());
-        transaction.commit();*/
+    private void installSettingFragment() {
+        ExpenseBookSettingFragment fragment = new ExpenseBookSettingFragment();
+        Bundle bundle =  new Bundle();
+        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK,mExpenseBook);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.settings, fragment).commit();
     }
 
     @Override
@@ -130,5 +131,26 @@ public class ExpenseBookDetailActivity extends DrawerBaseActivity implements Vie
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void replaceFragment(String tag, Bundle bundle) {
+
+    }
+
+    @Override
+    public void replaceFragment(int id, Bundle bundle) {
+
+    }
+
+    @Override
+    public void removeFragment(String tag, Bundle bundle) {
+
+    }
+
+    @Override
+    public void removeFragment(int id, Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(id);
+        getSupportFragmentManager().beginTransaction().remove(fragment);
     }
 }

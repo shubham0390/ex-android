@@ -30,6 +30,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookFragmentView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
@@ -51,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author Umang Chamaria
  *         TODO : save image uri and expense book name in database
  */
-public class AddExpenseBookFragment extends MVPFragment<IExpenseBookFragmentView, ExpenseBookFragmentPresenter>
+public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
         implements IExpenseBookFragmentView {
 
     private final String TAG = AddExpenseBookFragment.class.getSimpleName();
@@ -229,30 +230,4 @@ public class AddExpenseBookFragment extends MVPFragment<IExpenseBookFragmentView
         ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT, null);
     }
 
-    @Override
-    public void showLoading(boolean pullToRefresh) {
-
-    }
-
-    @Override
-    public void showContent() {
-
-    }
-
-    @Override
-    public void showError(Throwable e, boolean pullToRefresh) {
-
-    }
-
-    @Override
-    public void setData(ExpenseBook data) {
-        mExpenseName.setText(data.getName());
-        mExpenseImage.setImageURI(new Uri.Builder().encodedPath(data.getProfileImagePath()).build());
-        mExpenseDescription.setText(data.getDescription());
-    }
-
-    @Override
-    public void loadData(boolean pullToRefresh) {
-
-    }
 }

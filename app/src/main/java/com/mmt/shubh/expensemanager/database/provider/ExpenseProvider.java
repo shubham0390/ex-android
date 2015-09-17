@@ -62,14 +62,14 @@ public class ExpenseProvider extends ContentProvider {
     private static final int CATEGORY_ID = CATEGORY + 1;
 
     private static final String MEMBER_EXPANSE_BOOK_BASE_PATH = MemberExpenseBookContract.PATH;
-    private static final int MEMBER_EXPANSE_BOOK_BASE = 0x6000;
+    private static final int MEMBER_EXPANSE_BOOK_BASE = 0x5000;
     private static final int MEMBER_EXPANSE_BOOK = MEMBER_EXPANSE_BOOK_BASE;
 
     private static final String MEMBER_EXPANSE_BASE_PATH = ContentPath.PATH_MEMBER_EXPENSE;
-    private static final int MEMBER_EXPANSE_BASE = 0x7000;
+    private static final int MEMBER_EXPANSE_BASE = 0x6000;
     private static final int MEMBER_EXPANSE = MEMBER_EXPANSE_BASE;
 
-    private static final int ACCOUNT_BASE = 0x8000;
+    private static final int ACCOUNT_BASE = 0x7000;
     private static final int ACCOUNT = ACCOUNT_BASE;
 
 
@@ -87,12 +87,9 @@ public class ExpenseProvider extends ContentProvider {
             UserInfoContract.TABLE_NAME,
             CategoryContract.TABLE_NAME,
             MemberExpenseBookContract.TABLE_NAME,
-            MemberContract.TABLE_NAME,
             MemberExpenseContract.TABLE_NAME,
             AccountContract.TABLE_NAME,
             TransactionContract.TABLE_NAME,
-
-
     };
 
     private static final UriMatcher sURIMatcher = new UriMatcher(
@@ -143,7 +140,7 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_EXPANSE_BASE_PATH, MEMBER_EXPANSE);
 
 
-        matcher.addURI(BaseContract.AUTHORITY,AccountContract.PATH_ACCOUNT,ACCOUNT);
+        matcher.addURI(BaseContract.AUTHORITY, AccountContract.PATH_ACCOUNT, ACCOUNT);
     }
 
     private SQLiteDatabase mReadDatabase;
@@ -235,6 +232,7 @@ public class ExpenseProvider extends ContentProvider {
             case CATEGORY:
             case MEMBER_EXPANSE:
             case MEMBER_EXPANSE_BOOK:
+            case EXPENSE_BOOK_MEMBER:
             case ACCOUNT:
                 longId = db.insert(TABLE_NAMES[table], "foo", values);
                 break;
@@ -258,7 +256,7 @@ public class ExpenseProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+        return true;
     }
 
     @Override
@@ -324,15 +322,13 @@ public class ExpenseProvider extends ContentProvider {
                 c = db.query(TABLE_NAMES[table], projection, selection,
                         selectionArgs, null, null, sortOrder, limit);
                 break;
-
-
             case EXPENSE_BOOK_MEMBER:
-                id = uri.getPathSegments().get(3);
-
+                id = uri.getPathSegments().get(2);
                 String selectQuery1 = " SELECT "
                         + MemberContract.TABLE_NAME + "." + MemberContract._ID + " , "
                         + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_NAME + " , "
-                        + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_EMAIL + " , "
+                        + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_IMAGE_URI + " , "
+                        + MemberContract.TABLE_NAME + "." + MemberContract.MEMBER_EMAIL
                         + " FROM "
                         + MemberContract.TABLE_NAME
                         + " WHERE "

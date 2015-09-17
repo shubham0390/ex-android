@@ -1,14 +1,14 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.mmt.shubh.expensemanager.database.DatabaseHelper;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
 import java.util.ArrayList;
@@ -44,8 +44,12 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
         member.setId(cursor.getLong(cursor.getColumnIndex(_ID)));
         member.setMemberName(cursor.getString(cursor.getColumnIndex(MEMBER_NAME)));
         member.setMemberEmail(cursor.getString(cursor.getColumnIndex(MEMBER_EMAIL)));
-        member.setProfilePhotoUrl(cursor.getString(cursor.getColumnIndex(MEMBER_IMAGE_URI)));
-        member.setCoverPhotoUrl(cursor.getString(cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL)));
+        int profileUrlIndex = cursor.getColumnIndex(MEMBER_IMAGE_URI);
+        if (profileUrlIndex != -1)
+            member.setProfilePhotoUrl(cursor.getString(profileUrlIndex));
+        int coverPhotoIndex = cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL);
+        if (coverPhotoIndex != -1)
+            member.setCoverPhotoUrl(cursor.getString(coverPhotoIndex));
     }
 
     private ExpenseBook getExpenseBook(long aLong) {
@@ -146,5 +150,25 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
                 }
         }
         return 0;
+    }
+
+    @Override
+    public List<Member> getAllMemberByExpenseBookId(long expenseBookId) {
+        List<Member> accountList = new ArrayList<>();
+        Uri uri = ContentUris.withAppendedId(ExpenseBookContract.EXPENSE_BOOK_MEMBER_URI, expenseBookId);
+        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+        if (cursor != null) {
+            try {
+                while (cursor.moveToNext()) {
+                    Member account = new Member();
+                    restore(cursor, account);
+                    accountList.add(account);
+                }
+            } finally {
+                cursor.close();
+            }
+
+        }
+        return accountList;
     }
 }

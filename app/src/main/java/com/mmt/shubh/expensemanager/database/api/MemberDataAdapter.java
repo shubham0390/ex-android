@@ -10,4 +10,6 @@ import java.util.List;
 public interface MemberDataAdapter extends DataAdapter<Member>{
 
     long create(List<Member> list);
+
+    List<Member> getAllMemberByExpenseBookId(long expenseBookId);
 }
