@@ -12,7 +12,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
  * 4:42 PM
  * TODO:Add class comment.
  */
-public interface IExpenseBookFragmentView extends MVPLCEView<ExpenseBook> {
+public interface IExpenseBookFragmentView extends MVPView {
     void showEmptyError();
 
     void showDuplicateExpenseBook();

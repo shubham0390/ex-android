@@ -20,6 +20,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
 
 /**
  * Created by Subham Tyagi,
@@ -47,6 +48,7 @@ public abstract class RecyclerViewFragment<V extends MVPView, P extends MVPPrese
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.list_devider_line)));
     }
 
     protected int getLayoutId() {

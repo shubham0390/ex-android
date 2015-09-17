@@ -75,8 +75,8 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
      * @param id                the unique id of the object
      * @return the instantiated object
      */
-    public <T extends BaseContent> T restoreContentWithId(Context context,
-                                                          Class<T> klass, Uri contentUri, String[] contentProjection, long id) throws IllegalArgumentException {
+    public T restoreContentWithId(Context context, Class<T> klass, Uri contentUri,
+                                  String[] contentProjection, long id) throws IllegalArgumentException {
         long token = Binder.clearCallingIdentity();
         if (context == null) {
             throw new IllegalArgumentException("Application Context cannot be null");
@@ -106,8 +106,8 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
      * @param contentProjection the content projection for the ExpenseContent subclass
      * @return the instantiated object
      */
-    public <T extends BaseContent> List<T> restoreContent(Context context,
-                                                          Class<T> klass, Uri contentUri, String[] contentProjection) {
+    public List<T> restoreContent(Context context,
+                                  Class<T> klass, Uri contentUri, String[] contentProjection) {
         List<T> list = new ArrayList();
         Cursor c = context.getContentResolver().query(contentUri, contentProjection, null, null, null);
         if (c == null) throw new ProviderUnavailableException();
@@ -122,11 +122,11 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
     }
 
     // The Content sub class must have a no-arg constructor
-    public  <T extends BaseContent> T getContent(Cursor cursor, Class<T> klass) {
+    public T getContent(Cursor cursor, Class<T> klass) {
         try {
             T content = klass.newInstance();
             content.setId(cursor.getLong(0));
-            //restore(cursor, content);
+            restore(cursor, content);
             return content;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -171,7 +171,6 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
                 Integer.toString(limit)).build();
     }
 
-    // Write the Content into a ContentValues container
     // Write the Content into a ContentValues container
     public abstract ContentValues toContentValues(T t);
 

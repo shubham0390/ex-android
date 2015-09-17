@@ -1,5 +1,4 @@
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawerLayout"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,10 +28,10 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/logo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="@dimen/spacing_medium"
-                    android:layout_marginRight="@dimen/spacing_medium"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal"
                     android:src="@drawable/ic_home_black_24dp"
                     app:border_color="@color/colorAccent"
                     app:border_width="2dp"/>
@@ -46,8 +45,9 @@
                         android:id="@+id/expense_book_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:fontStyle="playfairDisplayRegular"
                         android:textColor="@color/milky_white"
-                        android:textSize="@dimen/text_size_title"
+                        android:textSize="18sp"
                         tools:text="ExpenseBook"/>
 
                     <android.support.v7.widget.AppCompatTextView
@@ -71,12 +71,9 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/settings"
-        class="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
-        tools:layout="@layout/fragment_expense_book_setting"/>
-</android.support.v4.widget.DrawerLayout>
+        />
+</FrameLayout>

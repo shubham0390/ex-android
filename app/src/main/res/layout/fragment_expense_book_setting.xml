@@ -1,14 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/milky_white"
-             tools:context="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/material_grey_100"
+              android:orientation="vertical"
+              tools:context="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+    <include layout="@layout/include_toolbar"/>
 
-</FrameLayout>
+    <FrameLayout
+            android:id="@+id/member_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_medium"/>
+</LinearLayout>

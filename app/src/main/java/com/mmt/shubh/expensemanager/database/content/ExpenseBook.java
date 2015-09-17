@@ -35,6 +35,7 @@ public class ExpenseBook extends BaseContent implements Parcelable {
     }
 
     protected ExpenseBook(Parcel in) {
+        mId = in.readLong();
         mName = in.readString();
         mProfileImagePath = in.readString();
         mDescription = in.readString();
@@ -124,6 +125,7 @@ public class ExpenseBook extends BaseContent implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(mId);
         parcel.writeString(mName);
         parcel.writeString(mProfileImagePath);
         parcel.writeString(mDescription);
