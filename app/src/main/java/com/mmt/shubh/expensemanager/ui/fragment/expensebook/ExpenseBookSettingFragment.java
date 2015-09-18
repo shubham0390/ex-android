@@ -48,38 +48,40 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         mIFragmentSwitcher = (IFragmentSwitcher) getActivity();
         mExpenseBook = getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK);
         installMemberListFragment();
-        mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
+
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setTitle(R.string.action_settings);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIFragmentSwitcher.removeFragment(R.id.settings, null);
             }
         });
+        if (!mExpenseBook.getType().equals("Private"))
+            addMenu();
+
+    }
+
+    private void addMenu() {
+        mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // TODO: 9/16/2015 handle add member
-                // Intent intent =  new Intent(getActivity(),new AddM)
+                // TODO: 9/18/2015 Add member fragment here
                 return true;
             }
         });
-
     }
 
     private void installMemberListFragment() {
         Fragment fragment = new MemberListFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.KEY_EXPENSE_BOOK_ID, mExpenseBook.getId());
-        bundle.putBoolean(Constants.KEY_DELETE_MEMBER,true);
+        bundle.putBoolean(Constants.KEY_DELETE_MEMBER, true);
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction().add(R.id.member_list, fragment).commit();
     }
 
-    /*@OnClick(R.id.close_self)
-    void closeSelf() {
-
-    }*/
 
     @Override
     protected ExpenseBookSettingPresenter getPresenter() {

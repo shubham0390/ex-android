@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 
@@ -23,7 +24,9 @@ public class ExpenseBookActivity extends ToolBarActivity implements IFragmentSwi
         ButterKnife.bind(this);
         initializeToolbar();
         toggleHomeBackButton(true);
+        setTitle(R.string.expense_book);
         installListFragment();
+
     }
 
     private void installListFragment() {

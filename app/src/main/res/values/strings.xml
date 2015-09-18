@@ -176,6 +176,7 @@
     <string name="title_activity_cash">CashActivity</string>
     <string name="delete_expense_book_dialog_title">Delete Expense Book ?</string>
     <string name="delete_expense_book_dialog_message">Deleting Expense book will also delete you
-        expense . However your personal expense can be tracted from privte expense book
+        expense . However your personal expense can be tracked from private expense book
     </string>
+    <string name="edit">Edit</string>
 </resources>

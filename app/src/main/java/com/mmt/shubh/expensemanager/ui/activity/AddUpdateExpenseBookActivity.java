@@ -12,14 +12,12 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddMembersToExpenseBookFragment;
-import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddExpenseBookFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddUpdateExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 
-public class AddExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
+public class AddUpdateExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
 
-    String mGroupName;
-    String mGroupIconURI;
-    String mGroupDescription;
+    private Bundle mSharedData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,8 @@ public class AddExpenseBookActivity extends AppCompatActivity implements IFragme
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         ab.setDisplayHomeAsUpEnabled(true);
-        Fragment fragment = new AddExpenseBookFragment();
+        Fragment fragment = new AddUpdateExpenseBookFragment();
+        fragment.setArguments(getIntent().getExtras());
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();
     }
 
@@ -46,9 +45,7 @@ public class AddExpenseBookActivity extends AppCompatActivity implements IFragme
 
     @Override
     public void passData(Bundle sharedData) {
-        mGroupName = sharedData.getString(Constants.EXTRA_GROUP_NAME);
-        mGroupIconURI = sharedData.getString(Constants.EXTRA_GROUP_IMAGE_URI);
-        mGroupDescription = sharedData.getString(Constants.EXTRA_GROUP_DESCRIPTION);
+        mSharedData = sharedData;
     }
 
     @Override
@@ -62,11 +59,7 @@ public class AddExpenseBookActivity extends AppCompatActivity implements IFragme
         switch (fragmentId) {
             case Constants.ADDING_MEMBER_FRAGMENT:
                 fragment = new AddMembersToExpenseBookFragment();
-                Bundle groupInfo = new Bundle();
-                groupInfo.putString(Constants.EXTRA_GROUP_NAME, mGroupName);
-                groupInfo.putString(Constants.EXTRA_GROUP_IMAGE_URI, mGroupIconURI);
-                groupInfo.putString(Constants.EXTRA_GROUP_DESCRIPTION, mGroupDescription);
-                fragment.setArguments(groupInfo);
+                fragment.setArguments(mSharedData);
                 break;
         }
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();

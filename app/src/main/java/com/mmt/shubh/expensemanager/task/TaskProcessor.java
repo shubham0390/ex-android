@@ -25,6 +25,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class TaskProcessor {
 
+    private static TaskProcessor mTaskProcessor =  new TaskProcessor();
+
     private BlockingDeque<ITask> mTaskQueue;
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -33,7 +35,12 @@ public class TaskProcessor {
 
     private ITask mActive;
 
-    public TaskProcessor() {
+    public static TaskProcessor getTaskProcessor(){
+
+        return mTaskProcessor;
+    }
+
+    private TaskProcessor() {
         mTaskQueue = new LinkedBlockingDeque<>(16);
     }
 

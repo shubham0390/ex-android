@@ -89,15 +89,6 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
     }
 
 
-    public void addMembers(List<Member> members, ExpenseBook expenseBook) {
-        for (Member member : members) {
-            ContentValues values = new ContentValues();
-            values.put(MemberExpenseBookContract.MEMBER_KEY, member.getId());
-            values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBook.getId());
-            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
-        }
-    }
-
     @Override
     public long create(ExpenseBook expenseBook) {
         Uri uri = save(expenseBook);
@@ -153,8 +144,22 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
         return expenseBooks;
     }
 
+    public void addMembers(List<Member> members, ExpenseBook expenseBook) {
+        addMembers(members, expenseBook.getId());
+    }
+
     @Override
     public void addMember(ExpenseBook expenseBook) {
 
+    }
+
+    @Override
+    public void addMembers(List<Member> memberList, long expenseBookId) {
+        for (Member member : memberList) {
+            ContentValues values = new ContentValues();
+            values.put(MemberExpenseBookContract.MEMBER_KEY, member.getId());
+            values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBookId);
+            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+        }
     }
 }

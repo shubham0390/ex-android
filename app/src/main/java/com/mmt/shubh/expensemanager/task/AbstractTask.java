@@ -17,7 +17,7 @@ import android.content.Context;
  * <p/>
  * Base class for SDK defined tasks which will execute by {@link TaskProcessor}.
  */
-public abstract class AbstractTask implements ITask {
+public abstract class AbstractTask<T> implements ITask<T> {
 
     public static final String ACTION_SDK_INITIALIZATION = "com.mmt.shubh.expensemanager.ACTION_SDK_INITIALIZATION";
 
@@ -27,7 +27,7 @@ public abstract class AbstractTask implements ITask {
 
     public static final String EXTRA_TASK_RESULT = "taskResult";
 
-    protected TaskResult mTaskResult;
+    protected TaskResult<T> mTaskResult;
 
     protected Context mContext;
 
@@ -37,11 +37,24 @@ public abstract class AbstractTask implements ITask {
 
     public AbstractTask(Context context) {
         mContext = context;
-        mTaskResult = new TaskResult();
+        mTaskResult = new TaskResult<T>();
     }
 
     @Override
-    public void onPostExecute(TaskResult result) {
+    public void onPostExecute(TaskResult<T> result) {
     }
+
+    protected void createTaskResult(boolean success, int statusCode, T result) {
+        mTaskResult.setIsSuccess(true);
+        mTaskResult.setResult(result);
+        mTaskResult.setStatusCode(1234);
+    }
+
+    protected void createTaskResult(boolean success, int statusCode, Exception error) {
+        mTaskResult.setIsSuccess(true);
+        mTaskResult.setStatusCode(1234);
+        mTaskResult.setException(error);
+    }
+
 }
 
