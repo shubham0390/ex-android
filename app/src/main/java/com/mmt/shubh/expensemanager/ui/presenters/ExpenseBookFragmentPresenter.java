@@ -1,16 +1,10 @@
 package com.mmt.shubh.expensemanager.ui.presenters;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.Constants;
-import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookFragmentView;

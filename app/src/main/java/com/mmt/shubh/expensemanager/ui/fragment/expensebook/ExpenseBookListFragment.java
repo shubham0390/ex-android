@@ -3,11 +3,9 @@ package com.mmt.shubh.expensemanager.ui.fragment.expensebook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -23,6 +21,8 @@ import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.ui.module.ExpenseBookListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,24 +46,21 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadData(false);
-        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<ExpenseBook>());
+        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<>());
         ListRecyclerView recyclerView = (ListRecyclerView) mRecyclerView;
         recyclerView.setOnItemClickListener(mItemClickListener);
     }
 
-    private ListRecyclerView.OnItemClickListener mItemClickListener = new ListRecyclerView.OnItemClickListener() {
-        @Override
-        public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-            installExpenseBookDetail(position);
-            return true;
-        }
+    private ListRecyclerView.OnItemClickListener mItemClickListener = (parent, view, position, id) -> {
+        installExpenseBookDetail(position);
+        return true;
     };
 
     private void installExpenseBookDetail(int position) {
         ExpenseBook expenseBook = mExpenseBookListAdapter.getItem(position);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, expenseBook);
+        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(expenseBook));
         Intent intent = new Intent(getActivity(), ExpenseBookDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);

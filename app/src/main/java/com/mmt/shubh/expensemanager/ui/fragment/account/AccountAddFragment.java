@@ -63,7 +63,7 @@ public class AccountAddFragment extends Fragment {
         account.setAccountBalance(Integer.parseInt(mAccountBalance.getText().toString()));
         account.setAccountNumber(mAccountNumber.getText().toString());
         account.setBankName(mBank.getText().toString());
-        account.setType(mAccountType.getSelectedItem().toString());
+        account.setAccountType(mAccountType.getSelectedItem().toString());
         return account;
     }
 

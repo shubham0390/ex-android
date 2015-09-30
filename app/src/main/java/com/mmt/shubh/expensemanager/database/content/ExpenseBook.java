@@ -15,125 +15,99 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
 
 import java.util.List;
 
-public class ExpenseBook extends BaseContent implements Parcelable {
+import io.realm.ExpenseBookRealmProxy;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    public String mName;
-    public String mProfileImagePath;
-    public String mDescription;
-    public String mType;
-    public long mCreationTime;
-    private Member mOwner;
+@Parcel(implementations = {ExpenseBookRealmProxy.class},
+        value = Parcel.Serialization.BEAN,
+        analyze = {ExpenseBook.class})
+public class ExpenseBook extends RealmObject {
 
-    public List<Member> mMemberList;
+    @PrimaryKey
+    private long id;
+    private String name;
+    private String profileImagePath;
+    private String description;
+    private String type;
+    private long creationTime;
+
+
+    private RealmList<Member> memberList;
+    private Member owner;
 
     public ExpenseBook() {
     }
 
-    protected ExpenseBook(Parcel in) {
-        mId = in.readLong();
-        mName = in.readString();
-        mProfileImagePath = in.readString();
-        mDescription = in.readString();
-        mType = in.readString();
-        mCreationTime = in.readLong();
-        mOwner = in.readParcelable(Member.class.getClassLoader());
-        mMemberList = in.createTypedArrayList(Member.CREATOR);
+    public long getId() {
+        return id;
     }
 
-    public static final Creator<ExpenseBook> CREATOR = new Creator<ExpenseBook>() {
-        @Override
-        public ExpenseBook createFromParcel(Parcel in) {
-            return new ExpenseBook(in);
-        }
-
-        @Override
-        public ExpenseBook[] newArray(int size) {
-            return new ExpenseBook[size];
-        }
-    };
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
-    public ExpenseBook setName(String name) {
-        mName = name;
-        return this;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProfileImagePath() {
-        return mProfileImagePath;
+        return profileImagePath;
     }
 
-    public ExpenseBook setProfileImagePath(String profileImagePath) {
-        mProfileImagePath = profileImagePath;
-        return this;
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
-    public ExpenseBook setDescription(String description) {
-        mDescription = description;
-        return this;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 
-    public ExpenseBook setType(String type) {
-        mType = type;
-        return this;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public List<Member> getMemberList() {
-        return mMemberList;
+    public RealmList<Member> getMemberList() {
+        return memberList;
     }
 
-    public ExpenseBook setMemberList(List<Member> memberList) {
-        mMemberList = memberList;
-        return this;
+    @ParcelPropertyConverter(MemberParcelConverter.class)
+    public void setMemberList(RealmList<Member> memberList) {
+        this.memberList =  memberList;
     }
 
     public Member getOwner() {
-        return mOwner;
+        return owner;
     }
 
     public void setOwner(Member ownerId) {
-        mOwner = ownerId;
+        owner = ownerId;
     }
 
     public long getCreationTime() {
-        return mCreationTime;
+        return creationTime;
     }
 
     public void setCreationTime(long creationTime) {
-        mCreationTime = creationTime;
+        this.creationTime = creationTime;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(mId);
-        parcel.writeString(mName);
-        parcel.writeString(mProfileImagePath);
-        parcel.writeString(mDescription);
-        parcel.writeString(mType);
-        parcel.writeLong(mCreationTime);
-        parcel.writeParcelable(mOwner, i);
-        parcel.writeTypedList(mMemberList);
-    }
-
 
 }

@@ -8,7 +8,7 @@ import com.google.android.gms.gcm.TaskParams;
 import com.mmt.shubh.expensemanager.DeviceUuidFactory;
 import com.mmt.shubh.expensemanager.database.content.DeviceDetails;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoRealmDataAdapter;
 import com.mmt.shubh.expensemanager.gsm.QuickstartPreferences;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ExpenseTaskService extends GcmTaskService {
     private void doUserRegistration() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String registrationToken = sharedPreferences.getString(QuickstartPreferences.REGISTRATION_TOKEN, "");
-        DataAdapter<UserInfo> dataAdapter = new UserInfoSQLDataAdapter(getApplicationContext());
+        DataAdapter<UserInfo> dataAdapter = new UserInfoRealmDataAdapter(getApplicationContext());
         DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(getApplicationContext());
         List<UserInfo> userInfos = dataAdapter.getAll();
         DeviceDetails details = new DeviceDetails(userInfos.get(0), deviceUuidFactory.getDeviceUuid().toString(), registrationToken);

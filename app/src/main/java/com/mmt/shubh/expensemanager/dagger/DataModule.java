@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 import com.mmt.shubh.expensemanager.dagger.api.IDataModule;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberRealmDataAdapter;
 
 import javax.inject.Singleton;
 
@@ -29,7 +29,7 @@ public class DataModule implements IDataModule {
     @Override
     @Provides
     public MemberDataAdapter provideMemberDataAdapter(Application application){
-        return new MemberSQLDataAdapter(application);
+        return new MemberRealmDataAdapter(application);
     }
 
 }

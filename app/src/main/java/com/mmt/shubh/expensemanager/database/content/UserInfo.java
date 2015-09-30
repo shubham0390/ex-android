@@ -15,144 +15,108 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
 
-public class UserInfo extends BaseContent implements Parcelable {
+import io.realm.RealmObject;
+import io.realm.UserInfoRealmProxy;
+import io.realm.annotations.PrimaryKey;
+
+@Parcel(implementations = {UserInfoRealmProxy.class},
+        value = Parcel.Serialization.BEAN,
+        analyze = {UserInfo.class})
+public class UserInfo extends RealmObject {
 
 
-    public enum Status {
-        ACTIVE,
-        LOG_OUT
-    }
-
+    @PrimaryKey
+    private long id;
+    private String userPassword;
+    private String emailAddress;
+    private String displayName;
+    private String coverPhotoUrl;
+    private String profilePhotoUrl;
+    private int status;
+    private String phoneNumber;
+    private long memberKey;
 
     public UserInfo() {
     }
 
-    private String mUserPassword;
+    public long getId() {
+        return id;
+    }
 
-    private String mEmailAddress;
-
-    private String mDisplayName;
-
-    private String mCoverPhotoUrl;
-
-    private String mProfilePhotoUrl;
-
-    private Status mStatus;
-
-    private String mPhoneNumber;
-
-    private long mMemberKey;
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCoverPhotoUrl() {
-        return mCoverPhotoUrl;
-    }
-
-    public String getDisplayName() {
-        return mDisplayName;
-    }
-
-    public String getEmailAddress() {
-        return mEmailAddress;
-    }
-
-    public String getProfilePhotoUrl() {
-        return mProfilePhotoUrl;
-    }
-
-    public Status getStatus() {
-        return mStatus;
-    }
-
-
-    public String getUserPassword() {
-        return mUserPassword;
-    }
-
-    public String getPhoneNumber() {
-        return mPhoneNumber;
+        return coverPhotoUrl;
     }
 
     public void setCoverPhotoUrl(String coverPhotoUrl) {
-        this.mCoverPhotoUrl = coverPhotoUrl;
+        this.coverPhotoUrl = coverPhotoUrl;
 
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public void setDisplayName(String displayName) {
-        this.mDisplayName = displayName;
+        this.displayName = displayName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     public void setEmailAddress(String emailAddress) {
-        this.mEmailAddress = emailAddress;
+        this.emailAddress = emailAddress;
+    }
+
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
     }
 
     public void setProfilePhotoUrl(String profilePhotoUrl) {
-        this.mProfilePhotoUrl = profilePhotoUrl;
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 
-    public void setStatus(Status status) {
-        this.mStatus = status;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
     }
 
     public void setUserPassword(String userPassword) {
-        this.mUserPassword = userPassword;
+        this.userPassword = userPassword;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.mPhoneNumber = phoneNumber;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        mPhoneNumber = mobileNo;
+        this.phoneNumber = phoneNumber;
     }
 
     public long getMemberKey() {
-        return mMemberKey;
+        return memberKey;
     }
 
     public void setMemberKey(long memberKey) {
-        mMemberKey = memberKey;
-    }
-    protected UserInfo(Parcel in) {
-        mId = in.readLong();
-        mUserPassword = in.readString();
-        mEmailAddress = in.readString();
-        mDisplayName = in.readString();
-        mCoverPhotoUrl = in.readString();
-        mProfilePhotoUrl = in.readString();
-        mPhoneNumber = in.readString();
-        mMemberKey = in.readLong();
+        this.memberKey = memberKey;
     }
 
-    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
-        @Override
-        public UserInfo createFromParcel(Parcel in) {
-            return new UserInfo(in);
-        }
-
-        @Override
-        public UserInfo[] newArray(int size) {
-            return new UserInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(mId);
-        parcel.writeString(mUserPassword);
-        parcel.writeString(mEmailAddress);
-        parcel.writeString(mDisplayName);
-        parcel.writeString(mCoverPhotoUrl);
-        parcel.writeString(mProfilePhotoUrl);
-        parcel.writeString(mPhoneNumber);
-        parcel.writeLong(mMemberKey);
+    public interface Status {
+        int ACTIVE = 1;
+        int LOG_OUT = 2;
     }
 
 }

@@ -10,13 +10,14 @@ import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.AccountRealmDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookRealmDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberRealmDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoRealmDataAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 /**
  * Created by Subham Tyagi,
@@ -34,7 +35,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     @Override
     public TaskResult execute() {
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
+        UserInfoRealmDataAdapter sqlDataAdapter = new UserInfoRealmDataAdapter(mContext);
         List<UserInfo> userInfos = sqlDataAdapter.getAll();
         if (userInfos != null && !userInfos.isEmpty()) {
             UserInfo userInfo = userInfos.get(0);
@@ -49,7 +50,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     @VisibleForTesting
     public boolean createPrivateExpenseBook(UserInfo userInfo) {
 
-        List<Member> members = new ArrayList<>();
+        RealmList<Member> members = new RealmList<>();
         Member member = loadMember();
         members.add(member);
 
@@ -61,7 +62,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         expenseBook.setMemberList(members);
         expenseBook.setOwner(member);
         expenseBook.setCreationTime(System.currentTimeMillis());
-        ExpenseBookSQLDataAdapter expenseBookSQLDataAdapter = new ExpenseBookSQLDataAdapter(mContext);
+        ExpenseBookRealmDataAdapter expenseBookSQLDataAdapter = new ExpenseBookRealmDataAdapter(mContext);
         long id = expenseBookSQLDataAdapter.create(expenseBook);
         expenseBookSQLDataAdapter.addMembers(members, expenseBook);
 
@@ -75,12 +76,12 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     }
 
     public boolean createAccount() {
-        AccountSQLDataAdapter dataAdapter = new AccountSQLDataAdapter(mContext);
+        AccountRealmDataAdapter dataAdapter = new AccountRealmDataAdapter(mContext);
 
         Account account = new Account();
         account.setAccountName("Cash");
         account.setAccountBalance(10000);
-        account.setType(Account.TYPE_CASH);
+        account.setAccountType(Account.TYPE_CASH);
         account.setAccountNumber("Cash");
         long id = dataAdapter.create(account);
         if (id > 0) {
@@ -96,7 +97,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         Member member = new Member();
         UserInfo userInfo = UserSettings.getInstance().getUserInfo();
         if (userInfo != null) {
-            MemberSQLDataAdapter sqlMemberDataAdapter = new MemberSQLDataAdapter(mContext);
+            MemberRealmDataAdapter sqlMemberDataAdapter = new MemberRealmDataAdapter(mContext);
             return sqlMemberDataAdapter.get(userInfo.getMemberKey());
         }
         return member;

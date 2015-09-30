@@ -5,8 +5,8 @@ import android.content.Context;
 import com.mmt.shubh.expensemanager.UserSettings;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberRealmDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoRealmDataAdapter;
 
 /**
  * Created by styagi on 6/4/2015.
@@ -16,7 +16,7 @@ public abstract class ProfileFetcher {
     public abstract UserInfo fetchUserAccountDetails(Context context);
 
     public void saveUser(Context context, UserInfo userInfo) {
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(context);
+        UserInfoRealmDataAdapter sqlDataAdapter = new UserInfoRealmDataAdapter(context);
         Member member = createMember(userInfo, context);
         userInfo.setMemberKey(member.getId());
         sqlDataAdapter.create(userInfo);
@@ -33,13 +33,13 @@ public abstract class ProfileFetcher {
             member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
             member.setMemberPhoneNumber(userInfo.getPhoneNumber());
         }
-        MemberSQLDataAdapter sqlMemberDataAdapter = new MemberSQLDataAdapter(context);
+        MemberRealmDataAdapter sqlMemberDataAdapter = new MemberRealmDataAdapter(context);
         sqlMemberDataAdapter.create(member);
         return member;
     }
 
     public void update(Context context, UserInfo userInfo) {
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(context);
+        UserInfoRealmDataAdapter sqlDataAdapter = new UserInfoRealmDataAdapter(context);
         sqlDataAdapter.update(userInfo);
     }
 }

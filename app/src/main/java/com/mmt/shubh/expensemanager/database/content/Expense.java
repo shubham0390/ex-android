@@ -15,101 +15,118 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
+
 import java.util.List;
 
-public class Expense extends BaseContent {
+import io.realm.ExpenseRealmProxy;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    private String mExpenseAmount;
-    private long mExpenseDate;
-    private String mExpenseName;
-    private long mOwnerId;
-    private String mExpensePlace;
-    private String mExpenseDescription;
-    private ExpenseBook mExpenseBook;
-    private Category mCategory;
-    private List<Member> mMemberList;
+@Parcel(implementations = { ExpenseRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Expense.class })
+public class Expense extends RealmObject {
+
+    @PrimaryKey
+    private long id;
+    private String expenseAmount;
+    private long expenseDate;
+    private String expenseName;
+    private Member owner;
+    private String expensePlace;
+    private String expenseDescription;
+    private ExpenseBook expenseBook;
+    private ExpenseCategory expenseCategory;
+
+
+    private RealmList<Member> memberList;
 
     public Expense() {
 
+
     }
 
-    public long getOwnerId() {
-        return mOwnerId;
+    public long getId() {
+        return id;
     }
 
-    public void setOwnerId(long ownerId) {
-        mOwnerId = ownerId;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Member owner) {
+        this.owner = owner;
     }
 
     public String getExpenseAmount() {
-        return mExpenseAmount;
+        return expenseAmount;
     }
 
-    public Expense setExpenseAmount(String expenseAmount) {
-        mExpenseAmount = expenseAmount;
-        return this;
+    public void setExpenseAmount(String expenseAmount) {
+        this.expenseAmount = expenseAmount;
     }
 
     public long getExpenseDate() {
-        return mExpenseDate;
+        return expenseDate;
     }
 
-    public Expense setExpenseDate(long expenseDate) {
-        mExpenseDate = expenseDate;
-        return this;
+    public void setExpenseDate(long expenseDate) {
+        this.expenseDate = expenseDate;
     }
 
     public String getExpenseName() {
-        return mExpenseName;
+        return expenseName;
     }
 
-    public Expense setExpenseName(String expenseName) {
-        mExpenseName = expenseName;
-        return this;
+    public void setExpenseName(String expenseName) {
+        this.expenseName = expenseName;
     }
 
     public String getExpensePlace() {
-        return mExpensePlace;
+        return expensePlace;
     }
 
-    public Expense setExpensePlace(String expensePlace) {
-        mExpensePlace = expensePlace;
-        return this;
+    public void setExpensePlace(String expensePlace) {
+        this.expensePlace = expensePlace;
     }
 
     public String getExpenseDescription() {
-        return mExpenseDescription;
+        return expenseDescription;
     }
 
-    public Expense setExpenseDescription(String expenseDescription) {
-        mExpenseDescription = expenseDescription;
-        return this;
+    public void setExpenseDescription(String expenseDescription) {
+        this.expenseDescription = expenseDescription;
     }
 
-    public List<Member> getMemberList() {
-        return mMemberList;
+    public RealmList<Member> getMemberList() {
+        return memberList;
     }
 
-    public Expense setMemberList(List<Member> memberList) {
-        mMemberList = memberList;
-        return this;
+    @ParcelPropertyConverter(MemberParcelConverter.class)
+    public void setMemberList(RealmList<Member> memberList) {
+        this.memberList = memberList;
     }
 
     public ExpenseBook getExpenseBook() {
-        return mExpenseBook;
+        return expenseBook;
     }
 
-    public Expense setExpenseBook(ExpenseBook expenseBook) {
-        mExpenseBook = expenseBook;
-        return this;
+    public void setExpenseBook(ExpenseBook expenseBook) {
+        this.expenseBook = expenseBook;
     }
 
-    public Category getCategory() {
-        return mCategory;
+    public ExpenseCategory getExpenseCategory() {
+        return expenseCategory;
     }
 
-    public Expense setCategory(Category category) {
-        mCategory = category;
-        return this;
+    public void setExpenseCategory(ExpenseCategory expenseCategory) {
+        this.expenseCategory = expenseCategory;
     }
 }

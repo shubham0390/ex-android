@@ -19,6 +19,6 @@ public class ExpenseListLoader extends AsyncTaskLoader<List<Expense>> {
 
     @Override
     public List<Expense> loadInBackground() {
-        return null;//ExpenseDataFactory.getExpenseDataAdapter().getAll();
+        return null;//ExpenseDataFactory.getExpenseDataAdapter().restoreAllContent();
     }
 }

@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookRealmDataAdapter;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
 
 import dagger.Module;
@@ -25,7 +24,7 @@ public class ExpenseBookListFragmentModule {
     @Provides
     @ActivityScope
     ExpenseBookDataAdapter provideExpenseBookDataAdapter(Context context) {
-        return new ExpenseBookSQLDataAdapter(context);
+        return new ExpenseBookRealmDataAdapter(context);
     }
     @Provides
     @ActivityScope

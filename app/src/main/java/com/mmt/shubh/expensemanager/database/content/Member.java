@@ -15,116 +15,80 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
 
-public class Member extends BaseContent implements Parcelable {
+import io.realm.MemberRealmProxy;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    private String mMemberName;
+@Parcel(implementations = { MemberRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Member.class })
+public class Member extends RealmObject {
 
-    private String mMemberEmail;
 
-    private String mMemberPhoneNumber;
+    @PrimaryKey
+    private long id;
 
-    private String mCoverPhotoUrl;
+    private String memberName;
 
-    private String mProfilePhotoUrl;
+    private String memberEmail;
+
+    private String memberPhoneNumber;
+
+    private String coverPhotoUrl;
+
+    private String profilePhotoUrl;
 
 
     public Member() {
     }
 
-    protected Member(Parcel in) {
-        mMemberName = in.readString();
-        mMemberEmail = in.readString();
-        mMemberPhoneNumber = in.readString();
-        mCoverPhotoUrl = in.readString();
-        mProfilePhotoUrl = in.readString();
+    public long getId() {
+        return id;
     }
 
-    public static final Creator<Member> CREATOR = new Creator<Member>() {
-        @Override
-        public Member createFromParcel(Parcel in) {
-            return new Member(in);
-        }
-
-        @Override
-        public Member[] newArray(int size) {
-            return new Member[size];
-        }
-    };
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCoverPhotoUrl() {
-        return mCoverPhotoUrl;
+        return coverPhotoUrl;
     }
 
     public void setCoverPhotoUrl(String coverPhotoUrl) {
-        mCoverPhotoUrl = coverPhotoUrl;
+        this.coverPhotoUrl = coverPhotoUrl;
     }
 
     public String getMemberEmail() {
-        return mMemberEmail;
+        return memberEmail;
     }
 
     public void setMemberEmail(String memberEmail) {
-        mMemberEmail = memberEmail;
+        this.memberEmail = memberEmail;
     }
 
     public String getMemberName() {
-        return mMemberName;
+        return memberName;
     }
 
     public void setMemberName(String memberName) {
-        mMemberName = memberName;
+        this.memberName = memberName;
     }
 
     public String getProfilePhotoUrl() {
-        return mProfilePhotoUrl;
+        return profilePhotoUrl;
     }
 
     public void setProfilePhotoUrl(String profilePhotoUrl) {
-        mProfilePhotoUrl = profilePhotoUrl;
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 
     public String getMemberPhoneNumber() {
-        return mMemberPhoneNumber;
+        return memberPhoneNumber;
     }
 
     public void setMemberPhoneNumber(String memberPhoneNumber) {
-        mMemberPhoneNumber = memberPhoneNumber;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mMemberName);
-        parcel.writeString(mMemberEmail);
-        parcel.writeString(mMemberPhoneNumber);
-        parcel.writeString(mCoverPhotoUrl);
-        parcel.writeString(mProfilePhotoUrl);
-    }
-
-
-    @Override
-    public int hashCode() {
-        int result = getMemberName().hashCode();
-        result = 31 * result + getMemberEmail().hashCode();
-        result = 31 * result + getMemberPhoneNumber().hashCode();
-        result = 31 * result + getCoverPhotoUrl().hashCode();
-        result = 31 * result + getProfilePhotoUrl().hashCode();
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        Member member = (Member) o;
-        if (member.getMemberEmail().equalsIgnoreCase(getMemberEmail()) || member.getMemberPhoneNumber() == getMemberPhoneNumber()) {
-            return true;
-        }
-        return false;
+        this.memberPhoneNumber = memberPhoneNumber;
     }
 }

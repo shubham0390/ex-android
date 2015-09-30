@@ -15,106 +15,96 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class Account extends BaseContent implements Parcelable {
+import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
+
+import io.realm.AccountRealmProxy;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+@Parcel(implementations = { AccountRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Account.class })
+public class Account extends RealmObject {
 
     public static final String TYPE_BANK = "bank";
     public static final String TYPE_CREDIT_CARD = "credit_card";
     public static final String TYPE_CASH = "cash";
 
-    private String mAccountName;
+    @PrimaryKey
+    private long id;
 
-    private long mAccountBalance;
+    private String accountName;
 
-    private String mType;
+    private long accountBalance;
 
-    private String mAccountNumber;
+    private String accountType;
 
-    private String mBankName;
+    private String accountNumber;
+
+    private String bankName;
+
+    private RealmList<BankCard> cards;
 
     public Account() {
     }
 
-    protected Account(Parcel in) {
-        mAccountName = in.readString();
-        mAccountBalance = in.readLong();
-        mType = in.readString();
-        mAccountNumber = in.readString();
-        mBankName = in.readString();
+    @ParcelPropertyConverter(BankCardParcelConverter.class)
+    public RealmList<BankCard> getCards() {
+        return cards;
     }
 
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel in) {
-            return new Account(in);
-        }
+    public void setCards(RealmList<BankCard> cards) {
+        this.cards = cards;
+    }
 
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
-    @Override
     public long getId() {
-        return mId;
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getAccountName() {
-        return mAccountName;
+        return accountName;
     }
 
     public long getAccountBalance() {
-        return mAccountBalance;
+        return accountBalance;
     }
 
     public void setAccountBalance(long accountBalance) {
-        mAccountBalance = accountBalance;
+        this.accountBalance = accountBalance;
     }
 
     public void setAccountName(String accountName) {
-        mAccountName = accountName;
+        this.accountName = accountName;
     }
 
-    public String getType() {
-        return mType;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public Account setType(String type) {
-        mType = type;
-        return this;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getAccountNumber() {
-        return mAccountNumber;
+        return accountNumber;
     }
 
-    public Account setAccountNumber(String accountNumber) {
-        mAccountNumber = accountNumber;
-        return this;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public String getBankName() {
-        return mBankName;
+        return bankName;
     }
 
     public void setBankName(String bankName) {
-        mBankName = bankName;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mAccountName);
-        dest.writeLong(mAccountBalance);
-        dest.writeString(mType);
-        dest.writeString(mAccountNumber);
-        dest.writeString(mBankName);
+        this.bankName = bankName;
     }
 }

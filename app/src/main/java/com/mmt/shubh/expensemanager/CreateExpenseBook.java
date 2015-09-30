@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,13 +8,14 @@ import android.provider.ContactsContract;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookRealmDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberRealmDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 /**
  * @author uchamaria
@@ -31,7 +31,7 @@ public class CreateExpenseBook {
 
     private Bundle mExpenseBookInfo;
 
-    private ExpenseBookSQLDataAdapter mExpenseBookAdapter;
+    private ExpenseBookRealmDataAdapter mExpenseBookAdapter;
 
     public CreateExpenseBook(Context context, List<ContactsMetaData> contactsList, List<Integer>
             selectedContacts, Bundle expenseBookInfo) {
@@ -40,7 +40,7 @@ public class CreateExpenseBook {
         this.mContactsList = contactsList;
         this.mSelectedContacts = selectedContacts;
         this.mExpenseBookInfo = expenseBookInfo;
-        this.mExpenseBookAdapter = new ExpenseBookSQLDataAdapter(mContext);
+        this.mExpenseBookAdapter = new ExpenseBookRealmDataAdapter(mContext);
     }
 
     /**
@@ -70,7 +70,7 @@ public class CreateExpenseBook {
         expenseBook.setType("public");
 
         UserSettings userSettings = UserSettings.getInstance();
-        MemberDataAdapter memberDataAdapter = new MemberSQLDataAdapter(mContext);
+        MemberDataAdapter memberDataAdapter = new MemberRealmDataAdapter(mContext);
         expenseBook.setOwner(memberDataAdapter.get(userSettings.getUserInfo().getMemberKey()));
 
         expenseBook.setCreationTime(System.currentTimeMillis());
@@ -87,7 +87,7 @@ public class CreateExpenseBook {
      */
     private void saveMemberDetails(ExpenseBook expenseBook) {
         Logger.debug(TAG, "entered saveMemberDetails()");
-        List<Member> memberList = new ArrayList<>();
+        RealmList<Member> memberList = new RealmList<>();
         for (int selectedIndex : mSelectedContacts) {
             String contactId = mContactsList.get(selectedIndex).getContactId();
             Member memberDetails = fetchContactDetails(contactId);
@@ -149,7 +149,7 @@ public class CreateExpenseBook {
      */
     private void saveMemberDetailsToDB(List<Member> memberDetails) {
         Logger.debug(TAG, "entering saveMemberDetailsToDB()");
-        MemberSQLDataAdapter memberSQLDataAdapter =  new MemberSQLDataAdapter(mContext);
+        MemberRealmDataAdapter memberSQLDataAdapter =  new MemberRealmDataAdapter(mContext);
         memberSQLDataAdapter.create(memberDetails);
         Logger.debug(TAG, "exiting saveMemberDetailsToDB()");
     }

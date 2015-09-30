@@ -24,16 +24,20 @@ import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.dagger.api.DaggerObjectGraph;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.AbsRealmDataAdapter;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
-import javax.inject.Inject;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 /**
@@ -56,6 +60,31 @@ public class ExpenseApplication extends Application {
         generateHashKey();
         instance = this;
         buildComponentAndInject();
+        intiliazeStetho();
+
+        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
+                .name(AbsRealmDataAdapter.DATABASE_NAME)
+                /*.encryptionKey(getKey())*/
+                .schemaVersion(AbsRealmDataAdapter.DATABASE_VERSION)
+                /*.setModules(new MySchemaModule())
+                .migration(new MyMigration())*/
+                .build();
+        Realm.setDefaultConfiguration(config);
+    }
+
+    private void intiliazeStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
+                                .withFolder(getCacheDir())
+                                /*.withEncryptionKey("encrypted.realm", key)*/
+                                .withMetaTables()
+                                .withDescendingOrder()
+                                .withLimit(1000)
+                                .databaseNamePattern(Pattern.compile(".+\\.realm"))
+                                .build())
+                        .build());
     }
 
     public static DaggerObjectGraph component() {

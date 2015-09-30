@@ -26,7 +26,6 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookC
 import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.TransactionContract;
 import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
-import com.mmt.shubh.expensemanager.database.dataadapters.BaseSQLDataAdapter;
 
 public class ExpenseProvider extends ContentProvider {
 
@@ -185,7 +184,7 @@ public class ExpenseProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        int match = findMatch(uri, "getType");
+        int match = findMatch(uri, "getAccountType");
         Log.d("ExManager", uri.toString());
         switch (match) {
             case EXPENSE:
@@ -284,7 +283,7 @@ public class ExpenseProvider extends ContentProvider {
         }
         Context context = getContext();
         int table = match >> BASE_SHIFT;
-        String limit = uri.getQueryParameter(BaseSQLDataAdapter.PARAMETER_LIMIT);
+        String limit = "100";//uri.getQueryParameter(BaseRealmDataAdapter.PARAMETER_LIMIT);
         String id;
 
         SQLiteDatabase db = getReadableDatabase(context);

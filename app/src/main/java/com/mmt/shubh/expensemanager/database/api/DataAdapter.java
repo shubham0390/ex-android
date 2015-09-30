@@ -8,13 +8,13 @@ import java.util.List;
 public interface DataAdapter<T> {
     long create(T t);
 
-    int update(T t);
+    T update(T t);
 
-    int delete(T t);
+    T delete(T t);
 
-    int delete(long id);
+    T delete(long id);
 
-    int deleteAll();
+    void deleteAll(Class<T> tClass);
 
     T get(long id);
 

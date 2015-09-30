@@ -20,7 +20,7 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberRealmDataAdapter;
 import com.mmt.shubh.expensemanager.ui.activity.MemberDetailActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.MemberListAdapter;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
@@ -104,7 +104,7 @@ public class MemberListFragment extends Fragment implements AppFragment{
 
         @Override
         public List<Member> loadInBackground() {
-            MemberDataAdapter dataAdapter = new MemberSQLDataAdapter(getContext());
+            MemberDataAdapter dataAdapter = new MemberRealmDataAdapter(getContext());
             if (mId != -1) {
                 return dataAdapter.getAllMemberByExpenseBookId(mId);
             }

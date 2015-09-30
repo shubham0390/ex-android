@@ -12,7 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.UserSettings;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoRealmDataAdapter;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
                 UserSettings userSettings = UserSettings.getInstance();
                 userSettings.setUserInfo(data);
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                intent.putExtra("Account", data);
+                intent.putExtra("Account", Parcels.wrap(data));
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
@@ -86,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         public UserInfo loadInBackground() {
-            UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
+            UserInfoRealmDataAdapter sqlDataAdapter = new UserInfoRealmDataAdapter(mContext);
             List<UserInfo> userInfoList = sqlDataAdapter.getAll();
             if (userInfoList != null && userInfoList.size() > 0) {
                 return userInfoList.get(0);

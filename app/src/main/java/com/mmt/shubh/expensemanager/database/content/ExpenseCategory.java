@@ -15,18 +15,35 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-public class Category extends BaseContent{
+import org.parceler.Parcel;
 
+import io.realm.ExpenseCategoryRealmProxy;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    public String mCategoryName;
+@Parcel(implementations = { ExpenseCategoryRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { ExpenseCategory.class })
+public class ExpenseCategory extends RealmObject{
+
+    @PrimaryKey
+    private long id;
+    private String categoryName;
 
 
     public String getCategoryName() {
-        return mCategoryName;
+        return categoryName;
     }
 
-    public Category setCategoryName(String categoryName) {
-        mCategoryName = categoryName;
-        return this;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
