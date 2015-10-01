@@ -15,106 +15,75 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import org.parceler.Parcel;
 
-public class Account extends BaseContent implements Parcelable {
+@Parcel(value = Parcel.Serialization.BEAN)
+public class Account {
 
     public static final String TYPE_BANK = "bank";
     public static final String TYPE_CREDIT_CARD = "credit_card";
     public static final String TYPE_CASH = "cash";
 
-    private String mAccountName;
 
-    private long mAccountBalance;
-
-    private String mType;
-
-    private String mAccountNumber;
-
-    private String mBankName;
+    private String accountName;
+    private long accountBalance;
+    private String type;
+    private String accountNumber;
+    private String bankName;
+    private long id;
 
     public Account() {
     }
 
-    protected Account(Parcel in) {
-        mAccountName = in.readString();
-        mAccountBalance = in.readLong();
-        mType = in.readString();
-        mAccountNumber = in.readString();
-        mBankName = in.readString();
+    public long getId() {
+        return id;
     }
 
-    public static final Creator<Account> CREATOR = new Creator<Account>() {
-        @Override
-        public Account createFromParcel(Parcel in) {
-            return new Account(in);
-        }
-
-        @Override
-        public Account[] newArray(int size) {
-            return new Account[size];
-        }
-    };
-
-    @Override
-    public long getId() {
-        return mId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getAccountName() {
-        return mAccountName;
-    }
-
-    public long getAccountBalance() {
-        return mAccountBalance;
-    }
-
-    public void setAccountBalance(long accountBalance) {
-        mAccountBalance = accountBalance;
+        return accountName;
     }
 
     public void setAccountName(String accountName) {
-        mAccountName = accountName;
+        this.accountName = accountName;
+    }
+
+    public long getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(long accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 
     public Account setType(String type) {
-        mType = type;
+        this.type = type;
         return this;
     }
 
     public String getAccountNumber() {
-        return mAccountNumber;
+        return accountNumber;
     }
 
     public Account setAccountNumber(String accountNumber) {
-        mAccountNumber = accountNumber;
+        this.accountNumber = accountNumber;
         return this;
     }
 
     public String getBankName() {
-        return mBankName;
+        return bankName;
     }
 
     public void setBankName(String bankName) {
-        mBankName = bankName;
+        this.bankName = bankName;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mAccountName);
-        dest.writeLong(mAccountBalance);
-        dest.writeString(mType);
-        dest.writeString(mAccountNumber);
-        dest.writeString(mBankName);
-    }
 }

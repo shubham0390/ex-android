@@ -21,6 +21,8 @@ import com.mmt.shubh.expensemanager.ui.adapters.base.ExpenseBookDetailFragmentAd
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment;
 
+import org.parceler.Parcels;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -54,7 +56,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
         ButterKnife.bind(this);
         initializeToolbar();
 
-        mExpenseBook = getIntent().getParcelableExtra(Constants.KEY_EXPENSE_BOOK);
+        mExpenseBook = Parcels.unwrap(getIntent().getParcelableExtra(Constants.KEY_EXPENSE_BOOK));
         setToolbar();
         setTabs();
     }
@@ -85,9 +87,9 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
                     .placeholder(drawable)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(mLogoImageView);
-        } /*else {
+        } else {
             mLogoImageView.setImageDrawable(drawable);
-        }*/
+        }
     }
 
     @Override
@@ -113,7 +115,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
     private void installSettingFragment() {
         ExpenseBookSettingFragment fragment = new ExpenseBookSettingFragment();
         Bundle bundle =  new Bundle();
-        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK,mExpenseBook);
+        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.settings, fragment).commit();
     }

@@ -15,18 +15,32 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-public class Category extends BaseContent{
+import org.parceler.Parcel;
 
+@Parcel(value = Parcel.Serialization.BEAN)
+public class ExpenseCategory {
 
-    public String mCategoryName;
+    public String categoryName;
 
+    private long id;
 
-    public String getCategoryName() {
-        return mCategoryName;
+    public ExpenseCategory() {
     }
 
-    public Category setCategoryName(String categoryName) {
-        mCategoryName = categoryName;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public ExpenseCategory setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
         return this;
     }
 }

@@ -284,7 +284,7 @@ public class ExpenseProvider extends ContentProvider {
         }
         Context context = getContext();
         int table = match >> BASE_SHIFT;
-        String limit = uri.getQueryParameter(BaseSQLDataAdapter.PARAMETER_LIMIT);
+        String limit = uri.getQueryParameter(BaseContract.PARAMETER_LIMIT);
         String id;
 
         SQLiteDatabase db = getReadableDatabase(context);

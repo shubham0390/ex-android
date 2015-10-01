@@ -23,7 +23,7 @@ import android.net.Uri;
 import android.os.Binder;
 
 import com.mmt.shubh.expensemanager.database.DatabaseUtility;
-import com.mmt.shubh.expensemanager.database.content.BaseContent;
+import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.provider.ProviderUnavailableException;
 
 import java.util.ArrayList;
@@ -35,28 +35,16 @@ import java.util.List;
  * 5:49 PM
  * TODO:Add class comment.
  */
-public abstract class BaseSQLDataAdapter<T extends BaseContent> {
+public abstract class BaseSQLDataAdapter<T> {
 
-    public static final String PARAMETER_LIMIT = "limit";
 
-    // All classes share this
-    public static final String RECORD_ID = "_id";
-    /**
-     * This projection can be used with any of the EmailContent classes, when all you need
-     * is a list of id's.  Use ID_PROJECTION_COLUMN to access the row data.
-     */
-    public static final String[] ID_PROJECTION = new String[]{
-            RECORD_ID
-    };
-    public static final String[] COUNT_COLUMNS = new String[]{"count(*)"};
+
     // Newly created objects get this id
     public static final int NOT_SAVED = -1;
     // The id of the Content
     public long mRecordId = NOT_SAVED;
     // The base Uri that this piece of content came from
     public Uri mBaseUri;
-    // Lazily initialized uri for this Content
-    private Uri mUri = null;
 
     protected Context mContext;
 
@@ -99,7 +87,6 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
     /**
      * Restore a subclass of ExpenseContent from the database
      *
-     * @param <T>
      * @param context           the caller's context
      * @param klass             the class to restore
      * @param contentUri        the content uri of the ExpenseContent subclass
@@ -125,7 +112,6 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
     public T getContent(Cursor cursor, Class<T> klass) {
         try {
             T content = klass.newInstance();
-            content.setId(cursor.getLong(0));
             restore(cursor, content);
             return content;
         } catch (IllegalAccessException e) {
@@ -156,7 +142,7 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
      */
     public int count(Uri uri, String selection, String[] selectionArgs) {
         return DatabaseUtility.getFirstRowLong(mContext,
-                uri, COUNT_COLUMNS, selection, selectionArgs, null, 0, Long.valueOf(0)).intValue();
+                uri, BaseContract.COUNT_COLUMNS, selection, selectionArgs, null, 0, (long) 0).intValue();
     }
 
     /**
@@ -167,7 +153,7 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
     }
 
     static public Uri uriWithLimit(Uri uri, int limit) {
-        return uri.buildUpon().appendQueryParameter(BaseSQLDataAdapter.PARAMETER_LIMIT,
+        return uri.buildUpon().appendQueryParameter(BaseContract.PARAMETER_LIMIT,
                 Integer.toString(limit)).build();
     }
 
@@ -177,13 +163,6 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
     // Read the Content from a ContentCursor
     public abstract void restore(Cursor cursor, T t);
 
-    // The Uri is lazily initialized
-    public Uri getUri() {
-        if (mUri == null) {
-            mUri = ContentUris.withAppendedId(mBaseUri, mRecordId);
-        }
-        return mUri;
-    }
 
     public boolean isSaved() {
         return mRecordId != NOT_SAVED;
@@ -203,11 +182,11 @@ public abstract class BaseSQLDataAdapter<T extends BaseContent> {
         if (!isSaved()) {
             throw new UnsupportedOperationException();
         }
-        return mContext.getContentResolver().update(getUri(), contentValues, null, null);
+        return mContext.getContentResolver().update(mBaseUri, contentValues, null, null);
     }
 
     public int delete() {
-        return mContext.getContentResolver().delete(getUri(), null, null);
+        return mContext.getContentResolver().delete(mBaseUri, null, null);
     }
 
 }

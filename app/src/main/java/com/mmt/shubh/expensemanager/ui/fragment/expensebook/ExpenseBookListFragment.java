@@ -3,11 +3,10 @@ package com.mmt.shubh.expensemanager.ui.fragment.expensebook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -24,6 +23,8 @@ import com.mmt.shubh.expensemanager.ui.module.ExpenseBookListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public static final String TAG = "ExpenseBookListFragment";
 
     private ExpenseBookListAdapter mExpenseBookListAdapter;
+
+    private long selectedExpenseBookId;
 
     public ExpenseBookListFragment() {
     }
@@ -46,24 +49,46 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadData(false);
-        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<ExpenseBook>());
+        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<>());
         ListRecyclerView recyclerView = (ListRecyclerView) mRecyclerView;
-        recyclerView.setOnItemClickListener(mItemClickListener);
-    }
 
-    private ListRecyclerView.OnItemClickListener mItemClickListener = new ListRecyclerView.OnItemClickListener() {
-        @Override
-        public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
+        recyclerView.setOnItemClickListener((parent, view, position, id) -> {
+            selectedExpenseBookId = id;
             installExpenseBookDetail(position);
             return true;
-        }
-    };
+        });
+
+        recyclerView.setOnItemLongClickListener((parent, view, position, id) -> {
+            selectedExpenseBookId = id;
+            showConfirmationDialog();
+            return true;
+        });
+    }
+
+    private void deleteExpenseBook() {
+        mPresenter.deleteExpenseBook(selectedExpenseBookId);
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        builder.setTitle(R.string.delete_expense_book_dialog_title);
+        builder.setMessage(R.string.delete_expense_book_dialog_message);
+
+        builder.setPositiveButton(R.string.deleted_key, (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+            deleteExpenseBook();
+        });
+
+        builder.setNegativeButton(R.string.cancel, ((dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        }));
+    }
 
     private void installExpenseBookDetail(int position) {
         ExpenseBook expenseBook = mExpenseBookListAdapter.getItem(position);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, expenseBook);
+        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(expenseBook));
         Intent intent = new Intent(getActivity(), ExpenseBookDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -86,7 +111,7 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add_expense) {
-            Intent intent = new Intent(getActivity().getApplicationContext(),AddExpenseBookActivity.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), AddExpenseBookActivity.class);
             startActivityForResult(intent, 123);
             return true;
         }

@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
@@ -67,7 +68,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
         Cursor cursor = null;
         try {
-            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseSQLDataAdapter.ID_PROJECTION,
+            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseContract.ID_PROJECTION,
                     SELECTION, new String[]{member.getMemberEmail()}, null);
             if (cursor.getCount() > 0) {
                 return true;

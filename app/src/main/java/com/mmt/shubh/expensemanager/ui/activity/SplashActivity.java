@@ -14,6 +14,8 @@ import com.mmt.shubh.expensemanager.UserSettings;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 /**
@@ -34,12 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad();
-            }
-        }, 1300);
+        handler.postDelayed(() -> getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad(), 1300);
     }
 
     @Override
@@ -60,7 +57,6 @@ public class SplashActivity extends AppCompatActivity {
                 UserSettings userSettings = UserSettings.getInstance();
                 userSettings.setUserInfo(data);
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                intent.putExtra("Account", data);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

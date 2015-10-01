@@ -1,24 +1,35 @@
 package com.mmt.shubh.expensemanager.database.content;
 
+import org.parceler.Parcel;
+
 /**
  * Created by Subham Tyagi,
  * on 10/Jul/2015,
  * 1:54 AM
  * TODO:Add class comment.
  */
-public class Transaction extends BaseContent {
+@Parcel(value = Parcel.Serialization.BEAN)
+public class Transaction {
 
     public static final String TYPE_CREDIT = "credit";
     public static final String TYPE_DEBIT = "debit";
 
+    private long id;
     private String name;
-
     private int amount;
-
     private long date;
-
     private String type;
 
+    public Transaction() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getAmount() {
         return amount;

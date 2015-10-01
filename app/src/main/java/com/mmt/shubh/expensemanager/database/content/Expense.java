@@ -15,10 +15,13 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
-public class Expense extends BaseContent {
-
+@Parcel(value = Parcel.Serialization.BEAN)
+public class Expense {
+    private long id;
     private String mExpenseAmount;
     private long mExpenseDate;
     private String mExpenseName;
@@ -26,11 +29,18 @@ public class Expense extends BaseContent {
     private String mExpensePlace;
     private String mExpenseDescription;
     private ExpenseBook mExpenseBook;
-    private Category mCategory;
+    private ExpenseCategory mExpenseCategory;
     private List<Member> mMemberList;
-
     public Expense() {
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getOwnerId() {
@@ -45,71 +55,63 @@ public class Expense extends BaseContent {
         return mExpenseAmount;
     }
 
-    public Expense setExpenseAmount(String expenseAmount) {
+    public void setExpenseAmount(String expenseAmount) {
         mExpenseAmount = expenseAmount;
-        return this;
     }
 
     public long getExpenseDate() {
         return mExpenseDate;
     }
 
-    public Expense setExpenseDate(long expenseDate) {
+    public void setExpenseDate(long expenseDate) {
         mExpenseDate = expenseDate;
-        return this;
     }
 
     public String getExpenseName() {
         return mExpenseName;
     }
 
-    public Expense setExpenseName(String expenseName) {
+    public void setExpenseName(String expenseName) {
         mExpenseName = expenseName;
-        return this;
     }
 
     public String getExpensePlace() {
         return mExpensePlace;
     }
 
-    public Expense setExpensePlace(String expensePlace) {
+    public void setExpensePlace(String expensePlace) {
         mExpensePlace = expensePlace;
-        return this;
     }
 
     public String getExpenseDescription() {
         return mExpenseDescription;
     }
 
-    public Expense setExpenseDescription(String expenseDescription) {
+    public void setExpenseDescription(String expenseDescription) {
         mExpenseDescription = expenseDescription;
-        return this;
     }
 
     public List<Member> getMemberList() {
         return mMemberList;
     }
 
-    public Expense setMemberList(List<Member> memberList) {
+    public void setMemberList(List<Member> memberList) {
         mMemberList = memberList;
-        return this;
     }
 
     public ExpenseBook getExpenseBook() {
         return mExpenseBook;
     }
 
-    public Expense setExpenseBook(ExpenseBook expenseBook) {
+    public void setExpenseBook(ExpenseBook expenseBook) {
         mExpenseBook = expenseBook;
-        return this;
     }
 
-    public Category getCategory() {
-        return mCategory;
+    public ExpenseCategory getExpenseCategory() {
+        return mExpenseCategory;
     }
 
-    public Expense setCategory(Category category) {
-        mCategory = category;
-        return this;
+    public void setExpenseCategory(ExpenseCategory expenseCategory) {
+        mExpenseCategory = expenseCategory;
     }
 }

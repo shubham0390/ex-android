@@ -64,6 +64,10 @@ public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<Li
 
     }
 
+    public void deleteExpenseBook(long id) {
+        mExpenseBookDataAdapter.delete(id);
+    }
+
     private static class ExpenseBookListLoader extends AsyncTaskLoader<List<ExpenseBook>> {
         WeakReference<ExpenseBookDataAdapter> mAdapterWeakReference;
 

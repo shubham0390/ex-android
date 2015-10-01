@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
 
         try {
             cursor = context.getContentResolver().query(EXPENSE_BOOK_URI,
-                    BaseSQLDataAdapter.ID_PROJECTION, ExpenseBookContract.EXPENSE_BOOK_NAME + " = ?",
+                    BaseContract.ID_PROJECTION, ExpenseBookContract.EXPENSE_BOOK_NAME + " = ?",
                     new String[]{groupName}, null);
             if (cursor == null || cursor.getCount() <= 0) {
                 return false;
