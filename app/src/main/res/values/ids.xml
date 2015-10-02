@@ -20,5 +20,7 @@
     <item type="id" name="user_name"/>
     <item type="id" name="profile_image"/>
 
+    <item name="item_click_support" type="id" />
+
 
 </resources>

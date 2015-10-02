@@ -1,15 +1,27 @@
 package com.mmt.shubh.expensemanager.ui.view;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
+
 public class ItemClickSupport {
+
     private final RecyclerView mRecyclerView;
-    private OnItemClickListener mOnItemClickListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
+
+    private ListRecyclerView.OnItemClickListener mOnItemClickListener;
+
+    private ListRecyclerView.OnItemLongClickListener mOnItemLongClickListener;
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
                 RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(v);
-                mOnItemClickListener.onItemClicked(mRecyclerView, holder.getAdapterPosition(), v);
+                int pos = holder.getAdapterPosition();
+                long id = mRecyclerView.getAdapter().getItemId(pos);
+                mOnItemClickListener.onItemClick(mRecyclerView, v, pos, id);
             }
         }
     };
@@ -18,7 +30,9 @@ public class ItemClickSupport {
         public boolean onLongClick(View v) {
             if (mOnItemLongClickListener != null) {
                 RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(v);
-                return mOnItemLongClickListener.onItemLongClicked(mRecyclerView, holder.getAdapterPosition(), v);
+                int pos = holder.getAdapterPosition();
+                long id = mRecyclerView.getAdapter().getItemId(pos);
+                return mOnItemLongClickListener.onItemLongClick(mRecyclerView, v, pos, id);
             }
             return false;
         }
@@ -63,12 +77,12 @@ public class ItemClickSupport {
         return support;
     }
 
-    public ItemClickSupport setOnItemClickListener(OnItemClickListener listener) {
+    public ItemClickSupport setOnItemClickListener(ListRecyclerView.OnItemClickListener listener) {
         mOnItemClickListener = listener;
         return this;
     }
 
-    public ItemClickSupport setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public ItemClickSupport setOnItemLongClickListener(ListRecyclerView.OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
         return this;
     }
@@ -78,13 +92,5 @@ public class ItemClickSupport {
         view.setTag(R.id.item_click_support, null);
     }
 
-    public interface OnItemClickListener {
 
-        void onItemClicked(RecyclerView recyclerView, int position, View v);
-    }
-
-    public interface OnItemLongClickListener {
-
-        boolean onItemLongClicked(RecyclerView recyclerView, int position, View v);
-    }
 }
