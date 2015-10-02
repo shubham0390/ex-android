@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ExpenseBookDetailFragmentAdapter;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment;
+import com.mmt.shubh.expensemanager.utils.Utilities;
 
 import org.parceler.Parcels;
 
@@ -99,6 +102,14 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mExpenseBook.getType().equals("Private")) {
+            menu.removeItem(R.id.edit);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
@@ -108,13 +119,20 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
             case R.id.action_settings:
                 installSettingFragment();
                 break;
+            case R.id.edit:
+                Utilities.hideKeyboard(this);
+                Intent intent = new Intent(this, AddUpdateExpenseBookActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, mExpenseBook);
+                intent.putExtras(bundle);
+                startActivity(intent);
         }
         return true;
     }
 
     private void installSettingFragment() {
         ExpenseBookSettingFragment fragment = new ExpenseBookSettingFragment();
-        Bundle bundle =  new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.settings, fragment).commit();
@@ -153,6 +171,6 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
     @Override
     public void removeFragment(int id, Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(id);
-        getSupportFragmentManager().beginTransaction().remove(fragment);
+        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     }
 }

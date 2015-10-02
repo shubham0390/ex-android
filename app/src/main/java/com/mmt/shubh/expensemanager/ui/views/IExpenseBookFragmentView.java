@@ -18,4 +18,12 @@ public interface IExpenseBookFragmentView extends MVPView {
     void showDuplicateExpenseBook();
 
     void addMemberFragment(Bundle expenseBookInfo);
+
+    void showError(String payload);
+
+    void showCreatingExpenseBookProgress();
+
+    void hideProgress();
+
+    void exit();
 }

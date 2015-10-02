@@ -111,7 +111,7 @@
         <activity android:name=".ui.activity.ExpenseBookDetailActivity"/>
         <activity android:name=".ui.activity.MemberDetailActivity" />
         <activity android:name=".ui.activity.ExpenseBookActivity" />
-        <activity android:name=".ui.activity.AddExpenseBookActivity" />
+        <activity android:name=".ui.activity.AddUpdateExpenseBookActivity" />
         <activity
             android:name=".ui.activity.AccountActivity"
             android:label="@string/title_activity_account" />

@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.activity;
+package com.mmt.shubh.expensemanager.ui.activity.base;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;

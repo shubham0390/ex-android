@@ -30,7 +30,7 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private Context mContext;
 
     public SigUpModelImpl(Context context, SignUpModelCallback signUpModelCallback) {
-        mTaskProcessor = new TaskProcessor();
+        mTaskProcessor = TaskProcessor.getTaskProcessor();
         mTaskProcessor.setOnTaskCompleteListener(this);
         mContext = context;
         mSignUpModelCallback = signUpModelCallback;

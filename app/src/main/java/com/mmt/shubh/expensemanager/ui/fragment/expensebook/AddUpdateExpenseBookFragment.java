@@ -52,10 +52,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author Umang Chamaria
  *         TODO : save image uri and expense book name in database
  */
-public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
+public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
         implements IExpenseBookFragmentView {
 
-    private final String TAG = AddExpenseBookFragment.class.getSimpleName();
+    private final String TAG = AddUpdateExpenseBookFragment.class.getSimpleName();
 
     private final int SELECT_IMAGE = 1;
 
@@ -70,6 +70,8 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
 
     private Uri mOutputFileUri;
 
+    private boolean isUpdate;
+
     private IFragmentDataSharer mFragmentDataSharer;
 
     @Override
@@ -82,6 +84,14 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            isUpdate = true;
+            ExpenseBook expenseBook = getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK);
+            mExpenseName.setText(expenseBook.getName());
+            mExpenseDescription.setText(expenseBook.getDescription());
+        }
+
     }
 
     @OnClick(R.id.expense_book_image)
@@ -161,11 +171,12 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_next) {
-            Utilities.hideKeyboard(getActivity());
-            mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
-                    mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString());
-            return true;
+        switch (id) {
+            case R.id.action_next:
+                Utilities.hideKeyboard(getActivity());
+                mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
+                        mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString(),isUpdate);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -227,7 +238,27 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
     @Override
     public void addMemberFragment(Bundle expenseBookInfo) {
         mFragmentDataSharer.passData(expenseBookInfo);
-        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT, null);
+        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT, expenseBookInfo);
+    }
+
+    @Override
+    public void showError(String payload) {
+
+    }
+
+    @Override
+    public void showCreatingExpenseBookProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void exit() {
+        getActivity().finish();
     }
 
 }
