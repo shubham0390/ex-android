@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.ui.adapters;
 
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,7 +29,8 @@ import butterknife.ButterKnife;
  */
 public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.MemberViewHolder> {
 
-    List<Member> mMembers = new ArrayList<>();
+    private List<Member> mMembers = new ArrayList<>();
+
     private boolean mCanDelete;
 
     @Override
@@ -82,7 +84,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             mMemberName.setText(member.getMemberName());
             mMemberEmail.setText(member.getMemberEmail());
             String imageUrl = member.getProfilePhotoUrl();
-            mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.INVISIBLE);
+            /*mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.INVISIBLE);*/
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
 
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -107,8 +109,9 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         return mMembers;
     }
 
+    @UiThread
     public void setMembers(List<Member> members) {
-        mMembers = members;
+        mMembers.addAll(members);
         notifyDataSetChanged();
     }
 }

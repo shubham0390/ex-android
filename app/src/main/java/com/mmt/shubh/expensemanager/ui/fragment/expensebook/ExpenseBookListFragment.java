@@ -20,7 +20,7 @@ import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookActivityCompon
 import com.mmt.shubh.expensemanager.ui.component.ExpenseBookActivityComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.ui.module.ExpenseBookListFragmentModule;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
 
 import org.parceler.Parcels;

@@ -7,9 +7,14 @@ import android.support.v7.widget.Toolbar;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.MemberListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
+import com.mmt.shubh.expensemanager.ui.module.MemberListFragmentModule;
+import com.mmt.shubh.expensemanager.ui.module.SettingFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookSettingPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookSettingView;
@@ -97,4 +102,11 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         return new ExpenseBookSettingPresenter();
     }
 
+    @Override
+    protected void injectDependencies(MainComponent mainComponent) {
+        ExpenseBookDetailComponent component = DaggerExpenseBookDetailComponent.builder()
+                .settingFragmentModule(new SettingFragmentModule())
+                .mainComponent(mainComponent).build();
+        component.inject(this);
+    }
 }
