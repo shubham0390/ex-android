@@ -28,19 +28,19 @@ import butterknife.ButterKnife;
  */
 public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.MemberViewHolder> {
 
-    List<Member> mMembers =  new ArrayList<>();
+    List<Member> mMembers = new ArrayList<>();
     private boolean mCanDelete;
 
     @Override
     public MemberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_member, parent, false);
-        return new MemberViewHolder(view);
+        return new MemberViewHolder(view, mCanDelete);
     }
 
     @Override
     public void onBindViewHolder(MemberViewHolder holder, int position) {
         holder.bindView(mMembers.get(position));
-        holder.mDelete.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
+        holder.mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -65,34 +65,34 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         ImageView mProfileImage;
 
         @Bind(R.id.delete_member)
-        ImageView mDelete;
+        ImageView mDeleteImageView;
 
         private View mParent;
 
-        public MemberViewHolder(View itemView) {
+        private boolean mCanDelete;
+
+        public MemberViewHolder(View itemView, boolean canDelete) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mParent = itemView;
+            mCanDelete = canDelete;
         }
 
         public void bindView(Member member) {
             mMemberName.setText(member.getMemberName());
             mMemberEmail.setText(member.getMemberEmail());
             String imageUrl = member.getProfilePhotoUrl();
+            mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.INVISIBLE);
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
+
             if (!TextUtils.isEmpty(imageUrl)) {
                 Glide.with(mProfileImage.getContext())
-                        .load(imageUrl)
-                        .animate(anim)
-                        .centerCrop()
-                        .fitCenter()
+                        .load(imageUrl).animate(anim)
+                        .centerCrop().fitCenter()
                         .into(mProfileImage);
             }
         }
 
-        public void setOnClickListener(View.OnClickListener listener) {
-            mParent.setOnClickListener(listener);
-        }
     }
 
     public boolean isCanDelete() {

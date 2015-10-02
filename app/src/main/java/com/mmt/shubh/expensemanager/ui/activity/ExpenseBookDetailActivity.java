@@ -153,6 +153,6 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
     @Override
     public void removeFragment(int id, Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(id);
-        getSupportFragmentManager().beginTransaction().remove(fragment);
+        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     }
 }

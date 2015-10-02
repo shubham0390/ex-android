@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.mmt.shubh.expensemanager.ui.adapters.MemberListAdapter;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
 import com.mmt.shubh.expensemanager.ui.fragment.base.AppFragment;
 import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
+import com.mmt.shubh.expensemanager.ui.view.FixedLinearLayoutManager;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import java.util.List;
  * 11:30 PM
  * TODO:Add class comment.
  */
-public class MemberListFragment extends Fragment implements AppFragment{
+public class MemberListFragment extends Fragment implements AppFragment {
 
     private ListRecyclerView mRecyclerView;
     private MemberListAdapter mListAdapter;
@@ -62,8 +62,9 @@ public class MemberListFragment extends Fragment implements AppFragment{
         mRecyclerView = (ListRecyclerView) view.findViewById(R.id.member_list);
         mEmptyText = (TextView) view.findViewById(R.id.empty_text);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        LinearLayoutManager linearLayoutManager = new FixedLinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.list_devider_line)));
         return view;
@@ -78,12 +79,9 @@ public class MemberListFragment extends Fragment implements AppFragment{
             mIsMemberDeletable = bundle.getBoolean(Constants.KEY_DELETE_MEMBER);
         }
         mListAdapter.setCanDelete(mIsMemberDeletable);
-        mRecyclerView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
-            @Override
-            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-                onMemberItemClick(id);
-                return false;
-            }
+        mRecyclerView.setOnItemClickListener((parent, view, position, id) -> {
+            onMemberItemClick(id);
+            return false;
         });
         getLoaderManager().restartLoader(12, bundle, mLoaderCallbacks).forceLoad();
     }
