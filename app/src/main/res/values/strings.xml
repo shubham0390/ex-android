@@ -180,4 +180,6 @@
     </string>
     <string name="edit">Edit</string>
     <string name="action_update">Update</string>
+    <string name="created_by">Created By : %1$s</string>
+    <string name="created_on">Created On : %1$s</string>
 </resources>

@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -16,7 +17,6 @@ import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponen
 import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.MemberListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
-import com.mmt.shubh.expensemanager.ui.module.MemberListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.module.SettingFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookSettingPresenter;
@@ -39,6 +39,13 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    @Bind(R.id.created_by)
+    TextView mCreatedByTextView;
+
+    @Bind(R.id.created_on)
+    TextView mCreatedOnTextView;
+
+
     private ExpenseBook mExpenseBook;
 
     public ExpenseBookSettingFragment() {
@@ -57,13 +64,20 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
 
         installMemberListFragment();
+        setupToolbar();
 
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        mToolbar.setTitle(R.string.action_settings);
-        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
+        mCreatedByTextView.setText(String.format(getString(R.string.created_by), mExpenseBook.getOwner().getMemberName()));
+        mCreatedOnTextView.setText(String.format(getString(R.string.created_on), mExpenseBook.getCreationTime()));
+
         if (!mExpenseBook.getType().equals("Private"))
             addMenu();
 
+    }
+
+    private void setupToolbar() {
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setTitle(R.string.action_settings);
+        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
     }
 
     private void addMenu() {
@@ -75,8 +89,8 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
 
         mToolbar.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(getActivity(), AddUpdateExpenseBookActivity.class);
-            Bundle bundle =  new Bundle();
-            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK,Parcels.wrap(mExpenseBook));
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
             intent.putExtras(bundle);
             intent.setAction(Constants.ACTION_ADD_MEMBERS);
             startActivity(intent);
