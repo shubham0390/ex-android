@@ -1,14 +1,17 @@
 package com.mmt.shubh.expensemanager.ui.fragment.expensebook;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.ui.activity.AddUpdateExpenseBookActivity;
 import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.MemberListFragment;
@@ -57,19 +60,13 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setTitle(R.string.action_settings);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIFragmentSwitcher.removeFragment(R.id.settings, null);
-            }
-        });
+        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
         if (!mExpenseBook.getType().equals("Private"))
             addMenu();
 
     }
 
     private void addMenu() {
-        mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
 
         mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -77,8 +74,12 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
 
         mToolbar.setOnMenuItemClickListener(item -> {
-            // TODO: 9/16/2015 handle add member
-            // Intent intent =  new Intent(getActivity(),new AddM)
+            Intent intent = new Intent(getActivity(), AddUpdateExpenseBookActivity.class);
+            Bundle bundle =  new Bundle();
+            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK,Parcels.wrap(mExpenseBook));
+            intent.putExtras(bundle);
+            intent.setAction(Constants.ACTION_ADD_MEMBERS);
+            startActivity(intent);
             return true;
         });
     }

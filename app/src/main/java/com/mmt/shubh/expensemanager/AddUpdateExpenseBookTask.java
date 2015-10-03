@@ -57,9 +57,11 @@ public class AddUpdateExpenseBookTask extends AbstractTask<ExpenseBook> {
         Logger.debug(TAG, "entered execute");
 
         if (isUpdate) {
+            Logger.debug(TAG,"Updating expense book");
             mExpenseBookAdapter.update(mExpenseBook);
             createTaskResult(true, STATUS_CODE_UPDATE_SUCCESSFULLY, mExpenseBook);
         } else {
+            Logger.debug(TAG,"Creating new expense book");
             saveExpenseBookDetails();
             if (mExpenseBook.getId() >= 0) {
                 createTaskResult(true, 1234, mExpenseBook);
@@ -73,6 +75,6 @@ public class AddUpdateExpenseBookTask extends AbstractTask<ExpenseBook> {
 
     @Override
     public String getTaskAction() {
-        return TaskActions.ACTION_CREATE_EXPENSE_BOOK;
+        return TaskActions.ACTION_CREATE_UPDATE_EXPENSE_BOOK;
     }
 }

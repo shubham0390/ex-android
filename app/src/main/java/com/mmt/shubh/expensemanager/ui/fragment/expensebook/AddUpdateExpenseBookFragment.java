@@ -15,12 +15,9 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +32,8 @@ import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookFragmentView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -42,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -75,10 +73,8 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     private IFragmentDataSharer mFragmentDataSharer;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_expense_book, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    protected int getLayoutRes() {
+        return R.layout.fragment_add_expense_book;
     }
 
     @Override
@@ -87,7 +83,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true;
-            ExpenseBook expenseBook = getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK);
+            ExpenseBook expenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
             mExpenseName.setText(expenseBook.getName());
             mExpenseDescription.setText(expenseBook.getDescription());
         }
@@ -169,13 +165,23 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem next = menu.findItem(R.id.action_next);
+        MenuItem update = menu.findItem(R.id.action_update);
+        update.setVisible(isUpdate);
+        next.setVisible(isUpdate);
+        super.onPrepareOptionsMenu(menu);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_next:
                 Utilities.hideKeyboard(getActivity());
                 mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
-                        mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString(),isUpdate);
+                        mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString(), isUpdate);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -238,7 +244,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     @Override
     public void addMemberFragment(Bundle expenseBookInfo) {
         mFragmentDataSharer.passData(expenseBookInfo);
-        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT, expenseBookInfo);
+        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADD_MEMBER_FRAGMENT, expenseBookInfo);
     }
 
     @Override
@@ -258,7 +264,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
 
     @Override
     public void exit() {
-        getActivity().finish();
+        getActivity().runOnUiThread(() -> getActivity().finish());
     }
 
 }

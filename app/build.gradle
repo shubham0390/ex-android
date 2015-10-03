@@ -112,6 +112,8 @@ dependencies {
 
     compile "org.parceler:parceler-api:1.0.3"
     apt "org.parceler:parceler:1.0.3"
+    compile 'com.facebook.stetho:stetho:1.2.0'
+    compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
 
     /*Json parsing */
     compile 'com.fasterxml.jackson.core:jackson-core:2.4.2'
