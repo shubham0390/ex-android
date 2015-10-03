@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.AddUpdateExpenseBookTask;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
 import com.mmt.shubh.expensemanager.task.TaskProcessor;
 import com.mmt.shubh.expensemanager.task.TaskResult;
@@ -25,7 +26,10 @@ import com.mmt.shubh.expensemanager.utils.Validator;
 public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseBookFragmentView>
         implements MVPPresenter<IExpenseBookFragmentView>, OnTaskCompleteListener {
 
+    private final String TAG = getClass().getName();
+
     private Context mContext;
+
     TaskProcessor mTaskProcessor;
 
     public ExpenseBookFragmentPresenter(Context context) {
@@ -69,11 +73,14 @@ public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseB
 
     @Override
     public void onTaskComplete(String action, TaskResult taskResult) {
+        Logger.debug(TAG, "task with action " + action + "complete");
         getView().hideProgress();
         if (taskResult.isSuccess()) {
             if (taskResult.getStatusCode() == AddUpdateExpenseBookTask.STATUS_CODE_UPDATE_SUCCESSFULLY) {
-                    getView().exit();
+                Logger.debug(TAG, "Expense book updated successfully");
+                getView().exit();
             } else {
+                Logger.debug(TAG, "Expense book created successfully ,installing add member fragment");
                 Bundle expenseBookInfo = new Bundle();
                 expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, (Parcelable) taskResult.getResult());
                 getView().addMemberFragment(expenseBookInfo);

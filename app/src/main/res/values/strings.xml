@@ -179,4 +179,5 @@
         expense . However your personal expense can be tracked from private expense book
     </string>
     <string name="edit">Edit</string>
+    <string name="action_update">Update</string>
 </resources>

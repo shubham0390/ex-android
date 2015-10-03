@@ -8,7 +8,7 @@ package com.mmt.shubh.expensemanager;
  */
 public interface TaskActions {
 
-    String ACTION_CREATE_EXPENSE_BOOK = "com.mmt.shubh.CREATE_EXPENSE_BOOK";
+    String ACTION_CREATE_UPDATE_EXPENSE_BOOK = "com.mmt.shubh.CREATE_EXPENSE_BOOK";
     String ACTION_ADD_MEMEBER_TO_EXPENSE_BOOK = "com.mmt.shubh.ADD_MEMBERS";
 
 }

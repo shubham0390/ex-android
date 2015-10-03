@@ -123,7 +123,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
                 Utilities.hideKeyboard(this);
                 Intent intent = new Intent(this, AddUpdateExpenseBookActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, mExpenseBook);
+                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
                 intent.putExtras(bundle);
                 startActivity(intent);
         }

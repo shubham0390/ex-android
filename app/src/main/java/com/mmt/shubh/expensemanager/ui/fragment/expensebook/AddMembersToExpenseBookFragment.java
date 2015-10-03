@@ -28,6 +28,8 @@ import com.mmt.shubh.expensemanager.task.TaskProcessor;
 import com.mmt.shubh.expensemanager.task.TaskResult;
 import com.mmt.shubh.expensemanager.ui.adapters.ContactPickerAdapter;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_members_to_expense_book, container, false);
         ButterKnife.bind(this, view);
-        mExpenseBook = getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK);
+        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
         setupRecyclerView();
         return view;
     }

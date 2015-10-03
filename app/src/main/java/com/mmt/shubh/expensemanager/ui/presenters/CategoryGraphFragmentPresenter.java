@@ -2,7 +2,7 @@ package com.mmt.shubh.expensemanager.ui.presenters;
 
 import com.mmt.shubh.expensemanager.ui.models.CategoryModel;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 
 /**

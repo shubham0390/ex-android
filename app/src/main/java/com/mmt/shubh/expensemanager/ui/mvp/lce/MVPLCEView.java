@@ -1,6 +1,8 @@
-package com.mmt.shubh.expensemanager.ui.mvp;
+package com.mmt.shubh.expensemanager.ui.mvp.lce;
 
-public interface MVPLCEView<M> extends MVPView {
+import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
+
+public interface MVPLCEView<M> extends MVPView{
 
     /**
      * Display a loading view while loading data in background.

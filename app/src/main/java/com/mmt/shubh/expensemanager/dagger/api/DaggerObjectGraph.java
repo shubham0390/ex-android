@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.dagger.api;
 
-import com.mmt.shubh.expensemanager.ui.activity.LoginActivity;
 import com.mmt.shubh.expensemanager.ui.activity.SplashActivity;
 
 /**

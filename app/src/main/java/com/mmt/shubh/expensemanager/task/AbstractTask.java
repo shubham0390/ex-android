@@ -37,7 +37,7 @@ public abstract class AbstractTask<T> implements ITask<T> {
 
     public AbstractTask(Context context) {
         mContext = context;
-        mTaskResult = new TaskResult<T>();
+        mTaskResult = new TaskResult<>();
     }
 
     @Override
@@ -45,14 +45,14 @@ public abstract class AbstractTask<T> implements ITask<T> {
     }
 
     protected void createTaskResult(boolean success, int statusCode, T result) {
-        mTaskResult.setIsSuccess(true);
+        mTaskResult.setIsSuccess(success);
         mTaskResult.setResult(result);
-        mTaskResult.setStatusCode(1234);
+        mTaskResult.setStatusCode(statusCode);
     }
 
     protected void createTaskResult(boolean success, int statusCode, Exception error) {
-        mTaskResult.setIsSuccess(true);
-        mTaskResult.setStatusCode(1234);
+        mTaskResult.setIsSuccess(success);
+        mTaskResult.setStatusCode(statusCode);
         mTaskResult.setException(error);
     }
 

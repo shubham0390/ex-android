@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.service.rest;
 import android.content.Context;
 import android.util.Log;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -62,6 +63,7 @@ public class RestClient {
 
         // Add Cache-Control Interceptor
         okHttpClient.networkInterceptors().add(mCacheControlInterceptor);
+        okHttpClient.networkInterceptors().add(new StethoInterceptor());
         // Create Executor
         Executor executor = Executors.newCachedThreadPool();
 
@@ -85,32 +87,29 @@ public class RestClient {
         return apiService;
     }
 
-    private static final Interceptor mCacheControlInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
+    private static final Interceptor mCacheControlInterceptor = chain -> {
+        Request request = chain.request();
 
-            // Add Cache Control only for GET methods
-            if (request.method().equals("GET")) {
-                if (ConnectivityHelper.isNetworkAvailable()) {
-                    // 1 day
-                    request.newBuilder()
-                            .header("Cache-Control", "only-if-cached")
-                            .build();
-                } else {
-                    // 4 weeks stale
-                    request.newBuilder()
-                            .header("Cache-Control", "public, max-stale=2419200")
-                            .build();
-                }
+        // Add Cache Control only for GET methods
+        if (request.method().equals("GET")) {
+            if (ConnectivityHelper.isNetworkAvailable()) {
+                // 1 day
+                request.newBuilder()
+                        .header("Cache-Control", "only-if-cached")
+                        .build();
+            } else {
+                // 4 weeks stale
+                request.newBuilder()
+                        .header("Cache-Control", "public, max-stale=2419200")
+                        .build();
             }
-
-            Response response = chain.proceed(request);
-
-            // Re-write response CC header to force use of cache
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=86400") // 1 day
-                    .build();
         }
+
+        Response response = chain.proceed(request);
+
+        // Re-write response CC header to force use of cache
+        return response.newBuilder()
+                .header("Cache-Control", "public, max-age=86400") // 1 day
+                .build();
     };
 }

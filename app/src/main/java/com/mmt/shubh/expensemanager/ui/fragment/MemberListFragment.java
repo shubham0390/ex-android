@@ -1,33 +1,32 @@
 package com.mmt.shubh.expensemanager.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.ui.activity.MemberDetailActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.MemberListAdapter;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
-import com.mmt.shubh.expensemanager.ui.fragment.base.AppFragment;
+import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.module.MemberListFragmentModule;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewState;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewStateImpl;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.SupportMVPLCEFragment;
+import com.mmt.shubh.expensemanager.ui.presenters.MemberListFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
+import com.mmt.shubh.expensemanager.ui.view.FixedLinearLayoutManager;
 
 import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * Created by Subham Tyagi,
@@ -35,57 +34,67 @@ import java.util.List;
  * 11:30 PM
  * TODO:Add class comment.
  */
-public class MemberListFragment extends Fragment implements AppFragment{
+public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List<Member>, MVPLCEView<List<Member>>,
+        MemberListFragmentPresenter> {
 
-    private ListRecyclerView mRecyclerView;
+    @Bind(R.id.contentView)
+    ListRecyclerView mRecyclerView;
+
     private MemberListAdapter mListAdapter;
-    private TextView mEmptyText;
-    private ProgressBar mProgressBar;
+
+    List<Member> mMemberList;
+
     private boolean mIsMemberDeletable;
 
-
-    @Override
-    public String getTitle() {
-        return "";
-    }
+    private Bundle mArguments;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new MemberListAdapter();
+        setRetainInstance(true);
+        setRestoringViewState(true);
+        mArguments = getArguments();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_member_list, container, false);
-        mRecyclerView = (ListRecyclerView) view.findViewById(R.id.member_list);
-        mEmptyText = (TextView) view.findViewById(R.id.empty_text);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    protected int getLayoutRes() {
+        return R.layout.fragment_member_list;
+    }
+
+    private void setRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new FixedLinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.list_devider_line)));
-        return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-
-        if (bundle != null) {
-            mIsMemberDeletable = bundle.getBoolean(Constants.KEY_DELETE_MEMBER);
+        setRecyclerView();
+        if (mArguments != null) {
+            mIsMemberDeletable = mArguments.getBoolean(Constants.KEY_DELETE_MEMBER);
         }
+        mListAdapter =  new MemberListAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
-        mRecyclerView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
-            @Override
-            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-                onMemberItemClick(id);
-                return false;
-            }
+        setupListener();
+        getViewState().apply(this, true);
+    }
+
+    private void setupListener() {
+        mRecyclerView.setOnItemClickListener((parent, view, position, id) -> {
+            onMemberItemClick(id);
+            return true;
         });
-        getLoaderManager().restartLoader(12, bundle, mLoaderCallbacks).forceLoad();
+        mRecyclerView.setOnItemLongClickListener(((parent, view, position, id) -> {
+            deleteMember(id);
+            return true;
+        }));
+    }
+
+    private void deleteMember(long id) {
+        mPresenter.deleteMember(id);
     }
 
     private void onMemberItemClick(long id) {
@@ -94,47 +103,42 @@ public class MemberListFragment extends Fragment implements AppFragment{
         startActivity(intent);
     }
 
-    public static class MemberListLoader extends AsyncTaskLoader<List<Member>> {
-        long mId;
-
-        public MemberListLoader(Context context, long expenseBookId) {
-            super(context);
-            mId = expenseBookId;
-        }
-
-        @Override
-        public List<Member> loadInBackground() {
-            MemberDataAdapter dataAdapter = new MemberSQLDataAdapter(getContext());
-            if (mId != -1) {
-                return dataAdapter.getAllMemberByExpenseBookId(mId);
-            }
-            return dataAdapter.getAll();
-        }
+    @Override
+    public LCEViewState<List<Member>, MVPLCEView<List<Member>>> createViewState() {
+        return new LCEViewStateImpl<>();
     }
 
-    private LoaderManager.LoaderCallbacks<List<Member>> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<Member>>() {
-        @Override
-        public Loader<List<Member>> onCreateLoader(int id, Bundle args) {
-            if (args != null) {
-                long exbId = args.getLong(Constants.KEY_EXPENSE_BOOK_ID);
-                return new MemberListLoader(getActivity(), exbId);
-            }
-            return new MemberListLoader(getActivity(), -1);
-        }
+    @Override
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        return null;
+    }
 
-        @Override
-        public void onLoadFinished(Loader<List<Member>> loader, List<Member> data) {
-            mProgressBar.setVisibility(View.GONE);
-            mListAdapter.setMembers(data);
-            mRecyclerView.setAdapter(mListAdapter);
-            if (data != null || !data.isEmpty()) {
-                mEmptyText.setVisibility(View.GONE);
-            }
-        }
+    @Override
+    public List<Member> getData() {
+        return mMemberList;
+    }
 
-        @Override
-        public void onLoaderReset(Loader<List<Member>> loader) {
-        }
-    };
+    @Override
+    public void setData(List<Member> data) {
+        showContent();
+        mMemberList = data;
+        mListAdapter.setMembers(data);
 
+
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        showLoading(false);
+        mPresenter.loadMembers(getLoaderManager(), mArguments);
+    }
+
+    @Override
+    protected void injectDependencies(MainComponent mainComponent) {
+        ExpenseBookDetailComponent component = DaggerExpenseBookDetailComponent.builder()
+                .memberListFragmentModule(new MemberListFragmentModule())
+                .mainComponent(mainComponent).build();
+        component.inject(this);
+
+    }
 }

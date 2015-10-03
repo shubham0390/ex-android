@@ -100,9 +100,6 @@ public abstract class SupportMVPFragment<V extends MVPView, P extends MVPPresent
         mPresenter.detachView(getRetainInstance());
     }
 
-
-
-
     /**
      * This method will be called from {@link #onViewCreated(View, Bundle)} and this is the right place to
      * inject
