@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,9 +9,54 @@
 
     <include layout="@layout/include_toolbar"/>
 
-    <FrameLayout
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_normal"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_micro">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:text="@string/description_title"
+                android:textSize="@dimen/text_size_title"
+                />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/created_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_micro"
+                tools:text="Created By :"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/created_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_micro"
+                tools:text="Created On :"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_normal"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="2dp">
+        <FrameLayout
             android:id="@+id/member_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_medium"/>
+            />
+    </android.support.v7.widget.CardView>
 </LinearLayout>

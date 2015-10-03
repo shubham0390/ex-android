@@ -159,6 +159,7 @@ public final class ExpenseDDL {
                 " ( "
                 + MemberExpenseBookContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberExpenseBookContract.MEMBER_KEY + " INTEGER NOT NULL, "
+                + MemberExpenseBookContract.STATUS + " INTEGER DEFAULT 0 , "
                 + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " INTEGER, "
                 + "FOREIGN KEY (" + MemberExpenseBookContract.MEMBER_KEY + ") "
                 + "REFERENCES " + MemberContract.TABLE_NAME + "( " + MemberContract._ID + ")"

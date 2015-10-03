@@ -78,6 +78,7 @@ public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List
         }
         mListAdapter =  new MemberListAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
+        mRecyclerView.setAdapter(mListAdapter);
         setupListener();
         getViewState().apply(this, true);
     }
@@ -123,7 +124,6 @@ public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List
         showContent();
         mMemberList = data;
         mListAdapter.setMembers(data);
-
 
     }
 
