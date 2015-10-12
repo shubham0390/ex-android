@@ -46,14 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ExpenseCategory categoryMetaData = mCategories.get(position);
-        String fileName = "drawable/" + CATERGORY_IMAGE_PREFIX + categoryMetaData
-                .getCategoryImageName();
-        int imageResource = mContext.getResources().getIdentifier(fileName, null,
-                mContext.getPackageName());
-        Drawable res = mContext.getResources().getDrawable(imageResource);
-        holder.mCategoryImage.setImageDrawable(res);
-        holder.mCategoryName.setText(categoryMetaData.getCategoryName());
+        holder.bindView(mCategories.get(position));
     }
 
     @Override
@@ -85,9 +78,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
-    private void applyAndAnimateMovedItems(List<ExpenseCategory> newModels) {
-        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final ExpenseCategory model = newModels.get(toPosition);
+    private void applyAndAnimateMovedItems(List<ExpenseCategory> filteredContactsList) {
+        for (int toPosition = filteredContactsList.size() - 1; toPosition >= 0; toPosition--) {
+            final ExpenseCategory model = filteredContactsList.get(toPosition);
             final int fromPosition = mCategories.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
@@ -128,23 +121,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
 
         public void bindView(ExpenseCategory categoryMetaData){
-/*            mCategoryName.setText(categoryMetaData.getCategoryName());
-            if (categoryMetaData.getCategoryType().equalsIgnoreCase(Constants.CATEGORY_TPYE_DEFAULT)){
-                mCategoryImage.setImageResource(categoryMetaData.getCategoryResourceId());
-            }
-            else {
-                if (!TextUtils.isEmpty(categoryMetaData.getCategoryImageUrl())){
-                    mCategoryImage.setImageURI(Uri.parse(categoryMetaData.getCategoryImageUrl()));
-                }else {
-                    // TODO: 03-Oct-15 add default image for custom category
-                }
-            }
-            mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                 mSelectedCategory = categoryMetaData.getCategoryName();
-                }
-            });*/
+            String fileName = "drawable/" + CATERGORY_IMAGE_PREFIX + categoryMetaData
+                    .getCategoryImageName();
+            int imageResource = mContext.getResources().getIdentifier(fileName, null,
+                    mContext.getPackageName());
+            Drawable res = mContext.getResources().getDrawable(imageResource);
+            mCategoryImage.setImageDrawable(res);
+            mCategoryName.setText(categoryMetaData.getCategoryName());
 
         }
     }
