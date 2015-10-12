@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,6 +103,7 @@ public class DrawerBaseActivity extends ToolBarActivity {
                             case R.id.nav_summary:
                                 break;
                             case R.id.nav_app_settings:
+                                intent = new Intent(DrawerBaseActivity.this, CategoryActivity.class);
                                 break;
                             case R.id.nav_about_app:
                                 break;

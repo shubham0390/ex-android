@@ -38,4 +38,7 @@ public interface Constants {
     int ADDING_MEMBER_FRAGMENT = 1;
     String KEY_DELETE_MEMBER = "delete_member";
     java.lang.String KEY_EXPENSE_BOOK_ID = "expense_book_id";
+
+    String CATEGORY_TYPE_CUSTOM = "custom";
+    String CATEGORY_TPYE_DEFAULT = "default";
 }
