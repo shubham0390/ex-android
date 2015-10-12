@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.activity;
+package com.mmt.shubh.expensemanager.ui.activity.base;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -33,7 +33,6 @@ public class ToolBarActivity extends MVPActivity {
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        // Obtain the shared Tracker instance.
         ExpenseApplication application = (ExpenseApplication) getApplication();
         mTracker = application.getDefaultTracker();
     }

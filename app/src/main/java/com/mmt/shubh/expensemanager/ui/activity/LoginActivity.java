@@ -13,6 +13,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.ui.component.DaggerLoginActivityComponent;
 import com.mmt.shubh.expensemanager.ui.component.LoginActivityComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.login.SignInFragment;

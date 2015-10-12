@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager.ui.activity;
+package com.mmt.shubh.expensemanager.ui.activity.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
+import com.mmt.shubh.expensemanager.ui.activity.AccountActivity;
+import com.mmt.shubh.expensemanager.ui.activity.CashActivity;
+import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity;
+import com.mmt.shubh.expensemanager.ui.activity.HomeActivity;
 
 import butterknife.Bind;
 

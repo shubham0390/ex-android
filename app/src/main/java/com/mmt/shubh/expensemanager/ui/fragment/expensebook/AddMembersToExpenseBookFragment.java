@@ -18,10 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mmt.shubh.expensemanager.AddMemberToExpenseBookTask;
+import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.ContactsMetaData;
-import com.mmt.shubh.expensemanager.CreateExpenseBook;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
+import com.mmt.shubh.expensemanager.task.TaskProcessor;
+import com.mmt.shubh.expensemanager.task.TaskResult;
 import com.mmt.shubh.expensemanager.ui.adapters.ContactPickerAdapter;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +39,9 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddMembersToExpenseBookFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class AddMembersToExpenseBookFragment extends Fragment implements SearchView.OnQueryTextListener, OnTaskCompleteListener {
 
-    private final String TAG = AddMembersToExpenseBookFragment.class.getSimpleName();
+    private final String TAG = getClass().getSimpleName();
 
     @Bind((R.id.contacts_list))
     RecyclerView mContactsList;
@@ -43,7 +50,7 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
 
     private List<ContactsMetaData> mContactsMetaDataList;
 
-    private Bundle mExpenseBookInfo;
+    private ExpenseBook mExpenseBook;
 
     public AddMembersToExpenseBookFragment() {
     }
@@ -52,9 +59,9 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_members_to_expense_book, container,false);
+        View view = inflater.inflate(R.layout.fragment_add_members_to_expense_book, container, false);
         ButterKnife.bind(this, view);
-        mExpenseBookInfo = getArguments();
+        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
         setupRecyclerView();
         return view;
     }
@@ -70,11 +77,13 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         int id = item.getItemId();
         if (id == R.id.action_next) {
             Log.d("Selected contacts", mContactPickerAdapter.getSelectedItems().toString());
-            // TODO: 9/11/2015 add this to background thread
-            CreateExpenseBook expenseBook = new CreateExpenseBook(getActivity().getApplicationContext(),
-                    mContactsMetaDataList, mContactPickerAdapter.getSelectedItems(), mExpenseBookInfo);
-            expenseBook.create();
-            getActivity().finish();
+
+            AddMemberToExpenseBookTask task = new AddMemberToExpenseBookTask(getActivity(), mContactsMetaDataList,
+                    mContactPickerAdapter.getSelectedItems(), mExpenseBook.getId());
+            // TODO: 9/18/2015 show progress bar
+            TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
+            taskProcessor.setOnTaskCompleteListener(this);
+            taskProcessor.execute(task);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -158,5 +167,11 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
             }
         }
         return filteredModelList;
+    }
+
+    @Override
+    public void onTaskComplete(String action, TaskResult taskResult) {
+        // TODO: 9/18/2015 hide progress bar
+        getActivity().finish();
     }
 }

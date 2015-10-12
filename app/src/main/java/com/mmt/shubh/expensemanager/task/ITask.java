@@ -15,7 +15,7 @@ package com.mmt.shubh.expensemanager.task;
  * 11:52 AM
  * android-agent
  */
-public interface ITask {
+public interface ITask<T> {
 
     /**
      * Override this method to perform a computation on a background thread. The
@@ -35,7 +35,7 @@ public interface ITask {
      * @param result The result of the operation computed by {@link #execute()}.
      * @see #execute()
      */
-    void onPostExecute(TaskResult result);
+    void onPostExecute(TaskResult<T> result);
 
     String getTaskAction();
 

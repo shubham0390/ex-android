@@ -20,5 +20,10 @@
     <item type="id" name="user_name"/>
     <item type="id" name="profile_image"/>
 
+    <item name="item_click_support" type="id" />
+    <item name="errorView" type="id"/>
+    <item name="loadingView" type="id"/>
+    <item name="contentView" type="id"/>
+
 
 </resources>

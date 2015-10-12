@@ -24,6 +24,9 @@ import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.stetho.DumperPluginsProvider;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.dumpapp.DumperPlugin;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
@@ -60,6 +63,10 @@ public class ExpenseApplication extends Application {
         instance = this;
         mContext = getApplicationContext();
         buildComponentAndInject();
+        Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
+                .build());
     }
 
     public static Context getContext(){

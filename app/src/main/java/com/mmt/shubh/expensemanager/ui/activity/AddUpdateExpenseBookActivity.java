@@ -4,33 +4,44 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddMembersToExpenseBookFragment;
-import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddExpenseBookFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.expensebook.AddUpdateExpenseBookFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 
-public class AddExpenseBookActivity extends AppCompatActivity implements IFragmentSwitcher, IFragmentDataSharer {
+import butterknife.ButterKnife;
 
-    String mGroupName;
-    String mGroupIconURI;
-    String mGroupDescription;
+public class AddUpdateExpenseBookActivity extends ToolBarActivity implements IFragmentSwitcher, IFragmentDataSharer {
+
+    private Bundle mSharedData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_expense_book);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        ab.setDisplayHomeAsUpEnabled(true);
-        Fragment fragment = new AddExpenseBookFragment();
+        ButterKnife.bind(this);
+        initializeToolbar();
+        toggleHomeBackButton(true);
+
+        String action = getIntent().getAction();
+        mSharedData = getIntent().getExtras();
+        /*if action is not empty just install add memeber fragment*/
+        if (!TextUtils.isEmpty(action) && Constants.ACTION_ADD_MEMBERS.equals(action)) {
+            replaceFragment(Constants.ADD_MEMBER_FRAGMENT, mSharedData);
+        } else
+            installExpenseBookFragment();
+    }
+
+    private void installExpenseBookFragment() {
+        Fragment fragment = new AddUpdateExpenseBookFragment();
+
+        fragment.setArguments(mSharedData);
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();
     }
 
@@ -46,9 +57,7 @@ public class AddExpenseBookActivity extends AppCompatActivity implements IFragme
 
     @Override
     public void passData(Bundle sharedData) {
-        mGroupName = sharedData.getString(Constants.EXTRA_GROUP_NAME);
-        mGroupIconURI = sharedData.getString(Constants.EXTRA_GROUP_IMAGE_URI);
-        mGroupDescription = sharedData.getString(Constants.EXTRA_GROUP_DESCRIPTION);
+        mSharedData = sharedData;
     }
 
     @Override
@@ -60,13 +69,9 @@ public class AddExpenseBookActivity extends AppCompatActivity implements IFragme
     public void replaceFragment(int fragmentId, Bundle bundle) {
         Fragment fragment = null;
         switch (fragmentId) {
-            case Constants.ADDING_MEMBER_FRAGMENT:
+            case Constants.ADD_MEMBER_FRAGMENT:
                 fragment = new AddMembersToExpenseBookFragment();
-                Bundle groupInfo = new Bundle();
-                groupInfo.putString(Constants.EXTRA_GROUP_NAME, mGroupName);
-                groupInfo.putString(Constants.EXTRA_GROUP_IMAGE_URI, mGroupIconURI);
-                groupInfo.putString(Constants.EXTRA_GROUP_DESCRIPTION, mGroupDescription);
-                fragment.setArguments(groupInfo);
+                fragment.setArguments(bundle);
                 break;
         }
         getFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();

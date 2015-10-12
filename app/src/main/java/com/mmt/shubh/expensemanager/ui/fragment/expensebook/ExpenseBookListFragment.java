@@ -12,7 +12,7 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.ui.activity.AddExpenseBookActivity;
+import com.mmt.shubh.expensemanager.ui.activity.AddUpdateExpenseBookActivity;
 import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookDetailActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.ExpenseBookListAdapter;
 import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
@@ -20,7 +20,7 @@ import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookActivityCompon
 import com.mmt.shubh.expensemanager.ui.component.ExpenseBookActivityComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.ui.module.ExpenseBookListFragmentModule;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
 
 import org.parceler.Parcels;
@@ -111,7 +111,8 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add_expense) {
-            Intent intent = new Intent(getActivity().getApplicationContext(), AddExpenseBookActivity.class);
+
+            Intent intent = new Intent(getActivity().getApplicationContext(), AddUpdateExpenseBookActivity.class);
             startActivityForResult(intent, 123);
             return true;
         }

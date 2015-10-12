@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.mmt.shubh.expensemanager.ui.view.ItemClickSupport;
+
 /**
  * Created by Subham Tyagi,
  * on 10/Jul/2015,
@@ -13,7 +15,7 @@ import android.view.View;
  */
 public class ListRecyclerView extends RecyclerView {
 
-    private RecyclerTouchListener mRecyclerTouchListener;
+    private ItemClickSupport mItemClickSupport;
 
     public ListRecyclerView(Context context) {
         super(context);
@@ -31,15 +33,14 @@ public class ListRecyclerView extends RecyclerView {
     }
 
     private void init() {
-        mRecyclerTouchListener = new RecyclerTouchListener(this);
-        this.addOnItemTouchListener(mRecyclerTouchListener);
+        mItemClickSupport = ItemClickSupport.addTo(this);
     }
 
     public interface OnItemClickListener {
         /**
          * Callback method to be invoked when an item in this AdapterView has
          * been clicked.
-         * <p/>
+         * <p>
          * Implementers can call getItemAtPosition(position) if they need
          * to access the data associated with the selected item.
          *
@@ -57,7 +58,7 @@ public class ListRecyclerView extends RecyclerView {
         /**
          * Callback method to be invoked when an item in this view has been
          * clicked and held.
-         * <p/>
+         * <p>
          * Implementers can call getItemAtPosition(position) if they need to access
          * the data associated with the selected item.
          *
@@ -69,11 +70,11 @@ public class ListRecyclerView extends RecyclerView {
         boolean onItemLongClick(RecyclerView parent, View view, int position, long id);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        mRecyclerTouchListener.setOnItemClickListener(onItemClickListener);
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mItemClickSupport.setOnItemClickListener(onItemClickListener);
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener){
-        mRecyclerTouchListener.setOnItemLongClickListener(longClickListener);
+    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
+        mItemClickSupport.setOnItemLongClickListener(longClickListener);
     }
 }

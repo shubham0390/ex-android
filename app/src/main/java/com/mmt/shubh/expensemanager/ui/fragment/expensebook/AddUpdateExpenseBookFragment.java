@@ -15,12 +15,9 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +32,8 @@ import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookFragmentView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -42,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,10 +50,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author Umang Chamaria
  *         TODO : save image uri and expense book name in database
  */
-public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
+public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
         implements IExpenseBookFragmentView {
 
-    private final String TAG = AddExpenseBookFragment.class.getSimpleName();
+    private final String TAG = AddUpdateExpenseBookFragment.class.getSimpleName();
 
     private final int SELECT_IMAGE = 1;
 
@@ -70,18 +68,26 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
 
     private Uri mOutputFileUri;
 
+    private boolean isUpdate;
+
     private IFragmentDataSharer mFragmentDataSharer;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_expense_book, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    protected int getLayoutRes() {
+        return R.layout.fragment_add_expense_book;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            isUpdate = true;
+            ExpenseBook expenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
+            mExpenseName.setText(expenseBook.getName());
+            mExpenseDescription.setText(expenseBook.getDescription());
+        }
+
     }
 
     @OnClick(R.id.expense_book_image)
@@ -159,13 +165,24 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem next = menu.findItem(R.id.action_next);
+        MenuItem update = menu.findItem(R.id.action_update);
+        update.setVisible(isUpdate);
+        next.setVisible(isUpdate);
+        super.onPrepareOptionsMenu(menu);
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_next) {
-            Utilities.hideKeyboard(getActivity());
-            mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
-                    mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString());
-            return true;
+        switch (id) {
+            case R.id.action_next:
+                Utilities.hideKeyboard(getActivity());
+                mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
+                        mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString(), isUpdate);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -227,7 +244,27 @@ public class AddExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFrag
     @Override
     public void addMemberFragment(Bundle expenseBookInfo) {
         mFragmentDataSharer.passData(expenseBookInfo);
-        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADDING_MEMBER_FRAGMENT, null);
+        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADD_MEMBER_FRAGMENT, expenseBookInfo);
+    }
+
+    @Override
+    public void showError(String payload) {
+
+    }
+
+    @Override
+    public void showCreatingExpenseBookProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void exit() {
+        getActivity().runOnUiThread(() -> getActivity().finish());
     }
 
 }

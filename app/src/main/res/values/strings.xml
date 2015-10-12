@@ -186,4 +186,9 @@
     <string name="category_name_exists">Category name already exists.</string>
     <string name="add_category">Add Category</string>
     <string name="search">Search</string>
+    <string name="edit">Edit</string>
+    <string name="action_update">Update</string>
+    <string name="created_by">Created By : %1$s</string>
+    <string name="created_on">Created On : %1$s</string>
+>>>>>>> 959c32f53216f9e29fadf8cf1d6d1b98acab1908
 </resources>
