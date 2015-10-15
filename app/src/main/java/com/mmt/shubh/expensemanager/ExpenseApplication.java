@@ -46,6 +46,7 @@ public class ExpenseApplication extends Application {
     private static DaggerObjectGraph graph;
     private static ExpenseApplication instance;
     private Tracker mTracker;
+    private static Context mContext;
 
     public static DaggerObjectGraph component() {
         return graph;
@@ -60,6 +61,7 @@ public class ExpenseApplication extends Application {
         super.onCreate();
         generateHashKey();
         instance = this;
+        mContext = getApplicationContext();
         buildComponentAndInject();
         Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
@@ -67,6 +69,9 @@ public class ExpenseApplication extends Application {
                 .build());
     }
 
+    public static Context getContext(){
+        return mContext;
+    }
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
      *

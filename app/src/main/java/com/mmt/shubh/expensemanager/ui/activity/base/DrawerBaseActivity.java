@@ -19,6 +19,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.ui.activity.AccountActivity;
 import com.mmt.shubh.expensemanager.ui.activity.CashActivity;
+import com.mmt.shubh.expensemanager.ui.activity.CategoryActivity;
 import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity;
 import com.mmt.shubh.expensemanager.ui.activity.HomeActivity;
 
@@ -107,6 +108,7 @@ public class DrawerBaseActivity extends ToolBarActivity {
                             case R.id.nav_summary:
                                 break;
                             case R.id.nav_app_settings:
+                                intent = new Intent(DrawerBaseActivity.this, CategoryActivity.class);
                                 break;
                             case R.id.nav_about_app:
                                 break;

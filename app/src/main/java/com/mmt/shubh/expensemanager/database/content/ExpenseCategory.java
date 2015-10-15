@@ -24,7 +24,38 @@ public class ExpenseCategory {
 
     private long id;
 
+    private String categoryType;
+
+    public ExpenseCategory(String categoryName, String categoryType, String categoryImageName) {
+        this.categoryName = categoryName;
+        this.categoryType = categoryType;
+        this.categoryImageName = categoryImageName;
+    }
+
+    private String categoryImageName;
+
     public ExpenseCategory() {
+    }
+
+    public ExpenseCategory(String categoryName, String categoryImageName) {
+        this.categoryName = categoryName;
+        this.categoryImageName = categoryImageName;
+    }
+
+    public String getCategoryType() {
+        return categoryType;
+    }
+
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
+    }
+
+    public String getCategoryImageName() {
+        return categoryImageName;
+    }
+
+    public void setCategoryImageName(String categoryImageName) {
+        this.categoryImageName = categoryImageName;
     }
 
     public long getId() {

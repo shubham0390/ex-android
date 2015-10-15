@@ -17,6 +17,9 @@ import com.mmt.shubh.expensemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * @author Umang Chamaria
  */
@@ -90,16 +93,17 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;
-        public final ImageView mContactImage;
-        public final TextView mContactName;
-        public final CheckBox mContactChecked;
+        @Bind(R.id.contact_image)
+        ImageView mContactImage;
+        @Bind(R.id.contact_name)
+        TextView mContactName;
+        @Bind(R.id.contact_selected)
+        CheckBox mContactChecked;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContactName = (TextView) view.findViewById(R.id.contact_name);
-            mContactImage = (ImageView) view.findViewById(R.id.contact_image);
-            mContactChecked = (CheckBox) view.findViewById(R.id.contact_selected);
+            ButterKnife.bind(this, view);
         }
     }
 

@@ -104,19 +104,19 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         return false;
     }
 
+    private void setupRecyclerView() {
+        mContactsList.setLayoutManager(new LinearLayoutManager(mContactsList.getContext()));
+        readContacts();
+        mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
+        mContactsList.setAdapter(mContactPickerAdapter);
+    }
+
     @Override
     public boolean onQueryTextChange(String query) {
         final List<ContactsMetaData> filteredContactList = filter(mContactsMetaDataList, query);
         mContactPickerAdapter.animateTo(filteredContactList);
         mContactsList.scrollToPosition(0);
         return true;
-    }
-
-    private void setupRecyclerView() {
-        mContactsList.setLayoutManager(new LinearLayoutManager(mContactsList.getContext()));
-        readContacts();
-        mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
-        mContactsList.setAdapter(mContactPickerAdapter);
     }
 
     /**

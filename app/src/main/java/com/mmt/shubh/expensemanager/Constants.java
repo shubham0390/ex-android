@@ -35,6 +35,9 @@ public interface Constants {
     String EXTRA_GROUP_IMAGE_URI = "group_image_uri";
     String EXTRA_GROUP_DESCRIPTION = "group_image_uri";
     String KEY_DELETE_MEMBER = "delete_member";
+
+    String CATEGORY_TYPE_CUSTOM = "custom";
+    String CATEGORY_TPYE_DEFAULT = "default";
     String KEY_EXPENSE_BOOK_ID = "expense_book_id";
 
 

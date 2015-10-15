@@ -18,6 +18,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.mmt.shubh.expensemanager.ExpenseApplication;
+import com.mmt.shubh.expensemanager.database.seed.ExpenseCategorySeed;
+import com.mmt.shubh.expensemanager.task.TaskProcessor;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     /* Database Name */
@@ -42,6 +46,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ExpenseDDL.createMemberExpenseBookTable(database);
         ExpenseDDL.createTransactionTable(database);
         ExpenseDDL.createCardTable(database);
+        TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
+        taskProcessor.addTask(new ExpenseCategorySeed(ExpenseApplication.getContext()));
+        taskProcessor.startExecution();
+
     }
 
     @Override

@@ -150,7 +150,10 @@ public final class ExpenseDDL {
         String createTable = "CREATE TABLE " + CategoryContract.TABLE_NAME
                 + "( "
                 + CategoryContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CategoryContract.CATEGORY_NAME + " TEXT NOT NULL" + ");";
+                + CategoryContract.CATEGORY_NAME + " TEXT NOT NULL,"
+                + CategoryContract.CATEGORY_TYPE + " TEXT NOT NULL,"
+                + CategoryContract.CATEGORY_IMAGE_NAME + " TEXT NOT NULL"
+                + ");";
         database.execSQL(createTable);
     }
 

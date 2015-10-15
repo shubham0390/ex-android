@@ -3,13 +3,13 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 
 import java.util.List;
-
-import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 
 /**
  * Created by styagi on 5/28/2015.
@@ -23,7 +23,15 @@ public class CategorySQLDataAdapter extends BaseSQLDataAdapter<ExpenseCategory> 
 
     public ContentValues toContentValues(ExpenseCategory expenseCategory) {
         ContentValues values = new ContentValues();
-        values.put(CATEGORY_NAME, expenseCategory.getCategoryName());
+        if (!TextUtils.isEmpty(expenseCategory.getCategoryName())) {
+            values.put(CATEGORY_NAME, expenseCategory.getCategoryName());
+        }
+        if (!TextUtils.isEmpty(expenseCategory.getCategoryType())){
+            values.put(CATEGORY_TYPE, expenseCategory.getCategoryType());
+        }
+        if (!TextUtils.isEmpty(expenseCategory.getCategoryImageName())){
+            values.put(CATEGORY_IMAGE_NAME, expenseCategory.getCategoryImageName());
+        }
         return values;
     }
 

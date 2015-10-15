@@ -166,10 +166,8 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem next = menu.findItem(R.id.action_next);
         MenuItem update = menu.findItem(R.id.action_update);
         update.setVisible(isUpdate);
-        next.setVisible(isUpdate);
         super.onPrepareOptionsMenu(menu);
 
     }
