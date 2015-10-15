@@ -80,7 +80,7 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
                 String[]{contactId}, ContactsContract.Contacts.DISPLAY_NAME);
         Member member = new Member();
         try {
-            if (contactsCursor.moveToFirst()) {
+            if (contactsCursor != null && contactsCursor.moveToFirst()) {
                 String id = contactsCursor.getString(contactsCursor.getColumnIndex
                         (ContactsContract.Contacts._ID));
                 String name = contactsCursor.getString(contactsCursor.getColumnIndex

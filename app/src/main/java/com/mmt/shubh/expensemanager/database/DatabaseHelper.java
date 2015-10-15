@@ -46,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ExpenseDDL.createMemberExpenseBookTable(database);
         ExpenseDDL.createTransactionTable(database);
         ExpenseDDL.createCardTable(database);
-        TaskProcessor taskProcessor = new TaskProcessor();
+        TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
         taskProcessor.addTask(new ExpenseCategorySeed(ExpenseApplication.getContext()));
         taskProcessor.startExecution();
 
