@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mmt.shubh.expensemanager.ui.activity.AddUpdateExpenseBookActivity">
+    tools:context="com.mmt.shubh.expensemanager.ui.activity.ExpenseBookAddUpdateActivity">
 
     <include layout="@layout/include_toolbar"/>
 

@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 
 import java.util.List;
 
-import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
+import javax.inject.Inject;
 
 /**
  * Created by Subham Tyagi,
@@ -18,9 +20,11 @@ import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
  * 2:51 PM
  * TODO:Add class comment.
  */
+@ActivityScope
 public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implements AccountDataAdapter {
 
 
+    @Inject
     public AccountSQLDataAdapter(Context context) {
         super(AccountContract.ACCOUNT_URI, context);
     }

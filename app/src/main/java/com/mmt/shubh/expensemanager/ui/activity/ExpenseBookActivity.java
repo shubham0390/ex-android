@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;

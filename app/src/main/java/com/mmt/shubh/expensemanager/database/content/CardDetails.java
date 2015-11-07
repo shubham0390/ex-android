@@ -12,7 +12,7 @@ import org.parceler.Parcel;
 public class CardDetails {
 
     private String cardNo;
-    private String balanceAmount;
+    private long balanceAmount;
     private String accountKey;
     private long id;
 
@@ -35,11 +35,11 @@ public class CardDetails {
         this.accountKey = accountKey;
     }
 
-    public String getBalanceAmount() {
+    public long getBalanceAmount() {
         return balanceAmount;
     }
 
-    public void setBalanceAmount(String balanceAmount) {
+    public void setBalanceAmount(long balanceAmount) {
         this.balanceAmount = balanceAmount;
     }
 

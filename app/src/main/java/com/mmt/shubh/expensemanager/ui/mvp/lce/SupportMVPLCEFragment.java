@@ -24,13 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ViewStateQualifier;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -38,16 +36,16 @@ import butterknife.OnClick;
 /**
  * A {@link MVPFragment} that implements {@link MVPLCEView} which gives you 3 options:
  * <ul>
- * <li>Display a loading view: A view with <b>R.id.loadingView</b> must be specified in your
+ * <li>Display a loading view: A view with <b>R.id.mLoadingView</b> must be specified in your
  * inflated xml layout</li>
- * <li>Display a error view: A <b>TextView</b> with <b>R.id.errorView</b> must be declared in your
+ * <li>Display a error view: A <b>TextView</b> with <b>R.id.mErrorView</b> must be declared in your
  * inflated xml layout</li>
- * <li>Display content view: A view witjh <b>R.id.contentView</b> must be specified in your
+ * <li>Display content view: A view witjh <b>R.id.mContentView</b> must be specified in your
  * inflated
  * xml layout</li>
  * </ul>
  *
- * @param <CV> The type of the content view with the id = R.id.contentView. Can be any kind of
+ * @param <CV> The type of the content view with the id = R.id.mContentView. Can be any kind of
  *             android view widget like ListView, RecyclerView, ScrollView or a simple layout like Framelayout
  *             etc. (everything that extends from android.view.View)
  * @param <M>  The underlying data model that will be displayed with this view
@@ -104,19 +102,19 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
         if (loadingView == null) {
             throw new NullPointerException(
                     "Loading view is null! Have you specified a loading view in your layout xml file?"
-                            + " You have to give your loading View the id R.id.loadingView");
+                            + " You have to give your loading View the id R.id.mLoadingView");
         }
 
         if (contentView == null) {
             throw new NullPointerException(
                     "Content view is null! Have you specified a content view in your layout xml file?"
-                            + " You have to give your content View the id R.id.contentView");
+                            + " You have to give your content View the id R.id.mContentView");
         }
 
         if (errorView == null) {
             throw new NullPointerException(
                     "Error view is null! Have you specified a content view in your layout xml file?"
-                            + " You have to give your error View the id R.id.errorView");
+                            + " You have to give your error View the id R.id.mErrorView");
         }
 
     }
@@ -189,8 +187,8 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
 
 
     /**
-     * Called if the error view has been clicked. To disable clicking on the errorView use
-     * <code>errorView.setClickable(false)</code>
+     * Called if the error view has been clicked. To disable clicking on the mErrorView use
+     * <code>mErrorView.setClickable(false)</code>
      */
     @OnClick(R.id.errorView)
     protected void onErrorViewClicked() {

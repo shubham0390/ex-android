@@ -20,12 +20,12 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by STyagi on 6/10/2015.
- * <p/>
+ * <p>
  * Execute series of task in parallel or serial. Task should be subclass of {@link AbstractTask}
  */
 public class TaskProcessor {
 
-    private static TaskProcessor mTaskProcessor =  new TaskProcessor();
+    private static TaskProcessor mTaskProcessor = new TaskProcessor();
 
     private BlockingDeque<ITask> mTaskQueue;
 
@@ -35,7 +35,9 @@ public class TaskProcessor {
 
     private ITask mActive;
 
-    public static TaskProcessor getTaskProcessor(){
+    private boolean isExecuting;
+
+    public static TaskProcessor getTaskProcessor() {
 
         return mTaskProcessor;
     }
@@ -92,9 +94,7 @@ public class TaskProcessor {
      * Start the execution of tasks
      */
     public void startExecution() {
-        if (mActive == null) {
-            scheduleNext();
-        }
+        scheduleNext();
     }
 
     public void execute(ITask task) {
@@ -103,14 +103,16 @@ public class TaskProcessor {
     }
 
     private void scheduleNext() {
-        if ((mActive = mTaskQueue.poll()) != null) {
-            mExecutorService.submit(new Runnable() {
-                @Override
-                public void run() {
+        if (!isExecuting) {
+            mActive = mTaskQueue.poll();
+            if (mActive != null) {
+                mExecutorService.submit(() -> {
+                    isExecuting = true;
                     executeTask(mActive);
+                    isExecuting = false;
                     scheduleNext();
-                }
-            });
+                });
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package com.mmt.shubh.expensemanager.ui.views;
 
+import android.support.annotation.StringRes;
+
 import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 
 /**
@@ -9,17 +11,17 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
  * TODO:Add class comment.
  */
 public interface ISignUpViews extends MVPView {
-    void showProgress();
+    void showProgress(@StringRes int res);
 
     void hideProgress();
 
-    void setFullNameError(int stringResId);
+    void setFullNameError(@StringRes int stringResId);
 
-    void setPasswordError(int stringResId);
+    void setPasswordError(@StringRes int stringResId);
 
-    void setMobileNoError(int stringResId);
+    void setMobileNoError(@StringRes int stringResId);
 
-    void setEmailAddressError(int stringResId);
+    void setEmailAddressError(@StringRes int stringResId);
 
     void navigateToHome();
 }

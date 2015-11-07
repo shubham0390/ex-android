@@ -1,24 +1,29 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.ui.component.DaggerLoginActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.LoginActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerLoginActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.LoginActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.LoginModule;
 import com.mmt.shubh.expensemanager.ui.fragment.login.SignInFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.login.SignUpFragment;
-import com.mmt.shubh.expensemanager.ui.module.LoginModule;
 import com.mmt.shubh.expensemanager.ui.presenters.LoginActivityPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ILoginActivityView;
 
@@ -35,10 +40,19 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     SignInButton mPlusSignInButton;
 
     @Bind(R.id.facebook_login_button)
-    LoginButton mFacebookLoginButton;
+    TextView mFacebookLoginButton;
+
+    @Bind(R.id.email_login_button)
+    TextView mEmailLoginButton;
 
     @Bind(R.id.social_container)
     LinearLayout mSocialContainer;
+
+    @Bind(R.id.login_container)
+    FrameLayout frameLayout;
+
+    @Bind(R.id.login_progress)
+    View mProgressView;
 
     @Inject
     LoginActivityPresenter mLoginActivityPresenter;
@@ -54,8 +68,6 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initializeToolbar();
-        mLoginActivityPresenter = new LoginActivityPresenter(getApplicationContext());
-
         mLoginActivityPresenter.setupFacebookLogin(mFacebookLoginButton);
         mLoginActivityPresenter.setupGoogleLogin(mPlusSignInButton, this);
         mLoginActivityPresenter.attachView(this);
@@ -63,21 +75,19 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-
         mComponent = DaggerLoginActivityComponent.builder()
                 .loginModule(new LoginModule())
                 .mainComponent(mainComponent).build();
         mComponent.inject(this);
     }
 
-    @OnClick(R.id.signin)
     public void onSignInClick() {
         SignInFragment fragment = new SignInFragment();
         fragment.setComponent(mComponent);
         installFragment(fragment);
     }
 
-    @OnClick(R.id.signup)
+    @OnClick(R.id.email_login_button)
     public void onSignUpClick() {
         SignUpFragment fragment = new SignUpFragment();
         fragment.setComponent(mComponent);
@@ -129,12 +139,12 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
 
     @Override
     public void showProgress() {
-        // TODO: 9/4/2015 add progress bar
+        mProgressView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        // TODO: 9/4/2015 remove progress bar
+        mProgressView.setVisibility(View.GONE);
     }
 
     @Override
@@ -150,11 +160,46 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     }
 
     @Override
+    public void showError(int messageRes) {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mLoginActivityPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            frameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+            frameLayout.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    frameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            frameLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            frameLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
 
 }
 

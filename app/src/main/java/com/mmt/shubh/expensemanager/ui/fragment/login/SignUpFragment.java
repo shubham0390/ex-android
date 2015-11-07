@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.ui.activity.HomeActivity;
-import com.mmt.shubh.expensemanager.ui.component.LoginActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.LoginActivityComponent;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.SignUpPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ISignUpViews;
@@ -83,7 +83,7 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, SignUpPresenter> i
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
+    public void showProgress(final boolean show, int res) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -114,13 +114,13 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, SignUpPresenter> i
 
 
     @Override
-    public void showProgress() {
-        showProgress(true);
+    public void showProgress(int res) {
+        showProgress(true, res);
     }
 
     @Override
     public void hideProgress() {
-        showProgress(false);
+        showProgress(false, -1);
     }
 
     @Override
@@ -146,15 +146,11 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, SignUpPresenter> i
     @Override
     public void navigateToHome() {
         final Intent intent = new Intent(getActivity(), HomeActivity.class);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(intent);
-                getActivity().finish();
-            }
+        getActivity().runOnUiThread(() -> {
+            startActivity(intent);
+            getActivity().finish();
         });
     }
-
 
 
     public void setComponent(LoginActivityComponent component) {

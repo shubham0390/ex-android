@@ -2,17 +2,17 @@ package com.mmt.shubh.expensemanager.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.ui.fragment.account.AccountAddFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AddEditAccountFragment;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 
 import butterknife.ButterKnife;
+
 
 public class AccountActivity extends ToolBarActivity implements AccountFragmentIntractionListener {
 
@@ -28,11 +28,8 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
         initializeToolbar();
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayShowHomeEnabled(true);
-            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-        }
+        toggleHomeBackButton(true);
+        setTitle(R.string.account);
         AccountListFragment listFragment = new AccountListFragment();
         getFragmentManager().beginTransaction().add(R.id.account_fragment, listFragment).commit();
 
@@ -51,7 +48,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         switch (id) {
             case R.id.action_settings:
                 break;
-            case R.id.home:
+            case android.R.id.home:
                 if (mCurrentMode == MODE_LIST) {
                     finish();
                 } else {
@@ -68,7 +65,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         switch (mode) {
             case MODE_ADD:
                 mCurrentMode = mode;
-                fragment = new AccountAddFragment();
+                fragment = new AddEditAccountFragment();
                 break;
             case MODE_LIST:
                 mCurrentMode = mode;
@@ -79,6 +76,4 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.account_fragment, fragment).commit();
     }
-
-
 }

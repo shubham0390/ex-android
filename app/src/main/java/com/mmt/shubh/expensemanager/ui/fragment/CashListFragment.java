@@ -3,10 +3,10 @@ package com.mmt.shubh.expensemanager.ui.fragment;
 import android.os.Bundle;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.ui.component.CashActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.DaggerCashActivityComponent;
-import com.mmt.shubh.expensemanager.ui.module.CashActivityModule;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.CashActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerCashActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.CashActivityModule;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.CashListFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ICashListFragmentView;

@@ -16,7 +16,7 @@
             android:text="@string/member_title"
             android:textSize="18sp"/>
 
-        <com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView
+        <com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView
             android:id="@id/contentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

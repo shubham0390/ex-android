@@ -1,13 +1,10 @@
 package com.mmt.shubh.expensemanager.service.rest;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp.StethoInterceptor;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.mmt.shubh.expensemanager.service.network.ConnectivityHelper;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -15,45 +12,48 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
-import retrofit.converter.JacksonConverter;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 /**
- * Created by styagi on 6/5/2015.
+ * Created by Subham Tyagi,
+ * on 22/Oct/2015,
+ * 3:14 PM
+ * TODO:Add class comment.
  */
 public class RestClient {
 
-    private static final String BASE_URL = "your base url";
+    private static final String BASE_URL = "http://localhost:8080/expensemanager/rest";
 
-    private static long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MB
+    private final static long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MB
 
-    private RestService apiService;
+    public RestClient() {
 
-    private static RestClient mRestClient;
-
-    public static RestClient getRestClient(Context context) {
-        if (mRestClient == null) {
-            synchronized (mRestClient) {
-                if (mRestClient == null) {
-                    mRestClient = new RestClient(context);
-                }
-            }
-        }
-        return mRestClient;
     }
 
-    private RestClient(Context context) {
+    @NonNull
+    public Retrofit getRetrofit(OkHttpClient okHttpClient) {
+        // Create Executor
+        Executor executor = Executors.newCachedThreadPool();
 
+        Retrofit.Builder restAdapter = new Retrofit.Builder();
+        restAdapter.baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .callbackExecutor(executor)
+                .build();
+
+        return restAdapter.build();
+    }
+
+    @NonNull
+    public OkHttpClient getOkHttpClient(Context context) {
         // Create Cache
-        Cache cache = null;
-        cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
+        Cache cache = new Cache(new File(context.getCacheDir(), "http"), SIZE_OF_CACHE);
 
         // Create OkHttpClient
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -64,27 +64,7 @@ public class RestClient {
         // Add Cache-Control Interceptor
         okHttpClient.networkInterceptors().add(mCacheControlInterceptor);
         okHttpClient.networkInterceptors().add(new StethoInterceptor());
-        // Create Executor
-        Executor executor = Executors.newCachedThreadPool();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        JacksonConverter converter = new JacksonConverter(objectMapper);
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(converter)
-                .setEndpoint(BASE_URL)
-                .setClient(new OkClient(okHttpClient))
-                .setExecutors(executor, executor)
-                .setRequestInterceptor(new SessionRequestInterceptor())
-                .build();
-
-        apiService = restAdapter.create(RestService.class);
-    }
-
-    public RestService getRestService() {
-        return apiService;
+        return okHttpClient;
     }
 
     private static final Interceptor mCacheControlInterceptor = chain -> {

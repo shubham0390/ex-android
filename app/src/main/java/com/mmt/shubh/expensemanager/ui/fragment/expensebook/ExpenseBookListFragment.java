@@ -10,18 +10,18 @@ import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.ui.activity.AddUpdateExpenseBookActivity;
+import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookAddUpdateActivity;
 import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookDetailActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.ExpenseBookListAdapter;
-import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
-import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.ExpenseBookActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerExpenseBookActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.ExpenseBookActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.ExpenseBookListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
-import com.mmt.shubh.expensemanager.ui.module.ExpenseBookListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
+import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
 
 import org.parceler.Parcels;
 
@@ -112,7 +112,7 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
         int id = item.getItemId();
         if (id == R.id.action_add_expense) {
 
-            Intent intent = new Intent(getActivity().getApplicationContext(), AddUpdateExpenseBookActivity.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), ExpenseBookAddUpdateActivity.class);
             startActivityForResult(intent, 123);
             return true;
         }

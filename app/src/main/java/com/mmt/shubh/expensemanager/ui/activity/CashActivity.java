@@ -5,10 +5,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.ui.component.CashActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.DaggerCashActivityComponent;
-import com.mmt.shubh.expensemanager.ui.module.CashActivityModule;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.CashActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerCashActivityComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.CashActivityModule;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPActivity;
 
 public class CashActivity extends MVPActivity {
@@ -18,7 +18,6 @@ public class CashActivity extends MVPActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cash);
     }
-
 
     @Override
     protected void onResume() {

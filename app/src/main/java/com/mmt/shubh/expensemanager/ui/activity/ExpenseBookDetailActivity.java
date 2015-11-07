@@ -19,7 +19,7 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.ui.adapters.base.ExpenseBookDetailFragmentAdapter;
+import com.mmt.shubh.expensemanager.ui.adapters.ExpenseBookDetailFragmentAdapter;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment;
 import com.mmt.shubh.expensemanager.utils.Utilities;
@@ -121,7 +121,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
                 break;
             case R.id.edit:
                 Utilities.hideKeyboard(this);
-                Intent intent = new Intent(this, AddUpdateExpenseBookActivity.class);
+                Intent intent = new Intent(this, ExpenseBookAddUpdateActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
                 intent.putExtras(bundle);

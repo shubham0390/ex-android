@@ -39,7 +39,6 @@
 
     <style name="BaseListItem">
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
-        <item name="android:gravity">center</item>
         <item name="android:paddingBottom">@dimen/spacing_medium</item>
         <item name="android:paddingTop">?android:attr/listPreferredItemPaddingLeft</item>
     </style>
@@ -107,6 +106,9 @@
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
+    </style>
+    <style name="ListItemAccount" parent="ListItem">
+        <item name="android:layout_margin">@dimen/spacing_normal</item>
     </style>
 
 </resources>

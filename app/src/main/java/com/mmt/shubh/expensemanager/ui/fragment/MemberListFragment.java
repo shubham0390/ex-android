@@ -8,14 +8,13 @@ import android.support.v7.widget.RecyclerView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.ui.activity.MemberDetailActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.MemberListAdapter;
-import com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView;
-import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.ui.module.MemberListFragmentModule;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.ExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.MemberListFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
@@ -23,6 +22,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.MemberListFragmentPresenter;
 import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
 import com.mmt.shubh.expensemanager.ui.view.FixedLinearLayoutManager;
+import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ public interface MVPLCEView<M> extends MVPView{
 
     /**
      * Display a loading view while loading data in background.
-     * <b>The loading view must have the id = R.id.loadingView</b>
+     * <b>The loading view must have the id = R.id.mLoadingView</b>
      *
      * @param pullToRefresh true, if pull-to-refresh has been invoked loading.
      */
@@ -15,13 +15,13 @@ public interface MVPLCEView<M> extends MVPView{
     /**
      * Show the content view.
      * <p/>
-     * <b>The content view must have the id = R.id.contentView</b>
+     * <b>The content view must have the id = R.id.mContentView</b>
      */
     public void showContent();
 
     /**
      * Show the error view.
-     * <b>The error view must be a TextView with the id = R.id.errorView</b>
+     * <b>The error view must be a TextView with the id = R.id.mErrorView</b>
      *
      * @param e             The Throwable that has caused this error
      * @param pullToRefresh true, if the exception was thrown during pull-to-refresh, otherwise
@@ -45,4 +45,5 @@ public interface MVPLCEView<M> extends MVPView{
      * @param pullToRefresh true, if triggered by a pull to refresh. Otherwise false.
      */
     public void loadData(boolean pullToRefresh);
+
 }

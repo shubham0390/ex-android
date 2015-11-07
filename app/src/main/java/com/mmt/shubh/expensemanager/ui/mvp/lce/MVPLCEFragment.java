@@ -33,16 +33,16 @@ import butterknife.OnClick;
 /**
  * A {@link MVPFragment} that implements {@link MVPLCEView} which gives you 3 options:
  * <ul>
- * <li>Display a loading view: A view with <b>R.id.loadingView</b> must be specified in your
+ * <li>Display a loading view: A view with <b>R.id.mLoadingView</b> must be specified in your
  * inflated xml layout</li>
- * <li>Display a error view: A <b>TextView</b> with <b>R.id.errorView</b> must be declared in your
+ * <li>Display a error view: A <b>TextView</b> with <b>R.id.mErrorView</b> must be declared in your
  * inflated xml layout</li>
- * <li>Display content view: A view witjh <b>R.id.contentView</b> must be specified in your
+ * <li>Display content view: A view witjh <b>R.id.mContentView</b> must be specified in your
  * inflated
  * xml layout</li>
  * </ul>
  *
- * @param <CV> The type of the content view with the id = R.id.contentView. Can be any kind of
+ * @param <CV> The type of the content view with the id = R.id.mContentView. Can be any kind of
  *             android view widget like ListView, RecyclerView, ScrollView or a simple layout like Framelayout
  *             etc. (everything that extends from android.view.View)
  * @param <M>  The underlying data model that will be displayed with this view
@@ -58,13 +58,14 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
         extends MVPFragment<V, P> implements MVPLCEView<M> {
 
     @Bind(R.id.loadingView)
-    protected View loadingView;
+    protected View mLoadingView;
 
     @Bind(R.id.contentView)
-    protected CV contentView;
+    protected CV mContentView;
 
     @Bind(R.id.errorView)
-    protected TextView errorView;
+    protected TextView mErrorView;
+
 
     /**
      * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -94,22 +95,22 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (loadingView == null) {
+        if (mLoadingView == null) {
             throw new NullPointerException(
                     "Loading view is null! Have you specified a loading view in your layout xml file?"
-                            + " You have to give your loading View the id R.id.loadingView");
+                            + " You have to give your loading View the id R.id.mLoadingView");
         }
 
-        if (contentView == null) {
+        if (mContentView == null) {
             throw new NullPointerException(
                     "Content view is null! Have you specified a content view in your layout xml file?"
-                            + " You have to give your content View the id R.id.contentView");
+                            + " You have to give your content View the id R.id.mContentView");
         }
 
-        if (errorView == null) {
+        if (mErrorView == null) {
             throw new NullPointerException(
                     "Error view is null! Have you specified a content view in your layout xml file?"
-                            + " You have to give your error View the id R.id.errorView");
+                            + " You have to give your error View the id R.id.mErrorView");
         }
 
     }
@@ -128,7 +129,7 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
      * Override this method if you want to provide your own animation for showing the loading view
      */
     protected void animateLoadingViewIn() {
-        LCEAnimator.showLoading(loadingView, contentView, errorView);
+        LCEAnimator.showLoading(mLoadingView, mContentView, mErrorView);
     }
 
     @Override
@@ -141,7 +142,7 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
      * Called to animate from loading view to content view
      */
     protected void animateContentViewIn() {
-        LCEAnimator.showContent(loadingView, contentView, errorView);
+        LCEAnimator.showContent(mLoadingView, mContentView, mErrorView);
     }
 
     /**
@@ -182,8 +183,8 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
 
 
     /**
-     * Called if the error view has been clicked. To disable clicking on the errorView use
-     * <code>errorView.setClickable(false)</code>
+     * Called if the error view has been clicked. To disable clicking on the mErrorView use
+     * <code>mErrorView.setClickable(false)</code>
      */
     @OnClick(R.id.errorView)
     protected void onErrorViewClicked() {
@@ -198,7 +199,7 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
         if (pullToRefresh) {
             showLightError(errorMsg);
         } else {
-            errorView.setText(errorMsg);
+            mErrorView.setText(errorMsg);
             animateErrorViewIn();
         }
     }
@@ -207,15 +208,15 @@ public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>
      * Animates the error view in (instead of displaying content view / loading view)
      */
     protected void animateErrorViewIn() {
-        LCEAnimator.showErrorView(loadingView, contentView, errorView);
+        LCEAnimator.showErrorView(mLoadingView, mContentView, mErrorView);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        loadingView = null;
-        contentView = null;
-        errorView = null;
+        mLoadingView = null;
+        mContentView = null;
+        mErrorView = null;
     }
 
     public LCEViewState<M, V> getViewState() {

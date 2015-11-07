@@ -19,14 +19,6 @@ import android.content.Context;
  */
 public abstract class AbstractTask<T> implements ITask<T> {
 
-    public static final String ACTION_SDK_INITIALIZATION = "com.mmt.shubh.expensemanager.ACTION_SDK_INITIALIZATION";
-
-    public static final String ACTION_FETCH_SDK_SETTINGS = "com.mmt.shubh.expensemanager.ACTION_FETCH_SDK_SETTINGS";
-
-    public static final String ACTION_FETCH_APP_SETTINGS = "com.mmt.shubh.expensemanager.ACTION_FETCH_APP_SETTINGS";
-
-    public static final String EXTRA_TASK_RESULT = "taskResult";
-
     protected TaskResult<T> mTaskResult;
 
     protected Context mContext;

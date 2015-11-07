@@ -24,13 +24,11 @@ import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
-import com.facebook.stetho.DumperPluginsProvider;
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.dumpapp.DumperPlugin;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.dagger.api.DaggerObjectGraph;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

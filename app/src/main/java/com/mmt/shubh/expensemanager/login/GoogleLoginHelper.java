@@ -15,7 +15,6 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.PersonBuffer;
@@ -30,6 +29,7 @@ import java.lang.ref.WeakReference;
  */
 public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+
     private static final String TAG = GoogleLoginHelper.class.getSimpleName();
 
     // A magic number we will use to know that our sign-in error resolution activity has completed
@@ -71,6 +71,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
             signInButton.setVisibility(View.GONE);
             return;
         } else {
+            signInButton.setStyle(SignInButton.SIZE_WIDE,SignInButton.COLOR_LIGHT);
             signInButton.setOnClickListener(mGoogleLoginClickListener);
         }
     }
@@ -80,18 +81,15 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     }
 
 
-    private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            signIn();
-        }
-    };
+    private View.OnClickListener mGoogleLoginClickListener = view -> signIn(null);
 
     /**
      * Try to sign in the user.
+     *
+     * @param activity
      */
     @Override
-    public void signIn() {
+    public void signIn(Activity activity) {
         if (!mPlusClient.isConnected()) {
             setProgressBarVisible(true);
             mAutoResolveOnFail = true;
@@ -138,13 +136,9 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     public void revokeAccess() {
         if (mPlusClient.isConnected()) {
             Plus.AccountApi.revokeAccessAndDisconnect(mPlusClient)
-                    .setResultCallback(new ResultCallback<Status>() {
-
-                        @Override
-                        public void onResult(Status status) {
-                            //TODO: handle it more garcefully
-                            //mCallback.onPlusClientRevokeAccess();
-                        }
+                    .setResultCallback(status -> {
+                        //TODO: handle it more garcefully
+                        //mCallback.onPlusClientRevokeAccess();
                     });
         }
 
@@ -187,7 +181,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     public void onConnected(Bundle connectionHint) {
         setProgressBarVisible(false);
          /* This Line is the key */
-       // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
+        // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
         mCallback.onSignInComplete(Type.GOOGLE);
     }
 

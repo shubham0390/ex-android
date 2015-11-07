@@ -1,13 +1,14 @@
 package com.mmt.shubh.expensemanager.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
@@ -31,21 +32,20 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     }
 
     public void setUp(Object object) {
-        LoginButton loginButton = (LoginButton) object;
         mCallbackManager = CallbackManager.Factory.create();
-        loginButton.registerCallback(mCallbackManager, this);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_friends"));
+        LoginManager.getInstance().registerCallback(mCallbackManager, this);
     }
 
 
     @Override
-    public void signIn() {
+    public void signIn(Activity activity) {
 
+        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "user_friends"));
     }
 
     @Override
     public void signOut() {
-
+        LoginManager.getInstance().logOut();
     }
 
     @Override

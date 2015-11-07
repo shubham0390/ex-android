@@ -5,19 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.ui.activity.AddUpdateExpenseBookActivity;
-import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.ui.component.ExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookAddUpdateActivity;
+import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.MemberListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
-import com.mmt.shubh.expensemanager.ui.module.SettingFragmentModule;
+import com.mmt.shubh.expensemanager.ui.dagger.module.SettingFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookSettingPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookSettingView;
@@ -88,7 +87,7 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
 
         mToolbar.setOnMenuItemClickListener(item -> {
-            Intent intent = new Intent(getActivity(), AddUpdateExpenseBookActivity.class);
+            Intent intent = new Intent(getActivity(), ExpenseBookAddUpdateActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
             intent.putExtras(bundle);

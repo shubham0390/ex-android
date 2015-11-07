@@ -38,7 +38,6 @@ import android.widget.TextView;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.ui.adapters.ExpenseListAdapter;
-import com.mmt.shubh.expensemanager.ui.fragment.base.BaseFragment;
 import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
 import com.mmt.shubh.expensemanager.ui.view.ScrollingLinearLayoutManager;
 
@@ -48,7 +47,8 @@ import com.mmt.shubh.expensemanager.ui.view.ScrollingLinearLayoutManager;
  * 6:37 PM
  * TODO:Add class comment.
  */
-public class ExpenseListFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener, ExpenseListAdapter.ListItemClickListener {
+public class ExpenseListFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener,
+        ExpenseListAdapter.ListItemClickListener {
 
     private static final int LOADER_ID = 2;
 

@@ -3,9 +3,12 @@ package com.mmt.shubh.expensemanager.ui.presenters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.StringRes;
+import android.widget.TextView;
 
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
+import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.login.FacebookLoginHelper;
 import com.mmt.shubh.expensemanager.login.GoogleLoginHelper;
@@ -14,11 +17,13 @@ import com.mmt.shubh.expensemanager.login.SignUpCallback;
 import com.mmt.shubh.expensemanager.setup.FacebookProfileFetcher;
 import com.mmt.shubh.expensemanager.setup.GoogleProfileFetcher;
 import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
-import com.mmt.shubh.expensemanager.ui.models.SigUpModelImpl;
+import com.mmt.shubh.expensemanager.task.TaskResultStatus;
 import com.mmt.shubh.expensemanager.ui.models.api.ISignUpModel;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ILoginActivityView;
+
+import javax.inject.Inject;
 
 /**
  * Created by Subham Tyagi,
@@ -26,30 +31,25 @@ import com.mmt.shubh.expensemanager.ui.views.ILoginActivityView;
  * 5:18 PM
  * TODO:Add class comment.
  */
-public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityView> implements
-        MVPPresenter<ILoginActivityView>, SignUpCallback, ISignUpModel.SignUpModelCallback {
+@ActivityScope
+public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityView>
+        implements MVPPresenter<ILoginActivityView>, SignUpCallback, ISignUpModel.SignUpModelCallback {
 
     private final String TAG = getClass().getName();
-    private final Context mContext;
+
+    protected ISignUpModel mSignUpModel;
+
+    protected Context mContext;
 
     private GoogleLoginHelper mGoogleLoginHelper;
 
     private FacebookLoginHelper mFacebookLoginHelper;
 
-    private ISignUpModel mSignUpModel;
-
-    public LoginActivityPresenter(Context context) {
-        mSignUpModel = new SigUpModelImpl(context, this);
+    @Inject
+    public LoginActivityPresenter(Context context, ISignUpModel signUpModel) {
         mContext = context;
-    }
-
-    public void socialSignUp(ILoginHelper loginHelper) {
-        if (loginHelper instanceof GoogleLoginHelper) {
-            mGoogleLoginHelper = (GoogleLoginHelper) loginHelper;
-        }
-        if (loginHelper instanceof FacebookLoginHelper) {
-            mFacebookLoginHelper = (FacebookLoginHelper) loginHelper;
-        }
+        mSignUpModel = signUpModel;
+        mSignUpModel.registerCallback(this);
     }
 
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -66,7 +66,7 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         mGoogleLoginHelper.setUp(plusSignInButton);
     }
 
-    public void setupFacebookLogin(LoginButton faceBookLoginButton) {
+    public void setupFacebookLogin(TextView faceBookLoginButton) {
         Logger.debug(TAG, "Setting Up facebook login");
         mFacebookLoginHelper = new FacebookLoginHelper(mContext, this);
         mFacebookLoginHelper.setUp(faceBookLoginButton);
@@ -108,6 +108,20 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
     @Override
     public void onSuccess() {
         getView().navigateToHome();
+    }
+
+    @Override
+    public void updateProgress(@StringRes int about) {
+
+    }
+
+    @Override
+    public void onError(int statusCode) {
+        if (statusCode == TaskResultStatus.NO_INTERNET_CONNECTION)
+            getView().showError(R.string.no_internet_connection);
+        else {
+            getView().showError(R.string.login_failed);
+        }
     }
 
     @Override

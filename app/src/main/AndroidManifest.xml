@@ -111,7 +111,7 @@
         <activity android:name=".ui.activity.ExpenseBookDetailActivity" />
         <activity android:name=".ui.activity.MemberDetailActivity" />
         <activity android:name=".ui.activity.ExpenseBookActivity" />
-        <activity android:name=".ui.activity.AddUpdateExpenseBookActivity" />
+        <activity android:name=".ui.activity.ExpenseBookAddUpdateActivity" />
         <activity
             android:name=".ui.activity.AccountActivity"
             android:label="@string/title_activity_account" />
@@ -133,6 +133,14 @@
             android:name=".ui.activity.CategoryActivity"
             android:label="@string/title_activity_category"
             android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.activity.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmt.shubh.expensemanager.ui.activity.HomeActivity" />
         </activity>
     </application>
 
