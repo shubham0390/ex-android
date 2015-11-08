@@ -2,7 +2,6 @@ package com.mmt.shubh.expensemanager.ui.fragment.account;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -39,9 +38,6 @@ public class AccountListFragment extends MVPLCEFragment<ListRecyclerView, List<A
     private AccountFragmentIntractionListener mListener;
 
     private List<AccountListViewModel> mAccountListViewModels;
-
-    @StringRes
-    private int mErrorMessage;
 
     public AccountListFragment() {
     }
@@ -102,27 +98,28 @@ public class AccountListFragment extends MVPLCEFragment<ListRecyclerView, List<A
 
     @Override
     public List<AccountListViewModel> getData() {
-        return null;
+        return mAccountListViewModels;
     }
 
     @Override
     public void setData(List<AccountListViewModel> data) {
         mAccountListViewModels = data;
+        showContent();
         mAccountListAdapter.setData(data);
-        mViewState.setStateShowContent(data);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         getLoaderManager().initLoader(12, null, mPresenter).forceLoad();
-        //mPresenter.loadAccountList(getLoaderManager());
     }
 
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
         AccountActivityComponent component = DaggerAccountActivityComponent
-                .builder().mainComponent(mainComponent).build();
+                .builder()
+                .mainComponent(mainComponent)
+                .build();
         component.inject(this);
     }
 }

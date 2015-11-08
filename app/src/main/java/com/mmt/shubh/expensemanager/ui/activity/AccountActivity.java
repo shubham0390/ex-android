@@ -1,7 +1,6 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,6 +21,8 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
 
     private int mCurrentMode;
 
+    private android.app.Fragment mFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +31,9 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         initializeToolbar();
         toggleHomeBackButton(true);
         setTitle(R.string.account);
-        AccountListFragment listFragment = new AccountListFragment();
-        getFragmentManager().beginTransaction().add(R.id.account_fragment, listFragment).commit();
+
+        onFragmentIntraction(MODE_LIST, null);
+
 
     }
 
@@ -52,28 +54,32 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
                 if (mCurrentMode == MODE_LIST) {
                     finish();
                 } else {
-                    onFragmentIntraction(MODE_LIST, null);
+                    removeFragment();
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void removeFragment() {
+        getFragmentManager().beginTransaction().remove(mFragment).commit();
+    }
+
     @Override
     public void onFragmentIntraction(int mode, Bundle param) {
-        Fragment fragment = null;
         switch (mode) {
             case MODE_ADD:
                 mCurrentMode = mode;
-                fragment = new AddEditAccountFragment();
+                mFragment = new AddEditAccountFragment();
                 break;
             case MODE_LIST:
+                mFragment = new AccountListFragment();
                 mCurrentMode = mode;
                 break;
             case MODE_VIEW:
                 mCurrentMode = mode;
                 break;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.account_fragment, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.account_fragment, mFragment).commit();
     }
 }

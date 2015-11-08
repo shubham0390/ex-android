@@ -11,7 +11,6 @@ import com.mmt.shubh.expensemanager.database.content.Transaction;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.TransactionContract;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,10 @@ public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> i
     @Override
     public long create(Transaction transaction) {
         Uri uri = save(transaction);
-        return 0;
+        List paths = uri.getPathSegments();
+        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+        transaction.setId(id);
+        return id;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> i
 
     @Override
     public Transaction get(long id) {
-        return restoreContentWithId(mContext, Transaction.class, TRANSACTION_URI, null, id);
+        return restoreContentWithId(Transaction.class, TRANSACTION_URI, null, id);
     }
 
     @Override

@@ -4,20 +4,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
+import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 
 import java.util.List;
-
-import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import java.util.Map;
 
 /**
- * Created by styagi on 5/28/2015.
+ * Created by Subham Tyagi,
+ * on 07/Nov/2015,
+ * 5:10 PM
+ * TODO:Add class comment.
  */
-public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter<Expense>, ExpenseContract {
+public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
 
 
     public ExpenseSqlDataAdapter(Context context) {
@@ -31,22 +33,23 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         values.put(EXPENSE_DATE, expense.getExpenseDate());
         values.put(EXPENSE_PLACE, expense.getExpensePlace());
         values.put(EXPENSE_DESCRIPTION, expense.getExpenseDescription());
-        values.put(EXPENSE_BOOK_KEY, expense.getExpenseBook().getId());
-        values.put(CATEGORY_KEY, expense.getExpenseCategory().getId());
-        values.put(OWNER_KEY,expense.getOwnerId());
+        values.put(EXPENSE_BOOK_KEY, expense.getExpenseBookId());
+        values.put(CATEGORY_KEY, expense.getExpenseCategoryId());
+        values.put(TRANSACTION_KEY, expense.getTransactionKey());
+        values.put(OWNER_KEY, expense.getOwnerId());
         return values;
     }
 
     public void restore(Cursor cursor, Expense expense) {
         expense.setId(cursor.getLong(COLUMN_EXPENSE_ID));
-        expense.setExpenseAmount(cursor.getString(COLUMN_EXPENSE_AMOUNT));
+        expense.setExpenseAmount(cursor.getDouble(COLUMN_EXPENSE_AMOUNT));
         expense.setExpenseDate(cursor.getLong(COLUMN_EXPENSE_DATE));
         expense.setExpenseName(cursor.getString(COLUMN_EXPENSE_NAME));
         expense.setExpensePlace(cursor.getString(COLUMN_EXPENSE_PLACE));
         expense.setExpenseDescription(cursor.getString(COLUMN_EXPENSE_DESCRIPTION));
-        expense.setMemberList(getMemberList(expense.getId()));
-        expense.setExpenseBook(getExpenseBook(cursor.getLong(COLUMN_EXPENSE_BOOK)));
-        expense.setExpenseCategory(getCategory(cursor.getLong(COLUMN_CATEGORY_KEY)));
+        expense.setMemberMap(getMemberMap(expense.getId()));
+        expense.setExpenseBookId(cursor.getLong(COLUMN_EXPENSE_BOOK));
+        expense.setExpenseCategoryId(cursor.getLong(COLUMN_CATEGORY_KEY));
         expense.setOwnerId(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
     }
 
@@ -58,7 +61,7 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         return null;
     }
 
-    private List<Member> getMemberList(long aLong) {
+    private Map<Long, Double> getMemberMap(long aLong) {
         return null;
     }
 

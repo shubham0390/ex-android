@@ -10,8 +10,6 @@ import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
 
-import rx.Observer;
-
 public class CreateUserTask extends AbstractTask {
 
     private String TAG = getClass().getName();
@@ -108,23 +106,6 @@ public class CreateUserTask extends AbstractTask {
         }
         return mTaskResult;
     }
-
-    private Observer<Member> memberObserver = new Observer<Member>() {
-        @Override
-        public void onCompleted() {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-
-        }
-
-        @Override
-        public void onNext(Member member) {
-
-        }
-    };
 
     @Override
     public String getTaskAction() {

@@ -9,7 +9,6 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
-import rx.Observable;
 
 /**
  * Created by Subham Tyagi
@@ -29,11 +28,11 @@ public interface ExpenseRestService {
     void moveExpense(@Query("expenseId") long expenseId, @Query("expenseBookId") long newExpenseBookId);
 
     @GET("/expense")
-    Observable<List<Expense>> getAllExpenses(@Query("memberId") long memberId);
+    List<Expense> getAllExpenses(@Query("memberId") long memberId);
 
     @GET("/expense/{expenseBookId}")
-    Observable<List<Expense>> getExpenseList(@Path("expenseBookId") long expenseBookId);
+    List<Expense> getExpenseList(@Path("expenseBookId") long expenseBookId);
 
     @GET("/expense/sync")
-    Observable<List<Expense>> syncExpenses(@Query("expenseBookId") long expenseBookId, @Query("syncId") long syncId);
+    List<Expense> syncExpenses(@Query("expenseBookId") long expenseBookId, @Query("syncId") long syncId);
 }

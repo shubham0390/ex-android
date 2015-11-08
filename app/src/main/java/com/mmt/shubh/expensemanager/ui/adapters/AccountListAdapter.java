@@ -1,10 +1,10 @@
 package com.mmt.shubh.expensemanager.ui.adapters;
 
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.viewmodel.AccountListViewModel;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Subham Tyagi,
@@ -22,7 +23,6 @@ import butterknife.ButterKnife;
  * TODO:Add class comment.
  */
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountListViewHolder> {
-
 
     private List<AccountListViewModel> mAccountListViewModels;
 
@@ -49,17 +49,19 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     public void setData(List<AccountListViewModel> data) {
         mAccountListViewModels.addAll(data);
+        notifyDataSetChanged();
     }
 
     public static class AccountListViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.account_type)
-        TextView mAccountType;
-        @Bind(R.id.account_balance)
-        TextView mAccountBalance;
+
+        @Bind(R.id.account_image_icon)
+        CircleImageView mAccountImageIcon;
         @Bind(R.id.account_name)
-        TextView mBankName;
+        AppCompatTextView mAccountName;
         @Bind(R.id.account_number)
-        TextView mAccountNumber;
+        AppCompatTextView mAccountNumber;
+        @Bind(R.id.account_balance_inner)
+        AppCompatTextView mAccountBalanceInner;
 
         public AccountListViewHolder(View itemView) {
             super(itemView);
@@ -68,7 +70,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         }
 
         public void bindView(AccountListViewModel accountListViewModel) {
-            mBankName.setText(accountListViewModel.getAccountName());
+
+            mAccountName.setText(accountListViewModel.getAccountName());
             // mAccountBalance.setText(StringsUtils.getLocalisedAmountString(accountListViewModel.getAccountBalance()));
             mAccountNumber.setText(accountListViewModel.getAccountNumber());
         }

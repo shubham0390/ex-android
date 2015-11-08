@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout
     style="@style/ListItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +12,7 @@
 
     <LinearLayout
         style="@style/ListItemIcon"
+        android:layout_height="45dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -30,9 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="10sp"
-            tool:text="Taxi"/>
+            android:textSize="8sp"
+            tool:text="Air/Railway Tickets"/>
 
     </LinearLayout>
 

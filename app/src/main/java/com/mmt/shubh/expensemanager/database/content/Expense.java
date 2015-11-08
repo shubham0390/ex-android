@@ -17,20 +17,29 @@ package com.mmt.shubh.expensemanager.database.content;
 
 import org.parceler.Parcel;
 
-import java.util.List;
+import java.util.Map;
 
 @Parcel(value = Parcel.Serialization.BEAN)
 public class Expense {
+
+    public static final int DISTRIBUTION_PERCENTAGE = 0;
+    public static final int DISTRIBUTION_EQUALLY = 1;
+    public static final int DISTRIBUTION_UNEQUALY = 2;
+
     private long id;
-    private String mExpenseAmount;
     private long mExpenseDate;
-    private String mExpenseName;
     private long mOwnerId;
+    private long mExpenseBookId;
+    private long mExpenseCategoryId;
+    private long mTransactionKey;
+    private double mExpenseAmount;
+    private String mExpenseName;
     private String mExpensePlace;
     private String mExpenseDescription;
-    private ExpenseBook mExpenseBook;
-    private ExpenseCategory mExpenseCategory;
-    private List<Member> mMemberList;
+    private Map<Long, Double> mMemberMap;
+
+    private int mDistrubtionType;
+
     public Expense() {
 
     }
@@ -39,79 +48,107 @@ public class Expense {
         return id;
     }
 
-    public void setId(long id) {
+    public Expense setId(long id) {
         this.id = id;
+        return this;
     }
 
-    public long getOwnerId() {
-        return mOwnerId;
-    }
-
-    public void setOwnerId(long ownerId) {
-        mOwnerId = ownerId;
-    }
-
-    public String getExpenseAmount() {
+    public double getExpenseAmount() {
         return mExpenseAmount;
     }
 
-    public void setExpenseAmount(String expenseAmount) {
+    public Expense setExpenseAmount(double expenseAmount) {
         mExpenseAmount = expenseAmount;
+        return this;
+    }
+
+    public long getExpenseBookId() {
+        return mExpenseBookId;
+    }
+
+    public Expense setExpenseBookId(long expenseBookId) {
+        mExpenseBookId = expenseBookId;
+        return this;
+    }
+
+    public long getExpenseCategoryId() {
+        return mExpenseCategoryId;
+    }
+
+    public Expense setExpenseCategoryId(long expenseCategoryId) {
+        mExpenseCategoryId = expenseCategoryId;
+        return this;
     }
 
     public long getExpenseDate() {
         return mExpenseDate;
     }
 
-    public void setExpenseDate(long expenseDate) {
+    public Expense setExpenseDate(long expenseDate) {
         mExpenseDate = expenseDate;
-    }
-
-    public String getExpenseName() {
-        return mExpenseName;
-    }
-
-    public void setExpenseName(String expenseName) {
-        mExpenseName = expenseName;
-    }
-
-    public String getExpensePlace() {
-        return mExpensePlace;
-    }
-
-    public void setExpensePlace(String expensePlace) {
-        mExpensePlace = expensePlace;
+        return this;
     }
 
     public String getExpenseDescription() {
         return mExpenseDescription;
     }
 
-    public void setExpenseDescription(String expenseDescription) {
+    public Expense setExpenseDescription(String expenseDescription) {
         mExpenseDescription = expenseDescription;
+        return this;
     }
 
-    public List<Member> getMemberList() {
-        return mMemberList;
+    public String getExpenseName() {
+        return mExpenseName;
     }
 
-    public void setMemberList(List<Member> memberList) {
-        mMemberList = memberList;
+    public Expense setExpenseName(String expenseName) {
+        mExpenseName = expenseName;
+        return this;
     }
 
-    public ExpenseBook getExpenseBook() {
-        return mExpenseBook;
+    public String getExpensePlace() {
+        return mExpensePlace;
     }
 
-    public void setExpenseBook(ExpenseBook expenseBook) {
-        mExpenseBook = expenseBook;
+    public Expense setExpensePlace(String expensePlace) {
+        mExpensePlace = expensePlace;
+        return this;
     }
 
-    public ExpenseCategory getExpenseCategory() {
-        return mExpenseCategory;
+    public Map<Long, Double> getMemberMap() {
+        return mMemberMap;
     }
 
-    public void setExpenseCategory(ExpenseCategory expenseCategory) {
-        mExpenseCategory = expenseCategory;
+    public Expense setMemberMap(Map<Long, Double> memberMap) {
+        mMemberMap = memberMap;
+        return this;
+    }
+
+    public long getOwnerId() {
+        return mOwnerId;
+    }
+
+    public Expense setOwnerId(long ownerId) {
+        mOwnerId = ownerId;
+        return this;
+    }
+
+    public long getTransactionKey() {
+        return mTransactionKey;
+    }
+
+    public Expense setTransactionKey(long transactionKey) {
+        mTransactionKey = transactionKey;
+        return this;
+    }
+
+    public int getDistrubtionType() {
+        return mDistrubtionType;
+    }
+
+    public Expense setDistrubtionType(int distrubtionType) {
+        mDistrubtionType = distrubtionType;
+        return this;
     }
 }

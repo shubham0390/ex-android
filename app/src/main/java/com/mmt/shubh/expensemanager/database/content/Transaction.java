@@ -16,7 +16,7 @@ public class Transaction {
 
     private long id;
     private String name;
-    private int amount;
+    private double amount;
     private long date;
     private String type;
 
@@ -31,12 +31,13 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public Transaction setAmount(double amount) {
         this.amount = amount;
+        return this;
     }
 
     public long getDate() {

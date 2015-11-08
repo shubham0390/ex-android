@@ -15,22 +15,10 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep public class * extends android.support.v7.RecyclerView
 -keep public class * implements com.bumptech.glide.module.GlideModule
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keepattributes Signature
--keepattributes Exceptions
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
 
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
 
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
@@ -39,3 +27,38 @@
 -keep class org.parceler.Parceler$$Parcels
 
 -dontwarn java.lang.invoke.*
+
+
+ #Retrofit libs
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+-dontwarn retrofit.appengine.UrlFetchClient
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+
+# Butterknife
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+#Support V7
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
+#RxAndroid and RxJava
+-dontwarn rx.**
+
+# OkHttp
+-keepattributes *Annotation*
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**

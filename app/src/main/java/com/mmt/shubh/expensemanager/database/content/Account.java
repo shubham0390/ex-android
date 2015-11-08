@@ -26,7 +26,7 @@ public class Account {
 
 
     private String accountName;
-    private long accountBalance;
+    private double accountBalance;
     private String type;
     private String accountNumber;
     private String bankName;
@@ -51,11 +51,11 @@ public class Account {
         this.accountName = accountName;
     }
 
-    public long getAccountBalance() {
+    public double getAccountBalance() {
         return accountBalance;
     }
 
-    public void setAccountBalance(long accountBalance) {
+    public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
 
