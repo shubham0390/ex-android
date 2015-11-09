@@ -76,7 +76,7 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, SignUpPresenter> i
         mPresenter.userSignUp(mFullNameEditText.getText().toString(),
                 mEmailAddressEditText.getText().toString(),
                 mPasswordEditText.getText().toString(),
-                mMobileNumberEditText.getText().toString());
+                Integer.parseInt(mMobileNumberEditText.getText().toString()));
     }
 
     /**

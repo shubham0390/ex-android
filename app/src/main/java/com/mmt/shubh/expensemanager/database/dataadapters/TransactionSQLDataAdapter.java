@@ -14,6 +14,8 @@ import com.mmt.shubh.expensemanager.database.content.contract.TransactionContrac
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by Subham Tyagi,
  * on 06/Sep/2015,
@@ -23,6 +25,7 @@ import java.util.List;
 public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> implements TransactionDataAdapter,
         TransactionContract {
 
+    @Inject
     public TransactionSQLDataAdapter(Context context) {
         super(TRANSACTION_URI, context);
     }
@@ -34,6 +37,7 @@ public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> i
         values.put(TRANSACTION_AMOUNT, transaction.getAmount());
         values.put(TRANSACTION_DATE, transaction.getDate());
         values.put(TRANSACTION_TYPE, transaction.getType());
+        values.put(ACCOUNT_KEY,transaction.getAccountKey());
         return values;
     }
 
@@ -43,6 +47,7 @@ public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> i
         transaction.setType(cursor.getString(cursor.getColumnIndex(TRANSACTION_TYPE)));
         transaction.setAmount(cursor.getInt(cursor.getColumnIndex(TRANSACTION_AMOUNT)));
         transaction.setDate(cursor.getLong(cursor.getColumnIndex(TRANSACTION_DATE)));
+        transaction.setAccountKey(cursor.getLong(cursor.getColumnIndex(ACCOUNT_KEY)));
     }
 
     @Override

@@ -72,6 +72,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
 
     private IFragmentDataSharer mFragmentDataSharer;
 
+
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_add_expense_book;

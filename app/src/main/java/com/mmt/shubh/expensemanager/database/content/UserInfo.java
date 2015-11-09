@@ -26,7 +26,7 @@ public class UserInfo {
     private String mCoverPhotoUrl;
     private String mProfilePhotoUrl;
     private Status mStatus;
-    private String mPhoneNumber;
+    private int mPhoneNumber;
     private long mMemberKey;
     public UserInfo() {
     }
@@ -88,15 +88,15 @@ public class UserInfo {
         this.mUserPassword = userPassword;
     }
 
-    public String getPhoneNumber() {
+    public int getPhoneNumber() {
         return mPhoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(int phoneNumber) {
         this.mPhoneNumber = phoneNumber;
     }
 
-    public void setMobileNo(String mobileNo) {
+    public void setMobileNo(int mobileNo) {
         mPhoneNumber = mobileNo;
     }
 

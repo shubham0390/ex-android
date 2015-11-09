@@ -23,6 +23,7 @@ public class ExpenseBookActivity extends ToolBarActivity implements IFragmentSwi
         setContentView(R.layout.activity_expense_book);
         ButterKnife.bind(this);
         initializeToolbar();
+        getSupportActionBar().setElevation(0);
         toggleHomeBackButton(true);
         setTitle(R.string.expense_book);
         installListFragment();

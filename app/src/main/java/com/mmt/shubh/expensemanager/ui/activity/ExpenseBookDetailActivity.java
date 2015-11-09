@@ -58,7 +58,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
 
         ButterKnife.bind(this);
         initializeToolbar();
-
+        getSupportActionBar().setElevation(0);
         mExpenseBook = Parcels.unwrap(getIntent().getParcelableExtra(Constants.KEY_EXPENSE_BOOK));
         setToolbar();
         setTabs();

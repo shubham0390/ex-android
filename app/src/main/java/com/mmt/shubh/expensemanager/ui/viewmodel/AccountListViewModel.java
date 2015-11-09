@@ -17,7 +17,7 @@ public class AccountListViewModel {
 
     String mAccountName;
     String mAccountType;
-    long mAccountBalance;
+    double mAccountBalance;
     String mAccountNumber;
 
     List<CardDetails> mCardList;
@@ -26,11 +26,11 @@ public class AccountListViewModel {
     }
 
 
-    public long getAccountBalance() {
+    public double getAccountBalance() {
         return mAccountBalance;
     }
 
-    public void setAccountBalance(long accountBalance) {
+    public void setAccountBalance(double accountBalance) {
         mAccountBalance = accountBalance;
     }
 

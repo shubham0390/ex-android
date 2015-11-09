@@ -23,7 +23,7 @@ public class Member {
     private long id;
     private String memberName;
     private String memberEmail;
-    private String memberPhoneNumber;
+    private int memberPhoneNumber;
     private String coverPhotoUrl;
     private String profilePhotoUrl;
 
@@ -33,7 +33,7 @@ public class Member {
     protected Member(Parcel in) {
         memberName = in.readString();
         memberEmail = in.readString();
-        memberPhoneNumber = in.readString();
+        memberPhoneNumber = in.readInt();
         coverPhotoUrl = in.readString();
         profilePhotoUrl = in.readString();
     }
@@ -78,11 +78,11 @@ public class Member {
         this.profilePhotoUrl = profilePhotoUrl;
     }
 
-    public String getMemberPhoneNumber() {
+    public int getMemberPhoneNumber() {
         return memberPhoneNumber;
     }
 
-    public void setMemberPhoneNumber(String memberPhoneNumber) {
+    public void setMemberPhoneNumber(int memberPhoneNumber) {
         this.memberPhoneNumber = memberPhoneNumber;
     }
 
@@ -90,7 +90,6 @@ public class Member {
     public int hashCode() {
         int result = getMemberName().hashCode();
         result = 31 * result + getMemberEmail().hashCode();
-        result = 31 * result + getMemberPhoneNumber().hashCode();
         result = 31 * result + getCoverPhotoUrl().hashCode();
         result = 31 * result + getProfilePhotoUrl().hashCode();
         return result;

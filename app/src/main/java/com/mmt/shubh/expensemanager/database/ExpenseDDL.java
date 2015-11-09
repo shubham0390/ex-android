@@ -111,7 +111,7 @@ public final class ExpenseDDL {
                 + MemberContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberContract.MEMBER_NAME + " TEXT NOT NULL, "
                 + MemberContract.MEMBER_EMAIL + " TEXT UNIQUE, "
-                + MemberContract.MEMBER_PHONE_NUMBER + " TEXT UNIQUE, "
+                + MemberContract.MEMBER_PHONE_NUMBER + " INTEGER UNIQUE, "
                 + MemberContract.MEMBER_IMAGE_URI + " TEXT, "
                 + MemberContract.MEMBER_USER_NAME + " TEXT,"
                 + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT"

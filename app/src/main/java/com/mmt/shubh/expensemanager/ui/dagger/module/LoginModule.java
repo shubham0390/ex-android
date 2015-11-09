@@ -3,7 +3,16 @@ package com.mmt.shubh.expensemanager.ui.dagger.module;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
+import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 import com.mmt.shubh.expensemanager.ui.models.SigUpModelImpl;
 import com.mmt.shubh.expensemanager.ui.models.api.ISignUpModel;
 import com.mmt.shubh.expensemanager.ui.presenters.LoginActivityPresenter;
@@ -44,16 +53,45 @@ public class LoginModule {
 
     @Provides
     @ActivityScope
-    LoginActivityPresenter provideLoginActivityPresenter(Context context,ISignUpModel signUpModel) {
-        return new LoginActivityPresenter(context,signUpModel);
+    LoginActivityPresenter provideLoginActivityPresenter(Context context, ISignUpModel signUpModel) {
+        return new LoginActivityPresenter(context, signUpModel);
     }
+
     @Provides
     @ActivityScope
     public MemberRestService provideMemberRestService(Retrofit retrofit) {
         return retrofit.create(MemberRestService.class);
     }
 
+    @Provides
+    @ActivityScope
+    public AccountDataAdapter provideAccountDataAdapter(Context context) {
+        return new AccountSQLDataAdapter(context);
+    }
 
+    @Provides
+    @ActivityScope
+    public ExpenseDataAdapter provideExpenseDataAdapter(Context context) {
+        return new ExpenseSqlDataAdapter(context);
+    }
+
+    @Provides
+    @ActivityScope
+    public TransactionDataAdapter provideTransactionDataAdapter(Context context) {
+        return new TransactionSQLDataAdapter(context);
+    }
+
+    @Provides
+    @ActivityScope
+    public MemberExpenseDataAdapter provideMemberExpenseDataAdapter(Context context) {
+        return new MemberExpenseSQLDataAdapter(context);
+    }
+
+    @Provides
+    @ActivityScope
+    public ExpenseModel provideExpenseModel(Context context) {
+        return new ExpenseModel(context);
+    }
 
 
 }

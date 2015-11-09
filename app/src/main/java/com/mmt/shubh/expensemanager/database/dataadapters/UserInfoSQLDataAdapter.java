@@ -6,14 +6,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.exceptions.ContentNotFoundException;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
-import com.mmt.shubh.expensemanager.database.api.exceptions.ContentNotFoundException;
 
 /**
  * Created by Subham Tyagi,
@@ -39,7 +38,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
         if (!TextUtils.isEmpty(userInfo.getEmailAddress())) {
             values.put(USER_EMAIL_ADDRESS, userInfo.getEmailAddress());
         }
-        if (!TextUtils.isEmpty(userInfo.getPhoneNumber())) {
+        if (!TextUtils.isEmpty(userInfo.getPhoneNumber()+"")) {
             values.put(USER_PHONE_NUMBER, userInfo.getPhoneNumber());
         }
         if (!TextUtils.isEmpty(userInfo.getDisplayName())) {
@@ -61,7 +60,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> impleme
     public void restore(Cursor cursor, UserInfo userInfo) {
         userInfo.setId(cursor.getLong(USER_ID_COLUMN));
         userInfo.setUserPassword(cursor.getString(USER_PASSWORD_COLUMN));
-        userInfo.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE_NUMBER)));
+        userInfo.setPhoneNumber(cursor.getInt(cursor.getColumnIndexOrThrow(USER_PHONE_NUMBER)));
         userInfo.setEmailAddress(cursor.getString(USER_EMAIL_ADDRESS_COLUMN));
         userInfo.setCoverPhotoUrl(cursor.getString(USER_COVER_IMAGE_URL_COLUMN));
         userInfo.setProfilePhotoUrl(cursor.getString(USER_PROFILE_IMAGE_URL_COLUMN));

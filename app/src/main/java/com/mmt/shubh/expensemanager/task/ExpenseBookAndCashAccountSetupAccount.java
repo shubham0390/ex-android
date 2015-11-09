@@ -6,22 +6,18 @@ import android.util.Log;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.UserSettings;
-import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Subham Tyagi,
@@ -33,8 +29,11 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.mmt.shubh.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
 
-    public ExpenseBookAndCashAccountSetupAccount(Context context) {
+    ExpenseModel mExpenseModel;
+
+    public ExpenseBookAndCashAccountSetupAccount(Context context, ExpenseModel expenseModel) {
         super(context);
+        mExpenseModel = expenseModel;
     }
 
     @Override
@@ -88,34 +87,13 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         account.setType(Account.TYPE_CASH);
         account.setAccountNumber("Cash");
         long id = dataAdapter.create(account);
-        Expense expense = new Expense();
-        expense.setExpenseAmount(1000);
-        expense.setExpenseBookId(1);
-        expense.setExpenseCategoryId(1);
-        expense.setExpenseDate(System.currentTimeMillis());
-        expense.setExpenseDescription("ajsedflojsldfjg");
-        expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
-        expense.setExpenseName("sdjjfhksdjfhk");
-        expense.setExpensePlace("sdkjfcksjdnfks");
-        expense.setOwnerId(1);
-        Map map =  new HashMap<>();
-        map.put(1, 1);
-        expense.setMemberMap(map);
-        ExpenseDataAdapter expenseDataAdapter =  new ExpenseSqlDataAdapter(mContext);
-        expenseDataAdapter.create(expense);
-
         if (id > 0) {
             Log.d(Constants.LOG_TAG, "Created Account successfully");
             return true;
         } else {
             Log.d(Constants.LOG_TAG, "Account creating failed");
         }
-
-
         return false;
-
-
-
     }
 
     public Member loadMember() {

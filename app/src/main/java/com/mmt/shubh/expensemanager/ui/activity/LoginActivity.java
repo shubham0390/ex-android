@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -57,6 +58,9 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     @Inject
     LoginActivityPresenter mLoginActivityPresenter;
 
+    @Bind(R.id.login_card)
+    CardView mLoginCard;
+
     private LoginActivityComponent mComponent;
 
     private Fragment mCurrentFragment;
@@ -68,6 +72,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initializeToolbar();
+        getSupportActionBar().setElevation(0);
         mLoginActivityPresenter.setupFacebookLogin(mFacebookLoginButton);
         mLoginActivityPresenter.setupGoogleLogin(mPlusSignInButton, this);
         mLoginActivityPresenter.attachView(this);
@@ -89,6 +94,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
 
     @OnClick(R.id.email_login_button)
     public void onSignUpClick() {
+        mLoginCard.setVisibility(View.VISIBLE);
         SignUpFragment fragment = new SignUpFragment();
         fragment.setComponent(mComponent);
         installFragment(fragment);
@@ -124,6 +130,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
         getFragmentManager().beginTransaction().remove(mCurrentFragment).commit();
         mCurrentFragment = null;
         mSocialContainer.setVisibility(View.VISIBLE);
+        mLoginCard.setVisibility(View.INVISIBLE);
         showBackButton(false);
     }
 
@@ -139,12 +146,14 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
 
     @Override
     public void showProgress() {
-        mProgressView.setVisibility(View.VISIBLE);
+        showProgress(true);
+       // mProgressView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        mProgressView.setVisibility(View.GONE);
+        showProgress(false);
+        //mProgressView.setVisibility(View.GONE);
     }
 
     @Override

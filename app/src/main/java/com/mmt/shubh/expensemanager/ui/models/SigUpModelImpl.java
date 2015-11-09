@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.task.CreateUserTask;
 import com.mmt.shubh.expensemanager.task.ExpenseBookAndCashAccountSetupAccount;
 import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
 import com.mmt.shubh.expensemanager.task.ProfileFetchingTask;
+import com.mmt.shubh.expensemanager.task.SeedDataTask;
 import com.mmt.shubh.expensemanager.task.TaskProcessor;
 import com.mmt.shubh.expensemanager.task.TaskResult;
 import com.mmt.shubh.expensemanager.ui.models.api.ISignUpModel;
@@ -37,6 +38,9 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private Context mContext;
 
     @Inject
+    ExpenseModel mExpenseModel;
+
+    @Inject
     public SigUpModelImpl(Context context, MemberRestService memberRestService) {
         mTaskProcessor = TaskProcessor.getTaskProcessor();
         mTaskProcessor.setOnTaskCompleteListener(this);
@@ -55,7 +59,7 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     }
 
     @Override
-    public void registerUser(String fullName, String emailAddress, String password, String mobileNo) {
+    public void registerUser(String fullName, String emailAddress, String password, int mobileNo) {
         Logger.debug(TAG, "Adding create user task to task processor");
         mTaskProcessor.execute(new CreateUserTask(mContext, fullName, emailAddress, password, mobileNo, memberRestService));
     }
@@ -79,18 +83,22 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
                 break;
             case ExpenseBookAndCashAccountSetupAccount.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK:
                 Logger.debug(TAG, "Account setup complete.Launching home activity");
-                mSignUpModelCallback.onSuccess();
+                TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
+                taskProcessor.execute(new SeedDataTask(mContext));
                 break;
+            case SeedDataTask.ACTION_SEED:
+                Logger.debug(TAG, "Data seed Succefull");
+                mSignUpModelCallback.onSuccess();
+
         }
     }
 
     private void handleCreateUserTaskResult(TaskResult taskResult) {
-        if (taskResult.isSuccess()) {
-            Logger.debug(TAG, "User created successful .Starting setup task");
-            mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext));
-        } else {
-            mSignUpModelCallback.onError(taskResult.getStatusCode());
-        }
+
+        Logger.debug(TAG, "User created successful .Starting setup task");
+        mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext, mExpenseModel));
+
+        mSignUpModelCallback.onError(taskResult.getStatusCode());
 
 
     }

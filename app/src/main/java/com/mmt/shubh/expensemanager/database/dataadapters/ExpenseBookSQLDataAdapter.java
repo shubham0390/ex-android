@@ -132,7 +132,7 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
 
     @Override
     public void addMember(ExpenseBook expenseBook) {
-
+        addMembers(expenseBook.getMemberList(), expenseBook.getId());
     }
 
     @Override

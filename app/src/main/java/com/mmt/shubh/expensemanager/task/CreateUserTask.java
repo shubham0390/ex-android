@@ -22,17 +22,17 @@ public class CreateUserTask extends AbstractTask {
 
     private String mFullName;
     private String mEmailAddress;
-    private String mMobileNumber;
+    private int mMobileNumber;
     private String mPassword;
 
 
     public CreateUserTask(Context context, String fullName, String emailAddress, String password,
-                          String mobileNo, MemberRestService memberRestService) {
+                          int mobileNo, MemberRestService memberRestService) {
         super(context);
         mFullName = fullName;
         mEmailAddress = emailAddress;
-        mMobileNumber = password;
-        mPassword = mobileNo;
+        mMobileNumber = mobileNo;
+        mPassword = password;
         this.memberRestService = memberRestService;
     }
 

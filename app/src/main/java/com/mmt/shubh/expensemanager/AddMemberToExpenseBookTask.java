@@ -40,7 +40,8 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
     @Override
     public TaskResult execute() {
         saveMemberDetails();
-        return null;
+        createTaskResult(true, 12, "");
+        return mTaskResult;
     }
 
     @Override
@@ -52,8 +53,7 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
      * save members and their details of the newly created expense book
      */
     private void saveMemberDetails() {
-
-        Logger.debug(TAG, "entered saveMemberDetails()");
+        Logger.methodStart(TAG, "saveMemberDetails");
         List<Member> memberList = new ArrayList<>();
 
         for (int selectedIndex : mSelectedContacts) {
@@ -61,10 +61,12 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
             Member memberDetails = fetchContactDetails(contactId);
             memberList.add(memberDetails);
         }
+
         saveMemberDetailsToDB(memberList);
-        Logger.debug(TAG, "exiting saveMemberDetails()");
         ExpenseBookDataAdapter dataAdapter = new ExpenseBookSQLDataAdapter(mContext);
         dataAdapter.addMembers(memberList, mExpenseBookId);
+
+        Logger.methodEnd(TAG, "saveMemberDetails");
     }
 
     /**
@@ -74,11 +76,14 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
      * @return Member object with all member details
      */
     private Member fetchContactDetails(String contactId) {
-        Logger.debug(TAG, "entered fetchContactDetails()");
+        Logger.methodStart(TAG, "fetchContactDetails");
+
         Cursor contactsCursor = mContext.getContentResolver().query(ContactsContract
-                .Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + "?=", new
+                .Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + " ?=", new
                 String[]{contactId}, ContactsContract.Contacts.DISPLAY_NAME);
+
         Member member = new Member();
+
         try {
             if (contactsCursor != null && contactsCursor.moveToFirst()) {
                 String id = contactsCursor.getString(contactsCursor.getColumnIndex
@@ -91,7 +96,7 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
                         (ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " " +
                                         "=?", new String[]{contactId}, null);
-                String phoneNo = phoneNumberCursor.getString(phoneNumberCursor.getColumnIndex
+                int phoneNo = phoneNumberCursor.getInt(phoneNumberCursor.getColumnIndex
                         (ContactsContract.CommonDataKinds.Phone.NUMBER));
                 String email = phoneNumberCursor.getString(phoneNumberCursor.getColumnIndex
                         (ContactsContract.CommonDataKinds.Email.ADDRESS));
@@ -105,7 +110,8 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
                 contactsCursor.close();
             }
         }
-        Logger.debug(TAG, "exiting fetchContactDetails()");
+
+        Logger.methodEnd(TAG, "fetchContactDetails");
         return member;
 
     }
@@ -116,9 +122,9 @@ public class AddMemberToExpenseBookTask extends AbstractTask {
      * @param memberDetails member details to be saved
      */
     private void saveMemberDetailsToDB(List<Member> memberDetails) {
-        Logger.debug(TAG, "entering saveMemberDetailsToDB()");
+        Logger.methodStart(TAG, "saveMemberDetailsToDB()");
         MemberSQLDataAdapter memberSQLDataAdapter = new MemberSQLDataAdapter(mContext);
         memberSQLDataAdapter.create(memberDetails);
-        Logger.debug(TAG, "exiting saveMemberDetailsToDB()");
+        Logger.methodEnd(TAG, "saveMemberDetailsToDB()");
     }
 }

@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
@@ -13,6 +14,8 @@ import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 /**
  * Created by Subham Tyagi,
  * on 07/Nov/2015,
@@ -21,7 +24,7 @@ import java.util.Map;
  */
 public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
 
-
+    @Inject
     public ExpenseSqlDataAdapter(Context context) {
         super(ExpenseContract.EXPENSE_URI, context);
     }
@@ -67,8 +70,11 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
 
     @Override
     public long create(Expense expense) {
-        save(expense);
-        return 0;
+        Uri uri = save(expense);
+        List paths = uri.getPathSegments();
+        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+        expense.setId(id);
+        return id;
     }
 
     @Override

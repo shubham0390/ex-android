@@ -9,8 +9,8 @@
 package com.mmt.shubh.expensemanager.task;
 
 import android.support.annotation.VisibleForTesting;
-import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingDeque;
@@ -24,6 +24,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  * Execute series of task in parallel or serial. Task should be subclass of {@link AbstractTask}
  */
 public class TaskProcessor {
+
+    private String LOG_TAG = getClass().getName();
 
     private static TaskProcessor mTaskProcessor = new TaskProcessor();
 
@@ -103,6 +105,7 @@ public class TaskProcessor {
     }
 
     private void scheduleNext() {
+        Logger.methodStart(LOG_TAG, "scheduleNext");
         if (!isExecuting) {
             mActive = mTaskQueue.poll();
             if (mActive != null) {
@@ -110,22 +113,33 @@ public class TaskProcessor {
                     isExecuting = true;
                     executeTask(mActive);
                     isExecuting = false;
+                    mActive = null;
                     scheduleNext();
                 });
             }
         }
+        Logger.methodEnd(LOG_TAG, "scheduleNext");
     }
 
     /*
      * Execute single task
      */
     private void executeTask(ITask task) {
-        TaskResult result = task.execute();
+        Logger.methodStart(LOG_TAG, "executeTask -" + task.getTaskAction());
+        TaskResult result = new TaskResult();
+        try {
+            result = task.execute();
+        } catch (Exception e) {
+            isExecuting = false;
+            Logger.error(LOG_TAG, e.getMessage()+"\n" +e.getStackTrace().toString());
+            throw new RuntimeException(e);
+        }
+
         String action = task.getTaskAction();
-        if (!TextUtils.isEmpty(action))
-            notifyListener(action, result);
+        notifyListener(action, result);
 
         task.onPostExecute(result);
+        Logger.methodEnd(LOG_TAG, "executeTask" + task.getTaskAction());
     }
 
     public void removeOnTaskCompleteListener(OnTaskCompleteListener listener) {

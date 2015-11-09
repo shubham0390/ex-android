@@ -163,9 +163,9 @@ public abstract class BaseSQLDataAdapter<T> {
     }
 
     public Uri save(T t) {
-        if (isSaved()) {
-            throw new UnsupportedOperationException();
-        }
+        /*if (isSaved()) {
+            throw new UnsupportedOperationException("Already saved");
+        }*/
 
         Uri res = mContext.getContentResolver().insert(mBaseUri, toContentValues(t));
         mRecordId = Long.parseLong(res.getLastPathSegment());

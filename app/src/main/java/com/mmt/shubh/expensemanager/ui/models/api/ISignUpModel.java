@@ -16,7 +16,7 @@ public interface ISignUpModel {
 
     void unregisterCallback();
 
-    void registerUser(String fullName, String emailAddress, String password, String mobileNo);
+    void registerUser(String fullName, String emailAddress, String password, int mobileNo);
 
     void registerUserWithSocial(ProfileFetcher profileFetcher);
 

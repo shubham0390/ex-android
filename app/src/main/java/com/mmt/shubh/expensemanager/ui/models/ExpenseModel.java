@@ -1,5 +1,7 @@
 package com.mmt.shubh.expensemanager.ui.models;
 
+import android.content.Context;
+
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
@@ -7,6 +9,11 @@ import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.database.content.Transaction;
+import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +28,7 @@ import javax.inject.Inject;
  * TODO:Add class comment.
  */
 public class ExpenseModel {
+    private String LOG_TAG = getClass().getName();
 
     @Inject
     ExpenseDataAdapter mExpenseDataAdapter;
@@ -35,11 +43,15 @@ public class ExpenseModel {
     AccountDataAdapter mAccountDataAdapter;
 
     @Inject
-    public ExpenseModel() {
+    public ExpenseModel(Context context) {
+        mExpenseDataAdapter = new ExpenseSqlDataAdapter(context);
+        mMemberExpenseDataAdapter = new MemberExpenseSQLDataAdapter(context);
+        mTransactionDataAdapter = new TransactionSQLDataAdapter(context);
+        mAccountDataAdapter = new AccountSQLDataAdapter(context);
     }
 
     public void createExpense(long accountId, Expense expense) {
-
+        Logger.methodStart(LOG_TAG, "createExpense");
         long transactionId = createTransaction(expense);
 
         long expenseID = mExpenseDataAdapter.create(expense);
@@ -49,10 +61,14 @@ public class ExpenseModel {
         List<MemberExpense> memberExpenses = new ArrayList<>();
 
         for (long memberId : doubleMap.keySet()) {
+
+            double sharedAmount = getSharedAmount(expense.getDistrubtionType(),
+                    expense.getExpenseAmount(), doubleMap.size(), doubleMap.get(memberId));
+
             MemberExpense memberExpense = new MemberExpense();
+
             memberExpense.setMemberKey(memberId);
             memberExpense.setExpenseKey(expenseID);
-            double sharedAmount = getSharedAmount(expense.getDistrubtionType(), expense.getExpenseAmount(), doubleMap.size(), doubleMap.get(memberId));
             memberExpense.setShareAmount(sharedAmount);
 
             if (memberId == expense.getOwnerId()) {
@@ -60,40 +76,48 @@ public class ExpenseModel {
             } else {
                 memberExpense.setDebitAmount(0);
             }
+
             memberExpense.setBalanceAmount(expense.getExpenseAmount() - sharedAmount);
             memberExpenses.add(memberExpense);
         }
         expense.setTransactionKey(transactionId);
         mMemberExpenseDataAdapter.create(memberExpenses);
-        deductAmoountFromAccount(accountId,expense.getExpenseAmount());
-
+        //deductAmountFromAccount(accountId,expense.getExpenseAmount());
+        Logger.methodStart(LOG_TAG, "createExpense");
     }
 
-    public void deductAmoountFromAccount(long accountId, double amount) {
+    public void deductAmountFromAccount(long accountId, double amount) {
         double balanceAmount = mAccountDataAdapter.getAccountBalance(accountId);
         mAccountDataAdapter.updateAmount(accountId, balanceAmount - amount);
     }
 
     private long createTransaction(Expense expense) {
+        Logger.methodStart(LOG_TAG, "createTransaction");
         Transaction transaction = new Transaction();
         transaction.setAmount(expense.getExpenseAmount());
         transaction.setName(expense.getExpenseName());
         transaction.setDate(expense.getExpenseDate());
         transaction.setType(Transaction.TYPE_DEBIT);
-        return mTransactionDataAdapter.create(transaction);
+        transaction.setAccountKey(1);
+        long id = mTransactionDataAdapter.create(transaction);
+        Logger.methodEnd(LOG_TAG, "createTransaction");
+        return id;
     }
 
     private double getSharedAmount(int sharedType, double totalAmount, int memberCount, double sharedAmount) {
-
+        Logger.methodStart(LOG_TAG, "getSharedAmount");
+        double sharedAmountC;
         switch (sharedType) {
             case Expense.DISTRIBUTION_EQUALLY:
-                return totalAmount / memberCount;
+                sharedAmountC = totalAmount / memberCount;
             case Expense.DISTRIBUTION_UNEQUALY:
-                return sharedAmount;
+                sharedAmountC = sharedAmount;
             case Expense.DISTRIBUTION_PERCENTAGE:
-                return (totalAmount * sharedAmount) / 100;
+                sharedAmountC = (totalAmount * sharedAmount) / 100;
             default:
-                return totalAmount / memberCount;
+                sharedAmountC = totalAmount / memberCount;
         }
+        Logger.methodEnd(LOG_TAG, "getSharedAmount");
+        return sharedAmountC;
     }
 }

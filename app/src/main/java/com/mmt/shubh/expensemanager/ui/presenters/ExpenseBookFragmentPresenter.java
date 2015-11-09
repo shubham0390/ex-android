@@ -2,11 +2,10 @@ package com.mmt.shubh.expensemanager.ui.presenters;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.AddUpdateExpenseBookTask;
+import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
@@ -16,6 +15,8 @@ import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookFragmentView;
 import com.mmt.shubh.expensemanager.utils.Validator;
+
+import org.parceler.Parcels;
 
 /**
  * Created by Subham Tyagi,
@@ -82,7 +83,7 @@ public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseB
             } else {
                 Logger.debug(TAG, "Expense book created successfully ,installing add member fragment");
                 Bundle expenseBookInfo = new Bundle();
-                expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, (Parcelable) taskResult.getResult());
+                expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(taskResult.getResult()));
                 getView().addMemberFragment(expenseBookInfo);
             }
         } else

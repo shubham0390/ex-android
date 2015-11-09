@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContract;
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ import javax.inject.Inject;
  * 9:34 PM
  * TODO:Add class comment.
  */
-public class MemberSQLExpenseDataAdapter extends BaseSQLDataAdapter<MemberExpense> implements MemberExpenseDataAdapter {
+public class MemberExpenseSQLDataAdapter extends BaseSQLDataAdapter<MemberExpense> implements MemberExpenseDataAdapter {
+
+    private String LOG_TAG = getClass().getName();
 
     @Inject
-    public MemberSQLExpenseDataAdapter(Context context) {
+    public MemberExpenseSQLDataAdapter(Context context) {
         super(MemberExpenseContract.MEMBER_EXPENSE_URI, context);
     }
 
@@ -82,6 +85,10 @@ public class MemberSQLExpenseDataAdapter extends BaseSQLDataAdapter<MemberExpens
 
     @Override
     public void create(List<MemberExpense> memberExpenses) {
-
+        Logger.methodStart(LOG_TAG, "create");
+        for (MemberExpense memberExpense : memberExpenses) {
+            save(memberExpense);
+        }
+        Logger.methodEnd(LOG_TAG, "create");
     }
 }

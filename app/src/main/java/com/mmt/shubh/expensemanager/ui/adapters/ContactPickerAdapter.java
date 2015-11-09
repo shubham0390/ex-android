@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * @author Umang Chamaria
  */
-public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdapter.ViewHolder>{
+public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdapter.ViewHolder> {
     private List<ContactsMetaData> mContactNames;
     private SparseBooleanArray mSelectedContacts;
 
@@ -46,35 +46,21 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         String contactPhotoURI = metaData.getContactPhotoURI();
         if (!TextUtils.isEmpty(contactPhotoURI)) {
             holder.mContactImage.setImageURI(Uri.parse(contactPhotoURI));
-        }else{
+        } else {
             holder.mContactImage.setImageResource(R.mipmap.ic_launcher);
         }
-        holder.mContactChecked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()){
-                    if (mSelectedContacts.get(position, false)){
-                        mSelectedContacts.delete(position);
-                    }
-                }else {
-                    mSelectedContacts.put(position, true);
-                }
+        holder.mContactChecked.setOnClickListener(v -> updateSelectedItem(((CheckBox) v).isChecked(), position));
+        holder.mView.setOnClickListener(v -> updateSelectedItem(holder.mContactChecked.isChecked(), position));
+    }
+
+    private void updateSelectedItem(boolean value, int position) {
+        if (value) {
+            if (!mSelectedContacts.get(position, false)) {
+                mSelectedContacts.put(position, true);
             }
-        });
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!holder.mContactChecked.isChecked()) {
-                    holder.mContactChecked.setChecked(true);
-                    mSelectedContacts.put(position, true);
-                } else {
-                    holder.mContactChecked.setChecked(false);
-                    if (mSelectedContacts.get(position, false)){
-                        mSelectedContacts.delete(position);
-                    }
-                }
-            }
-        });
+        } else {
+            mSelectedContacts.delete(position);
+        }
     }
 
     @Override

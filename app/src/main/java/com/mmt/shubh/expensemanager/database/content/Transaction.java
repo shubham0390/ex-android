@@ -19,6 +19,7 @@ public class Transaction {
     private double amount;
     private long date;
     private String type;
+    private long accountKey;
 
     public Transaction() {
     }
@@ -62,5 +63,14 @@ public class Transaction {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public long getAccountKey() {
+        return accountKey;
+    }
+
+    public Transaction setAccountKey(long accountKey) {
+        this.accountKey = accountKey;
+        return this;
     }
 }

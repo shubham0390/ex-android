@@ -30,7 +30,7 @@ public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implemen
         mSignUpModel = signUpModel;
     }
 
-    public void userSignUp(String fullName, String emailAddress, String password, String mobileNo) {
+    public void userSignUp(String fullName, String emailAddress, String password, int mobileNo) {
         Logger.debug(TAG, "Manually registering user");
         getView().showProgress(R.string.registering_message);
         if (!isEmpty(fullName, emailAddress, password, mobileNo)) {
@@ -40,7 +40,7 @@ public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implemen
         }
     }
 
-    private boolean isEmpty(String fullName, String emailAddress, String password, String mobileNo) {
+    private boolean isEmpty(String fullName, String emailAddress, String password, int mobileNo) {
         if (isViewAttached()) {
             boolean isEmpty = false;
             if (TextUtils.isEmpty(fullName)) {
