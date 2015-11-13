@@ -24,6 +24,7 @@ import com.mmt.shubh.expensemanager.ui.activity.CashActivity;
 import com.mmt.shubh.expensemanager.ui.activity.CategoryActivity;
 import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity;
 import com.mmt.shubh.expensemanager.ui.activity.HomeActivity;
+import com.mmt.shubh.expensemanager.ui.activity.SummaryActivity;
 
 import butterknife.Bind;
 
@@ -109,7 +110,7 @@ public class DrawerBaseActivity extends ToolBarActivity {
                             intent = new Intent(DrawerBaseActivity.this, ExpenseBookActivity.class);
                             break;
                         case R.id.nav_summary:
-                            value = false;
+                            intent = new Intent(DrawerBaseActivity.this, SummaryActivity.class);
                             break;
                         case R.id.nav_app_settings:
                             intent = new Intent(DrawerBaseActivity.this, SettingsActivity.class);

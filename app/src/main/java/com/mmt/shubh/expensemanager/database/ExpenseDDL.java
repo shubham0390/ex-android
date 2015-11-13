@@ -137,10 +137,12 @@ public final class ExpenseDDL {
                 + ExpenseContract.CATEGORY_KEY + " INTEGER, "
                 + ExpenseContract.TRANSACTION_KEY + " INTEGER, "
                 + ExpenseContract.OWNER_KEY + " INTEGER NOT NULL, "
+                + ExpenseContract.ACCOUNT_KEY + " INTEGER NOT NULL, "
                 + " FOREIGN KEY( " + ExpenseContract.EXPENSE_BOOK_KEY + ") REFERENCES " + ExpenseBookContract.TABLE_NAME + " (" + ExpenseBookContract._ID + ") ,"
                 + " FOREIGN KEY( " + ExpenseContract.CATEGORY_KEY + ") REFERENCES " + CategoryContract.TABLE_NAME + " (" + CategoryContract._ID + ") ,"
                 + " FOREIGN KEY( " + ExpenseContract.TRANSACTION_KEY + ") REFERENCES " + TransactionContract.TABLE_NAME + " (" + TransactionContract._ID + ") ,"
-                + " FOREIGN KEY( " + ExpenseContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + ") "
+                + " FOREIGN KEY( " + ExpenseContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + "), "
+                + " FOREIGN KEY( " + ExpenseContract.ACCOUNT_KEY + ") REFERENCES " + AccountContract.TABLE_NAME + " (" + AccountContract._ID + ") "
                 + ");";
         database.execSQL(createTable);
     }

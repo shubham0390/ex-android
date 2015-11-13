@@ -12,6 +12,19 @@
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
     </style>
 
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <!--<item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>-->
+    </style>
+    <style name="SplashScreen" parent="AppTheme">
+        <item name="android:textColor">@color/milky_white</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+    <style name="SummaryActivity" parent="AppTheme">
+        <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
+
+    </style>
+
     <style name="root_layout_style">
         <item name="android:layout_marginLeft">@dimen/root_layout_left_margin</item>
         <item name="android:layout_marginRight">@dimen/root_layout_right_margin</item>
@@ -68,45 +81,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="AppTheme">
-        <!--<item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>-->
-    </style>
-    <style name="SplashScreen" parent="AppTheme">
-        <item name="android:textColor">@color/milky_white</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
-    </style>
 
-    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">@dimen/tab_max_width</item>
-        <item name="tabIndicatorColor">?attr/colorAccent</item>
-        <item name="tabIndicatorHeight">2dp</item>
-        <item name="tabPaddingStart">12dp</item>
-        <item name="tabPaddingEnd">12dp</item>
-        <item name="tabBackground">?attr/selectableItemBackground</item>
-        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
-    </style>
-    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
-        <item name="textAllCaps">true</item>
-    </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <style name="DialogButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
-    </style>
     <style name="ListItemAccount" parent="ListItem">
         <item name="android:layout_margin">@dimen/spacing_normal</item>
     </style>

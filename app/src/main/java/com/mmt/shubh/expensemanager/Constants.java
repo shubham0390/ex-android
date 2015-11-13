@@ -45,4 +45,6 @@ public interface Constants {
 
     /*Intents Actions*/
     String ACTION_ADD_MEMBERS = "com.mmt.shubh.expensemanager.ACTION_ADD_MEMBERS";
+    String KEY_CONTENT_ID = "contentId";
+    String EXTRA_ACCOUNT = "account";
 }

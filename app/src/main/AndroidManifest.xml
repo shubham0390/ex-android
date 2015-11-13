@@ -142,6 +142,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmt.shubh.expensemanager.ui.activity.HomeActivity" />
         </activity>
+        <activity android:name=".ui.activity.SummaryActivity" />
     </application>
 
 </manifest>

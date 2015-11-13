@@ -61,13 +61,13 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
         extends SupportMVPFragment<V, P> implements MVPLCEView<M> {
 
     @Bind(R.id.loadingView)
-    protected View loadingView;
+    protected View mLoadingView;
 
     @Bind(R.id.contentView)
-    protected CV contentView;
+    protected CV mContentView;
 
     @Bind(R.id.errorView)
-    protected TextView errorView;
+    protected TextView mErrorView;
 
     /**
      * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
@@ -99,19 +99,19 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (loadingView == null) {
+        if (mLoadingView == null) {
             throw new NullPointerException(
                     "Loading view is null! Have you specified a loading view in your layout xml file?"
                             + " You have to give your loading View the id R.id.mLoadingView");
         }
 
-        if (contentView == null) {
+        if (mContentView == null) {
             throw new NullPointerException(
                     "Content view is null! Have you specified a content view in your layout xml file?"
                             + " You have to give your content View the id R.id.mContentView");
         }
 
-        if (errorView == null) {
+        if (mErrorView == null) {
             throw new NullPointerException(
                     "Error view is null! Have you specified a content view in your layout xml file?"
                             + " You have to give your error View the id R.id.mErrorView");
@@ -133,7 +133,7 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
      * Override this method if you want to provide your own animation for showing the loading view
      */
     protected void animateLoadingViewIn() {
-        LCEAnimator.showLoading(loadingView, contentView, errorView);
+        LCEAnimator.showLoading(mLoadingView, mContentView, mErrorView);
     }
 
     @Override
@@ -146,7 +146,7 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
      * Called to animate from loading view to content view
      */
     protected void animateContentViewIn() {
-        LCEAnimator.showContent(loadingView, contentView, errorView);
+        LCEAnimator.showContent(mLoadingView, mContentView, mErrorView);
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
         if (pullToRefresh) {
             showLightError(errorMsg);
         } else {
-            errorView.setText(errorMsg);
+            mErrorView.setText(errorMsg);
             animateErrorViewIn();
         }
     }
@@ -212,15 +212,15 @@ public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCE
      * Animates the error view in (instead of displaying content view / loading view)
      */
     protected void animateErrorViewIn() {
-        LCEAnimator.showErrorView(loadingView, contentView, errorView);
+        LCEAnimator.showErrorView(mLoadingView, mContentView, mErrorView);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        loadingView = null;
-        contentView = null;
-        errorView = null;
+        mLoadingView = null;
+        mContentView = null;
+        mErrorView = null;
     }
 
     public LCEViewState<M, V> getViewState() {

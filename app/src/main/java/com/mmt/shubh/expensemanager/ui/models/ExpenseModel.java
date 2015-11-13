@@ -14,12 +14,17 @@ import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
+import com.mmt.shubh.expensemanager.ui.fragment.ExpenseFilter;
+import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by Subham Tyagi,
@@ -110,14 +115,42 @@ public class ExpenseModel {
         switch (sharedType) {
             case Expense.DISTRIBUTION_EQUALLY:
                 sharedAmountC = totalAmount / memberCount;
+                break;
             case Expense.DISTRIBUTION_UNEQUALY:
                 sharedAmountC = sharedAmount;
+                break;
             case Expense.DISTRIBUTION_PERCENTAGE:
                 sharedAmountC = (totalAmount * sharedAmount) / 100;
+                break;
             default:
                 sharedAmountC = totalAmount / memberCount;
         }
         Logger.methodEnd(LOG_TAG, "getSharedAmount");
         return sharedAmountC;
+    }
+
+    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(long memberId) {
+        return Observable.create(subscriber -> {
+            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(memberId);
+            subscriber.onNext(expenses);
+            subscriber.onCompleted();
+        });
+    }
+
+    public Observable<List<ExpenseListViewModel>> getAllExpenseForExpenseBook(long expenseBookId) {
+        return Observable.create((Subscriber<? super List<ExpenseListViewModel>> subscriber) -> {
+            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByExpenseBookId(expenseBookId);
+            subscriber.onNext(expenses);
+            subscriber.onCompleted();
+        });
+    }
+
+    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(ExpenseFilter filter) {
+        return Observable.create(subscriber -> {
+            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(filter);
+            subscriber.onNext(expenses);
+            subscriber.onCompleted();
+        });
+
     }
 }

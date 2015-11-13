@@ -32,6 +32,7 @@ public class Expense {
     private long mExpenseBookId;
     private long mExpenseCategoryId;
     private long mTransactionKey;
+    private long mAccountKey;
     private double mExpenseAmount;
     private String mExpenseName;
     private String mExpensePlace;
@@ -149,6 +150,15 @@ public class Expense {
 
     public Expense setDistrubtionType(int distrubtionType) {
         mDistrubtionType = distrubtionType;
+        return this;
+    }
+
+    public long getAccountKey() {
+        return mAccountKey;
+    }
+
+    public Expense setAccountKey(long accountKey) {
+        mAccountKey = accountKey;
         return this;
     }
 }

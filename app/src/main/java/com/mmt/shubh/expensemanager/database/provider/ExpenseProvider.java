@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
@@ -36,8 +37,7 @@ public class ExpenseProvider extends ContentProvider {
     private static final int EXPENSE_BASE = 0x0000;
     private static final int EXPENSE = EXPENSE_BASE;
     private static final int EXPENSE_ID = EXPENSE + 1;
-    private static final int EXPENSE_BOOK_EXPENSE = EXPENSE + 2;
-    private static final int MEMBER_EXPENSE = EXPENSE + 3;
+    private static final int MEMBER_EXPENSE_LIST = EXPENSE + 2;
     private static final int EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR = EXPENSE + 4;
 
     private static final String MEMBER_BASE_PATH = MemberContract.PATH_MEMBER;
@@ -108,6 +108,8 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH, EXPENSE);
         /*Get Single Expense with id*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH + "/#", EXPENSE_ID);
+        matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE_LIST + "/#", MEMBER_EXPENSE_LIST);
+
 
         matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE
                         + "/" + MemberContract.PATH_MEMBER
@@ -313,6 +315,7 @@ public class ExpenseProvider extends ContentProvider {
         SQLiteDatabase db = getReadableDatabase(context);
         switch (match) {
             case EXPENSE:
+
                 String selectQuery = "SELECT "
                         + ExpenseContract._ID + " , "
                         + ExpenseContract.EXPENSE_NAME + " , "
@@ -336,6 +339,32 @@ public class ExpenseProvider extends ContentProvider {
                         + " AS " + MemberContract.MEMBER_NAME
                         + " FROM " + ExpenseContract.TABLE_NAME;
                 c = db.rawQuery(selectQuery, null);
+                break;
+            case MEMBER_EXPENSE_LIST:
+                id = uri.getPathSegments().get(2);
+                String q = "SELECT " +
+                        " e._id," +
+                        " e.expense_amount," +
+                        " e.expense_date," +
+                        " e.transaction_key ," +
+                        " e.expense_name ," +
+                        " ec.category_name," +
+                        " ec.category_image ," +
+                        " eb.name ," +
+                        " m.name ," +
+                        " m._id ," +
+                        " a.account_name ," +
+                        " a.account_type " +
+                        " FROM "
+                        + ExpenseContract.TABLE_NAME
+                        + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  " +
+                        " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key" +
+                        " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key" +
+                        " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = " + id;
+                if (!TextUtils.isEmpty(selection)) {
+                    q = q + " WHERE " + selection;
+                }
+                c = db.rawQuery(q, selectionArgs);
                 break;
             case MEMBER:
             case EXPENSE_BOOK:

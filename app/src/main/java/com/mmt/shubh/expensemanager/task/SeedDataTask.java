@@ -14,6 +14,8 @@ import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,12 +53,13 @@ public class SeedDataTask extends AbstractTask {
             expense.setExpenseAmount(1000);
             expense.setExpenseBookId(getExpenseBookId());
             expense.setExpenseCategoryId(1 % 2);
-            expense.setExpenseDate(System.currentTimeMillis());
+            expense.setExpenseDate(new DateTime().getMillis());
             expense.setExpenseDescription("ajsedflojsldfjg");
             expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
             expense.setExpenseName("sdjjfhksdjfhk");
             expense.setExpensePlace("sdkjfcksjdnfks");
             expense.setOwnerId(getMemberId());
+            expense.setAccountKey(getAccountId());
             Map map = new HashMap<>();
             map.put(1L, 1D);
             expense.setMemberMap(map);

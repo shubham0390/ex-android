@@ -3,8 +3,6 @@ package com.mmt.shubh.expensemanager.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -20,13 +18,9 @@ import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.MemberListFragmentPresenter;
-import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
-import com.mmt.shubh.expensemanager.ui.view.FixedLinearLayoutManager;
 import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by Subham Tyagi,
@@ -34,11 +28,8 @@ import butterknife.Bind;
  * 11:30 PM
  * TODO:Add class comment.
  */
-public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List<Member>, MVPLCEView<List<Member>>,
+public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, List<Member>, MVPLCEView<List<Member>>,
         MemberListFragmentPresenter> {
-
-    @Bind(R.id.contentView)
-    ListRecyclerView mRecyclerView;
 
     private MemberListAdapter mListAdapter;
 
@@ -61,34 +52,27 @@ public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List
         return R.layout.fragment_member_list;
     }
 
-    private void setRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new FixedLinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.list_devider_line)));
-    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setRecyclerView();
         if (mArguments != null) {
             mIsMemberDeletable = mArguments.getBoolean(Constants.KEY_DELETE_MEMBER);
         }
         mListAdapter =  new MemberListAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
-        mRecyclerView.setAdapter(mListAdapter);
+        mContentView.setAdapter(mListAdapter);
         setupListener();
         getViewState().apply(this, true);
     }
 
     private void setupListener() {
-        mRecyclerView.setOnItemClickListener((parent, view, position, id) -> {
+        mContentView.setOnItemClickListener((parent, view, position, id) -> {
             onMemberItemClick(id);
             return true;
         });
-        mRecyclerView.setOnItemLongClickListener(((parent, view, position, id) -> {
+        mContentView.setOnItemLongClickListener(((parent, view, position, id) -> {
             deleteMember(id);
             return true;
         }));
@@ -111,7 +95,7 @@ public class MemberListFragment extends SupportMVPLCEFragment<RecyclerView, List
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return null;
+        return "Unable to load members";
     }
 
     @Override
