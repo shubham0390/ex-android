@@ -144,7 +144,7 @@ dependencies {
     /*Json parsing */
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-SNAPSHOT'
-
+    compile 'com.jakewharton.timber:timber:4.1.0'
     compile project(':mmtframework')
 }
 
