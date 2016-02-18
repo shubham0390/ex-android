@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.ui.fragment;
 
-import org.joda.time.DateTime;
 
 /**
  * Created by Subham Tyagi,
@@ -73,7 +72,7 @@ public class ExpenseFilter {
         //if time filter is set then isLatest has to be false
         isLatest = false;
         mTimeFilter = timeFilter;
-        DateTime today = new DateTime();
+        /*DateTime today = new DateTime();
         mStartDate = today.getMillis();
         switch (timeFilter) {
             case TIME_FILTER_ALL:
@@ -91,7 +90,7 @@ public class ExpenseFilter {
                 break;
             case TIME_FILTER_YEAR:
                 break;
-        }
+        }*/
     }
 
     public long getEndDate() {

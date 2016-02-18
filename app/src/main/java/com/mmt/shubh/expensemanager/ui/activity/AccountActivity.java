@@ -43,7 +43,7 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         setTitle(R.string.account);
         onFragmentIntraction(MODE_LIST, null);
 
-        mViewPager.setAdapter(new AccountPagerAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new AccountPagerAdapter(getSupportFragmentManager(), null));
 
         mTabLayout.addTab(mTabLayout.newTab().setText("Tab One"));
         mTabLayout.addTab(mTabLayout.newTab().setText("Tab Two"));
@@ -94,6 +94,6 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
                 mCurrentMode = mode;
                 break;
         }
-       /// getFragmentManager().beginTransaction().replace(R.id.account_fragment, mFragment).commit();
+        /// getFragmentManager().beginTransaction().replace(R.id.account_fragment, mFragment).commit();
     }
 }

@@ -1,124 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
-    <data>
-        <variable name="expense"
-                  type="com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel"/>
-    </data>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    style="@style/ListItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_selector"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_medium"
+    >
+
     <LinearLayout
-        style="@style/ListItem"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tool="http://schemas.android.com/tools"
+        style="@style/ListItemIcon"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/list_image_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_black_24dp"
+            app:border_color="@color/colorAccent"
+            app:border_width="2dp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="8sp"
+            tool:text="Air/Railway Tickets"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        style="@style/ListItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_selector"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/spacing_medium"
         >
 
-        <LinearLayout
-            style="@style/ListItemIcon"
-            android:layout_height="45dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/list_image_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_home_black_24dp"
-                app:border_color="@color/colorAccent"
-                app:border_width="2dp"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/category_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{expense.categoryName}"
-                android:textSize="8sp"
-                tool:text="Air/Railway Tickets"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            style="@style/ListItemText"
-            android:layout_width="match_parent"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginBottom="@dimen/spacing_micro"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/expense_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_micro"
-                android:text="@{expense.expenseTitle}"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <ImageView
+            android:id="@+id/image_account_type"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/expense_title"
+            android:src="@drawable/ic_credit_card_black_18dp"/>
 
-            <ImageView
-                android:id="@+id/image_account_type"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_below="@id/expense_title"
-                android:src="@drawable/ic_credit_card_black_18dp"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/expense_title"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_toRightOf="@id/image_account_type"
+            android:textSize="12sp"
+            />
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/account_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/expense_title"
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_toRightOf="@id/image_account_type"
-                android:textSize="12sp"
-                tool:text="@{expense.accountName}"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/expense_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textSize="12sp"
-                tool:text="@{expense.expenseDate}"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            />
 
 
-            <TextView
-                android:id="@+id/member_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/account_name"
-                android:text="@{expense.memberName}"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_name"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp"/>
 
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/expense_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/expense_date"
-                android:text="@{expense.expenseAmount}"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="12sp"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/expense_date"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp"/>
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/expense_book"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/expense_amount"
-                android:layout_marginTop="@dimen/spacing_micro"
-                android:background="@color/colorAccent"
-                android:padding="@dimen/spacing_micro"
-                android:text="@{expense.expenseTitle}"
-                android:textSize="10sp"
-                />
-        </RelativeLayout>
-    </LinearLayout>
-</layout>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/expense_amount"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:background="@color/colorAccent"
+            android:padding="@dimen/spacing_micro"
+            android:textSize="10sp"
+            />
+    </RelativeLayout>
+</LinearLayout>

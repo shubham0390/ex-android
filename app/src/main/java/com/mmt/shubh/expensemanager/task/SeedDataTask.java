@@ -14,9 +14,8 @@ import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,8 @@ import java.util.Random;
  */
 public class SeedDataTask extends AbstractTask {
 
-    private String LOG_TAG = getClass().getName();
     public static final String ACTION_SEED = "com.SeedData";
+    private String LOG_TAG = getClass().getName();
 
     public SeedDataTask(Context context) {
         super(context);
@@ -53,7 +52,7 @@ public class SeedDataTask extends AbstractTask {
             expense.setExpenseAmount(1000);
             expense.setExpenseBookId(getExpenseBookId());
             expense.setExpenseCategoryId(1 % 2);
-            expense.setExpenseDate(new DateTime().getMillis());
+            expense.setExpenseDate(new Date().getTime());
             expense.setExpenseDescription("ajsedflojsldfjg");
             expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
             expense.setExpenseName("sdjjfhksdjfhk");

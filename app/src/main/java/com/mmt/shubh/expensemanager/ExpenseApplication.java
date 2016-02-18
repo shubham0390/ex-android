@@ -30,8 +30,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -45,8 +43,8 @@ import java.security.NoSuchAlgorithmException;
 public class ExpenseApplication extends Application {
     private static DaggerObjectGraph graph;
     private static ExpenseApplication instance;
-    private Tracker mTracker;
     private static Context mContext;
+    private Tracker mTracker;
 
     public static DaggerObjectGraph component() {
         return graph;
@@ -54,6 +52,10 @@ public class ExpenseApplication extends Application {
 
     public static void buildComponentAndInject() {
         graph = MainComponent.Initializer.init(instance);
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 
     @Override
@@ -67,11 +69,6 @@ public class ExpenseApplication extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                 .build());
-        JodaTimeAndroid.init(this);
-    }
-
-    public static Context getContext() {
-        return mContext;
     }
 
     /**
@@ -82,7 +79,6 @@ public class ExpenseApplication extends Application {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            analytics.getLogger().setLogLevel(1);
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
