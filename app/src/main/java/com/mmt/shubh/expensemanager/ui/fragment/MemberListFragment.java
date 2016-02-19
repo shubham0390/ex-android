@@ -3,6 +3,8 @@ package com.mmt.shubh.expensemanager.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -68,13 +70,19 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     }
 
     private void setupListener() {
-        mContentView.setOnItemClickListener((parent, view, position, id) -> {
-            onMemberItemClick(id);
-            return true;
+        mContentView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
+            @Override
+            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
+                MemberListFragment.this.onMemberItemClick(id);
+                return true;
+            }
         });
-        mContentView.setOnItemLongClickListener(((parent, view, position, id) -> {
-            deleteMember(id);
-            return true;
+        mContentView.setOnItemLongClickListener((new ListRecyclerView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(RecyclerView parent, View view, int position, long id) {
+                MemberListFragment.this.deleteMember(id);
+                return true;
+            }
         }));
     }
 

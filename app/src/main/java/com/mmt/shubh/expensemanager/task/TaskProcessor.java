@@ -14,21 +14,20 @@ import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by STyagi on 6/10/2015.
- * <p>
+ * <p/>
  * Execute series of task in parallel or serial. Task should be subclass of {@link AbstractTask}
  */
 public class TaskProcessor {
 
-    private String LOG_TAG = getClass().getName();
-
     private static TaskProcessor mTaskProcessor = new TaskProcessor();
-
+    private String LOG_TAG = getClass().getName();
     private BlockingDeque<ITask> mTaskQueue;
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -39,13 +38,13 @@ public class TaskProcessor {
 
     private boolean isExecuting;
 
+    private TaskProcessor() {
+        mTaskQueue = new LinkedBlockingDeque<>(16);
+    }
+
     public static TaskProcessor getTaskProcessor() {
 
         return mTaskProcessor;
-    }
-
-    private TaskProcessor() {
-        mTaskQueue = new LinkedBlockingDeque<>(16);
     }
 
     /**
@@ -109,13 +108,17 @@ public class TaskProcessor {
         if (!isExecuting) {
             mActive = mTaskQueue.poll();
             if (mActive != null) {
-                mExecutorService.submit(() -> {
-                    isExecuting = true;
-                    executeTask(mActive);
-                    isExecuting = false;
-                    mActive = null;
-                    scheduleNext();
-                });
+                mExecutorService.submit((new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        isExecuting = true;
+                        executeTask(mActive);
+                        isExecuting = false;
+                        mActive = null;
+                        scheduleNext();
+                        return null;
+                    }
+                }));
             }
         }
         Logger.methodEnd(LOG_TAG, "scheduleNext");
@@ -131,7 +134,7 @@ public class TaskProcessor {
             result = task.execute();
         } catch (Exception e) {
             isExecuting = false;
-            Logger.error(LOG_TAG, e.getMessage()+"\n" +e.getStackTrace().toString());
+            Logger.error(LOG_TAG, e.getMessage() + "\n" + e.getStackTrace().toString());
             throw new RuntimeException(e);
         }
 

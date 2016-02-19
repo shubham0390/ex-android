@@ -14,8 +14,6 @@ import com.mmt.shubh.expensemanager.UserSettings;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 /**
@@ -26,25 +24,6 @@ import java.util.List;
  */
 public class SplashActivity extends AppCompatActivity {
     Handler handler = new Handler();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(() -> getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad(), 1300);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacksAndMessages(null);
-    }
-
     private LoaderManager.LoaderCallbacks<UserInfo> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<UserInfo>() {
         @Override
         public Loader<UserInfo> onCreateLoader(int id, Bundle args) {
@@ -70,6 +49,29 @@ public class SplashActivity extends AppCompatActivity {
             //do nothing
         }
     };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed((new Runnable() {
+            @Override
+            public void run() {
+                getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad();
+            }
+        }), 1300);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
 
     private static class UserLoader extends AsyncTaskLoader<UserInfo> {
 

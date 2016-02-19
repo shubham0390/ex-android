@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
 android {
 
@@ -64,11 +63,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
-    retrolambda {
-        println("***************** ---------- *******************")
+    /*retrolambda {
+        *//*println("***************** ---------- *******************")
         println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
         println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
         println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
@@ -78,8 +77,8 @@ android {
         javaVersion JavaVersion.VERSION_1_6
         jvmArgs '-arg1', '-arg2'
         defaultMethods false
-        incremental true
-    }
+        incremental true*//*
+    }*/
 }
 
 def Properties props = new Properties()

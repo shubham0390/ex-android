@@ -146,9 +146,12 @@ public class SignUpFragment extends MVPFragment<ISignUpViews, SignUpPresenter> i
     @Override
     public void navigateToHome() {
         final Intent intent = new Intent(getActivity(), HomeActivity.class);
-        getActivity().runOnUiThread(() -> {
-            startActivity(intent);
-            getActivity().finish();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SignUpFragment.this.startActivity(intent);
+                SignUpFragment.this.getActivity().finish();
+            }
         });
     }
 

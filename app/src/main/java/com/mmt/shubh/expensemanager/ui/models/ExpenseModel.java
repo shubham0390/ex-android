@@ -33,19 +33,15 @@ import rx.Subscriber;
  * TODO:Add class comment.
  */
 public class ExpenseModel {
-    private String LOG_TAG = getClass().getName();
-
     @Inject
     ExpenseDataAdapter mExpenseDataAdapter;
-
     @Inject
     MemberExpenseDataAdapter mMemberExpenseDataAdapter;
-
     @Inject
     TransactionDataAdapter mTransactionDataAdapter;
-
     @Inject
     AccountDataAdapter mAccountDataAdapter;
+    private String LOG_TAG = getClass().getName();
 
     @Inject
     public ExpenseModel(Context context) {
@@ -129,27 +125,36 @@ public class ExpenseModel {
         return sharedAmountC;
     }
 
-    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(long memberId) {
-        return Observable.create(subscriber -> {
-            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(memberId);
-            subscriber.onNext(expenses);
-            subscriber.onCompleted();
+    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(final long memberId) {
+        return Observable.create(new Observable.OnSubscribe<List<ExpenseListViewModel>>() {
+            @Override
+            public void call(Subscriber<? super List<ExpenseListViewModel>> subscriber) {
+                List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(memberId);
+                subscriber.onNext(expenses);
+                subscriber.onCompleted();
+            }
         });
     }
 
-    public Observable<List<ExpenseListViewModel>> getAllExpenseForExpenseBook(long expenseBookId) {
-        return Observable.create((Subscriber<? super List<ExpenseListViewModel>> subscriber) -> {
-            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByExpenseBookId(expenseBookId);
-            subscriber.onNext(expenses);
-            subscriber.onCompleted();
+    public Observable<List<ExpenseListViewModel>> getAllExpenseForExpenseBook(final long expenseBookId) {
+        return Observable.create(new Observable.OnSubscribe<List<ExpenseListViewModel>>() {
+            @Override
+            public void call(Subscriber<? super List<ExpenseListViewModel>> subscriber) {
+                List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByExpenseBookId(expenseBookId);
+                subscriber.onNext(expenses);
+                subscriber.onCompleted();
+            }
         });
     }
 
-    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(ExpenseFilter filter) {
-        return Observable.create(subscriber -> {
-            List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(filter);
-            subscriber.onNext(expenses);
-            subscriber.onCompleted();
+    public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(final ExpenseFilter filter) {
+        return Observable.create(new Observable.OnSubscribe<List<ExpenseListViewModel>>() {
+            @Override
+            public void call(Subscriber<? super List<ExpenseListViewModel>> subscriber) {
+                List<ExpenseListViewModel> expenses = mExpenseDataAdapter.getExpenseByMemberId(filter);
+                subscriber.onNext(expenses);
+                subscriber.onCompleted();
+            }
         });
 
     }

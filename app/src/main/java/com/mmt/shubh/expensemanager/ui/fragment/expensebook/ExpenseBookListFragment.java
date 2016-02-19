@@ -1,12 +1,15 @@
 package com.mmt.shubh.expensemanager.ui.fragment.expensebook;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -49,19 +52,25 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadData(false);
-        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<>());
+        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<ExpenseBook>());
         ListRecyclerView recyclerView = (ListRecyclerView) mRecyclerView;
 
-        recyclerView.setOnItemClickListener((parent, view, position, id) -> {
-            selectedExpenseBookId = id;
-            installExpenseBookDetail(position);
-            return true;
+        recyclerView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
+            @Override
+            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
+                selectedExpenseBookId = id;
+                ExpenseBookListFragment.this.installExpenseBookDetail(position);
+                return true;
+            }
         });
 
-        recyclerView.setOnItemLongClickListener((parent, view, position, id) -> {
-            selectedExpenseBookId = id;
-            showConfirmationDialog();
-            return true;
+        recyclerView.setOnItemLongClickListener(new ListRecyclerView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(RecyclerView parent, View view, int position, long id) {
+                selectedExpenseBookId = id;
+                ExpenseBookListFragment.this.showConfirmationDialog();
+                return true;
+            }
         });
     }
 
@@ -74,14 +83,20 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
         builder.setTitle(R.string.delete_expense_book_dialog_title);
         builder.setMessage(R.string.delete_expense_book_dialog_message);
 
-        builder.setPositiveButton(R.string.deleted_key, (dialogInterface, i) -> {
-            dialogInterface.dismiss();
-            deleteExpenseBook();
+        builder.setPositiveButton(R.string.deleted_key, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                deleteExpenseBook();
+            }
         });
 
-        builder.setNegativeButton(R.string.cancel, ((dialogInterface, i) -> {
-            dialogInterface.dismiss();
-        }));
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void installExpenseBookDetail(int position) {

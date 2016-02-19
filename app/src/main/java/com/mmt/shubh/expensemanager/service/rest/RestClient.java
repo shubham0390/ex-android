@@ -12,6 +12,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -67,29 +68,32 @@ public class RestClient {
         return okHttpClient;
     }
 
-    private static final Interceptor mCacheControlInterceptor = chain -> {
-        Request request = chain.request();
+    private static final Interceptor mCacheControlInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
 
-        // Add Cache Control only for GET methods
-        if (request.method().equals("GET")) {
-            if (ConnectivityHelper.isNetworkAvailable()) {
-                // 1 day
-                request.newBuilder()
-                        .header("Cache-Control", "only-if-cached")
-                        .build();
-            } else {
-                // 4 weeks stale
-                request.newBuilder()
-                        .header("Cache-Control", "public, max-stale=2419200")
-                        .build();
+            // Add Cache Control only for GET methods
+            if (request.method().equals("GET")) {
+                if (ConnectivityHelper.isNetworkAvailable()) {
+                    // 1 day
+                    request.newBuilder()
+                            .header("Cache-Control", "only-if-cached")
+                            .build();
+                } else {
+                    // 4 weeks stale
+                    request.newBuilder()
+                            .header("Cache-Control", "public, max-stale=2419200")
+                            .build();
+                }
             }
+
+            Response response = chain.proceed(request);
+
+            // Re-write response CC header to force use of cache
+            return response.newBuilder()
+                    .header("Cache-Control", "public, max-age=86400") // 1 day
+                    .build();
         }
-
-        Response response = chain.proceed(request);
-
-        // Re-write response CC header to force use of cache
-        return response.newBuilder()
-                .header("Cache-Control", "public, max-age=86400") // 1 day
-                .build();
     };
 }

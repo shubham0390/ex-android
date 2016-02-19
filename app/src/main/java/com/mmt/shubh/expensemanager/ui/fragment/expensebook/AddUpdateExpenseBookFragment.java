@@ -263,7 +263,12 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
 
     @Override
     public void exit() {
-        getActivity().runOnUiThread(() -> getActivity().finish());
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AddUpdateExpenseBookFragment.this.getActivity().finish();
+            }
+        });
     }
 
 }

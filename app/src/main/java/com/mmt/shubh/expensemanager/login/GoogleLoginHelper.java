@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +16,7 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.PersonBuffer;
@@ -30,18 +32,13 @@ import java.lang.ref.WeakReference;
 public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
-    private static final String TAG = GoogleLoginHelper.class.getSimpleName();
-
     // A magic number we will use to know that our sign-in error resolution activity has completed
     public static final int OUR_REQUEST_CODE = 49404;
-
-    // A flag to stop multiple dialogues appearing for the user
-    private boolean mAutoResolveOnFail;
-
+    private static final String TAG = GoogleLoginHelper.class.getSimpleName();
     // A flag to track when a connection is already in progress
     public boolean mPlusClientIsConnecting = false;
-
-
+    // A flag to stop multiple dialogues appearing for the user
+    private boolean mAutoResolveOnFail;
     private GoogleApiClient mPlusClient;
 
     private ConnectionResult mConnectionResult;
@@ -51,6 +48,12 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     private WeakReference<Activity> mActivityWeakReference;
 
     private Context mContext;
+    private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            GoogleLoginHelper.this.signIn(null);
+        }
+    };
 
     public GoogleLoginHelper(Activity context, SignUpCallback iSignUpPresenter) {
         mActivityWeakReference = new WeakReference<>(context);
@@ -71,7 +74,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
             signInButton.setVisibility(View.GONE);
             return;
         } else {
-            signInButton.setStyle(SignInButton.SIZE_WIDE,SignInButton.COLOR_LIGHT);
+            signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_LIGHT);
             signInButton.setOnClickListener(mGoogleLoginClickListener);
         }
     }
@@ -79,9 +82,6 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     private boolean supportsGooglePlayServices() {
         return GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS;
     }
-
-
-    private View.OnClickListener mGoogleLoginClickListener = view -> signIn(null);
 
     /**
      * Try to sign in the user.
@@ -136,9 +136,12 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     public void revokeAccess() {
         if (mPlusClient.isConnected()) {
             Plus.AccountApi.revokeAccessAndDisconnect(mPlusClient)
-                    .setResultCallback(status -> {
-                        //TODO: handle it more garcefully
-                        //mCallback.onPlusClientRevokeAccess();
+                    .setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            //TODO: handle it more garcefully
+                            //mCallback.onPlusClientRevokeAccess();
+                        }
                     });
         }
 

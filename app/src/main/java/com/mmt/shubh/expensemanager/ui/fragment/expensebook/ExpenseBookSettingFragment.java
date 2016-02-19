@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
@@ -14,9 +16,9 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.ui.activity.ExpenseBookAddUpdateActivity;
 import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.ui.dagger.component.ExpenseBookDetailComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.module.SettingFragmentModule;
 import com.mmt.shubh.expensemanager.ui.fragment.MemberListFragment;
 import com.mmt.shubh.expensemanager.ui.fragment.base.IFragmentSwitcher;
-import com.mmt.shubh.expensemanager.ui.dagger.module.SettingFragmentModule;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookSettingPresenter;
 import com.mmt.shubh.expensemanager.ui.views.IExpenseBookSettingView;
@@ -76,7 +78,12 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
     private void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setTitle(R.string.action_settings);
-        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIFragmentSwitcher.removeFragment(R.id.settings, null);
+            }
+        });
     }
 
     private void addMenu() {
@@ -84,16 +91,24 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
-        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIFragmentSwitcher.removeFragment(R.id.settings, null);
+            }
+        });
 
-        mToolbar.setOnMenuItemClickListener(item -> {
-            Intent intent = new Intent(getActivity(), ExpenseBookAddUpdateActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
-            intent.putExtras(bundle);
-            intent.setAction(Constants.ACTION_ADD_MEMBERS);
-            startActivity(intent);
-            return true;
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(ExpenseBookSettingFragment.this.getActivity(), ExpenseBookAddUpdateActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
+                intent.putExtras(bundle);
+                intent.setAction(Constants.ACTION_ADD_MEMBERS);
+                ExpenseBookSettingFragment.this.startActivity(intent);
+                return true;
+            }
         });
     }
 

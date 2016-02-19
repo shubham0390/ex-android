@@ -49,8 +49,18 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         } else {
             holder.mContactImage.setImageResource(R.mipmap.ic_launcher);
         }
-        holder.mContactChecked.setOnClickListener(v -> updateSelectedItem(((CheckBox) v).isChecked(), position));
-        holder.mView.setOnClickListener(v -> updateSelectedItem(holder.mContactChecked.isChecked(), position));
+        holder.mContactChecked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContactPickerAdapter.this.updateSelectedItem(((CheckBox) v).isChecked(), position);
+            }
+        });
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSelectedItem(holder.mContactChecked.isChecked(), position);
+            }
+        });
     }
 
     private void updateSelectedItem(boolean value, int position) {
@@ -74,23 +84,6 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
             items.add(mSelectedContacts.keyAt(i));
         }
         return items;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final View mView;
-        @Bind(R.id.contact_image)
-        ImageView mContactImage;
-        @Bind(R.id.contact_name)
-        TextView mContactName;
-        @Bind(R.id.contact_selected)
-        CheckBox mContactChecked;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            ButterKnife.bind(this, view);
-        }
     }
 
     public void animateTo(List<ContactsMetaData> models) {
@@ -142,5 +135,22 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         final ContactsMetaData model = mContactNames.remove(fromPosition);
         mContactNames.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public final View mView;
+        @Bind(R.id.contact_image)
+        ImageView mContactImage;
+        @Bind(R.id.contact_name)
+        TextView mContactName;
+        @Bind(R.id.contact_selected)
+        CheckBox mContactChecked;
+
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            ButterKnife.bind(this, view);
+        }
     }
 }
