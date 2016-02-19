@@ -68,6 +68,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     retrolambda {
+        println("***************** ---------- *******************")
+        println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
+        println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
+        println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
+        println("***************** ---------- *******************")
         jdk System.getenv("JAVA8_HOME")
         oldJdk System.getenv("JAVA6_HOME")
         javaVersion JavaVersion.VERSION_1_6
