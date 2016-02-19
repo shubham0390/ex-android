@@ -59,7 +59,7 @@ android {
                 def build = "Debug";
                 if (variant.buildType.name == "release")
                     build = "Release"
-                def finalName = "_ExpenseManager_" + "_" + build + initials + "_" + variant.versionCode + ".apk";
+                def finalName = "ExpenseManager_" + build + "_" + initials + "_" + variant.versionCode + ".apk";
                 output.outputFile = new File(output.outputFile.parent, finalName)
             }
         }
