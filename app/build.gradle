@@ -19,33 +19,60 @@ android {
 
     }
 
+    productFlavors {
+        development {
+            applicationId "com.mmt.shubh.expensemanager.dev"
+            resValue "string", "app_name", "Expense Manager Debug"
+        }
+        production {
+            resValue "string", "app_name", "Expense Manager"
+        }
+    }
+
     signingConfigs {
         release
     }
     buildTypes {
+        debug {
+            zipAlignEnabled true
+        }
+
         release {
             zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
-    }
 
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def flavor = "default";
+                if (variant.productFlavors.size() > 0)
+                    flavor = variant.productFlavors.get(0);
+
+                def initials = "DefaultFlavor";
+                if (flavor.name == "development")
+                    initials = "dev";
+                else if (flavor.name == "production")
+                    initials = "prod";
+
+                def build = "Debug";
+                if (variant.buildType.name == "release")
+                    build = "Release"
+                def finalName = "_ExpenseManager_" + "_" + build + initials + "_" + variant.versionCode + ".apk";
+                output.outputFile = new File(output.outputFile.parent, finalName)
+            }
+        }
+    }
     repositories {
         mavenCentral()
-        maven { url "https://clojars.org/repo/" }
+        maven {
+            url "https://clojars.org/repo/"
+        }
         maven {
             url 'http://dl.bintray.com/amulyakhare/maven'
         }
         maven { url "https://jitpack.io" }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
-        }
     }
 
     packagingOptions {
@@ -66,19 +93,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    /*retrolambda {
-        *//*println("***************** ---------- *******************")
-        println("JAVA_HOME: " + System.getenv("JAVA_HOME"))
-        println("JAVA7_HOME: " + System.getenv("JAVA7_HOME"))
-        println("JAVA8_HOME: " + System.getenv("JAVA8_HOME"))
-        println("***************** ---------- *******************")
-        jdk System.getenv("JAVA8_HOME")
-        oldJdk System.getenv("JAVA6_HOME")
-        javaVersion JavaVersion.VERSION_1_6
-        jvmArgs '-arg1', '-arg2'
-        defaultMethods false
-        incremental true*//*
-    }*/
+
 }
 
 def Properties props = new Properties()
