@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mmt.shubh.expensemanager.ExpenseApplication;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 
 import javax.inject.Inject;
 
@@ -99,9 +99,6 @@ public abstract class SupportMVPFragment<V extends MVPView, P extends MVPPresent
         ButterKnife.unbind(this);
         mPresenter.detachView(getRetainInstance());
     }
-
-
-
 
     /**
      * This method will be called from {@link #onViewCreated(View, Bundle)} and this is the right place to

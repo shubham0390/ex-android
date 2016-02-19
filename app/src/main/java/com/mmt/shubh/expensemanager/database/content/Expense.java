@@ -15,38 +15,69 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import java.util.List;
+import org.parceler.Parcel;
 
-public class Expense extends BaseContent {
+import java.util.Map;
 
-    private String mExpenseAmount;
+@Parcel(value = Parcel.Serialization.BEAN)
+public class Expense {
+
+    public static final int DISTRIBUTION_PERCENTAGE = 0;
+    public static final int DISTRIBUTION_EQUALLY = 1;
+    public static final int DISTRIBUTION_UNEQUALY = 2;
+
+    private long id;
     private long mExpenseDate;
-    private String mExpenseName;
     private long mOwnerId;
+    private long mExpenseBookId;
+    private long mExpenseCategoryId;
+    private long mTransactionKey;
+    private long mAccountKey;
+    private double mExpenseAmount;
+    private String mExpenseName;
     private String mExpensePlace;
     private String mExpenseDescription;
-    private ExpenseBook mExpenseBook;
-    private Category mCategory;
-    private List<Member> mMemberList;
+    private Map<Long, Double> mMemberMap;
+
+    private int mDistrubtionType;
 
     public Expense() {
 
     }
 
-    public long getOwnerId() {
-        return mOwnerId;
+    public long getId() {
+        return id;
     }
 
-    public void setOwnerId(long ownerId) {
-        mOwnerId = ownerId;
+    public Expense setId(long id) {
+        this.id = id;
+        return this;
     }
 
-    public String getExpenseAmount() {
+    public double getExpenseAmount() {
         return mExpenseAmount;
     }
 
-    public Expense setExpenseAmount(String expenseAmount) {
+    public Expense setExpenseAmount(double expenseAmount) {
         mExpenseAmount = expenseAmount;
+        return this;
+    }
+
+    public long getExpenseBookId() {
+        return mExpenseBookId;
+    }
+
+    public Expense setExpenseBookId(long expenseBookId) {
+        mExpenseBookId = expenseBookId;
+        return this;
+    }
+
+    public long getExpenseCategoryId() {
+        return mExpenseCategoryId;
+    }
+
+    public Expense setExpenseCategoryId(long expenseCategoryId) {
+        mExpenseCategoryId = expenseCategoryId;
         return this;
     }
 
@@ -56,6 +87,15 @@ public class Expense extends BaseContent {
 
     public Expense setExpenseDate(long expenseDate) {
         mExpenseDate = expenseDate;
+        return this;
+    }
+
+    public String getExpenseDescription() {
+        return mExpenseDescription;
+    }
+
+    public Expense setExpenseDescription(String expenseDescription) {
+        mExpenseDescription = expenseDescription;
         return this;
     }
 
@@ -77,39 +117,48 @@ public class Expense extends BaseContent {
         return this;
     }
 
-    public String getExpenseDescription() {
-        return mExpenseDescription;
+    public Map<Long, Double> getMemberMap() {
+        return mMemberMap;
     }
 
-    public Expense setExpenseDescription(String expenseDescription) {
-        mExpenseDescription = expenseDescription;
+    public Expense setMemberMap(Map<Long, Double> memberMap) {
+        mMemberMap = memberMap;
         return this;
     }
 
-    public List<Member> getMemberList() {
-        return mMemberList;
+    public long getOwnerId() {
+        return mOwnerId;
     }
 
-    public Expense setMemberList(List<Member> memberList) {
-        mMemberList = memberList;
+    public Expense setOwnerId(long ownerId) {
+        mOwnerId = ownerId;
         return this;
     }
 
-    public ExpenseBook getExpenseBook() {
-        return mExpenseBook;
+    public long getTransactionKey() {
+        return mTransactionKey;
     }
 
-    public Expense setExpenseBook(ExpenseBook expenseBook) {
-        mExpenseBook = expenseBook;
+    public Expense setTransactionKey(long transactionKey) {
+        mTransactionKey = transactionKey;
         return this;
     }
 
-    public Category getCategory() {
-        return mCategory;
+    public int getDistrubtionType() {
+        return mDistrubtionType;
     }
 
-    public Expense setCategory(Category category) {
-        mCategory = category;
+    public Expense setDistrubtionType(int distrubtionType) {
+        mDistrubtionType = distrubtionType;
+        return this;
+    }
+
+    public long getAccountKey() {
+        return mAccountKey;
+    }
+
+    public Expense setAccountKey(long accountKey) {
+        mAccountKey = accountKey;
         return this;
     }
 }

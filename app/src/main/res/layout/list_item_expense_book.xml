@@ -11,6 +11,7 @@
         android:id="@+id/image"
         style="@style/ListItemIcon"
         android:contentDescription="@string/app_name"/>
+
     <RelativeLayout
         style="@style/ListItemText"
         android:layout_width="match_parent"

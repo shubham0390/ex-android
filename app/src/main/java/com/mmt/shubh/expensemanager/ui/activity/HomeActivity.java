@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.activity.base.DrawerBaseActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.HomeFragmentAdapter;
 
 import butterknife.Bind;
@@ -33,12 +34,13 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
         pager.addOnPageChangeListener(this);
+        setTitle(R.string.home_title);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mNavigationView.setCheckedItem(R.id.home);
+      // mNavigationView.setCheckedItem(R.id.home);
     }
 
     @Override

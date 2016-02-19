@@ -2,7 +2,7 @@ package com.mmt.shubh.expensemanager.ui.fragment.expensebook;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.ui.models.DistributionModel;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.DistributionPresenter;
 

@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.ui.views;
 
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 
 /**
  * Created by Subham Tyagi,

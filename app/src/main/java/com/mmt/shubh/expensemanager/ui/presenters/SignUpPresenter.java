@@ -1,15 +1,16 @@
 package com.mmt.shubh.expensemanager.ui.presenters;
 
-import android.content.Context;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.debug.Logger;
-import com.mmt.shubh.expensemanager.ui.models.SigUpModelImpl;
 import com.mmt.shubh.expensemanager.ui.models.api.ISignUpModel;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ISignUpViews;
+
+import javax.inject.Inject;
 
 /**
  * Created by Subham Tyagi,
@@ -17,31 +18,29 @@ import com.mmt.shubh.expensemanager.ui.views.ISignUpViews;
  * 7:41 AM
  * TODO:Add class comment.
  */
-public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implements MVPPresenter<ISignUpViews>,  ISignUpModel.SignUpModelCallback {
+public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implements MVPPresenter<ISignUpViews>, ISignUpModel.SignUpModelCallback {
 
     private final String TAG = getClass().getName();
 
     private ISignUpModel mSignUpModel;
 
 
-    private Context mContext;
-
-    public SignUpPresenter(Context context) {
-        mContext = context;
-        mSignUpModel = new SigUpModelImpl(context, this);
+    @Inject
+    public SignUpPresenter(ISignUpModel signUpModel) {
+        mSignUpModel = signUpModel;
     }
 
-    public void userSignUp(String fullName, String emailAddress, String password, String mobileNo) {
+    public void userSignUp(String fullName, String emailAddress, String password, int mobileNo) {
         Logger.debug(TAG, "Manually registering user");
-        getView().showProgress();
+        getView().showProgress(R.string.registering_message);
         if (!isEmpty(fullName, emailAddress, password, mobileNo)) {
             mSignUpModel.registerUser(fullName, emailAddress, password, mobileNo);
-        }else {
+        } else {
             getView().hideProgress();
         }
     }
 
-    private boolean isEmpty(String fullName, String emailAddress, String password, String mobileNo) {
+    private boolean isEmpty(String fullName, String emailAddress, String password, int mobileNo) {
         if (isViewAttached()) {
             boolean isEmpty = false;
             if (TextUtils.isEmpty(fullName)) {
@@ -81,6 +80,16 @@ public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implemen
         Logger.debug(TAG, "launching home activity");
         getView().hideProgress();
         getView().navigateToHome();
+    }
+
+    @Override
+    public void updateProgress(@StringRes int res) {
+        getView().showProgress(res);
+    }
+
+    @Override
+    public void onError(int statusCode) {
+
     }
 
 }

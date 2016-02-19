@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mmt.shubh.expensemanager.ExpenseApplication;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 
-import butterknife.ButterKnife;
 import icepick.Icepick;
 
 /**

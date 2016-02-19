@@ -1,5 +1,7 @@
 package com.mmt.shubh.expensemanager.ui.views;
 
+import android.support.annotation.StringRes;
+
 import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
 
 /**
@@ -16,4 +18,6 @@ public interface ILoginActivityView extends MVPView {
     void navigateToHome();
 
     void setInvalidCredentialError();
+
+    void showError(@StringRes int messageRes);
 }

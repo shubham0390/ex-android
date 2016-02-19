@@ -6,15 +6,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 
 /**
  * Created by Subham Tyagi,
@@ -67,7 +67,7 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
         Cursor cursor = null;
         try {
-            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseSQLDataAdapter.ID_PROJECTION,
+            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseContract.ID_PROJECTION,
                     SELECTION, new String[]{member.getMemberEmail()}, null);
             if (cursor.getCount() > 0) {
                 return true;
@@ -113,26 +113,12 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
 
     @Override
     public Member get(long id) {
-        return super.restoreContentWithId(mContext, Member.class, mBaseUri, null, id);
+        return super.restoreContentWithId(Member.class, mBaseUri, null, id);
     }
 
     @Override
     public List<Member> getAll() {
-        List<Member> accountList = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(MemberContract.MEMBER_URI,
-                null, null, null, null);
-        if (cursor != null) {
-            try {
-                while (cursor.moveToNext()) {
-                    Member account = new Member();
-                    restore(cursor, account);
-                    accountList.add(account);
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        return accountList;
+        return restoreContent(Member.class, MemberContract.MEMBER_URI, null);
     }
 
     @Override

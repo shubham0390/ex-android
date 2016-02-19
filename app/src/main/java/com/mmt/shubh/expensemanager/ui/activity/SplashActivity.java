@@ -24,30 +24,6 @@ import java.util.List;
  */
 public class SplashActivity extends AppCompatActivity {
     Handler handler = new Handler();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad();
-            }
-        }, 1300);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacksAndMessages(null);
-    }
-
     private LoaderManager.LoaderCallbacks<UserInfo> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<UserInfo>() {
         @Override
         public Loader<UserInfo> onCreateLoader(int id, Bundle args) {
@@ -60,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
                 UserSettings userSettings = UserSettings.getInstance();
                 userSettings.setUserInfo(data);
                 Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                intent.putExtra("Account", data);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
@@ -74,6 +49,29 @@ public class SplashActivity extends AppCompatActivity {
             //do nothing
         }
     };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed((new Runnable() {
+            @Override
+            public void run() {
+                getLoaderManager().initLoader(12, null, mLoaderCallbacks).forceLoad();
+            }
+        }), 1300);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
 
     private static class UserLoader extends AsyncTaskLoader<UserInfo> {
 

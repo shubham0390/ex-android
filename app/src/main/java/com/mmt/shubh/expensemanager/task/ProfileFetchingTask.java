@@ -11,7 +11,7 @@ import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
  * 1:28 AM
  * TODO:Add class comment.
  */
-public class ProfileFetchingTask extends AbstractTask {
+public class ProfileFetchingTask extends AbstractTask<UserInfo> {
 
     public final static String ACTION_PROFILE_FETCH = "com.mmt.shubh.ACTION_FETCH_PROFILE";
 
@@ -28,8 +28,9 @@ public class ProfileFetchingTask extends AbstractTask {
         if (userInfo == null) {
             throw new IllegalStateException("Unable to fetch user details");
         }
-        mProfileFetcher.saveUser(mContext, userInfo);
-        return null;
+        mTaskResult.setResult(userInfo);
+        mTaskResult.setIsSuccess(true);
+        return mTaskResult;
     }
 
     @Override

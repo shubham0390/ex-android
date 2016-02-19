@@ -3,7 +3,7 @@ package com.mmt.shubh.expensemanager.ui.mvp;
 import android.support.annotation.Nullable;
 
 import com.mmt.shubh.expensemanager.ExpenseApplication;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 
 import java.lang.ref.WeakReference;
 

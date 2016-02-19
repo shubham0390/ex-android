@@ -14,6 +14,7 @@ import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,11 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.mmt.shubh.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
 
-    public ExpenseBookAndCashAccountSetupAccount(Context context) {
+    ExpenseModel mExpenseModel;
+
+    public ExpenseBookAndCashAccountSetupAccount(Context context, ExpenseModel expenseModel) {
         super(context);
+        mExpenseModel = expenseModel;
     }
 
     @Override

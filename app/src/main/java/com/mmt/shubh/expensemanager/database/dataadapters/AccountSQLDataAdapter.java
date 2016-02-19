@@ -4,13 +4,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 
 import java.util.List;
 
-import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
+import javax.inject.Inject;
 
 /**
  * Created by Subham Tyagi,
@@ -18,9 +21,11 @@ import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
  * 2:51 PM
  * TODO:Add class comment.
  */
+@ActivityScope
 public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implements AccountDataAdapter {
 
 
+    @Inject
     public AccountSQLDataAdapter(Context context) {
         super(AccountContract.ACCOUNT_URI, context);
     }
@@ -28,15 +33,24 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
     @Override
     public ContentValues toContentValues(Account account) {
         ContentValues values = new ContentValues();
+
         values.put(AccountContract.ACCOUNT_NAME, account.getAccountName());
         values.put(AccountContract.ACCOUNT_BALANCE, account.getAccountBalance());
+        values.put(AccountContract.ACCOUNT_TYPE, account.getType());
+
+        if (!TextUtils.isEmpty(account.getAccountNumber())) {
+            values.put(AccountContract.ACCOUNT_NUMBER, account.getAccountNumber());
+        }
+
         return values;
     }
 
     @Override
     public void restore(Cursor cursor, Account account) {
-        cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME));
-        cursor.getLong(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE));
+        account.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
+        account.setAccountBalance(cursor.getLong(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE)));
+        account.setType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
+        account.setBankName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE)));
     }
 
     @Override
@@ -53,12 +67,12 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
 
     @Override
     public int delete(Account account) {
-        return 0;
+        return delete(account.getId());
     }
 
     @Override
     public int delete(long id) {
-        return 0;
+        return delete(id);
     }
 
     @Override
@@ -68,11 +82,23 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
 
     @Override
     public Account get(long id) {
-        return null;
+        return restoreContentWithId(Account.class, AccountContract.ACCOUNT_URI, null, id);
     }
 
     @Override
     public List<Account> getAll() {
-        return null;
+        return restoreContent(Account.class, AccountContract.ACCOUNT_URI, null);
+    }
+
+    @Override
+    public double getAccountBalance(long accountId) {
+        return get(accountId).getAccountBalance();
+    }
+
+    @Override
+    public void updateAmount(long accountId, double balanceAmount) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AccountContract.ACCOUNT_BALANCE, balanceAmount);
+        update(AccountContract.ACCOUNT_URI, accountId, contentValues);
     }
 }

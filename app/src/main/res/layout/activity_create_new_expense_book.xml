@@ -5,15 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mmt.shubh.expensemanager.ui.activity.AddExpenseBookActivity">
+    tools:context="com.mmt.shubh.expensemanager.ui.activity.ExpenseBookAddUpdateActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/Widget.ExManager.Toolbar.Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
+    <include layout="@layout/include_toolbar"/>
 
     <FrameLayout
         android:id="@+id/fragment"

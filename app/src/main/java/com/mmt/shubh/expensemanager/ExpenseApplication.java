@@ -24,16 +24,14 @@ import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.mmt.shubh.expensemanager.dagger.api.DaggerObjectGraph;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import javax.inject.Inject;
 
 
 /**
@@ -43,20 +41,10 @@ import javax.inject.Inject;
  * TODO:Add class comment.
  */
 public class ExpenseApplication extends Application {
-    private Tracker mTracker;
-
     private static DaggerObjectGraph graph;
-
     private static ExpenseApplication instance;
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        generateHashKey();
-        instance = this;
-        buildComponentAndInject();
-    }
+    private static Context mContext;
+    private Tracker mTracker;
 
     public static DaggerObjectGraph component() {
         return graph;
@@ -66,6 +54,22 @@ public class ExpenseApplication extends Application {
         graph = MainComponent.Initializer.init(instance);
     }
 
+    public static Context getContext() {
+        return mContext;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        generateHashKey();
+        instance = this;
+        mContext = getApplicationContext();
+        buildComponentAndInject();
+        Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
+                .build());
+    }
 
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
@@ -75,7 +79,6 @@ public class ExpenseApplication extends Application {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            analytics.getLogger().setLogLevel(1);
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;

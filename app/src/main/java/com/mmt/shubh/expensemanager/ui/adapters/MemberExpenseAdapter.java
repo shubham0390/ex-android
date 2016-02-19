@@ -12,7 +12,7 @@ import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
-import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
+import com.mmt.shubh.mmtframework.recyclerviewlib.adapter.CursorRecyclerAdapter;
 
 /**
  * Created by Subham Tyagi,

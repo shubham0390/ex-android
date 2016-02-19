@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
@@ -30,18 +31,14 @@ import java.lang.ref.WeakReference;
  */
 public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
-    private static final String TAG = GoogleLoginHelper.class.getSimpleName();
 
     // A magic number we will use to know that our sign-in error resolution activity has completed
     public static final int OUR_REQUEST_CODE = 49404;
-
-    // A flag to stop multiple dialogues appearing for the user
-    private boolean mAutoResolveOnFail;
-
+    private static final String TAG = GoogleLoginHelper.class.getSimpleName();
     // A flag to track when a connection is already in progress
     public boolean mPlusClientIsConnecting = false;
-
-
+    // A flag to stop multiple dialogues appearing for the user
+    private boolean mAutoResolveOnFail;
     private GoogleApiClient mPlusClient;
 
     private ConnectionResult mConnectionResult;
@@ -51,6 +48,12 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     private WeakReference<Activity> mActivityWeakReference;
 
     private Context mContext;
+    private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            GoogleLoginHelper.this.signIn(null);
+        }
+    };
 
     public GoogleLoginHelper(Activity context, SignUpCallback iSignUpPresenter) {
         mActivityWeakReference = new WeakReference<>(context);
@@ -71,6 +74,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
             signInButton.setVisibility(View.GONE);
             return;
         } else {
+            signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_LIGHT);
             signInButton.setOnClickListener(mGoogleLoginClickListener);
         }
     }
@@ -79,19 +83,13 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
         return GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS;
     }
 
-
-    private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            signIn();
-        }
-    };
-
     /**
      * Try to sign in the user.
+     *
+     * @param activity
      */
     @Override
-    public void signIn() {
+    public void signIn(Activity activity) {
         if (!mPlusClient.isConnected()) {
             setProgressBarVisible(true);
             mAutoResolveOnFail = true;
@@ -139,9 +137,8 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
         if (mPlusClient.isConnected()) {
             Plus.AccountApi.revokeAccessAndDisconnect(mPlusClient)
                     .setResultCallback(new ResultCallback<Status>() {
-
                         @Override
-                        public void onResult(Status status) {
+                        public void onResult(@NonNull Status status) {
                             //TODO: handle it more garcefully
                             //mCallback.onPlusClientRevokeAccess();
                         }
@@ -187,7 +184,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     public void onConnected(Bundle connectionHint) {
         setProgressBarVisible(false);
          /* This Line is the key */
-       // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
+        // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
         mCallback.onSignInComplete(Type.GOOGLE);
     }
 

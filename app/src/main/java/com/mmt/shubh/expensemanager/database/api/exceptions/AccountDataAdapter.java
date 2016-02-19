@@ -11,4 +11,7 @@ import com.mmt.shubh.expensemanager.database.api.DataAdapter;
  * TODO:Add class comment.
  */
 public interface AccountDataAdapter extends DataAdapter<Account>{
+    double getAccountBalance(long accountId);
+
+    void updateAmount(long accountId, double balanceAmount);
 }

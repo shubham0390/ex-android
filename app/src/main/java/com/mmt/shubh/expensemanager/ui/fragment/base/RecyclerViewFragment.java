@@ -2,25 +2,19 @@ package com.mmt.shubh.expensemanager.ui.fragment.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPView;
+import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
-import com.mmt.shubh.expensemanager.ui.view.DividerItemDecoration;
 
 /**
  * Created by Subham Tyagi,
@@ -49,18 +43,6 @@ public abstract class RecyclerViewFragment<V extends MVPView, P extends MVPPrese
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.list_devider_line)));
-    }
-
-    protected int getLayoutId() {
-        return 0;
-    }
-
-    protected void setEmptyText(int resId) {
-        mEmptyText.setText(resId);
-    }
-
-    protected void setEmptyText(String emptyText) {
-        mEmptyText.setText(emptyText);
     }
 
     protected void setAdapter(RecyclerView.Adapter adapter) {

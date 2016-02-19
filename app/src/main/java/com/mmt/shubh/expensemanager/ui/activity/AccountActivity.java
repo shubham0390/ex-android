@@ -1,17 +1,22 @@
 package com.mmt.shubh.expensemanager.ui.activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.fragment.account.AccountAddFragment;
+import com.mmt.shubh.expensemanager.ui.activity.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.ui.adapters.AccountPagerAdapter;
 import com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AddEditAccountFragment;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+
 
 public class AccountActivity extends ToolBarActivity implements AccountFragmentIntractionListener {
 
@@ -19,7 +24,14 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
     public static final int MODE_LIST = 1;
     public static final int MODE_VIEW = 2;
 
+    @Bind(R.id.sliding_tabs)
+    TabLayout mTabLayout;
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
+
     private int mCurrentMode;
+
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +39,16 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
         initializeToolbar();
-        final ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayShowHomeEnabled(true);
-            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-        }
-        AccountListFragment listFragment = new AccountListFragment();
-        getFragmentManager().beginTransaction().add(R.id.account_fragment, listFragment).commit();
+        toggleHomeBackButton(true);
+        setTitle(R.string.account);
+        onFragmentIntraction(MODE_LIST, null);
 
+        mViewPager.setAdapter(new AccountPagerAdapter(getSupportFragmentManager(), null));
+
+        mTabLayout.addTab(mTabLayout.newTab().setText("Tab One"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Tab Two"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Tab Three"));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -50,34 +64,36 @@ public class AccountActivity extends ToolBarActivity implements AccountFragmentI
         switch (id) {
             case R.id.action_settings:
                 break;
-            case R.id.home:
+            case android.R.id.home:
                 if (mCurrentMode == MODE_LIST) {
                     finish();
                 } else {
-                    onFragmentIntraction(MODE_LIST, null);
+                    removeFragment();
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void removeFragment() {
+        getFragmentManager().beginTransaction().remove(mFragment).commit();
+    }
+
     @Override
     public void onFragmentIntraction(int mode, Bundle param) {
-        Fragment fragment = null;
         switch (mode) {
             case MODE_ADD:
                 mCurrentMode = mode;
-                fragment = new AccountAddFragment();
+                mFragment = new AddEditAccountFragment();
                 break;
             case MODE_LIST:
+                mFragment = new AccountListFragment();
                 mCurrentMode = mode;
                 break;
             case MODE_VIEW:
                 mCurrentMode = mode;
                 break;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.account_fragment, fragment).commit();
+        /// getFragmentManager().beginTransaction().replace(R.id.account_fragment, mFragment).commit();
     }
-
-
 }

@@ -9,11 +9,12 @@
 package com.mmt.shubh.expensemanager.task;
 
 import android.support.annotation.VisibleForTesting;
-import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -25,6 +26,8 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class TaskProcessor {
 
+    private static TaskProcessor mTaskProcessor = new TaskProcessor();
+    private String LOG_TAG = getClass().getName();
     private BlockingDeque<ITask> mTaskQueue;
 
     private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
@@ -33,8 +36,15 @@ public class TaskProcessor {
 
     private ITask mActive;
 
-    public TaskProcessor() {
+    private boolean isExecuting;
+
+    private TaskProcessor() {
         mTaskQueue = new LinkedBlockingDeque<>(16);
+    }
+
+    public static TaskProcessor getTaskProcessor() {
+
+        return mTaskProcessor;
     }
 
     /**
@@ -85,9 +95,7 @@ public class TaskProcessor {
      * Start the execution of tasks
      */
     public void startExecution() {
-        if (mActive == null) {
-            scheduleNext();
-        }
+        scheduleNext();
     }
 
     public void execute(ITask task) {
@@ -96,27 +104,45 @@ public class TaskProcessor {
     }
 
     private void scheduleNext() {
-        if ((mActive = mTaskQueue.poll()) != null) {
-            mExecutorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    executeTask(mActive);
-                    scheduleNext();
-                }
-            });
+        Logger.methodStart(LOG_TAG, "scheduleNext");
+        if (!isExecuting) {
+            mActive = mTaskQueue.poll();
+            if (mActive != null) {
+                mExecutorService.submit((new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        isExecuting = true;
+                        executeTask(mActive);
+                        isExecuting = false;
+                        mActive = null;
+                        scheduleNext();
+                        return null;
+                    }
+                }));
+            }
         }
+        Logger.methodEnd(LOG_TAG, "scheduleNext");
     }
 
     /*
      * Execute single task
      */
     private void executeTask(ITask task) {
-        TaskResult result = task.execute();
+        Logger.methodStart(LOG_TAG, "executeTask -" + task.getTaskAction());
+        TaskResult result = new TaskResult();
+        try {
+            result = task.execute();
+        } catch (Exception e) {
+            isExecuting = false;
+            Logger.error(LOG_TAG, e.getMessage() + "\n" + e.getStackTrace().toString());
+            throw new RuntimeException(e);
+        }
+
         String action = task.getTaskAction();
-        if (!TextUtils.isEmpty(action))
-            notifyListener(action, result);
+        notifyListener(action, result);
 
         task.onPostExecute(result);
+        Logger.methodEnd(LOG_TAG, "executeTask" + task.getTaskAction());
     }
 
     public void removeOnTaskCompleteListener(OnTaskCompleteListener listener) {

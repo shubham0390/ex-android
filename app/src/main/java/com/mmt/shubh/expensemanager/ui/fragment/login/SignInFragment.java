@@ -15,8 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
-import com.mmt.shubh.expensemanager.ui.component.LoginActivityComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.ui.dagger.component.LoginActivityComponent;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.SignInPresenter;
 import com.mmt.shubh.expensemanager.ui.views.ISignInView;

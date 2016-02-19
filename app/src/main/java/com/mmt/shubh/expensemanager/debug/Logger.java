@@ -55,4 +55,12 @@ public final class Logger {
         Log.w(LOG_TAG, className + " -" + message);
     }
 
+    public static void methodStart(String className, String methodName) {
+        Log.i(LOG_TAG, className + " - << Start -" + methodName);
+    }
+    public static void methodEnd(String className, String methodName) {
+        Log.i(LOG_TAG, className + " - >> END -" + methodName);
+    }
+
+
 }

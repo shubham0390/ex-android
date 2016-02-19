@@ -3,14 +3,12 @@ package com.mmt.shubh.expensemanager.ui.mvp;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.mmt.shubh.expensemanager.ExpenseApplication;
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.ui.fragment.base.BaseFragment;
 
 import javax.inject.Inject;
@@ -101,9 +99,6 @@ public abstract class MVPFragment<V extends MVPView, P extends MVPPresenter> ext
         ButterKnife.unbind(this);
         mPresenter.detachView(getRetainInstance());
     }
-
-
-
 
     /**
      * This method will be called from {@link #onViewCreated(View, Bundle)} and this is the right place to

@@ -1,16 +1,33 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
 
-    <com.mmt.shubh.expensemanager.ui.adapters.base.ListRecyclerView
-        android:id="@+id/recycler_view"
+    <com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView
+        android:id="@id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fadeScrollbars="true"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        />
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@id/loadingView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+    </android.support.v4.widget.ContentLoadingProgressBar>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -18,8 +35,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp"/>
-
-    <include layout="@layout/include_list_empty_view"/>
-
+        android:src="@drawable/ic_action_cash"/>
 </FrameLayout>

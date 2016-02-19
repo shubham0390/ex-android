@@ -19,6 +19,8 @@ public interface MemberExpenseBookContract extends BaseContract {
 
     String EXPENSE_BOOK_KEY = "expense_book_key";
 
+    String STATUS = "status";
+
 
     Uri MEMBER_EXPENSE_BOOK_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)

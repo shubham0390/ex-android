@@ -1,0 +1,44 @@
+<resources>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    <dimen name="spacing_huge">72dp</dimen>
+    <!-- listview -->
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_icon_margin_start">@dimen/spacing_medium</dimen>
+    <dimen name="list_item_text_margin_start">60dp</dimen>
+
+    <!-- Elevation when button is pressed -->
+    <dimen name="button_elevation_material">2dp</dimen>
+    <!-- Z translation to apply when button is pressed -->
+    <dimen name="button_pressed_z_material">4dp</dimen>
+    <!-- Default insets (outer padding) around buttons -->
+    <dimen name="button_inset_vertical_material">6dp</dimen>
+    <dimen name="button_inset_horizontal_material">@dimen/control_inset_material</dimen>
+    <!-- Default inner padding within buttons -->
+    <dimen name="button_padding_vertical_material">@dimen/control_padding_material</dimen>
+    <dimen name="button_padding_horizontal_material">8dp</dimen>
+    <!-- Default insets (outer padding) around controls -->
+    <dimen name="control_inset_material">4dp</dimen>
+    <!-- Default inner padding within controls -->
+    <dimen name="control_padding_material">4dp</dimen>
+    <!-- Default rounded corner for controls -->
+    <dimen name="control_corner_material">2dp</dimen>
+
+    <integer name="kg_carousel_angle">75</integer>
+    <integer name="kg_glowpad_rotation_offset">0</integer>
+    <integer name="button_pressed_animation_duration">100</integer>
+    <integer name="button_pressed_animation_delay">100</integer>
+    <integer name="disabled_alpha_animation_duration">100</integer>
+    <integer name="dock_enter_exit_duration">250</integer>
+
+    <dimen name="btn_flat_corner_radius">1dp</dimen>
+    <dimen name="btn_flat_min_width">88dp</dimen>
+    <dimen name="btn_flat_min_height">36dp</dimen>
+    <dimen name="btn_flat_padding">8dp</dimen>
+    <dimen name="btn_flat_margin">4dp</dimen>
+</resources>

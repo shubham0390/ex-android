@@ -1,9 +1,11 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mmt.shubh.expensemanager.ui.activity.ExpenseBookActivity">
+
     <item android:id="@+id/action_add_expense"
-          android:title="@string/add_new_expense"
           android:orderInCategory="100"
+          android:title="@string/add_new_expense"
           app:showAsAction="always"/>
 </menu>

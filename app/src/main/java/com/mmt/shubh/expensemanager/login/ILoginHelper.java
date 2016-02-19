@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.login;
 
+import android.app.Activity;
 import android.content.Intent;
 
 /**
@@ -14,7 +15,7 @@ public interface ILoginHelper {
     }
 
     void setUp(Object object);
-    void signIn();
+    void signIn(Activity activity);
 
     void signOut();
 

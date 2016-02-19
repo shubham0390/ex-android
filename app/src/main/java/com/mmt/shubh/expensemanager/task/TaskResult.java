@@ -9,7 +9,6 @@
 package com.mmt.shubh.expensemanager.task;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Execution result of {@link ITask}
@@ -18,7 +17,7 @@ import android.os.Parcelable;
  * on 11/Jun/2015,
  * 12:48 PM
  */
-public final class TaskResult implements Parcelable {
+public final class TaskResult<T>  {
     /**
      * Task is success of failed
      */
@@ -28,54 +27,44 @@ public final class TaskResult implements Parcelable {
      * Result status code.
      * See{@link TaskResultStatus}
      */
-    private int mStatus;
+    private int mStatusCode;
 
     /**
      * Payload of task
      */
-    private String mPayload;
+    private T mResult;
+
+    private Exception mException;
 
     public TaskResult() {
     }
 
-    public TaskResult(boolean isSuccess, String payload, int status) {
+    public TaskResult(boolean isSuccess, T result, int statusCode) {
         mIsSuccess = isSuccess;
-        mPayload = payload;
-        mStatus = status;
+        mResult = result;
+        mStatusCode = statusCode;
     }
 
     protected TaskResult(Parcel in) {
-        mStatus = in.readInt();
-        mPayload = in.readString();
+        mStatusCode = in.readInt();
     }
 
-    public static final Creator<TaskResult> CREATOR = new Creator<TaskResult>() {
-        @Override
-        public TaskResult createFromParcel(Parcel in) {
-            return new TaskResult(in);
-        }
 
-        @Override
-        public TaskResult[] newArray(int size) {
-            return new TaskResult[size];
-        }
-    };
-
-    public Object getPayload() {
-        return mPayload;
-    }
-
-    public TaskResult setPayload(String payload) {
-        mPayload = payload;
+    public TaskResult setResult(T result) {
+        mResult = result;
         return this;
     }
 
-    public int getStatus() {
-        return mStatus;
+    public T getResult() {
+        return mResult;
     }
 
-    public TaskResult setStatus(int status) {
-        mStatus = status;
+    public int getStatusCode() {
+        return mStatusCode;
+    }
+
+    public TaskResult setStatusCode(int statusCode) {
+        mStatusCode = statusCode;
         return this;
     }
 
@@ -87,14 +76,11 @@ public final class TaskResult implements Parcelable {
         mIsSuccess = isSuccess;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public Exception getException() {
+        return mException;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mStatus);
-        dest.writeString(mPayload);
+    public void setException(Exception exception) {
+        mException = exception;
     }
 }

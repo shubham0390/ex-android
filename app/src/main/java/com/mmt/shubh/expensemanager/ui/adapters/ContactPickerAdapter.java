@@ -17,10 +17,13 @@ import com.mmt.shubh.expensemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * @author Umang Chamaria
  */
-public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdapter.ViewHolder>{
+public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdapter.ViewHolder> {
     private List<ContactsMetaData> mContactNames;
     private SparseBooleanArray mSelectedContacts;
 
@@ -43,35 +46,31 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         String contactPhotoURI = metaData.getContactPhotoURI();
         if (!TextUtils.isEmpty(contactPhotoURI)) {
             holder.mContactImage.setImageURI(Uri.parse(contactPhotoURI));
-        }else{
+        } else {
             holder.mContactImage.setImageResource(R.mipmap.ic_launcher);
         }
         holder.mContactChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((CheckBox) v).isChecked()){
-                    if (mSelectedContacts.get(position, false)){
-                        mSelectedContacts.delete(position);
-                    }
-                }else {
-                    mSelectedContacts.put(position, true);
-                }
+                ContactPickerAdapter.this.updateSelectedItem(((CheckBox) v).isChecked(), position);
             }
         });
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!holder.mContactChecked.isChecked()) {
-                    holder.mContactChecked.setChecked(true);
-                    mSelectedContacts.put(position, true);
-                } else {
-                    holder.mContactChecked.setChecked(false);
-                    if (mSelectedContacts.get(position, false)){
-                        mSelectedContacts.delete(position);
-                    }
-                }
+                updateSelectedItem(holder.mContactChecked.isChecked(), position);
             }
         });
+    }
+
+    private void updateSelectedItem(boolean value, int position) {
+        if (value) {
+            if (!mSelectedContacts.get(position, false)) {
+                mSelectedContacts.put(position, true);
+            }
+        } else {
+            mSelectedContacts.delete(position);
+        }
     }
 
     @Override
@@ -85,22 +84,6 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
             items.add(mSelectedContacts.keyAt(i));
         }
         return items;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public final View mView;
-        public final ImageView mContactImage;
-        public final TextView mContactName;
-        public final CheckBox mContactChecked;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mContactName = (TextView) view.findViewById(R.id.contact_name);
-            mContactImage = (ImageView) view.findViewById(R.id.contact_image);
-            mContactChecked = (CheckBox) view.findViewById(R.id.contact_selected);
-        }
     }
 
     public void animateTo(List<ContactsMetaData> models) {
@@ -152,5 +135,22 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
         final ContactsMetaData model = mContactNames.remove(fromPosition);
         mContactNames.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public final View mView;
+        @Bind(R.id.contact_image)
+        ImageView mContactImage;
+        @Bind(R.id.contact_name)
+        TextView mContactName;
+        @Bind(R.id.contact_selected)
+        CheckBox mContactChecked;
+
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            ButterKnife.bind(this, view);
+        }
     }
 }

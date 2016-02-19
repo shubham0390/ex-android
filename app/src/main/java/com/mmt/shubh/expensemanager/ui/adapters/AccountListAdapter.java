@@ -1,21 +1,20 @@
 package com.mmt.shubh.expensemanager.ui.adapters;
 
-import android.database.Cursor;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.StringsUtils;
-import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
-import com.mmt.shubh.expensemanager.ui.adapters.base.CursorRecyclerAdapter;
+import com.mmt.shubh.expensemanager.ui.viewmodel.AccountListViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Subham Tyagi,
@@ -23,11 +22,12 @@ import butterknife.ButterKnife;
  * 1:15 PM
  * TODO:Add class comment.
  */
-public class AccountListAdapter extends CursorRecyclerAdapter<AccountListAdapter.AccountListViewHolder> {
+public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountListViewHolder> {
 
+    private List<AccountListViewModel> mAccountListViewModels;
 
-    public AccountListAdapter(Cursor c) {
-        super(c);
+    public AccountListAdapter() {
+        mAccountListViewModels = new ArrayList<>();
     }
 
     @Override
@@ -37,52 +37,43 @@ public class AccountListAdapter extends CursorRecyclerAdapter<AccountListAdapter
     }
 
     @Override
-    public void onBindViewHolder(AccountListViewHolder holder, Cursor cursor) {
-        holder.bindView(cursor);
+    public void onBindViewHolder(AccountListViewHolder holder, int position) {
+        holder.bindView(mAccountListViewModels.get(position));
     }
+
 
     @Override
     public int getItemCount() {
-        return super.getItemCount();
+        return mAccountListViewModels.size();
+    }
+
+    public void setData(List<AccountListViewModel> data) {
+        mAccountListViewModels.addAll(data);
+        notifyDataSetChanged();
     }
 
     public static class AccountListViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.account_type)
-        TextView mAccountType;
-        @Bind(R.id.account_balance)
-        TextView mAccountBalance;
+
+        @Bind(R.id.account_image_icon)
+        CircleImageView mAccountImageIcon;
         @Bind(R.id.account_name)
-        TextView mBankName;
+        AppCompatTextView mAccountName;
         @Bind(R.id.account_number)
-        TextView mAccountNumber;
-        @Bind(R.id.show_card_checkbox)
-        CheckBox mShowCardCheckbox;
-        @Bind(R.id.card_container)
-        LinearLayout mCardContainer;
+        AppCompatTextView mAccountNumber;
+        @Bind(R.id.account_balance_inner)
+        AppCompatTextView mAccountBalanceInner;
 
         public AccountListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-           /* mShowCardCheckbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-                        mCardContainer.setVisibility(View.VISIBLE);
-                    } else {
-                        mCardContainer.setVisibility(View.GONE);
-                    }
-                }
-            });*/
+
         }
 
-        public void bindView(Cursor cursor) {
-            mBankName.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
-            mAccountType.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
-            mAccountBalance.setText(StringsUtils.getLocalisedAmountString(
-                    cursor.getInt(
-                            cursor.getColumnIndex(
-                                    AccountContract.ACCOUNT_BALANCE)) + ""));
-            mAccountNumber.setText(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NUMBER)));
+        public void bindView(AccountListViewModel accountListViewModel) {
+
+            mAccountName.setText(accountListViewModel.getAccountName());
+            // mAccountBalance.setText(StringsUtils.getLocalisedAmountString(accountListViewModel.getAccountBalance()));
+            mAccountNumber.setText(accountListViewModel.getAccountNumber());
         }
     }
 }

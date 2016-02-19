@@ -111,7 +111,7 @@ public final class ExpenseDDL {
                 + MemberContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberContract.MEMBER_NAME + " TEXT NOT NULL, "
                 + MemberContract.MEMBER_EMAIL + " TEXT UNIQUE, "
-                + MemberContract.MEMBER_PHONE_NUMBER + " TEXT UNIQUE, "
+                + MemberContract.MEMBER_PHONE_NUMBER + " INTEGER UNIQUE, "
                 + MemberContract.MEMBER_IMAGE_URI + " TEXT, "
                 + MemberContract.MEMBER_USER_NAME + " TEXT,"
                 + MemberContract.MEMBER_COVER_IMAGE_URL + " TEXT"
@@ -137,10 +137,12 @@ public final class ExpenseDDL {
                 + ExpenseContract.CATEGORY_KEY + " INTEGER, "
                 + ExpenseContract.TRANSACTION_KEY + " INTEGER, "
                 + ExpenseContract.OWNER_KEY + " INTEGER NOT NULL, "
+                + ExpenseContract.ACCOUNT_KEY + " INTEGER NOT NULL, "
                 + " FOREIGN KEY( " + ExpenseContract.EXPENSE_BOOK_KEY + ") REFERENCES " + ExpenseBookContract.TABLE_NAME + " (" + ExpenseBookContract._ID + ") ,"
                 + " FOREIGN KEY( " + ExpenseContract.CATEGORY_KEY + ") REFERENCES " + CategoryContract.TABLE_NAME + " (" + CategoryContract._ID + ") ,"
                 + " FOREIGN KEY( " + ExpenseContract.TRANSACTION_KEY + ") REFERENCES " + TransactionContract.TABLE_NAME + " (" + TransactionContract._ID + ") ,"
-                + " FOREIGN KEY( " + ExpenseContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + ") "
+                + " FOREIGN KEY( " + ExpenseContract.OWNER_KEY + ") REFERENCES " + MemberContract.TABLE_NAME + " (" + MemberContract._ID + "), "
+                + " FOREIGN KEY( " + ExpenseContract.ACCOUNT_KEY + ") REFERENCES " + AccountContract.TABLE_NAME + " (" + AccountContract._ID + ") "
                 + ");";
         database.execSQL(createTable);
     }
@@ -150,7 +152,10 @@ public final class ExpenseDDL {
         String createTable = "CREATE TABLE " + CategoryContract.TABLE_NAME
                 + "( "
                 + CategoryContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + CategoryContract.CATEGORY_NAME + " TEXT NOT NULL" + ");";
+                + CategoryContract.CATEGORY_NAME + " TEXT NOT NULL,"
+                + CategoryContract.CATEGORY_TYPE + " TEXT NOT NULL,"
+                + CategoryContract.CATEGORY_IMAGE_NAME + " TEXT NOT NULL"
+                + ");";
         database.execSQL(createTable);
     }
 
@@ -159,6 +164,7 @@ public final class ExpenseDDL {
                 " ( "
                 + MemberExpenseBookContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MemberExpenseBookContract.MEMBER_KEY + " INTEGER NOT NULL, "
+                + MemberExpenseBookContract.STATUS + " INTEGER DEFAULT 0 , "
                 + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " INTEGER, "
                 + "FOREIGN KEY (" + MemberExpenseBookContract.MEMBER_KEY + ") "
                 + "REFERENCES " + MemberContract.TABLE_NAME + "( " + MemberContract._ID + ")"
@@ -197,5 +203,7 @@ public final class ExpenseDDL {
                 ");";
         database.execSQL(createTable);
     }
+
+
 
 }

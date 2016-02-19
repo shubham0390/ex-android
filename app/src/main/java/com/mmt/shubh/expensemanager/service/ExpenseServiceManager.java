@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
-import com.mmt.shubh.expensemanager.database.content.DeviceDetails;
 
 /**
- * Created by styagi on 6/3/2015.
+ * Created by Subham Tyagi,
+ * on 14/Oct/2015,
+ * 10:13 AM
+ * TODO:Add class comment.
  */
 public final class ExpenseServiceManager {
 

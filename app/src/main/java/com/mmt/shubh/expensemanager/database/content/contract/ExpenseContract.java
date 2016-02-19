@@ -8,6 +8,9 @@ public interface ExpenseContract extends BaseColumns, BaseContract {
     String TABLE_NAME = "expenses";
 
     String PATH_EXPENSE = "EXPENSE";
+
+    String PATH_EXPENSE_LIST = "Expense/List";
+
     String PATH_YEAR = "YEAR";
     String PATH_MONTH = "MONTH";
 
@@ -29,17 +32,18 @@ public interface ExpenseContract extends BaseColumns, BaseContract {
     String CATEGORY_KEY = "category_key";
     String TRANSACTION_KEY = "transaction_key";
     String OWNER_KEY = "owner_key";
-
+    String ACCOUNT_KEY = "account_key";
     Uri EXPENSE_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(AUTHORITY)
             .path(PATH_EXPENSE)
             .build();
 
-    Uri EXPENSE_MEMBER_URI = EXPENSE_URI.buildUpon()
-            .path(MemberContract.PATH_MEMBER)
+    Uri EXPENSE_LIST_URI = new Uri.Builder()
+            .scheme(ContentResolver.SCHEME_CONTENT)
+            .authority(AUTHORITY)
+            .path(PATH_EXPENSE_LIST)
             .build();
-
     /**
      * Give all expense for a particular member , Expense Book and current year.
      * add Member Id and Expense book id ad query parameter.
@@ -63,4 +67,5 @@ public interface ExpenseContract extends BaseColumns, BaseContract {
     String GROUP_BY_MONTH_AND_YEAR_MEMBER_EXEPENSE_BOOK = "STRFTIME(\"%m-%Y\","
             + ExpenseContract.TABLE_NAME + "." + ExpenseContract.EXPENSE_DATE + " ), "
             + ExpenseContract.TABLE_NAME + "." + ExpenseContract.EXPENSE_BOOK_KEY;
+    ;
 }

@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
@@ -26,16 +27,17 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookC
 import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.TransactionContract;
 import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
-import com.mmt.shubh.expensemanager.database.dataadapters.BaseSQLDataAdapter;
+import com.mmt.shubh.expensemanager.debug.Logger;
 
 public class ExpenseProvider extends ContentProvider {
 
-    private static final String EXPENSE_BASE_PATH = ContentPath.PATH_EXPENSE;
+    private String LOG_TAG = getClass().getName();
+
+    private static final String EXPENSE_BASE_PATH = ExpenseContract.PATH_EXPENSE;
     private static final int EXPENSE_BASE = 0x0000;
     private static final int EXPENSE = EXPENSE_BASE;
     private static final int EXPENSE_ID = EXPENSE + 1;
-    private static final int EXPENSE_BOOK_EXPENSE = EXPENSE + 2;
-    private static final int MEMBER_EXPENSE = EXPENSE + 3;
+    private static final int MEMBER_EXPENSE_LIST = EXPENSE + 2;
     private static final int EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR = EXPENSE + 4;
 
     private static final String MEMBER_BASE_PATH = MemberContract.PATH_MEMBER;
@@ -65,12 +67,15 @@ public class ExpenseProvider extends ContentProvider {
     private static final int MEMBER_EXPANSE_BOOK_BASE = 0x5000;
     private static final int MEMBER_EXPANSE_BOOK = MEMBER_EXPANSE_BOOK_BASE;
 
-    private static final String MEMBER_EXPANSE_BASE_PATH = ContentPath.PATH_MEMBER_EXPENSE;
+    private static final String MEMBER_EXPANSE_BASE_PATH = MemberExpenseContract.PATH;
     private static final int MEMBER_EXPANSE_BASE = 0x6000;
     private static final int MEMBER_EXPANSE = MEMBER_EXPANSE_BASE;
 
     private static final int ACCOUNT_BASE = 0x7000;
     private static final int ACCOUNT = ACCOUNT_BASE;
+
+    private static final int TRANSACTION_BASE = 0x8000;
+    private static final int TRANSACTION = TRANSACTION_BASE;
 
 
     private static final int BASE_SHIFT = 12; // 12 bits to the base type: 0,
@@ -103,6 +108,8 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH, EXPENSE);
         /*Get Single Expense with id*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BASE_PATH + "/#", EXPENSE_ID);
+        matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE_LIST + "/#", MEMBER_EXPENSE_LIST);
+
 
         matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE
                         + "/" + MemberContract.PATH_MEMBER
@@ -136,11 +143,17 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, CATEGORY_BASE_PATH, CATEGORY);
         matcher.addURI(BaseContract.AUTHORITY, CATEGORY_BASE_PATH + "/#", CATEGORY_ID);
 
+        /*Member expense book*/
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_EXPANSE_BOOK_BASE_PATH, MEMBER_EXPANSE_BOOK);
+
+        /*Member expense table*/
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_EXPANSE_BASE_PATH, MEMBER_EXPANSE);
 
-
+        /*Account*/
         matcher.addURI(BaseContract.AUTHORITY, AccountContract.PATH_ACCOUNT, ACCOUNT);
+
+        /*Transaction*/
+        matcher.addURI(BaseContract.AUTHORITY, TransactionContract.PATH_TRANSACTION, TRANSACTION);
     }
 
     private SQLiteDatabase mReadDatabase;
@@ -178,6 +191,7 @@ public class ExpenseProvider extends ContentProvider {
                 id = uri.getPathSegments().get(1);
                 result = db.delete(TABLE_NAMES[table], BaseContract._ID + " =?", new String[]{id});
             default:
+                Logger.debug(LOG_TAG, "DELETE -Opration Not supported");
                 throw new UnsupportedOperationException("Not yet implemented");
         }
         return result;
@@ -198,8 +212,14 @@ public class ExpenseProvider extends ContentProvider {
                 return "vnd.android.cursor.dir/vnd.Expenseprovider.user";
             case CATEGORY:
                 return "vnd.android.cursor.dir/vnd.Expenseprovider.category";
-
-
+            case TRANSACTION:
+                return "vnd.android.cursor.dir/vnd.Expenseprovider.transaction";
+            case MEMBER_EXPANSE:
+                return "vnd.android.cursor.dir/vnd.Expenseprovider.member_expense";
+            case MEMBER_EXPANSE_BOOK:
+                return "vnd.android.cursor.dir/vnd.Expenseprovider.member_Expensebook";
+            case ACCOUNT:
+                return "vnd.android.cursor.dir/vnd.Expenseprovider.account";
             case EXPENSE_ID:
                 return "vnd.android.cursor.item/vnd.Expenseprovider.EXPENSE";
             case MEMBER_ID:
@@ -210,8 +230,11 @@ public class ExpenseProvider extends ContentProvider {
                 return "vnd.android.cursor.item/vnd.Expenseprovider.user";
             case CATEGORY_ID:
                 return "vnd.android.cursor.item/vnd.Expenseprovider.category";
+            default:
+                Logger.debug(LOG_TAG, "GETTYPE() -Opration Not supported");
+                throw new UnsupportedOperationException("Not yet implemented");
         }
-        throw new UnsupportedOperationException("Not yet implemented");
+
     }
 
     @Override
@@ -234,6 +257,7 @@ public class ExpenseProvider extends ContentProvider {
             case MEMBER_EXPANSE_BOOK:
             case EXPENSE_BOOK_MEMBER:
             case ACCOUNT:
+            case TRANSACTION:
                 longId = db.insert(TABLE_NAMES[table], "foo", values);
                 break;
             case EXPENSE_ID:
@@ -247,6 +271,7 @@ public class ExpenseProvider extends ContentProvider {
             case CATEGORY_ID:
                 break;
             default:
+                Logger.debug(LOG_TAG, "INSERT -Opration Not supported");
                 throw new UnsupportedOperationException("Not yet implemented");
         }
         resultUri = ContentUris.withAppendedId(uri, longId);
@@ -284,12 +309,13 @@ public class ExpenseProvider extends ContentProvider {
         }
         Context context = getContext();
         int table = match >> BASE_SHIFT;
-        String limit = uri.getQueryParameter(BaseSQLDataAdapter.PARAMETER_LIMIT);
+        String limit = uri.getQueryParameter(BaseContract.PARAMETER_LIMIT);
         String id;
 
         SQLiteDatabase db = getReadableDatabase(context);
         switch (match) {
             case EXPENSE:
+
                 String selectQuery = "SELECT "
                         + ExpenseContract._ID + " , "
                         + ExpenseContract.EXPENSE_NAME + " , "
@@ -313,6 +339,32 @@ public class ExpenseProvider extends ContentProvider {
                         + " AS " + MemberContract.MEMBER_NAME
                         + " FROM " + ExpenseContract.TABLE_NAME;
                 c = db.rawQuery(selectQuery, null);
+                break;
+            case MEMBER_EXPENSE_LIST:
+                id = uri.getPathSegments().get(2);
+                String q = "SELECT " +
+                        " e._id," +
+                        " e.expense_amount," +
+                        " e.expense_date," +
+                        " e.transaction_key ," +
+                        " e.expense_name ," +
+                        " ec.category_name," +
+                        " ec.category_image ," +
+                        " eb.name ," +
+                        " m.name ," +
+                        " m._id ," +
+                        " a.account_name ," +
+                        " a.account_type " +
+                        " FROM "
+                        + ExpenseContract.TABLE_NAME
+                        + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  " +
+                        " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key" +
+                        " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key" +
+                        " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = " + id;
+                if (!TextUtils.isEmpty(selection)) {
+                    q = q + " WHERE " + selection;
+                }
+                c = db.rawQuery(q, selectionArgs);
                 break;
             case MEMBER:
             case EXPENSE_BOOK:
@@ -361,6 +413,7 @@ public class ExpenseProvider extends ContentProvider {
                 c = db.query(TABLE_NAMES[table], projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             default:
+                Logger.debug(LOG_TAG, "QUERY -Opration Not supported");
                 throw new UnsupportedOperationException("Not yet implemented");
         }
         return c;
@@ -391,9 +444,8 @@ public class ExpenseProvider extends ContentProvider {
             case CATEGORY_ID:
                 result = db.update(TABLE_NAMES[table], values, selection, selectionArgs);
                 break;
-
-
             default:
+                Logger.debug(LOG_TAG, "UPDATE -Opration Not supported");
                 throw new UnsupportedOperationException("Not yet implemented");
         }
         return result;
@@ -409,10 +461,12 @@ public class ExpenseProvider extends ContentProvider {
     private int findMatch(Uri uri, String methodName) {
         int match = sURIMatcher.match(uri);
         if (match < 0) {
+            Logger.debug(ContentProvider.class.getName(), methodName + ": uri="
+                    + uri + ", Unable to match" + match);
             throw new IllegalArgumentException("Unknown uri: " + uri);
         } else {
-            /*Logger.debug(ContentProvider.class.getName(), methodName + ": uri="
-                    + uri + ", match is " + match);*/
+            Logger.debug(ContentProvider.class.getName(), methodName + ": uri="
+                    + uri + ", match is " + match);
         }
         return match;
     }

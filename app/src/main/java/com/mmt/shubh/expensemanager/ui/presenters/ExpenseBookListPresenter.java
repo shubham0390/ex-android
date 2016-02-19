@@ -6,15 +6,10 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 
-import com.mmt.shubh.expensemanager.dagger.MainComponent;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.ui.component.DaggerCashActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.DaggerExpenseBookActivityComponent;
-import com.mmt.shubh.expensemanager.ui.component.ExpenseBookActivityComponent;
-import com.mmt.shubh.expensemanager.ui.module.ExpenseBookActivityModule;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.ui.mvp.MVPLCEView;
+import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.MVPPresenter;
 
 import java.lang.ref.WeakReference;
@@ -62,6 +57,10 @@ public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<Li
     @Override
     public void onLoaderReset(Loader<List<ExpenseBook>> loader) {
 
+    }
+
+    public void deleteExpenseBook(long id) {
+        mExpenseBookDataAdapter.delete(id);
     }
 
     private static class ExpenseBookListLoader extends AsyncTaskLoader<List<ExpenseBook>> {

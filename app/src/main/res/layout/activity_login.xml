@@ -1,26 +1,30 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity">
 
-    <include android:id="@+id/toolbar"
-             layout="@layout/include_toolbar"/>
+    <include android:id="@+id/toolbar" layout="@layout/include_toolbar"/>
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
         android:contentDescription="@string/app_name"
         android:src="@drawable/coins"/>
 
     <FrameLayout
+        android:id="@+id/login_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/logo"
         android:layout_centerInParent="true">
 
         <LinearLayout
@@ -29,33 +33,96 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/spacing_normal"
             android:gravity="center"
-            android:orientation="vertical"
-            >
-            <include layout="@layout/include_social_sign_in_view"/>
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/plus_sign_in_button"
+                android:layout_width="280dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:textSize="18sp"
+                />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/facebook_login_button"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:background="#3b5998"
+                android:drawableLeft="@drawable/fb_f_logo__white"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:text="Login with facebook"
+                android:textColor="@color/milky_white"
+                android:textSize="14sp"
+                />
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/email_login_button"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:background="@color/milky_white"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:gravity="center"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingStart="@dimen/spacing_normal"
+                android:text="Sign up with email"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                />
+
+            <com.mmt.shubh.expensemanager.ui.view.ExTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:weightSum="1">
-                <Button
-                    android:id="@+id/signup"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight=".5"
-                    android:text="@string/sign_up"/>
+                android:layout_marginTop="@dimen/spacing_huge"
+                android:background="@drawable/shape_circle"
+                android:gravity="center"
+                android:padding="@dimen/spacing_normal"
+                android:text="OR"
+                android:textSize="18sp"
+                app:fontStyle="playfairDisplayBoldItalic"/>
 
-                <Button
-                    android:id="@+id/signin"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight=".5"
-                    android:text="@string/sign_in"/>
-            </LinearLayout>
+            <com.mmt.shubh.expensemanager.ui.view.ExTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:autoLink="all"
+                android:gravity="center"
+                android:linksClickable="true"
+                android:text="login using email"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
         </LinearLayout>
-        <FrameLayout
-            android:id="@+id/fragment"
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/login_card"
+            style="@style/CardView.Light"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"/>
+        </android.support.v7.widget.CardView>
+
     </FrameLayout>
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"/>
+
 </RelativeLayout>
