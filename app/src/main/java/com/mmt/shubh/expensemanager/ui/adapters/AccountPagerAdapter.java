@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.ui.fragment.account.AccountViewFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AccountDetailsFragment;
 
 import org.parceler.Parcels;
 
@@ -24,9 +24,9 @@ public class AccountPagerAdapter extends FragmentStatePagerAdapter {
 
     List<Account> mAccounts = new ArrayList<>();
 
-    public AccountPagerAdapter(FragmentManager fm,List<Account> accounts) {
+    public AccountPagerAdapter(FragmentManager fm) {
         super(fm);
-        mAccounts = accounts;
+        mAccounts = new ArrayList<>();
     }
 
     @Override
@@ -36,11 +36,20 @@ public class AccountPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        AccountViewFragment fragment = new AccountViewFragment();
+        AccountDetailsFragment fragment = new AccountDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.EXTRA_ACCOUNT, Parcels.wrap(mAccounts.get(position)));
         fragment.setArguments(bundle);
-        return new AccountViewFragment();
+        return fragment;
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mAccounts.get(position).getAccountName();
+    }
+
+    public void addData(List<Account> accounts) {
+        mAccounts.addAll(accounts);
+        notifyDataSetChanged();
+    }
 }

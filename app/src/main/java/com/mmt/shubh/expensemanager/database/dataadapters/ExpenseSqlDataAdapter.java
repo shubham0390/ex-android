@@ -16,14 +16,15 @@ import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 import com.mmt.shubh.expensemanager.ui.fragment.ExpenseFilter;
 import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
-import com.mmt.shubh.expensemanager.utils.DateUtil;
-import com.mmt.shubh.expensemanager.utils.UnitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by Subham Tyagi,
@@ -135,10 +136,10 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         ExpenseListViewModel model = new ExpenseListViewModel();
         model.setExpenseId(cursor.getLong(cursor.getColumnIndex(ExpenseContract.RECORD_ID)));
         model.setExpenseTitle(cursor.getString(cursor.getColumnIndex(ExpenseContract.EXPENSE_NAME)));
-        model.setCategoryImage(cursor.getString(cursor.getColumnIndex(CategoryContract.CATEGORY_IMAGE_NAME)));
+        model.setCategoryImage(cursor.getInt(cursor.getColumnIndex(CategoryContract.CATEGORY_IMAGE_NAME)));
         model.setCategoryName(cursor.getString(cursor.getColumnIndex(CategoryContract.CATEGORY_NAME)));
-        model.setExpenseAmount(UnitUtil.getLocalizedUnit(cursor.getDouble(cursor.getColumnIndex(ExpenseContract.EXPENSE_AMOUNT))));
-        model.setExpenseDate(DateUtil.getLocalizedDate(cursor.getLong(cursor.getColumnIndex(ExpenseContract.EXPENSE_DATE))));
+        model.setExpenseAmount(cursor.getDouble(cursor.getColumnIndex(ExpenseContract.EXPENSE_AMOUNT)));
+        model.setExpenseDate(cursor.getLong(cursor.getColumnIndex(ExpenseContract.EXPENSE_DATE)));
         model.setMemberName(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
         model.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
         model.setAccountType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
@@ -204,5 +205,25 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
             }
         }
         return list;
+    }
+
+    @Override
+    public Observable<List<ExpenseListViewModel>> getExpenseByAccountId(final long accountId) {
+        return Observable.create(new Observable.OnSubscribe<List<ExpenseListViewModel>>() {
+            @Override
+            public void call(Subscriber<? super List<ExpenseListViewModel>> subscriber) {
+                List<ExpenseListViewModel> list = new ArrayList<>();
+                Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), accountId).build();
+                Cursor cursor = mContext.getContentResolver().query(uri, null, ExpenseContract.ACCOUNT_KEY + " = ?",
+                        new String[]{String.valueOf(accountId)}, ExpenseContract.EXPENSE_DATE + "ASC");
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        list.add(parseCursorForExpenseViewModel(cursor));
+                    }
+                }
+                subscriber.onNext(list);
+                subscriber.onCompleted();
+            }
+        });
     }
 }

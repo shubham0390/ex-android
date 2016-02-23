@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +42,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     SignInButton mPlusSignInButton;
 
     @Bind(R.id.facebook_login_button)
-    TextView mFacebookLoginButton;
+    AppCompatButton mFacebookLoginButton;
 
     @Bind(R.id.email_login_button)
     TextView mEmailLoginButton;
@@ -81,7 +82,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
         mComponent = DaggerLoginActivityComponent.builder()
-                .loginModule(new LoginModule())
+                .loginModule(new LoginModule(this))
                 .mainComponent(mainComponent).build();
         mComponent.inject(this);
     }
@@ -147,7 +148,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     @Override
     public void showProgress() {
         showProgress(true);
-       // mProgressView.setVisibility(View.VISIBLE);
+        // mProgressView.setVisibility(View.VISIBLE);
     }
 
     @Override

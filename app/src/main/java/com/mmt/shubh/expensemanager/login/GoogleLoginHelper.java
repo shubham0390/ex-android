@@ -3,25 +3,23 @@ package com.mmt.shubh.expensemanager.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.People;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.PersonBuffer;
 
 import java.lang.ref.WeakReference;
+
+import timber.log.Timber;
 
 /**
  * Created by Subham Tyagi,
@@ -29,52 +27,49 @@ import java.lang.ref.WeakReference;
  * 2:03 PM
  * TODO:Add class comment.
  */
-public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFailedListener {
 
-    // A magic number we will use to know that our sign-in error resolution activity has completed
     public static final int OUR_REQUEST_CODE = 49404;
-    private static final String TAG = GoogleLoginHelper.class.getSimpleName();
-    // A flag to track when a connection is already in progress
-    public boolean mPlusClientIsConnecting = false;
-    // A flag to stop multiple dialogues appearing for the user
-    private boolean mAutoResolveOnFail;
+
+    private GoogleSignInOptions gso;
     private GoogleApiClient mPlusClient;
-
-    private ConnectionResult mConnectionResult;
-
     private SignUpCallback mCallback;
-
-    private WeakReference<Activity> mActivityWeakReference;
-
+    private WeakReference<AppCompatActivity> mActivityWeakReference;
     private Context mContext;
+
+    private GoogleSignInAccount mGoogleAccount;
+
     private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            GoogleLoginHelper.this.signIn(null);
+            GoogleLoginHelper.this.signIn(mActivityWeakReference.get());
         }
     };
 
-    public GoogleLoginHelper(Activity context, SignUpCallback iSignUpPresenter) {
+    public GoogleLoginHelper(AppCompatActivity context, SignUpCallback iSignUpPresenter) {
+        Timber.tag(getClass().getName());
         mActivityWeakReference = new WeakReference<>(context);
         mCallback = iSignUpPresenter;
         mContext = context.getApplicationContext();
+        gso = new GoogleSignInOptions   .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestProfile()
+                .build();
         mPlusClient =
                 new GoogleApiClient.Builder(context)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .addApi(Plus.API)
-                        .addScope(new Scope("profile"))
+                        .enableAutoManage(context, this)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                         .build();
+
     }
 
     public void setUp(Object plusSignInButton) {
+
         SignInButton signInButton = (SignInButton) plusSignInButton;
         if (!supportsGooglePlayServices()) {
             signInButton.setVisibility(View.GONE);
-            return;
         } else {
             signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_LIGHT);
+            signInButton.setScopes(gso.getScopeArray());
             signInButton.setOnClickListener(mGoogleLoginClickListener);
         }
     }
@@ -90,28 +85,9 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
      */
     @Override
     public void signIn(Activity activity) {
-        if (!mPlusClient.isConnected()) {
-            setProgressBarVisible(true);
-            mAutoResolveOnFail = true;
-            if (mConnectionResult != null) {
-                startResolution();
-            } else {
-                initiatePlusClientConnect();
-            }
-        }
-    }
-
-
-    private void initiatePlusClientConnect() {
-        if (!mPlusClient.isConnected() && !mPlusClient.isConnecting()) {
-            mPlusClient.connect();
-        }
-    }
-
-    private void initiatePlusClientDisconnect() {
-        if (mPlusClient.isConnected()) {
-            mPlusClient.disconnect();
-        }
+        mCallback.onBlockingUI(true);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mPlusClient);
+        activity.startActivityForResult(signInIntent, OUR_REQUEST_CODE);
     }
 
     /**
@@ -119,14 +95,13 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
      */
     @Override
     public void signOut() {
-
-        // We only want to sign out if we're connected.
-        if (mPlusClient.isConnected()) {
-            // Disconnect from Google Play Services, then reconnect in order to restart the
-            // process from scratch.
-            initiatePlusClientDisconnect();
-            Log.v(TAG, "Sign out successful!");
-        }
+        Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // ...
+                    }
+                });
     }
 
     /**
@@ -134,58 +109,14 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
      */
     @Override
     public void revokeAccess() {
-        if (mPlusClient.isConnected()) {
-            Plus.AccountApi.revokeAccessAndDisconnect(mPlusClient)
-                    .setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            //TODO: handle it more garcefully
-                            //mCallback.onPlusClientRevokeAccess();
-                        }
-                    });
-        }
+        Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // TODO: 2/19/16 handle it gracefully
+                    }
+                });
 
-    }
-
-    public boolean isPlusClientConnecting() {
-        return mPlusClientIsConnecting;
-    }
-
-    private void setProgressBarVisible(boolean flag) {
-        mPlusClientIsConnecting = flag;
-        mCallback.onBlockingUI(flag);
-    }
-
-    /**
-     * A helper method to flip the mResolveOnFail flag and start the resolution
-     * of the ConnectionResult from the failed connect() call.
-     */
-    private void startResolution() {
-        try {
-            // Don't start another resolution now until we have a result from the activity we're
-            // about to start.
-            mAutoResolveOnFail = false;
-            // If we can resolve the error, then call start resolution and pass it an integer tag
-            // we can use to track.
-            // This means that when we get the onActivityResult callback we'll know it's from
-            // being started here.
-            mConnectionResult.startResolutionForResult(mActivityWeakReference.get(), OUR_REQUEST_CODE);
-        } catch (IntentSender.SendIntentException e) {
-            // Any problems, just try to connect() again so we get a new ConnectionResult.
-            mConnectionResult = null;
-            initiatePlusClientConnect();
-        }
-    }
-
-    /**
-     * Successfully connected (called by PlusClient)
-     */
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        setProgressBarVisible(false);
-         /* This Line is the key */
-        // Plus.PeopleApi.loadVisible(mPlusClient, null).setResultCallback(this);
-        mCallback.onSignInComplete(Type.GOOGLE);
     }
 
     /**
@@ -198,23 +129,11 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
     @Override
     public void onConnectionFailed(ConnectionResult result) {
 
-        // Most of the time, the connection will fail with a user resolvable result. We can store
-        // that in our mConnectionResult property ready to be used when the user clicks the
-        // sign-in button.
         if (result.hasResolution()) {
-            mConnectionResult = result;
-            if (mAutoResolveOnFail) {
-                // This is a local helper function that starts the resolution of the problem,
-                // which may be showing the user an account chooser or similar.
-                startResolution();
-            }
+            // TODO: 2/19/16 handle it gracefully
         }
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        mPlusClient.connect();
-    }
 
     public GoogleApiClient getClient() {
         return mPlusClient;
@@ -222,28 +141,19 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.Connecti
 
     @Override
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
-        if (requestCode == OUR_REQUEST_CODE && responseCode == Activity.RESULT_OK) {
-            mAutoResolveOnFail = true;
-            initiatePlusClientConnect();
-        } else if (requestCode == OUR_REQUEST_CODE && responseCode != Activity.RESULT_OK) {
-            setProgressBarVisible(false);
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            mGoogleAccount = result.getSignInAccount();
+            mCallback.onSignInComplete(Type.GOOGLE);
+            mCallback.onBlockingUI(false);
+        } else {
+            // Signed out, show unauthenticated UI.
+
         }
     }
 
-    @Override
-    public void onResult(People.LoadPeopleResult peopleData) {
-        if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
-            PersonBuffer personBuffer = peopleData.getPersonBuffer();
-            try {
-                int count = personBuffer.getCount();
-                for (int i = 0; i < count; i++) {
-                    Log.d(TAG, "Display name: " + personBuffer.get(i).getDisplayName());
-                }
-            } finally {
-                personBuffer.close();
-            }
-        } else {
-            Log.e(TAG, "Error requesting visible circles: " + peopleData.getStatus());
-        }
+    public GoogleSignInAccount getGoogleAccount() {
+        return mGoogleAccount;
     }
 }

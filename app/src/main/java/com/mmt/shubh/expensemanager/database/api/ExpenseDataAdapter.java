@@ -6,6 +6,8 @@ import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
 
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by styagi on 5/28/2015.
  */
@@ -15,4 +17,6 @@ public interface ExpenseDataAdapter extends DataAdapter<Expense> {
     List<ExpenseListViewModel> getExpenseByExpenseBookId(long expenseBookId);
 
     List<ExpenseListViewModel> getExpenseByMemberId(ExpenseFilter filter);
+
+    Observable<List<ExpenseListViewModel>> getExpenseByAccountId(long id);
 }

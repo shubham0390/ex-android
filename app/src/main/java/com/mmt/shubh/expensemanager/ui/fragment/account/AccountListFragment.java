@@ -11,8 +11,6 @@ import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.exception.EmptyDataException;
 import com.mmt.shubh.expensemanager.ui.activity.AccountActivity;
 import com.mmt.shubh.expensemanager.ui.adapters.AccountListAdapter;
-import com.mmt.shubh.expensemanager.ui.dagger.component.AccountActivityComponent;
-import com.mmt.shubh.expensemanager.ui.dagger.component.DaggerAccountActivityComponent;
 import com.mmt.shubh.expensemanager.ui.listener.AccountFragmentIntractionListener;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewStateImpl;
@@ -20,7 +18,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEFragment;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.AccountListPresenter;
 import com.mmt.shubh.expensemanager.ui.viewmodel.AccountListViewModel;
-import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
 
@@ -116,10 +114,10 @@ public class AccountListFragment extends MVPLCEFragment<ListRecyclerView, List<A
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        AccountActivityComponent component = DaggerAccountActivityComponent
+        /*AccountActivityComponent component = DaggerAccountActivityComponent
                 .builder()
                 .mainComponent(mainComponent)
                 .build();
-        component.inject(this);
+        component.inject(this);*/
     }
 }

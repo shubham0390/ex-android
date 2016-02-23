@@ -1,9 +1,9 @@
 package com.mmt.shubh.expensemanager.ui.presenters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.StringRes;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
@@ -60,7 +60,7 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         }
     }
 
-    public void setupGoogleLogin(SignInButton plusSignInButton, Activity activity) {
+    public void setupGoogleLogin(SignInButton plusSignInButton, AppCompatActivity activity) {
         Logger.debug(TAG, "Setting Up Google login");
         mGoogleLoginHelper = new GoogleLoginHelper(activity, this);
         mGoogleLoginHelper.setUp(plusSignInButton);
@@ -78,7 +78,7 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         switch (type) {
             case GOOGLE:
                 Logger.debug(TAG, "Google login finished. Fetching User profile");
-                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getClient());
+                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getGoogleAccount());
                 break;
             case FACEBOOK:
                 Logger.debug(TAG, "Facebook login finished. Fetching User profile");

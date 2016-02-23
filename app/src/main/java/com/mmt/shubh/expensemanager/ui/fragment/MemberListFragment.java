@@ -20,7 +20,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.MemberListFragmentPresenter;
-import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
 
@@ -33,10 +33,8 @@ import java.util.List;
 public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, List<Member>, MVPLCEView<List<Member>>,
         MemberListFragmentPresenter> {
 
-    private MemberListAdapter mListAdapter;
-
     List<Member> mMemberList;
-
+    private MemberListAdapter mListAdapter;
     private boolean mIsMemberDeletable;
 
     private Bundle mArguments;
@@ -55,14 +53,13 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (mArguments != null) {
             mIsMemberDeletable = mArguments.getBoolean(Constants.KEY_DELETE_MEMBER);
         }
-        mListAdapter =  new MemberListAdapter();
+        mListAdapter = new MemberListAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
         mContentView.setAdapter(mListAdapter);
         setupListener();

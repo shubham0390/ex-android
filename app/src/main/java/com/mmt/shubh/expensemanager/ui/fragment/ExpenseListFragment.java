@@ -28,7 +28,7 @@ import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseListPresenter;
 import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
-import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class ExpenseListFragment extends SupportMVPLCEFragment<ListRecyclerView,
 
     private List<ExpenseListViewModel> mExpenseListViewModels;
 
-    private ExpenseFilter mExpenseFilter =  new ExpenseFilter();
+    private ExpenseFilter mExpenseFilter = new ExpenseFilter();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

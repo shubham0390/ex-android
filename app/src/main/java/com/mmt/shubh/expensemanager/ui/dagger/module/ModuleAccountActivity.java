@@ -5,24 +5,23 @@ import android.content.Context;
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.ui.presenters.AccountActivityPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Subham Tyagi,
- * on 04/Nov/2015,
- * 5:11 PM
- * TODO:Add class comment.
+ * Created by subhamtyagi on 2/20/16.
  */
 @Module
-public class ModuleAccountListFragment {
+public class ModuleAccountActivity {
 
-   /* @Provides
+    @Provides
     @ActivityScope
-    public AccountListPresenter provideAccountListPresenter() {
-        return new AccountListPresenter();
-    }*/
+    public AccountActivityPresenter provideAccountListPresenter(AccountSQLDataAdapter adapter) {
+        return new AccountActivityPresenter(adapter);
+    }
+
     @Provides
     @ActivityScope
     public AccountDataAdapter provideAccountDataAdapter(Context context) {

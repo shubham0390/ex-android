@@ -5,7 +5,7 @@
              android:orientation="vertical">
 
 
-    <com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView
+    <com.mmt.shubh.recyclerviewlib.ListRecyclerView
         android:id="@id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

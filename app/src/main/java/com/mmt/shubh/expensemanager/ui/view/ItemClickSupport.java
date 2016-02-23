@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 public class ItemClickSupport {
 

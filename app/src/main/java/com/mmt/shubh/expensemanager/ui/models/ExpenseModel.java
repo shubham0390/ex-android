@@ -83,7 +83,7 @@ public class ExpenseModel {
         }
         expense.setTransactionKey(transactionId);
         mMemberExpenseDataAdapter.create(memberExpenses);
-        //deductAmountFromAccount(accountId,expense.getExpenseAmount());
+        //deductAmountFromAccount(accountId,expense.getFormatedExpenseAmount());
         Logger.methodStart(LOG_TAG, "createExpense");
     }
 

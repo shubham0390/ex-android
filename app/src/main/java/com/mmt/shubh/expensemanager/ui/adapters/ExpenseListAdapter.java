@@ -1,11 +1,9 @@
 package com.mmt.shubh.expensemanager.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.ui.view.ListItemExpense;
 import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
 
 import java.util.ArrayList;
@@ -27,9 +25,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_expense, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(new ListItemExpense(parent.getContext()));
     }
 
     @Override
@@ -48,12 +44,15 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        ListItemExpense mListItemExpense;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(ListItemExpense itemView) {
             super(itemView);
+            this.mListItemExpense = itemView;
         }
 
         public void bindView(ExpenseListViewModel expenseListViewModel) {
+            mListItemExpense.setExpense(expenseListViewModel);
         }
     }
 }

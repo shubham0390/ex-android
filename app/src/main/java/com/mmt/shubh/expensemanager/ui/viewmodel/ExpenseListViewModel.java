@@ -1,5 +1,8 @@
 package com.mmt.shubh.expensemanager.ui.viewmodel;
 
+import com.mmt.shubh.expensemanager.utils.DateUtil;
+import com.mmt.shubh.expensemanager.utils.UnitUtil;
+
 /**
  * Created by Subham Tyagi,
  * on 07/Nov/2015,
@@ -12,25 +15,25 @@ public class ExpenseListViewModel {
 
     String mCategoryName;
 
-    String mCategoryImage;
+    int mCategoryImage;
 
     String mExpenseTitle;
 
-    String mExpenseAmount;
+    double mExpenseAmount;
 
     String mMemberName;
 
-    String mExpenseDate;
+    long mExpenseDate;
 
     String mAccountName;
 
     String mAccountType;
 
-    public String getCategoryImage() {
+    public int getCategoryImage() {
         return mCategoryImage;
     }
 
-    public ExpenseListViewModel setCategoryImage(String categoryImage) {
+    public ExpenseListViewModel setCategoryImage(int categoryImage) {
         mCategoryImage = categoryImage;
         return this;
     }
@@ -44,22 +47,30 @@ public class ExpenseListViewModel {
         return this;
     }
 
-    public String getExpenseAmount() {
+    public String getFormatedExpenseAmount() {
+        return UnitUtil.getLocalizedUnit(mExpenseAmount);
+    }
+
+    public double getExpenseAmount() {
         return mExpenseAmount;
     }
 
-    public ExpenseListViewModel setExpenseAmount(String expenseAmount) {
+    public ExpenseListViewModel setExpenseAmount(double expenseAmount) {
         mExpenseAmount = expenseAmount;
         return this;
     }
 
     public String getExpenseDate() {
-        return mExpenseDate;
+        return DateUtil.getLocalizedDate(mExpenseDate);
     }
 
-    public ExpenseListViewModel setExpenseDate(String expenseDate) {
+    public ExpenseListViewModel setExpenseDate(long expenseDate) {
         mExpenseDate = expenseDate;
         return this;
+    }
+
+    public long getExpenseDateInMill() {
+        return mExpenseDate;
     }
 
     public String getExpenseTitle() {
@@ -106,4 +117,5 @@ public class ExpenseListViewModel {
         mAccountType = accountType;
         return this;
     }
+
 }

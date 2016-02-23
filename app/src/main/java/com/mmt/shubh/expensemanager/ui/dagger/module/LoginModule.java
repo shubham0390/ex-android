@@ -12,6 +12,7 @@ import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
+import com.mmt.shubh.expensemanager.ui.activity.LoginActivity;
 import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
 import com.mmt.shubh.expensemanager.ui.models.SigUpModelImpl;
 import com.mmt.shubh.expensemanager.ui.models.api.ISignUpModel;
@@ -32,6 +33,11 @@ import retrofit.Retrofit;
 
 @Module
 public class LoginModule {
+    LoginActivity mLoginActivity;
+
+    public LoginModule(LoginActivity loginActivity) {
+        mLoginActivity = loginActivity;
+    }
 
     @Provides
     @ActivityScope
@@ -54,7 +60,7 @@ public class LoginModule {
     @Provides
     @ActivityScope
     LoginActivityPresenter provideLoginActivityPresenter(Context context, ISignUpModel signUpModel) {
-        return new LoginActivityPresenter(context, signUpModel);
+        return new LoginActivityPresenter(mLoginActivity, signUpModel);
     }
 
     @Provides

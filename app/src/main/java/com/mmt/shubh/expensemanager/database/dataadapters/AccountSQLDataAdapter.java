@@ -15,6 +15,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.Subscriber;
+
 /**
  * Created by Subham Tyagi,
  * on 03/Jul/2015,
@@ -47,6 +50,7 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
 
     @Override
     public void restore(Cursor cursor, Account account) {
+        account.setId(cursor.getLong(cursor.getColumnIndex(AccountContract._ID)));
         account.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
         account.setAccountBalance(cursor.getLong(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE)));
         account.setType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
@@ -100,5 +104,16 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
         ContentValues contentValues = new ContentValues();
         contentValues.put(AccountContract.ACCOUNT_BALANCE, balanceAmount);
         update(AccountContract.ACCOUNT_URI, accountId, contentValues);
+    }
+
+    @Override
+    public Observable<List<Account>> loadAllAccounts() {
+        return Observable.create(new Observable.OnSubscribe<List<Account>>() {
+            @Override
+            public void call(Subscriber<? super List<Account>> subscriber) {
+                subscriber.onNext(getAll());
+                subscriber.onCompleted();
+            }
+        });
     }
 }
