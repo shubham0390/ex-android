@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -25,6 +26,12 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     private CallbackManager mCallbackManager;
 
     private SignUpCallback mCallback;
+    private View.OnClickListener mFacebookLoginButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            signIn((Activity) mContext);
+        }
+    };
 
     public FacebookLoginHelper(Context applicationContext, SignUpCallback iSignUpPresenter) {
         mContext = applicationContext.getApplicationContext();
@@ -35,7 +42,6 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, this);
     }
-
 
     @Override
     public void signIn(Activity activity) {

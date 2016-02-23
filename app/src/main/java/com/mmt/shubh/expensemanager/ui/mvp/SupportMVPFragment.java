@@ -42,7 +42,7 @@ import icepick.Icepick;
  * @author Hannes Dorfmann
  * @since 1.0.0
  */
-public abstract class SupportMVPFragment<V extends MVPView, P extends MVPPresenter> extends Fragment implements MVPView{
+public abstract class SupportMVPFragment<V extends MVPView, P extends MVPPresenter> extends Fragment implements MVPView {
 
     @Inject
     protected P mPresenter;
@@ -82,14 +82,14 @@ public abstract class SupportMVPFragment<V extends MVPView, P extends MVPPresent
         MainComponent component = (MainComponent) ExpenseApplication.component();
         injectDependencies(component);
         ButterKnife.bind(this, view);
-        if(mPresenter==null){
+        if (mPresenter == null) {
             mPresenter = getPresenter();
         }
         mPresenter.attachView(this);
 
     }
 
-    protected P getPresenter(){
+    protected P getPresenter() {
         return null;
     }
 

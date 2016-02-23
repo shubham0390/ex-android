@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookListFragment">
 
-    <com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView
+    <com.mmt.shubh.recyclerviewlib.ListRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -2,9 +2,7 @@ package com.mmt.shubh.expensemanager.setup;
 
 import android.content.Context;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.debug.Logger;
 
@@ -17,33 +15,26 @@ import com.mmt.shubh.expensemanager.debug.Logger;
 public class GoogleProfileFetcher extends ProfileFetcher {
     private final String TAG = getClass().getName();
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInAccount mGoogleSignInAccount;
 
-    public GoogleProfileFetcher(GoogleApiClient googleApiClient) {
-        mGoogleApiClient = googleApiClient;
+    public GoogleProfileFetcher(GoogleSignInAccount googleSignInAccount) {
+        mGoogleSignInAccount = googleSignInAccount;
     }
 
     @Override
     public UserInfo fetchUserAccountDetails(Context context) {
-        Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-        UserInfo builder = new UserInfo();
-        if (currentPerson != null) {
-            builder.setDisplayName(currentPerson.getDisplayName());
-            Person.Image personPhoto = currentPerson.getImage();
-            builder.setProfilePhotoUrl(personPhoto.getUrl());
-            Person.Cover personCover = currentPerson.getCover();
-
-            if (personCover != null && personCover.hasCoverPhoto())
-                builder.setCoverPhotoUrl(personCover.getCoverPhoto().getUrl());
-
-            String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-            builder.setEmailAddress(email);
-            builder.setStatus(UserInfo.Status.ACTIVE);
-            return builder;
-        }else{
-            Logger.debug(TAG,"Unable to load user information");
+        UserInfo userInfo = new UserInfo();
+        if (mGoogleSignInAccount != null) {
+            userInfo.setDisplayName(mGoogleSignInAccount.getDisplayName());
+            userInfo.setProfilePhotoUrl(mGoogleSignInAccount.getPhotoUrl().toString());
+            String email = mGoogleSignInAccount.getEmail();
+            userInfo.setEmailAddress(email);
+            userInfo.setStatus(UserInfo.Status.ACTIVE);
+            return userInfo;
+        } else {
+            Logger.debug(TAG, "Unable to load user information");
         }
-        return null;
+        return userInfo;
     }
 
 

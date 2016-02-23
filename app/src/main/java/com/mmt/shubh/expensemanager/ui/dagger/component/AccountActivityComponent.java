@@ -2,8 +2,10 @@ package com.mmt.shubh.expensemanager.ui.dagger.component;
 
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
-import com.mmt.shubh.expensemanager.ui.dagger.module.ModuleAccountListFragment;
-import com.mmt.shubh.expensemanager.ui.fragment.account.AccountListFragment;
+import com.mmt.shubh.expensemanager.ui.activity.AccountActivity;
+import com.mmt.shubh.expensemanager.ui.dagger.module.ModuleAccountActivity;
+import com.mmt.shubh.expensemanager.ui.dagger.module.ModuleAccountDetailFragment;
+import com.mmt.shubh.expensemanager.ui.fragment.account.AccountDetailsFragment;
 
 import dagger.Component;
 
@@ -19,10 +21,13 @@ import dagger.Component;
                 MainComponent.class
         },
         modules = {
-                ModuleAccountListFragment.class
+                ModuleAccountDetailFragment.class,
+                ModuleAccountActivity.class
         })
 
 public interface AccountActivityComponent {
 
-        void inject(AccountListFragment accountListFragment);
+    void inject(AccountDetailsFragment accountListFragment);
+
+    void inject(AccountActivity accountActivity);
 }

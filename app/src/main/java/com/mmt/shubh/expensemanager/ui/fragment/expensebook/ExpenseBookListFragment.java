@@ -24,7 +24,7 @@ import com.mmt.shubh.expensemanager.ui.dagger.module.ExpenseBookListFragmentModu
 import com.mmt.shubh.expensemanager.ui.fragment.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.ui.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.ui.presenters.ExpenseBookListPresenter;
-import com.mmt.shubh.mmtframework.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import org.parceler.Parcels;
 
