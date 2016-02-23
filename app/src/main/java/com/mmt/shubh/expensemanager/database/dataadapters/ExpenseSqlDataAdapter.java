@@ -24,7 +24,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by Subham Tyagi,
@@ -209,21 +208,21 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
 
     @Override
     public Observable<List<ExpenseListViewModel>> getExpenseByAccountId(final long accountId) {
-        return Observable.create(new Observable.OnSubscribe<List<ExpenseListViewModel>>() {
-            @Override
-            public void call(Subscriber<? super List<ExpenseListViewModel>> subscriber) {
-                List<ExpenseListViewModel> list = new ArrayList<>();
-                Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), accountId).build();
-                Cursor cursor = mContext.getContentResolver().query(uri, null, ExpenseContract.ACCOUNT_KEY + " = ?",
-                        new String[]{String.valueOf(accountId)}, ExpenseContract.EXPENSE_DATE + "ASC");
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        list.add(parseCursorForExpenseViewModel(cursor));
-                    }
+        return Observable.create(subscriber -> {
+            List<ExpenseListViewModel> list = new ArrayList<>();
+            Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), accountId).build();
+            Cursor cursor = mContext.getContentResolver().query(uri, null, ExpenseContract.ACCOUNT_KEY + " = ?",
+                    new String[]{String.valueOf(accountId)}, ExpenseContract.EXPENSE_DATE + "ASC");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    list.add(parseCursorForExpenseViewModel(cursor));
                 }
-                subscriber.onNext(list);
-                subscriber.onCompleted();
             }
+            subscriber.onNext(list);
+            subscriber.onCompleted();
+
         });
     }
+
+
 }

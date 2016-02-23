@@ -58,9 +58,8 @@ public class AccountDetailPresenter extends MVPAbstractPresenter<IAccountDetailV
             @Override
             public void onNext(List<ExpenseListViewModel> listViewModels) {
                 getView().showExpense(listViewModels);
-                for (ExpenseListViewModel expenseListViewModel : listViewModels) {
+                for (ExpenseListViewModel expenseListViewModel : listViewModels)
                     expenseListViewModel.getExpenseDateInMill();
-                }
             }
         });
     }
