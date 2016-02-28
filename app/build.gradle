@@ -203,6 +203,8 @@ dependencies {
 
     /*Data base */
     compile 'com.squareup.sqlbrite:sqlbrite:0.6.0'
+
+    compile 'net.danlew:android.joda:2.9.2'
 }
 
 retrolambda {

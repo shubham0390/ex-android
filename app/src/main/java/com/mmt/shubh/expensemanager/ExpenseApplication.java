@@ -30,6 +30,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -69,6 +71,7 @@ public class ExpenseApplication extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                 .build());
+        JodaTimeAndroid.init(this);
     }
 
     /**

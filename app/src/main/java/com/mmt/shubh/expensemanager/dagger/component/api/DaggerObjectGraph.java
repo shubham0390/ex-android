@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.dagger.component.api;
 
-import com.mmt.shubh.expensemanager.ui.activity.SplashActivity;
+import com.mmt.shubh.expensemanager.home.SplashActivity;
 
 /**
  * Created by Subham Tyagi,

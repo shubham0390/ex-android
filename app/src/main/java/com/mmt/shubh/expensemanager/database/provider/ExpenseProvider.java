@@ -31,56 +31,41 @@ import com.mmt.shubh.expensemanager.debug.Logger;
 
 public class ExpenseProvider extends ContentProvider {
 
-    private String LOG_TAG = getClass().getName();
-
     private static final String EXPENSE_BASE_PATH = ExpenseContract.PATH_EXPENSE;
     private static final int EXPENSE_BASE = 0x0000;
     private static final int EXPENSE = EXPENSE_BASE;
     private static final int EXPENSE_ID = EXPENSE + 1;
     private static final int MEMBER_EXPENSE_LIST = EXPENSE + 2;
     private static final int EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR = EXPENSE + 4;
-
     private static final String MEMBER_BASE_PATH = MemberContract.PATH_MEMBER;
     private static final int MEMBER_BASE = 0x1000;
     private static final int MEMBER = MEMBER_BASE;
     private static final int MEMBER_ID = MEMBER + 1;
     private static final int MEMBER_EXPENSE_BOOK_ID = MEMBER + 2;
-
-
     private static final String EXPENSE_BOOK_BASE_PATH = ExpenseBookContract.PATH_EXPENSE_BOOK;
     private static final int EXPENSE_BOOK_BASE = 0x2000;
     private static final int EXPENSE_BOOK = EXPENSE_BOOK_BASE;
     private static final int EXPENSE_BOOK_ID = EXPENSE_BOOK + 1;
     private static final int EXPENSE_BOOK_MEMBER = EXPENSE_BOOK + 2;
-
     private static final String USER_BASE_PATH = UserInfoContract.PATH_USER;
     private static final int USER_BASE = 0x3000;
     private static final int USER = USER_BASE;
     private static final int USER_ID = USER + 1;
-
     private static final String CATEGORY_BASE_PATH = CategoryContract.PATH_CATEGORY;
     private static final int CATEGORY_BASE = 0x4000;
     private static final int CATEGORY = CATEGORY_BASE;
     private static final int CATEGORY_ID = CATEGORY + 1;
-
     private static final String MEMBER_EXPANSE_BOOK_BASE_PATH = MemberExpenseBookContract.PATH;
     private static final int MEMBER_EXPANSE_BOOK_BASE = 0x5000;
     private static final int MEMBER_EXPANSE_BOOK = MEMBER_EXPANSE_BOOK_BASE;
-
     private static final String MEMBER_EXPANSE_BASE_PATH = MemberExpenseContract.PATH;
     private static final int MEMBER_EXPANSE_BASE = 0x6000;
     private static final int MEMBER_EXPANSE = MEMBER_EXPANSE_BASE;
-
     private static final int ACCOUNT_BASE = 0x7000;
     private static final int ACCOUNT = ACCOUNT_BASE;
-
     private static final int TRANSACTION_BASE = 0x8000;
     private static final int TRANSACTION = TRANSACTION_BASE;
-
-
     private static final int BASE_SHIFT = 12; // 12 bits to the base type: 0,
-    // 0x1000, 0x2000, etc.
-
     /*
      * TABLE_NAMES MUST remain in the order of the BASE constants above (e.g.
      * USER_BASE = 0x0000, MESSAGE_HEADER_BASE = 0x1000, etc.)
@@ -96,7 +81,7 @@ public class ExpenseProvider extends ContentProvider {
             AccountContract.TABLE_NAME,
             TransactionContract.TABLE_NAME,
     };
-
+    // 0x1000, 0x2000, etc.
     private static final UriMatcher sURIMatcher = new UriMatcher(
             UriMatcher.NO_MATCH);
 
@@ -156,6 +141,7 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, TransactionContract.PATH_TRANSACTION, TRANSACTION);
     }
 
+    private String LOG_TAG = getClass().getName();
     private SQLiteDatabase mReadDatabase;
     private SQLiteDatabase mWriteDatabase;
 
@@ -315,7 +301,6 @@ public class ExpenseProvider extends ContentProvider {
         SQLiteDatabase db = getReadableDatabase(context);
         switch (match) {
             case EXPENSE:
-
                 String selectQuery = "SELECT "
                         + ExpenseContract._ID + " , "
                         + ExpenseContract.EXPENSE_NAME + " , "

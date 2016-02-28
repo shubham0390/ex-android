@@ -1,9 +1,8 @@
 package com.mmt.shubh.expensemanager.dagger.module.api;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.squareup.sqlbrite.BriteDatabase;
 
 /**
  * Created by Subham Tyagi,
@@ -12,7 +11,7 @@ import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
  * TODO:Add class comment.
  */
 public interface IDataModule {
-    SharedPreferences provideSharedPreferences(Application app);
+    SharedPreferences provideSharedPreferences();
 
-    MemberDataAdapter provideMemberDataAdapter(Application application);
+    BriteDatabase provideBriteDatabase();
 }

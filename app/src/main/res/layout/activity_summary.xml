@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mmt.shubh.expensemanager.ui.activity.SummaryActivity">
+    tools:context=".home.SummaryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/fragment_expense_list"
-        class="com.mmt.shubh.expensemanager.ui.fragment.ExpenseListFragment"
+        class="com.mmt.shubh.expensemanager.expense.ExpenseListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="ExpenseList"

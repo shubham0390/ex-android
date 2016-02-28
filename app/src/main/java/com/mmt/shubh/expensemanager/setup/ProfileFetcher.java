@@ -2,10 +2,7 @@ package com.mmt.shubh.expensemanager.setup;
 
 import android.content.Context;
 
-import com.mmt.shubh.expensemanager.UserSettings;
-import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
 /**

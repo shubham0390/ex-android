@@ -5,16 +5,16 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.mmt.shubh.expensemanager.Constants;
-import com.mmt.shubh.expensemanager.UserSettings;
+import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
-import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
+import com.mmt.shubh.expensemanager.expense.ExpenseModel;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,20 +79,21 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     }
 
     public boolean createAccount() {
-        AccountSQLDataAdapter dataAdapter = new AccountSQLDataAdapter(mContext);
+        AccountDataAdapter dataAdapter = mExpenseModel.getAccountDataAdapter();
 
         Account account = new Account();
         account.setAccountName("Cash");
         account.setAccountBalance(10000);
         account.setType(Account.TYPE_CASH);
         account.setAccountNumber("Cash");
-        long id = dataAdapter.create(account);
-        if (id > 0) {
+        /*long id = */
+        dataAdapter.create(account);
+        /*if (id > 0) {
             Log.d(Constants.LOG_TAG, "Created Account successfully");
             return true;
         } else {
             Log.d(Constants.LOG_TAG, "Account creating failed");
-        }
+        }*/
         return false;
     }
 

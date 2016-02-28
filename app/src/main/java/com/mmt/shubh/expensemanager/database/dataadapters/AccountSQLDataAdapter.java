@@ -1,22 +1,20 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by Subham Tyagi,
@@ -25,12 +23,12 @@ import rx.Subscriber;
  * TODO:Add class comment.
  */
 @ActivityScope
-public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implements AccountDataAdapter {
+public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> implements AccountDataAdapter {
 
 
     @Inject
-    public AccountSQLDataAdapter(Context context) {
-        super(AccountContract.ACCOUNT_URI, context);
+    public AccountSQLDataAdapter(BriteDatabase briteDatabase) {
+        super(AccountContract.TABLE_NAME, briteDatabase);
     }
 
     @Override
@@ -49,71 +47,35 @@ public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implement
     }
 
     @Override
-    public void restore(Cursor cursor, Account account) {
+    public Account parseCursor(Cursor cursor) {
+        Account account = new Account();
         account.setId(cursor.getLong(cursor.getColumnIndex(AccountContract._ID)));
         account.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
         account.setAccountBalance(cursor.getLong(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE)));
         account.setType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
         account.setBankName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_BALANCE)));
+        return account;
     }
 
     @Override
-    public long create(Account account) {
-        Uri uri = super.save(account);
-        List paths = uri.getPathSegments();
-        return Long.parseLong((String) paths.get(paths.size() - 1));
-    }
-
-    @Override
-    public int update(Account account) {
-        return 0;
-    }
-
-    @Override
-    public int delete(Account account) {
-        return delete(account.getId());
-    }
-
-    @Override
-    public int delete(long id) {
-        return delete(id);
-    }
-
-    @Override
-    public int deleteAll() {
-        return 0;
-    }
-
-    @Override
-    public Account get(long id) {
-        return restoreContentWithId(Account.class, AccountContract.ACCOUNT_URI, null, id);
-    }
-
-    @Override
-    public List<Account> getAll() {
-        return restoreContent(Account.class, AccountContract.ACCOUNT_URI, null);
+    protected void setTaskId(Account account, long id) {
+        account.setId(id);
     }
 
     @Override
     public double getAccountBalance(long accountId) {
-        return get(accountId).getAccountBalance();
+        return 3000;//get(accountId).getAccountBalance();
     }
 
     @Override
     public void updateAmount(long accountId, double balanceAmount) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(AccountContract.ACCOUNT_BALANCE, balanceAmount);
-        update(AccountContract.ACCOUNT_URI, accountId, contentValues);
+        //update(AccountContract.ACCOUNT_URI, accountId, contentValues);
     }
 
     @Override
     public Observable<List<Account>> loadAllAccounts() {
-        return Observable.create(new Observable.OnSubscribe<List<Account>>() {
-            @Override
-            public void call(Subscriber<? super List<Account>> subscriber) {
-                subscriber.onNext(getAll());
-                subscriber.onCompleted();
-            }
-        });
+        return getAll();
     }
 }

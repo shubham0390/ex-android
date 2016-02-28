@@ -8,11 +8,10 @@ import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
-import com.mmt.shubh.expensemanager.ui.models.ExpenseModel;
+import com.mmt.shubh.expensemanager.expense.ExpenseModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,9 +30,11 @@ public class SeedDataTask extends AbstractTask {
 
     public static final String ACTION_SEED = "com.SeedData";
     private String LOG_TAG = getClass().getName();
+    private ExpenseModel mExpenseModel;
 
-    public SeedDataTask(Context context) {
+    public SeedDataTask(Context context, ExpenseModel expenseModel) {
         super(context);
+        mExpenseModel = expenseModel;
     }
 
     @Override
@@ -46,7 +47,6 @@ public class SeedDataTask extends AbstractTask {
     }
 
     private void createExpense() {
-        ExpenseModel mExpenseModel = new ExpenseModel(mContext);
         for (int i = 1; i < 30; i++) {
             Expense expense = new Expense();
             expense.setExpenseAmount(1000);
@@ -151,7 +151,7 @@ public class SeedDataTask extends AbstractTask {
 
     private void addBankAccounts() {
         Logger.methodStart(LOG_TAG, "addBankAccounts");
-        AccountDataAdapter accountDataAdapter = new AccountSQLDataAdapter(mContext);
+        AccountDataAdapter accountDataAdapter = mExpenseModel.getAccountDataAdapter();
         for (int i = 1; i < 6; i++) {
             Account account = new Account();
             account.setAccountName("Account " + i);

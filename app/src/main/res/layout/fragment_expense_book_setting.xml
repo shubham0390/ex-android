@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/material_grey_100"
               android:orientation="vertical"
-              tools:context="com.mmt.shubh.expensemanager.ui.fragment.expensebook.ExpenseBookSettingFragment">
+              tools:context=".expensebook.ExpenseBookSettingFragment">
 
     <include layout="@layout/include_toolbar"/>
 

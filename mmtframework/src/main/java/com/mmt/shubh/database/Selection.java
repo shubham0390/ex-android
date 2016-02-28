@@ -26,6 +26,10 @@ public class Selection {
         mValue = value;
     }
 
+    public Selection(String columnName, String operation, long value) {
+        this(columnName, operation, String.valueOf(value));
+    }
+
     public Selection(String columnName, String operation, String[] value) {
         mColumnName = columnName;
         mOperation = operation;
@@ -54,6 +58,12 @@ public class Selection {
             sb.append(QueryBuilder.SPACE);
             sb.append(mValue);
         }
+    }
+
+    public String build() {
+        StringBuilder builder = new StringBuilder();
+        build(builder, null);
+        return builder.toString();
     }
 
     public void build(StringBuilder sb, String prefix, String prefix2) {

@@ -1,10 +1,8 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
+import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
@@ -12,16 +10,15 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
+import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
-import com.mmt.shubh.expensemanager.ui.fragment.ExpenseFilter;
-import com.mmt.shubh.expensemanager.ui.viewmodel.ExpenseListViewModel;
+import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
+import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
+import com.squareup.sqlbrite.BriteDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -31,13 +28,29 @@ import rx.Observable;
  * 5:10 PM
  * TODO:Add class comment.
  */
-public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
+public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
 
-    @Inject
-    public ExpenseSqlDataAdapter(Context context) {
-        super(ExpenseContract.EXPENSE_URI, context);
+    public ExpenseSqlDataAdapter(BriteDatabase briteDatabase) {
+        super(ExpenseContract.TABLE_NAME, briteDatabase);
     }
 
+    @Override
+    public Expense parseCursor(Cursor cursor) {
+        Expense expense = new Expense();
+        expense.setId(cursor.getLong(COLUMN_EXPENSE_ID));
+        expense.setExpenseAmount(cursor.getDouble(COLUMN_EXPENSE_AMOUNT));
+        expense.setExpenseDate(cursor.getLong(COLUMN_EXPENSE_DATE));
+        expense.setExpenseName(cursor.getString(COLUMN_EXPENSE_NAME));
+        expense.setExpensePlace(cursor.getString(COLUMN_EXPENSE_PLACE));
+        expense.setExpenseDescription(cursor.getString(COLUMN_EXPENSE_DESCRIPTION));
+        expense.setMemberMap(getMemberMap(expense.getId()));
+        expense.setExpenseBookId(cursor.getLong(COLUMN_EXPENSE_BOOK));
+        expense.setExpenseCategoryId(cursor.getLong(COLUMN_CATEGORY_KEY));
+        expense.setOwnerId(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
+        return expense;
+    }
+
+    @Override
     public ContentValues toContentValues(Expense expense) {
         ContentValues values = new ContentValues();
         values.put(EXPENSE_NAME, expense.getExpenseName());
@@ -54,16 +67,7 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
     }
 
     public void restore(Cursor cursor, Expense expense) {
-        expense.setId(cursor.getLong(COLUMN_EXPENSE_ID));
-        expense.setExpenseAmount(cursor.getDouble(COLUMN_EXPENSE_AMOUNT));
-        expense.setExpenseDate(cursor.getLong(COLUMN_EXPENSE_DATE));
-        expense.setExpenseName(cursor.getString(COLUMN_EXPENSE_NAME));
-        expense.setExpensePlace(cursor.getString(COLUMN_EXPENSE_PLACE));
-        expense.setExpenseDescription(cursor.getString(COLUMN_EXPENSE_DESCRIPTION));
-        expense.setMemberMap(getMemberMap(expense.getId()));
-        expense.setExpenseBookId(cursor.getLong(COLUMN_EXPENSE_BOOK));
-        expense.setExpenseCategoryId(cursor.getLong(COLUMN_CATEGORY_KEY));
-        expense.setOwnerId(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
+
     }
 
     private ExpenseCategory getCategory(long aLong) {
@@ -78,60 +82,41 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         return null;
     }
 
+
     @Override
-    public long create(Expense expense) {
-        Uri uri = save(expense);
-        List paths = uri.getPathSegments();
-        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+    protected void setTaskId(Expense expense, long id) {
         expense.setId(id);
-        return id;
     }
 
     @Override
-    public int update(Expense expense) {
-        return 0;
-    }
+    public Observable<List<ExpenseListViewModel>> getExpenseByMemberId(long memberId) {
 
-    @Override
-    public int delete(Expense expense) {
-        return 0;
-    }
+        String q = "SELECT " +
+                " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " ec.category_image ," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  " +
+                " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key" +
+                " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key" +
+                " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = " + memberId;
+        q = q + " WHERE " + ExpenseContract.OWNER_KEY + " = " + memberId;
 
-    @Override
-    public int delete(long id) {
-        return 0;
-    }
-
-    @Override
-    public int deleteAll() {
-        return 0;
-    }
-
-    @Override
-    public Expense get(long id) {
-        return null;
-    }
-
-    @Override
-    public List<Expense> getAll() {
-        return null;
-    }
-
-    @Override
-    public List<ExpenseListViewModel> getExpenseByMemberId(long memberId) {
-        List<ExpenseListViewModel> list = new ArrayList<>();
-        Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), memberId).build();
-        Cursor cursor = mContext.getContentResolver().query(uri, null, ExpenseContract.EXPENSE_BOOK_KEY + " = ?",
-                new String[]{String.valueOf(1)}, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(parseCursorForExpenseViewModel(cursor));
-            }
-        }
-        return list;
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
 
     private ExpenseListViewModel parseCursorForExpenseViewModel(Cursor cursor) {
+
         ExpenseListViewModel model = new ExpenseListViewModel();
         model.setExpenseId(cursor.getLong(cursor.getColumnIndex(ExpenseContract.RECORD_ID)));
         model.setExpenseTitle(cursor.getString(cursor.getColumnIndex(ExpenseContract.EXPENSE_NAME)));
@@ -142,20 +127,38 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         model.setMemberName(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
         model.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
         model.setAccountType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
-
+        model.setExpenseBookName(cursor.getString(cursor.getColumnIndex(ExpenseBookContract.EXPENSE_BOOK_NAME)));
         return model;
     }
 
     @Override
-    public List<ExpenseListViewModel> getExpenseByExpenseBookId(long expenseBookId) {
-        return null;
+    public Observable<List<ExpenseListViewModel>> getExpenseByExpenseBookId(long expenseBookId) {
+        String q = "SELECT " +
+                " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " ec.category_image ," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON e.category_key = ec._id  "
+                + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON e.expense_book_key = eb._id"
+                + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON e.account_key = a._id"
+                + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  e.owner_key = m._id";
+        q = q + " WHERE " + ExpenseContract.EXPENSE_BOOK_KEY + " = " + expenseBookId;
+
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
 
     @Override
-    public List<ExpenseListViewModel> getExpenseByMemberId(ExpenseFilter filter) {
-        List<ExpenseListViewModel> list = new ArrayList<>();
-        Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), filter.getMemberId()).build();
-
+    public Observable<List<ExpenseListViewModel>> getExpenseByMemberId(ExpenseFilter filter) {
         StringBuilder selection = new StringBuilder();
         boolean isExits = false;
         if (filter.getExpenseBookId() > 0) {
@@ -195,34 +198,55 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
             selection.append(filter.getAccountId());
         }
 
-
-        Cursor cursor = mContext.getContentResolver().query(uri, null, selection.toString(),
-                null, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                list.add(parseCursorForExpenseViewModel(cursor));
-            }
-        }
-        return list;
+        String q = "SELECT " +
+                " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " ec.category_image ," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON e.category_key = ec._id  "
+                + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON e.expense_book_key = eb._id"
+                + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON e.account_key = a._id"
+                + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  e.owner_key = m._id";
+        String selectionString = selection.toString();
+        if (!TextUtils.isEmpty(selectionString))
+            q = q + " WHERE " + selection.toString();
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
 
     @Override
     public Observable<List<ExpenseListViewModel>> getExpenseByAccountId(final long accountId) {
-        return Observable.create(subscriber -> {
-            List<ExpenseListViewModel> list = new ArrayList<>();
-            Uri uri = ContentUris.appendId(EXPENSE_LIST_URI.buildUpon(), accountId).build();
-            Cursor cursor = mContext.getContentResolver().query(uri, null, ExpenseContract.ACCOUNT_KEY + " = ?",
-                    new String[]{String.valueOf(accountId)}, ExpenseContract.EXPENSE_DATE + "ASC");
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    list.add(parseCursorForExpenseViewModel(cursor));
-                }
-            }
-            subscriber.onNext(list);
-            subscriber.onCompleted();
+        String q = "SELECT " +
+                " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " ec.category_image ," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  "
+                + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key"
+                + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key"
+                + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = e.owner_key";
+        q = q + " WHERE " + ExpenseContract.ACCOUNT_KEY + " = " + accountId;
 
-        });
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
-
 
 }
