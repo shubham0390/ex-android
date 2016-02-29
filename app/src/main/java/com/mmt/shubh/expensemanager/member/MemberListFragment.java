@@ -3,8 +3,6 @@ package com.mmt.shubh.expensemanager.member;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -17,6 +15,8 @@ import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -63,19 +63,13 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     }
 
     private void setupListener() {
-        mContentView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
-            @Override
-            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-                MemberListFragment.this.onMemberItemClick(id);
-                return true;
-            }
+        mContentView.setOnItemClickListener((parent, view, position, id) -> {
+            onMemberItemClick(position);
+            return true;
         });
-        mContentView.setOnItemLongClickListener((new ListRecyclerView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(RecyclerView parent, View view, int position, long id) {
-                MemberListFragment.this.deleteMember(id);
-                return true;
-            }
+        mContentView.setOnItemLongClickListener(((parent, view, position, id) -> {
+            MemberListFragment.this.deleteMember(id);
+            return true;
         }));
     }
 
@@ -83,9 +77,10 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
         mPresenter.deleteMember(id);
     }
 
-    private void onMemberItemClick(long id) {
+    private void onMemberItemClick(int position) {
         Intent intent = new Intent(getActivity(), MemberDetailActivity.class);
-        intent.putExtra(Constants.KEY_MEMBER_ID, id);
+        Member member = mListAdapter.getItem(position);
+        intent.putExtra(Constants.EXTRA_MEMBER, Parcels.wrap(member));
         startActivity(intent);
     }
 

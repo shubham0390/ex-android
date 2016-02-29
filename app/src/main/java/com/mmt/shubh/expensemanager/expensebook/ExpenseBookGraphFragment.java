@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -84,10 +83,10 @@ public class ExpenseBookGraphFragment extends Fragment {
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
-        BarData data = new BarData(xVals, dataSets);
+       /* BarData data = new BarData(xVals, dataSets);
         data.setDrawValues(true);
 
-        mChart.setData(data);
+        mChart.setData(data);*/
         return view;
     }
 

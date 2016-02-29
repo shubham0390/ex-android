@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 
 import dagger.Component;
 
@@ -26,6 +26,4 @@ public interface ExpenseBookActivityComponent {
     void inject(ExpenseBookListFragment bookListFragment);
 
     void inject(ExpenseBookActivity expenseBookActivity);
-
-    //ExpenseBookDataAdapter<ExpenseBook> getExpenseBookDataAdapter(Context context);
 }

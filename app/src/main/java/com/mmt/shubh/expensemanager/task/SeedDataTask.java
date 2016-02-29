@@ -2,13 +2,13 @@ package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Subham Tyagi,
  * on 09/Nov/2015,
@@ -29,12 +31,14 @@ import java.util.Random;
 public class SeedDataTask extends AbstractTask {
 
     public static final String ACTION_SEED = "com.SeedData";
+    ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private String LOG_TAG = getClass().getName();
     private ExpenseModel mExpenseModel;
 
-    public SeedDataTask(Context context, ExpenseModel expenseModel) {
+    public SeedDataTask(Context context, ExpenseModel expenseModel, ExpenseBookDataAdapter expenseBookDataAdapter) {
         super(context);
         mExpenseModel = expenseModel;
+        mExpenseBookDataAdapter = expenseBookDataAdapter;
     }
 
     @Override
@@ -68,7 +72,6 @@ public class SeedDataTask extends AbstractTask {
 
     private void addExpenseBook(List<Member> members) {
         Logger.methodStart(LOG_TAG, "addExpenseBook");
-        ExpenseBookSQLDataAdapter expenseBookSQLDataAdapter = new ExpenseBookSQLDataAdapter(mContext);
 
         for (int i = 1; i < 6; i++) {
             ExpenseBook expenseBook = new ExpenseBook();
@@ -79,8 +82,10 @@ public class SeedDataTask extends AbstractTask {
             expenseBook.setMemberList(members);
             expenseBook.setOwner(members.get(i));
             expenseBook.setCreationTime(System.currentTimeMillis());
-            expenseBookSQLDataAdapter.create(expenseBook);
-            expenseBookSQLDataAdapter.addMember(expenseBook);
+            mExpenseBookDataAdapter.create(expenseBook)
+                    .subscribeOn(Schedulers.immediate())
+                    .observeOn(Schedulers.immediate())
+                    .subscribe(d -> mExpenseBookDataAdapter.addMember(expenseBook));
         }
         Logger.methodEnd(LOG_TAG, "addExpenseBook");
     }

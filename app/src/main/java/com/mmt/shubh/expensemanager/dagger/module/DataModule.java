@@ -6,13 +6,17 @@ import android.content.SharedPreferences;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.dagger.module.api.IDataModule;
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -66,6 +70,18 @@ public class DataModule implements IDataModule {
     @Singleton
     public MemberExpenseDataAdapter provideMemberExpenseDataAdapter() {
         return new MemberExpenseSQLDataAdapter(mContext);
+    }
+
+    @Provides
+    @Singleton
+    public MemberDataAdapter provideMemberDataAdapter() {
+        return new MemberSQLDataAdapter(mContext);
+    }
+
+    @Provides
+    @Singleton
+    ExpenseBookDataAdapter provideExpenseBookDataAdapter() {
+        return new ExpenseBookSQLDataAdapter(mContext, getBriteDatabase());
     }
 
     @Override

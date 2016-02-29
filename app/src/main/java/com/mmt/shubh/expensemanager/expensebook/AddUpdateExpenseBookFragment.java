@@ -24,8 +24,9 @@ import android.widget.Toast;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.mvp.MVPView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
@@ -95,11 +96,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     }
 
     @Override
-    protected ExpenseBookFragmentPresenter getPresenter() {
-        return new ExpenseBookFragmentPresenter(mContext);
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -147,7 +143,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
                 if (isCamera) {
                     selectedImageUri = mOutputFileUri;
                 } else {
-                    selectedImageUri = data == null ? null : data.getData();
+                    selectedImageUri = data.getData();
                 }
 
                 final InputStream imageStream;
@@ -227,14 +223,16 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     @Override
     public void showEmptyError() {
         Toast.makeText(getActivity().getApplicationContext(), getString(R.string
-                .error_empty_expense_book_name), Toast.LENGTH_LONG).show();
+                        .error_empty_expense_book_name),
+                Toast.LENGTH_LONG).show();
         mExpenseName.requestFocus();
     }
 
     @Override
     public void showDuplicateExpenseBook() {
         Toast.makeText(getActivity().getApplicationContext(), getString(R.string
-                .error_expense_book_already_exists), Toast.LENGTH_LONG).show();
+                        .error_expense_book_already_exists),
+                Toast.LENGTH_LONG).show();
         mExpenseName.requestFocus();
     }
 
@@ -261,12 +259,21 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
 
     @Override
     public void exit() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AddUpdateExpenseBookFragment.this.getActivity().finish();
-            }
-        });
+        getActivity().runOnUiThread(() -> AddUpdateExpenseBookFragment.this.getActivity().finish());
     }
 
+    @Override
+    public void onExpenseBookUpdate() {
+        exit();
+    }
+
+    @Override
+    protected void injectDependencies(MainComponent mainComponent) {
+        DaggerExpenseBookUpdateActivityComponent
+                .builder()
+                .mainComponent(mainComponent)
+                .moduleExpneseBookUpdate(new ModuleExpneseBookUpdate())
+                .build()
+                .inject(this);
+    }
 }

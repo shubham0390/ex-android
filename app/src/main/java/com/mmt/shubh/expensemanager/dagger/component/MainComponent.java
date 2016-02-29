@@ -9,7 +9,9 @@ import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 import com.mmt.shubh.expensemanager.dagger.module.DataModule;
 import com.mmt.shubh.expensemanager.dagger.module.MainModule;
 import com.mmt.shubh.expensemanager.dagger.module.NetworkModule;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
@@ -41,6 +43,10 @@ public interface MainComponent extends DaggerObjectGraph {
     TransactionDataAdapter getTransactionDataAdapter();
 
     MemberExpenseDataAdapter getMemberExpenseDataAdapter();
+
+    MemberDataAdapter getMemberDataAdapter();
+
+    ExpenseBookDataAdapter getExpenseBookDataAdapter();
 
     Retrofit getRetrofit();
 

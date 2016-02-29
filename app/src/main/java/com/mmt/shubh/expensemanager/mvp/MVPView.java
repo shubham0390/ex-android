@@ -7,4 +7,5 @@ package com.mmt.shubh.expensemanager.mvp;
  * TODO:Add class comment.
  */
 public interface MVPView {
+
 }

@@ -1,21 +1,17 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Context;
-import android.content.Loader;
-import android.os.Bundle;
-
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -24,15 +20,12 @@ import javax.inject.Inject;
  * TODO:Add class comment.
  */
 public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<List<ExpenseBook>>>
-        implements MVPPresenter<MVPLCEView<List<ExpenseBook>>>, LoaderManager.LoaderCallbacks<List<ExpenseBook>> {
+        implements MVPPresenter<MVPLCEView<List<ExpenseBook>>> {
 
-    private Context mContext;
-
-    @Inject
     ExpenseBookDataAdapter mExpenseBookDataAdapter;
 
-    public ExpenseBookListPresenter(Context context, ExpenseBookDataAdapter adapter) {
-        mContext = context;
+    @Inject
+    public ExpenseBookListPresenter(ExpenseBookDataAdapter adapter) {
         mExpenseBookDataAdapter = adapter;
     }
 
@@ -44,37 +37,18 @@ public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<Li
     public void pause() {
     }
 
-    @Override
-    public Loader<List<ExpenseBook>> onCreateLoader(int i, Bundle bundle) {
-        return new ExpenseBookListLoader(mContext, mExpenseBookDataAdapter);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<ExpenseBook>> loader, List<ExpenseBook> expenseBooks) {
-        getView().setData(expenseBooks);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<ExpenseBook>> loader) {
-
-    }
 
     public void deleteExpenseBook(long id) {
         mExpenseBookDataAdapter.delete(id);
     }
 
-    private static class ExpenseBookListLoader extends AsyncTaskLoader<List<ExpenseBook>> {
-        WeakReference<ExpenseBookDataAdapter> mAdapterWeakReference;
+    public void loadExpenseBookList() {
+        mExpenseBookDataAdapter.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(d -> getView().setData(d), e -> getView().showError(e, false));
 
-        public ExpenseBookListLoader(Context context, ExpenseBookDataAdapter adapter) {
-            super(context);
-            mAdapterWeakReference = new WeakReference<>(adapter);
-        }
-
-        @Override
-        public List<ExpenseBook> loadInBackground() {
-            return mAdapterWeakReference.get().getAll();
-        }
     }
 
 }
+

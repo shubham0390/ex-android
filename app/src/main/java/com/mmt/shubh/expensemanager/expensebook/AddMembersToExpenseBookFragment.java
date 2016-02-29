@@ -11,22 +11,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.mmt.shubh.expensemanager.expense.AddMemberToExpenseBookTask;
 import com.mmt.shubh.expensemanager.Constants;
-import com.mmt.shubh.expensemanager.member.ContactsMetaData;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
-import com.mmt.shubh.expensemanager.task.TaskProcessor;
-import com.mmt.shubh.expensemanager.task.TaskResult;
 import com.mmt.shubh.expensemanager.member.ContactPickerAdapter;
+import com.mmt.shubh.expensemanager.member.ContactsMetaData;
+import com.mmt.shubh.expensemanager.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
+import com.mmt.shubh.expensemanager.task.TaskResult;
 
 import org.parceler.Parcels;
 
@@ -34,12 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddMembersToExpenseBookFragment extends Fragment implements SearchView.OnQueryTextListener, OnTaskCompleteListener {
+public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpenseView, AddMemberPresenter>
+        implements SearchView.OnQueryTextListener, OnTaskCompleteListener, AddUpdateExpenseView {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -55,15 +53,16 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
     public AddMembersToExpenseBookFragment() {
     }
 
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.fragment_add_members_to_expense_book;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_members_to_expense_book, container, false);
-        ButterKnife.bind(this, view);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
         setupRecyclerView();
-        return view;
     }
 
     @Override
@@ -77,13 +76,8 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
         int id = item.getItemId();
         if (id == R.id.action_next) {
             Log.d("Selected contacts", mContactPickerAdapter.getSelectedItems().toString());
-
-            AddMemberToExpenseBookTask task = new AddMemberToExpenseBookTask(getActivity(), mContactsMetaDataList,
-                    mContactPickerAdapter.getSelectedItems(), mExpenseBook.getId());
-            // TODO: 9/18/2015 show progress bar
-            TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
-            taskProcessor.setOnTaskCompleteListener(this);
-            taskProcessor.execute(task);
+            mPresenter.addMembersToExpenseBook(mContactsMetaDataList, mContactPickerAdapter.getSelectedItems()
+                    , mExpenseBook.getId());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -173,5 +167,25 @@ public class AddMembersToExpenseBookFragment extends Fragment implements SearchV
     public void onTaskComplete(String action, TaskResult taskResult) {
         // TODO: 9/18/2015 hide progress bar
         getActivity().finish();
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    protected void injectDependencies(MainComponent mainComponent) {
+        super.injectDependencies(mainComponent);
+    }
+
+    @Override
+    public void onMemberAdd(Boolean v) {
+        getActivity().finish();
+    }
+
+    @Override
+    public void onMemberAddError(Throwable e) {
+
     }
 }

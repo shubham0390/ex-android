@@ -22,6 +22,7 @@ public interface Constants {
     String KEY_USER_ID = "userId";
     String KEY_EXPENSE_BOOK = "groupId";
     String KEY_MEMBER_ID = "memberId";
+    String EXTRA_MEMBER = "member";
     String KEY_RESULT_CODE = "result_code";
     String KEY_REQUEST_CODE = "request_code";
     String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";

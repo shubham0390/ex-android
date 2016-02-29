@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.mvp.MVPActivity;
 
 import butterknife.Bind;
+import timber.log.Timber;
 
 /**
  * Created by Subham Tyagi,
@@ -31,6 +32,7 @@ public class ToolBarActivity extends MVPActivity {
         super.onCreate(savedInstanceState, persistentState);
         ExpenseApplication application = (ExpenseApplication) getApplication();
         mTracker = application.getDefaultTracker();
+        Timber.tag(getClass().getName());
     }
 
     @Override

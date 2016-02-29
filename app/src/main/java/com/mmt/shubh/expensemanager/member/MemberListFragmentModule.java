@@ -5,7 +5,6 @@ import android.content.Context;
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
@@ -23,13 +22,6 @@ import dagger.Provides;
  */
 @Module
 public class MemberListFragmentModule {
-
-
-    @Provides
-    @ActivityScope
-    MemberDataAdapter provideMemberDataAdapter(Context context) {
-        return new MemberSQLDataAdapter(context);
-    }
 
     @Provides
     @ActivityScope

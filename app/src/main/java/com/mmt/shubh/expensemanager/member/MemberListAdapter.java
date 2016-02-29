@@ -55,6 +55,28 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         return mMembers.get(position).getId();
     }
 
+    public Member getItem(int position) {
+        return mMembers.get(position);
+    }
+
+    public boolean isCanDelete() {
+        return mCanDelete;
+    }
+
+    public void setCanDelete(boolean canDelete) {
+        mCanDelete = canDelete;
+    }
+
+    public List<Member> getMembers() {
+        return mMembers;
+    }
+
+    @UiThread
+    public void setMembers(List<Member> members) {
+        mMembers.addAll(members);
+        notifyDataSetChanged();
+    }
+
     public static class MemberViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.member_name)
@@ -95,23 +117,5 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             }
         }
 
-    }
-
-    public boolean isCanDelete() {
-        return mCanDelete;
-    }
-
-    public void setCanDelete(boolean canDelete) {
-        mCanDelete = canDelete;
-    }
-
-    public List<Member> getMembers() {
-        return mMembers;
-    }
-
-    @UiThread
-    public void setMembers(List<Member> members) {
-        mMembers.addAll(members);
-        notifyDataSetChanged();
     }
 }

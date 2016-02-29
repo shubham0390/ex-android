@@ -1,7 +1,22 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.provider.ContactsContract;
+
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
+import com.mmt.shubh.expensemanager.debug.Logger;
+import com.mmt.shubh.expensemanager.member.ContactsMetaData;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by Subham Tyagi,
@@ -11,11 +26,141 @@ import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
  */
 public class ExpenseBookModel {
 
+    private final String TAG = getClass().getName();
+
     private ExpenseBookDataAdapter mExpenseBookDataAdapter;
 
     private MemberDataAdapter mMemberDataAdapter;
 
-    public ExpenseBookModel(ExpenseBookDataAdapter dataAdapter) {
+    private Context mContext;
+
+    public ExpenseBookModel(Context context, ExpenseBookDataAdapter dataAdapter, MemberDataAdapter memberDataAdapter) {
         mExpenseBookDataAdapter = dataAdapter;
+        mContext = context;
+        mMemberDataAdapter = memberDataAdapter;
     }
+
+    public Observable<Boolean> addMemberToExpenseBook(List<ContactsMetaData> contactsMetaDataList,
+                                                      List<Integer> selectedItems, long id) {
+        return Observable.create(subscriber -> {
+            saveMemberDetails(contactsMetaDataList, selectedItems, id);
+            subscriber.onNext(true);
+            subscriber.onCompleted();
+        });
+
+    }
+
+    /**
+     * save members and their details of the newly created expense book
+     *
+     * @param mContactsList
+     * @param selectedItems
+     * @param id
+     */
+    private void saveMemberDetails(List<ContactsMetaData> mContactsList, List<Integer> selectedItems, long id) {
+        Logger.methodStart(TAG, "saveMemberDetails");
+        List<Member> memberList = new ArrayList<>();
+
+        for (int selectedIndex : selectedItems) {
+            String contactId = mContactsList.get(selectedIndex).getContactId();
+            Member memberDetails = fetchContactDetails(contactId);
+            memberList.add(memberDetails);
+        }
+
+        saveMemberDetailsToDB(memberList);
+        mExpenseBookDataAdapter.addMembers(memberList, id);
+
+        Logger.methodEnd(TAG, "saveMemberDetails");
+    }
+
+    /**
+     * fetch name, contact number, email-id for a contact-id.
+     *
+     * @param contactId id of the contact whose details are required.
+     * @return Member object with all member details
+     */
+    private Member fetchContactDetails(String contactId) {
+        Logger.methodStart(TAG, "fetchContactDetails");
+
+        Cursor contactsCursor = mContext.getContentResolver().query(ContactsContract
+                .Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + " ?=", new
+                String[]{contactId}, ContactsContract.Contacts.DISPLAY_NAME);
+
+        Member member = new Member();
+
+        try {
+            if (contactsCursor != null && contactsCursor.moveToFirst()) {
+                String id = contactsCursor.getString(contactsCursor.getColumnIndex
+                        (ContactsContract.Contacts._ID));
+                String name = contactsCursor.getString(contactsCursor.getColumnIndex
+                        (ContactsContract.Contacts.DISPLAY_NAME));
+                String photoURI = contactsCursor.getString(contactsCursor.getColumnIndex
+                        (ContactsContract.Contacts.PHOTO_URI));
+                Cursor phoneNumberCursor = mContext.getContentResolver().query
+                        (ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " " +
+                                        "=?", new String[]{contactId}, null);
+                int phoneNo = phoneNumberCursor.getInt(phoneNumberCursor.getColumnIndex
+                        (ContactsContract.CommonDataKinds.Phone.NUMBER));
+                String email = phoneNumberCursor.getString(phoneNumberCursor.getColumnIndex
+                        (ContactsContract.CommonDataKinds.Email.ADDRESS));
+                member.setMemberName(name);
+                member.setMemberEmail(email);
+                member.setProfilePhotoUrl(photoURI);
+                member.setMemberPhoneNumber(phoneNo);
+            }
+        } finally {
+            if (contactsCursor != null) {
+                contactsCursor.close();
+            }
+        }
+
+        Logger.methodEnd(TAG, "fetchContactDetails");
+        return member;
+
+    }
+
+    /**
+     * save member details to database
+     *
+     * @param memberDetails member details to be saved
+     */
+    private void saveMemberDetailsToDB(List<Member> memberDetails) {
+        Logger.methodStart(TAG, "saveMemberDetailsToDB()");
+        mMemberDataAdapter.create(memberDetails);
+        Logger.methodEnd(TAG, "saveMemberDetailsToDB()");
+    }
+
+    public Observable<ExpenseBook> addExpenseBook(ExpenseBook expenseBook, boolean isUpdate) {
+        Logger.debug(TAG, "entered execute");
+
+        if (isUpdate) {
+            Logger.debug(TAG, "Updating expense book");
+            return mExpenseBookDataAdapter.update(expenseBook);
+        } else {
+            Logger.debug(TAG, "Creating new expense book");
+            return saveExpenseBookDetails(expenseBook);
+        }
+    }
+
+    /**
+     * creates a new expense book entry in the database
+     *
+     * @param mExpenseBook
+     */
+    private Observable<ExpenseBook> saveExpenseBookDetails(ExpenseBook mExpenseBook) {
+        Logger.debug(TAG, "entered saveExpenseBookDetails()");
+
+        mExpenseBook.setType("public");
+
+        UserSettings userSettings = UserSettings.getInstance();
+        MemberDataAdapter memberDataAdapter = new MemberSQLDataAdapter(mContext);
+        mExpenseBook.setOwner(memberDataAdapter.get(userSettings.getUserInfo().getMemberKey()));
+
+        mExpenseBook.setCreationTime(System.currentTimeMillis());
+        Logger.debug(TAG, "exiting saveExpenseBookDetails()");
+        return mExpenseBookDataAdapter.create(mExpenseBook);
+
+    }
+
 }

@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
 import timber.log.Timber;
 
 public abstract class MVPAbstractPresenter<V extends MVPView> {
-
+    protected String TAG = getClass().getName();
     private WeakReference<V> viewRef;
 
     public MVPAbstractPresenter() {
@@ -20,6 +20,7 @@ public abstract class MVPAbstractPresenter<V extends MVPView> {
     public void attachView(V view) {
         viewRef = new WeakReference<>(view);
         injectDependencies((MainComponent) ExpenseApplication.component());
+        Timber.tag(getClass().getName());
     }
 
     /**

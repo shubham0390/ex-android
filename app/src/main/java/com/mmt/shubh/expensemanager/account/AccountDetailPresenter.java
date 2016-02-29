@@ -8,10 +8,8 @@ import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -56,35 +54,21 @@ public class AccountDetailPresenter extends MVPAbstractPresenter<IAccountDetailV
     }
 
     private void createGraphData(List<ExpenseListViewModel> listViewModels) {
-        Map<Long, Double> mapData = new HashMap<>();
+        Map<Integer, Double> mapData = new HashMap<>();
+
         for (ExpenseListViewModel expenseListViewModel : listViewModels) {
 
             long expenseTime = expenseListViewModel.getExpenseDateInMill();
 
-            Set<Long> keys = mapData.keySet();
-
-            Iterator<Long> iterator = keys.iterator();
             Double expenseAmount = expenseListViewModel.getExpenseAmount();
+            Integer mnth = DateUtil.getMonthCount(expenseTime);
 
-            boolean isAdded = false;
-
-            while (iterator.hasNext()) {
-
-                long key = iterator.next();
-
-                long timeDiff = DateUtil.getTimeDifference(key, expenseTime);
-
-                if (timeDiff < MONTH) {
-                    Double amount = mapData.get(key);
-                    amount += expenseAmount;
-                    mapData.put(key, amount);
-                    isAdded = true;
-                    break;
-                }
-            }
-
-            if (!isAdded) {
-                mapData.put(expenseTime, expenseAmount);
+            if (mapData.containsKey(mnth)) {
+                Double amount = mapData.get(mnth);
+                amount += expenseAmount;
+                mapData.put(mnth, amount);
+            } else {
+                mapData.put(mnth, expenseAmount);
             }
         }
         getView().setData(mapData);

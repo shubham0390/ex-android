@@ -2,15 +2,13 @@ package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
@@ -18,6 +16,8 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -30,10 +30,13 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.mmt.shubh.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
 
     ExpenseModel mExpenseModel;
+    ExpenseBookDataAdapter mExpenseBookDataAdapter;
 
-    public ExpenseBookAndCashAccountSetupAccount(Context context, ExpenseModel expenseModel) {
+    public ExpenseBookAndCashAccountSetupAccount(Context context, ExpenseModel expenseModel,
+                                                 ExpenseBookDataAdapter expenseBookDataAdapter) {
         super(context);
         mExpenseModel = expenseModel;
+        mExpenseBookDataAdapter = expenseBookDataAdapter;
     }
 
     @Override
@@ -65,16 +68,14 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         expenseBook.setMemberList(members);
         expenseBook.setOwner(member);
         expenseBook.setCreationTime(System.currentTimeMillis());
-        ExpenseBookSQLDataAdapter expenseBookSQLDataAdapter = new ExpenseBookSQLDataAdapter(mContext);
-        long id = expenseBookSQLDataAdapter.create(expenseBook);
-        expenseBookSQLDataAdapter.addMembers(members, expenseBook);
+        mExpenseBookDataAdapter.create(expenseBook)
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                    mExpenseBookDataAdapter.addMembers(members, expenseBook);
 
-        if (id > 0) {
-            Log.d(Constants.LOG_TAG, "Created private expense book  successfully");
-            return true;
-        } else {
-            Log.d(Constants.LOG_TAG, "Expense book creating failed");
-        }
+                });
+
         return false;
     }
 
@@ -86,14 +87,7 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         account.setAccountBalance(10000);
         account.setType(Account.TYPE_CASH);
         account.setAccountNumber("Cash");
-        /*long id = */
         dataAdapter.create(account);
-        /*if (id > 0) {
-            Log.d(Constants.LOG_TAG, "Created Account successfully");
-            return true;
-        } else {
-            Log.d(Constants.LOG_TAG, "Account creating failed");
-        }*/
         return false;
     }
 

@@ -9,6 +9,7 @@
         android:id="@+id/accountSummaryChart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_marginBottom="24dp"
         />
 
     <com.mmt.shubh.expensemanager.expense.ExpenseListView

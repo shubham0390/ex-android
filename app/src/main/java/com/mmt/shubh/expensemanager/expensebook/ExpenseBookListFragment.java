@@ -1,27 +1,23 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.base.RecyclerViewFragment;
 import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<List<ExpenseBook>>, ExpenseBookListPresenter>
@@ -29,7 +25,7 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
 
     public static final String TAG = "ExpenseBookListFragment";
 
-    private ExpenseBookListAdapter mExpenseBookListAdapter;
+    ExpenseBookListAdapter mExpenseBookListAdapter;
 
     private long selectedExpenseBookId;
 
@@ -45,25 +41,19 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadData(false);
-        mExpenseBookListAdapter = new ExpenseBookListAdapter(new ArrayList<ExpenseBook>());
+        mExpenseBookListAdapter = new ExpenseBookListAdapter();
         ListRecyclerView recyclerView = (ListRecyclerView) mRecyclerView;
 
-        recyclerView.setOnItemClickListener(new ListRecyclerView.OnItemClickListener() {
-            @Override
-            public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-                selectedExpenseBookId = id;
-                ExpenseBookListFragment.this.installExpenseBookDetail(position);
-                return true;
-            }
+        recyclerView.setOnItemClickListener((parent, view, position, id) -> {
+            selectedExpenseBookId = id;
+            ExpenseBookListFragment.this.installExpenseBookDetail(position);
+            return true;
         });
 
-        recyclerView.setOnItemLongClickListener(new ListRecyclerView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(RecyclerView parent, View view, int position, long id) {
-                selectedExpenseBookId = id;
-                ExpenseBookListFragment.this.showConfirmationDialog();
-                return true;
-            }
+        recyclerView.setOnItemLongClickListener((parent, view, position, id) -> {
+            selectedExpenseBookId = id;
+            ExpenseBookListFragment.this.showConfirmationDialog();
+            return true;
         });
     }
 
@@ -76,19 +66,13 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
         builder.setTitle(R.string.delete_expense_book_dialog_title);
         builder.setMessage(R.string.delete_expense_book_dialog_message);
 
-        builder.setPositiveButton(R.string.deleted_key, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                deleteExpenseBook();
-            }
+        builder.setPositiveButton(R.string.deleted_key, (dialog, which) -> {
+            dialog.dismiss();
+            deleteExpenseBook();
         });
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
+            dialog.dismiss();
         });
     }
 
@@ -161,7 +145,7 @@ public class ExpenseBookListFragment extends RecyclerViewFragment<MVPLCEView<Lis
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        getLoaderManager().restartLoader(12345, null, mPresenter).forceLoad();
+        mPresenter.loadExpenseBookList();
     }
 
 

@@ -12,6 +12,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,8 +29,8 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
 
     List<ExpenseBook> mExpenseBooks;
 
-    public ExpenseBookListAdapter(List<ExpenseBook> expenseBooks) {
-        mExpenseBooks = expenseBooks;
+    public ExpenseBookListAdapter() {
+        mExpenseBooks = new ArrayList<>();
     }
 
     @Override
@@ -56,6 +57,11 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
 
     public ExpenseBook getItem(int position) {
         return mExpenseBooks.get(position);
+    }
+
+    public void addData(List<ExpenseBook> expenseBooks) {
+        mExpenseBooks = expenseBooks;
+        notifyDataSetChanged();
     }
 
     static class ExpenseBookViewHolder extends RecyclerView.ViewHolder {
@@ -87,10 +93,5 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
                     .buildRound(String.valueOf(expenseBook.getName().charAt(0)), generator.getRandomColor());
             mProfileImage.setImageDrawable(drawable);
         }
-    }
-
-    public void addData(List<ExpenseBook> expenseBooks) {
-        mExpenseBooks = expenseBooks;
-        notifyDataSetChanged();
     }
 }

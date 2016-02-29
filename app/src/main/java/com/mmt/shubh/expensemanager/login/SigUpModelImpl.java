@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.login;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
@@ -30,6 +31,8 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private final String TAG = getClass().getName();
     @Inject
     ExpenseModel mExpenseModel;
+    @Inject
+    ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private TaskProcessor mTaskProcessor;
     private SignUpModelCallback mSignUpModelCallback;
     private MemberRestService memberRestService;
@@ -79,7 +82,7 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
             case ExpenseBookAndCashAccountSetupAccount.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK:
                 Logger.debug(TAG, "Account setup complete.Launching home activity");
                 TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
-                taskProcessor.execute(new SeedDataTask(mContext, mExpenseModel));
+                taskProcessor.execute(new SeedDataTask(mContext, mExpenseModel, mExpenseBookDataAdapter));
                 break;
             case SeedDataTask.ACTION_SEED:
                 Logger.debug(TAG, "Data seed Succefull");
@@ -91,7 +94,7 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private void handleCreateUserTaskResult(TaskResult taskResult) {
 
         Logger.debug(TAG, "User created successful .Starting setup task");
-        mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext, mExpenseModel));
+        mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext, mExpenseModel, mExpenseBookDataAdapter));
 
         mSignUpModelCallback.onError(taskResult.getStatusCode());
 

@@ -1,16 +1,17 @@
 package com.mmt.shubh.expensemanager.member;
 
-import android.content.Context;
-
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by Subham Tyagi,
@@ -20,38 +21,43 @@ import rx.Subscriber;
  */
 public class MemberModel {
 
-    Context mContext;
 
-    @Inject
     MemberDataAdapter mMemberDataAdapter;
 
+    ExpenseDataAdapter mExpenseDataAdapter;
+
+    ExpenseBookDataAdapter mExpenseBookDataAdapter;
+
     @Inject
-    public MemberModel(Context context, MemberDataAdapter memberDataAdapter) {
-        mContext = context;
+    public MemberModel(MemberDataAdapter memberDataAdapter, ExpenseDataAdapter expenseDataAdapter,
+                       ExpenseBookDataAdapter expenseBookDataAdapter) {
         mMemberDataAdapter = memberDataAdapter;
+        mExpenseDataAdapter = expenseDataAdapter;
+        mExpenseBookDataAdapter = expenseBookDataAdapter;
     }
 
 
     public Observable<Member> getMemberDetails(final long id) {
-        return Observable.create(new Observable.OnSubscribe<Member>() {
-            @Override
-            public void call(Subscriber<? super Member> subscriber) {
-                Member member = mMemberDataAdapter.get(id);
-                subscriber.onNext(member);
-                subscriber.onCompleted();
-            }
+        return Observable.create(subscriber -> {
+            Member member = mMemberDataAdapter.get(id);
+            subscriber.onNext(member);
+            subscriber.onCompleted();
         });
     }
 
     public Observable<List<Member>> getAllMembers() {
-        return Observable.create(new Observable.OnSubscribe<List<Member>>() {
-            @Override
-            public void call(Subscriber<? super List<Member>> subscriber) {
-                List<Member> members = mMemberDataAdapter.getAll();
-                subscriber.onNext(members);
-                subscriber.onCompleted();
-            }
+        return Observable.create(subscriber -> {
+            List<Member> members = mMemberDataAdapter.getAll();
+            subscriber.onNext(members);
+            subscriber.onCompleted();
         });
     }
 
+    public Observable<List<ExpenseListViewModel>> loadAllExpenseByMemberId(long id) {
+        return mExpenseDataAdapter.getExpenseByMemberId(id);
+    }
+
+    public Observable<List<ExpenseBook>> loadAllExpneseBooksByMemberId(long id) {
+        return mExpenseBookDataAdapter.getByMemberId(id);
+    }
 }

@@ -33,10 +33,9 @@ public class DateUtil {
         return Math.abs(time1 - time2);
     }
 
-    public static String getMonthName(Long key) {
-        DateTime dateTime = new DateTime(key);
-        int month = dateTime.getMonthOfYear();
-        switch (month) {
+    public static String getMonthName(int key) {
+
+        switch (key) {
             case 1:
                 return "Jan";
             case 2:
@@ -63,5 +62,15 @@ public class DateUtil {
                 return "Dec";
         }
         return null;
+    }
+
+    public static int getMonthCount(long key) {
+        DateTime dateTime = new DateTime(key);
+        return dateTime.getMonthOfYear();
+    }
+
+    public static int getMonthYear(long key) {
+        DateTime dateTime = new DateTime(key);
+        return dateTime.getYear();
     }
 }

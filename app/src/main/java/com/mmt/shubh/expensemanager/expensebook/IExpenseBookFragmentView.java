@@ -24,4 +24,6 @@ public interface IExpenseBookFragmentView extends MVPView {
     void hideProgress();
 
     void exit();
+
+    void onExpenseBookUpdate();
 }

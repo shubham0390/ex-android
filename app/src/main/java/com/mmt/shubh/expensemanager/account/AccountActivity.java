@@ -70,6 +70,8 @@ public class AccountActivity extends ToolBarActivity implements IAccountActivity
         switch (id) {
             case R.id.action_settings:
                 break;
+            case android.R.id.home:
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

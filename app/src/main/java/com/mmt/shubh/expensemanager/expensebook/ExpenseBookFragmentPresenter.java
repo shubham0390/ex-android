@@ -1,21 +1,17 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mmt.shubh.expensemanager.expense.AddUpdateExpenseBookTask;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.debug.Logger;
-import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
-import com.mmt.shubh.expensemanager.task.TaskProcessor;
-import com.mmt.shubh.expensemanager.task.TaskResult;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
-import com.mmt.shubh.expensemanager.utils.Validator;
 
 import org.parceler.Parcels;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -24,18 +20,12 @@ import org.parceler.Parcels;
  * TODO:Add class comment.
  */
 public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseBookFragmentView>
-        implements MVPPresenter<IExpenseBookFragmentView>, OnTaskCompleteListener {
+        implements MVPPresenter<IExpenseBookFragmentView> {
 
-    private final String TAG = getClass().getName();
+    ExpenseBookModel mExpenseBookModel;
 
-    private Context mContext;
-
-    TaskProcessor mTaskProcessor;
-
-    public ExpenseBookFragmentPresenter(Context context) {
-        mContext = context;
-        mTaskProcessor = TaskProcessor.getTaskProcessor();
-        mTaskProcessor.setOnTaskCompleteListener(this);
+    public ExpenseBookFragmentPresenter(ExpenseBookModel expenseBookModel) {
+        mExpenseBookModel = expenseBookModel;
     }
 
     public void validateExpenseNameAndProceed(String expenseName, String mOutputFileUri,
@@ -44,18 +34,30 @@ public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseB
             getView().showEmptyError();
             return;
         }
-        if (Validator.expenseNameExist(mContext, expenseName) && !isUpdate) {
+        // TODO: 2/29/16 Add a check for duplicate expense book via name
+        /*if (Validator.expenseNameExist(mContext, expenseName) && !isUpdate) {
             getView().showDuplicateExpenseBook();
             return;
-        }
+        }*/
 
         ExpenseBook expenseBook = new ExpenseBook();
 
         expenseBook.setName(expenseName);
         expenseBook.setProfileImagePath(mOutputFileUri);
         expenseBook.setDescription(expenseDescription);
-        AddUpdateExpenseBookTask task = new AddUpdateExpenseBookTask(mContext, expenseBook, isUpdate);
-        mTaskProcessor.execute(task);
+        mExpenseBookModel.addExpenseBook(expenseBook, isUpdate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(d -> {
+                    getView().hideProgress();
+                    if (isUpdate)
+                        getView().onExpenseBookUpdate();
+                    else {
+                        Bundle expenseBookInfo = new Bundle();
+                        expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(d));
+                        getView().addMemberFragment(expenseBookInfo);
+                    }
+                }, e -> getView().showError(e.getMessage()));
         getView().showCreatingExpenseBookProgress();
     }
 
@@ -70,22 +72,4 @@ public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseB
 
     }
 
-
-    @Override
-    public void onTaskComplete(String action, TaskResult taskResult) {
-        Logger.debug(TAG, "task with action " + action + "complete");
-        getView().hideProgress();
-        if (taskResult.isSuccess()) {
-            if (taskResult.getStatusCode() == AddUpdateExpenseBookTask.STATUS_CODE_UPDATE_SUCCESSFULLY) {
-                Logger.debug(TAG, "Expense book updated successfully");
-                getView().exit();
-            } else {
-                Logger.debug(TAG, "Expense book created successfully ,installing add member fragment");
-                Bundle expenseBookInfo = new Bundle();
-                expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(taskResult.getResult()));
-                getView().addMemberFragment(expenseBookInfo);
-            }
-        } else
-            getView().showError((String) taskResult.getResult());
-    }
 }
