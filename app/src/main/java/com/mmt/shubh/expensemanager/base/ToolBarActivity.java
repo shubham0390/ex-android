@@ -69,14 +69,19 @@ public class ToolBarActivity extends MVPActivity {
                     "'toolbar'");
         }
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbarInitialized = true;
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            mToolbarInitialized = true;
+        }
     }
 
     protected void toggleHomeBackButton(boolean value) {
         final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        ab.setDisplayHomeAsUpEnabled(value);
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            ab.setDisplayHomeAsUpEnabled(value);
+        }
     }
 
 }

@@ -86,48 +86,45 @@ public class DrawerBaseActivity extends ToolBarActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        Intent intent = null;
-                        boolean value = true;
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_home:
-                                intent = new Intent(DrawerBaseActivity.this, HomeActivity.class);
-                                DrawerBaseActivity.this.finish();
-                                break;
-                            case R.id.nav_account:
-                                value = true;
-                                intent = new Intent(DrawerBaseActivity.this, AccountActivity.class);
-                                break;
-                            case R.id.nav_distribution:
-                                value = false;
-                                break;
-                            case R.id.nav_cash_managment:
-                                intent = new Intent(DrawerBaseActivity.this, CashActivity.class);
-                                break;
-                            case R.id.nav_expense_book:
-                                intent = new Intent(DrawerBaseActivity.this, ExpenseBookActivity.class);
-                                break;
-                            case R.id.nav_summary:
-                                intent = new Intent(DrawerBaseActivity.this, SummaryActivity.class);
-                                break;
-                            case R.id.nav_app_settings:
-                                intent = new Intent(DrawerBaseActivity.this, SettingsActivity.class);
-                                break;
-                            case R.id.nav_about_app:
-                                intent = new Intent(DrawerBaseActivity.this, CategoryActivity.class);
-                                break;
-                        }
-                        if (value)
-                            DrawerBaseActivity.this.startActivity(intent);
-                        else
-                            Toast.makeText(DrawerBaseActivity.this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
-                        return true;
-
+                menuItem -> {
+                    menuItem.setChecked(true);
+                    mDrawerLayout.closeDrawers();
+                    Intent intent = null;
+                    boolean value = true;
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_home:
+                            intent = new Intent(DrawerBaseActivity.this, HomeActivity.class);
+                            DrawerBaseActivity.this.finish();
+                            break;
+                        case R.id.nav_account:
+                            value = true;
+                            intent = new Intent(DrawerBaseActivity.this, AccountActivity.class);
+                            break;
+                        case R.id.nav_distribution:
+                            value = false;
+                            break;
+                        case R.id.nav_cash_managment:
+                            intent = new Intent(DrawerBaseActivity.this, CashActivity.class);
+                            break;
+                        case R.id.nav_expense_book:
+                            intent = new Intent(DrawerBaseActivity.this, ExpenseBookActivity.class);
+                            break;
+                        case R.id.nav_summary:
+                            intent = new Intent(DrawerBaseActivity.this, SummaryActivity.class);
+                            break;
+                        case R.id.nav_app_settings:
+                            intent = new Intent(DrawerBaseActivity.this, SettingsActivity.class);
+                            break;
+                        case R.id.nav_about_app:
+                            intent = new Intent(DrawerBaseActivity.this, CategoryActivity.class);
+                            break;
                     }
+                    if (value)
+                        DrawerBaseActivity.this.startActivity(intent);
+                    else
+                        Toast.makeText(DrawerBaseActivity.this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
+                    return true;
+
                 });
     }
 
