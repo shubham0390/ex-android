@@ -5,18 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.settings.SettingFragmentModule;
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.member.MemberListFragment;
-import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
 import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
+import com.mmt.shubh.expensemanager.settings.SettingFragmentModule;
 
 import org.parceler.Parcels;
 
@@ -61,9 +60,7 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
 
         installMemberListFragment();
         setupToolbar();
-
-        mCreatedByTextView.setText(String.format(getString(R.string.created_by), mExpenseBook.getOwner().getMemberName()));
-        mCreatedOnTextView.setText(String.format(getString(R.string.created_on), mExpenseBook.getCreationTime()));
+        mPresenter.loadOwnerDetails(mExpenseBook.getOwnerId());
 
         if (!mExpenseBook.getType().equals("Private"))
             addMenu();
@@ -71,39 +68,23 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
     }
 
     private void setupToolbar() {
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         mToolbar.setTitle(R.string.action_settings);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIFragmentSwitcher.removeFragment(R.id.settings, null);
-            }
-        });
+        mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
     }
 
     private void addMenu() {
 
         mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIFragmentSwitcher.removeFragment(R.id.settings, null);
-            }
-        });
-
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(ExpenseBookSettingFragment.this.getActivity(), ExpenseBookAddUpdateActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
-                intent.putExtras(bundle);
-                intent.setAction(Constants.ACTION_ADD_MEMBERS);
-                ExpenseBookSettingFragment.this.startActivity(intent);
-                return true;
-            }
+        mToolbar.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(ExpenseBookSettingFragment.this.getActivity(), ExpenseBookAddUpdateActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
+            intent.putExtras(bundle);
+            intent.setAction(Constants.ACTION_ADD_MEMBERS);
+            ExpenseBookSettingFragment.this.startActivity(intent);
+            return true;
         });
     }
 
@@ -111,19 +92,13 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
         Fragment fragment = new MemberListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putLong(Constants.KEY_EXPENSE_BOOK_ID, mExpenseBook.getId());
-
-        bundle.putBoolean(Constants.KEY_DELETE_MEMBER, !mExpenseBook.getType().equals("Private"));
+        bundle.putLong(Constants.EXTRA_EXPENSE_BOOK_ID, mExpenseBook.getId());
+        bundle.putInt(Constants.EXTRA_TYPE, MemberListFragment.TYPE_EXPENSE_BOOK);
+        bundle.putBoolean(Constants.EXTRA_DELETE_MEMBER, !mExpenseBook.getType().equals("Private"));
 
         fragment.setArguments(bundle);
 
         getFragmentManager().beginTransaction().add(R.id.member_list, fragment).commit();
-    }
-
-
-    @Override
-    protected ExpenseBookSettingPresenter getPresenter() {
-        return new ExpenseBookSettingPresenter();
     }
 
     @Override
@@ -132,5 +107,11 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
                 .settingFragmentModule(new SettingFragmentModule())
                 .mainComponent(mainComponent).build();
         component.inject(this);
+    }
+
+    @Override
+    public void onOwnerLoaded(Member member) {
+        mCreatedByTextView.setText(String.format(getString(R.string.created_by), member.getMemberName()));
+        mCreatedOnTextView.setText(String.format(getString(R.string.created_on), mExpenseBook.getCreationTime()));
     }
 }

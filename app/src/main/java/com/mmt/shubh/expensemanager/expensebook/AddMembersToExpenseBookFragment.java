@@ -2,10 +2,12 @@ package com.mmt.shubh.expensemanager.expensebook;
 
 
 import android.app.Fragment;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +42,7 @@ import butterknife.Bind;
 public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpenseView, AddMemberPresenter>
         implements SearchView.OnQueryTextListener, OnTaskCompleteListener, AddUpdateExpenseView {
 
+    private static final int REQUEST_CONTACTS = 1;
     private final String TAG = getClass().getSimpleName();
 
     @Bind((R.id.contacts_list))
@@ -100,9 +104,17 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpens
 
     private void setupRecyclerView() {
         mContactsList.setLayoutManager(new LinearLayoutManager(mContactsList.getContext()));
-        readContacts();
-        mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
-        mContactsList.setAdapter(mContactPickerAdapter);
+        if (ActivityCompat.checkSelfPermission(getActivity(), "android.permission.READ_CONTACTS")
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{"android.permission.READ_CONTACTS"},
+                    REQUEST_CONTACTS);
+
+        } else {
+            readContacts();
+            mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
+            mContactsList.setAdapter(mContactPickerAdapter);
+        }
     }
 
     @Override
@@ -111,6 +123,22 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpens
         mContactPickerAdapter.animateTo(filteredContactList);
         mContactsList.scrollToPosition(0);
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    readContacts();
+                    mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
+                    mContactsList.setAdapter(mContactPickerAdapter);
+                } else {
+                    Timber.e("User denied contact permission");
+                }
+            }
+        }
     }
 
     /**
@@ -176,7 +204,11 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpens
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        super.injectDependencies(mainComponent);
+        DaggerExpenseBookUpdateActivityComponent.builder()
+                .moduleExpneseBookUpdate(new ModuleExpneseBookUpdate())
+                .mainComponent(mainComponent)
+                .build()
+                .inject(this);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
 
 
     List<ExpenseBook> mExpenseBooks;
+    private int mMode;
 
     public ExpenseBookListAdapter() {
         mExpenseBooks = new ArrayList<>();
@@ -60,11 +62,20 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
     }
 
     public void addData(List<ExpenseBook> expenseBooks) {
-        mExpenseBooks = expenseBooks;
+        mExpenseBooks.clear();
+        mExpenseBooks.addAll(expenseBooks);
         notifyDataSetChanged();
     }
 
-    static class ExpenseBookViewHolder extends RecyclerView.ViewHolder {
+    public void setMode(int mode) {
+        mMode = mode;
+    }
+
+    public void clear() {
+        mExpenseBooks.clear();
+    }
+
+    class ExpenseBookViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.expense_book_title)
         TextView TitleTextView;
@@ -87,11 +98,22 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
         public void bindView(ExpenseBook expenseBook) {
             TitleTextView.setText(expenseBook.getName());
             mTypeTextView.setText(expenseBook.getType());
-            mDescriptionTextView.setText(expenseBook.getDescription());
+
             ColorGenerator generator = ColorGenerator.MATERIAL;
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(String.valueOf(expenseBook.getName().charAt(0)), generator.getRandomColor());
             mProfileImage.setImageDrawable(drawable);
+            switch (mMode) {
+                case ExpenseBookListView.MODE_EXPENSE_BOOK:
+                    mDescriptionTextView.setText(expenseBook.getDescription());
+                    TitleTextView.setTypeface(null, Typeface.BOLD);
+                    break;
+                case ExpenseBookListView.MODE_MEMBER:
+                case ExpenseBookListView.MODE_SUMMARY:
+                    mDescriptionTextView.setVisibility(View.GONE);
+                    TitleTextView.setTypeface(null, Typeface.NORMAL);
+            }
+
         }
     }
 }

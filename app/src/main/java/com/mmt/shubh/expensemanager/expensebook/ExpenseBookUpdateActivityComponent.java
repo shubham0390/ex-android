@@ -17,4 +17,6 @@ import dagger.Component;
 public interface ExpenseBookUpdateActivityComponent {
 
     void inject(AddUpdateExpenseBookFragment addUpdateExpenseBookFragment);
+
+    void inject(AddMembersToExpenseBookFragment bookFragment);
 }

@@ -27,4 +27,10 @@ public class ModuleExpneseBookUpdate {
     public ExpenseBookFragmentPresenter provideExpenseBookFragmentPresenter(ExpenseBookModel expenseBookModel) {
         return new ExpenseBookFragmentPresenter(expenseBookModel);
     }
+
+    @Provides
+    @ActivityScope
+    public AddMemberPresenter provideAddMemberPresenter(ExpenseBookModel expenseBookModel) {
+        return new AddMemberPresenter(expenseBookModel);
+    }
 }

@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
-import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
@@ -22,11 +21,11 @@ import rx.schedulers.Schedulers;
 public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<List<ExpenseBook>>>
         implements MVPPresenter<MVPLCEView<List<ExpenseBook>>> {
 
-    ExpenseBookDataAdapter mExpenseBookDataAdapter;
+    ExpenseBookModel mExpenseBookModel;
 
     @Inject
-    public ExpenseBookListPresenter(ExpenseBookDataAdapter adapter) {
-        mExpenseBookDataAdapter = adapter;
+    public ExpenseBookListPresenter(ExpenseBookModel adapter) {
+        mExpenseBookModel = adapter;
     }
 
     @Override
@@ -39,11 +38,11 @@ public class ExpenseBookListPresenter extends MVPAbstractPresenter<MVPLCEView<Li
 
 
     public void deleteExpenseBook(long id) {
-        mExpenseBookDataAdapter.delete(id);
+        mExpenseBookModel.delete(id);
     }
 
     public void loadExpenseBookList() {
-        mExpenseBookDataAdapter.getAll()
+        mExpenseBookModel.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(d -> getView().setData(d), e -> getView().showError(e, false));

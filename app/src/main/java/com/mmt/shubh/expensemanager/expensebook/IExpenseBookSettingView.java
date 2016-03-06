@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.mvp.MVPView;
 
 /**
@@ -9,4 +10,5 @@ import com.mmt.shubh.expensemanager.mvp.MVPView;
  * TODO:Add class comment.
  */
 public interface IExpenseBookSettingView extends MVPView {
+    void onOwnerLoaded(Member member);
 }

@@ -8,7 +8,6 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.member.ContactsMetaData;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -34,7 +34,8 @@ public class ExpenseBookModel {
 
     private Context mContext;
 
-    public ExpenseBookModel(Context context, ExpenseBookDataAdapter dataAdapter, MemberDataAdapter memberDataAdapter) {
+    public ExpenseBookModel(Context context, ExpenseBookDataAdapter dataAdapter,
+                            MemberDataAdapter memberDataAdapter) {
         mExpenseBookDataAdapter = dataAdapter;
         mContext = context;
         mMemberDataAdapter = memberDataAdapter;
@@ -154,8 +155,13 @@ public class ExpenseBookModel {
         mExpenseBook.setType("public");
 
         UserSettings userSettings = UserSettings.getInstance();
-        MemberDataAdapter memberDataAdapter = new MemberSQLDataAdapter(mContext);
-        mExpenseBook.setOwner(memberDataAdapter.get(userSettings.getUserInfo().getMemberKey()));
+        mMemberDataAdapter.get(userSettings.getUserInfo().getMemberKey())
+                .observeOn(Schedulers.immediate())
+                .subscribeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                    mExpenseBook.setOwner(d.getId());
+                });
+
 
         mExpenseBook.setCreationTime(System.currentTimeMillis());
         Logger.debug(TAG, "exiting saveExpenseBookDetails()");
@@ -163,4 +169,23 @@ public class ExpenseBookModel {
 
     }
 
+    public Observable<Long> delete(long id) {
+        return mExpenseBookDataAdapter.delete(id);
+    }
+
+    public Observable<List<ExpenseBook>> getAll() {
+        return mExpenseBookDataAdapter.getAll();/*.map(expenseBooks -> {
+            for (ExpenseBook expenseBook : expenseBooks) {
+                mMemberDataAdapter.getAllMemberByExpenseBookId(expenseBook.getId())
+                        .subscribeOn(Schedulers.immediate())
+                        .observeOn(Schedulers.immediate())
+                        .subscribe(d -> expenseBook.setMemberList(d));
+            }
+            return expenseBooks;
+        });*/
+    }
+
+    public Observable<Member> loadExpenseBookOwner(long ownerId) {
+        return mMemberDataAdapter.get(ownerId);
+    }
 }

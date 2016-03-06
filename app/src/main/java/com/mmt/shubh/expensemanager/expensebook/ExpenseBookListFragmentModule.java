@@ -1,7 +1,10 @@
 package com.mmt.shubh.expensemanager.expensebook;
 
+import android.content.Context;
+
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,10 +19,18 @@ import dagger.Provides;
 @Module
 public class ExpenseBookListFragmentModule {
 
+
     @Provides
     @ActivityScope
-    ExpenseBookListPresenter provideExpenseBookListPresenter(ExpenseBookDataAdapter adapter) {
-        return new ExpenseBookListPresenter(adapter);
+    ExpenseBookModel provideExpenseBookModel(Context context, ExpenseBookDataAdapter expenseBookDataAdapter,
+                                             MemberDataAdapter memberDataAdapter) {
+        return new ExpenseBookModel(context, expenseBookDataAdapter, memberDataAdapter);
+    }
+
+    @Provides
+    @ActivityScope
+    ExpenseBookListPresenter provideExpenseBookListPresenter(ExpenseBookModel expenseBookModel) {
+        return new ExpenseBookListPresenter(expenseBookModel);
     }
 
 }
