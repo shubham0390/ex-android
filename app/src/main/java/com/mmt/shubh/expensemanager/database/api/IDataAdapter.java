@@ -10,6 +10,8 @@ import rx.Observable;
 public interface IDataAdapter<T> {
     Observable<T> create(T t);
 
+    Observable<List<T>> create(List<T> tList);
+
     Observable<T> update(T t);
 
     Observable<Long> delete(long id);

@@ -4,15 +4,13 @@ import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
-import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,17 +54,23 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     @VisibleForTesting
     public boolean createPrivateExpenseBook(UserInfo userInfo) {
 
-        List<Member> members = new ArrayList<>();
-        Member member = loadMember();
-        members.add(member);
+        List<Long> members = new ArrayList<>();
+        MemberDataAdapter sqlMemberDataAdapter = mExpenseModel.getMemberDataAdapter();
+        final long[] memberId = new long[1];
+        sqlMemberDataAdapter.get(userInfo.getMemberKey())
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate()).subscribe(member -> {
+            members.add(member.getId());
+            memberId[0] = member.getId();
+        });
+
 
         ExpenseBook expenseBook = new ExpenseBook();
         expenseBook.setType("Private");
         expenseBook.setDescription("This is personal expense book of" + userInfo.getEmailAddress());
         expenseBook.setName(userInfo.getDisplayName());
         expenseBook.setProfileImagePath(userInfo.getProfilePhotoUrl());
-        expenseBook.setMemberList(members);
-        expenseBook.setOwner(member);
+        expenseBook.setOwner(memberId[0]);
         expenseBook.setCreationTime(System.currentTimeMillis());
         mExpenseBookDataAdapter.create(expenseBook)
                 .subscribeOn(Schedulers.immediate())
@@ -89,16 +93,6 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
         account.setAccountNumber("Cash");
         dataAdapter.create(account);
         return false;
-    }
-
-    public Member loadMember() {
-        Member member = new Member();
-        UserInfo userInfo = UserSettings.getInstance().getUserInfo();
-        if (userInfo != null) {
-            MemberSQLDataAdapter sqlMemberDataAdapter = new MemberSQLDataAdapter(mContext);
-            return sqlMemberDataAdapter.get(userInfo.getMemberKey());
-        }
-        return member;
     }
 
     @Override

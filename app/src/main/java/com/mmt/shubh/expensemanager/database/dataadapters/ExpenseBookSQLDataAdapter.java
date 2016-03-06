@@ -12,6 +12,8 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookC
 import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import rx.Observable;
 
@@ -66,7 +68,7 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
         expenseBook.setDescription(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_DESCRIPTION)));
         expenseBook.setType(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_TYPE)));
         expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE_URI)));
-        expenseBook.setOwner(loadMember(cursor.getLong(cursor.getColumnIndex(OWNER_KEY))));
+        expenseBook.setOwner(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
         expenseBook.setCreationTime(cursor.getLong(cursor.getColumnIndex(EXPENSE_BOOK_CREATION_TIME)));
         return expenseBook;
     }
@@ -79,23 +81,20 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
         values.put(EXPENSE_BOOK_DESCRIPTION, expenseBook.getDescription());
         values.put(EXPENSE_BOOK_TYPE, expenseBook.getType());
         values.put(EXPENSE_BOOK_CREATION_TIME, expenseBook.getCreationTime());
-        values.put(OWNER_KEY, expenseBook.getOwner().getId());
+        values.put(OWNER_KEY, expenseBook.getOwnerId());
         return values;
     }
 
 
     private Member loadMember(long aLong) {
-        MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
-        return sqlDataAdapter.get(aLong);
+        /*MemberSQLDataAdapter sqlDataAdapter = new MemberSQLDataAdapter(mContext);
+        return sqlDataAdapter.get(aLong);*/
+        return null;
     }
 
     @Override
     protected void setTaskId(ExpenseBook expenseBook, long id) {
-
-    }
-
-    public void addMembers(List<Member> members, ExpenseBook expenseBook) {
-        addMembers(members, expenseBook.getId());
+        expenseBook.setId(id);
     }
 
     @Override
@@ -109,8 +108,20 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
                 + MemberExpenseBookContract.EXPENSE_BOOK_KEY
                 + " FROM "
                 + MemberExpenseBookContract.TABLE_NAME
-                + " WHERE " + MemberExpenseBookContract.MEMBER_KEY + " = " + String.valueOf(id);
+                + " WHERE " + MemberExpenseBookContract.MEMBER_KEY + " = " + String.valueOf(id) + " )";
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursor);
+    }
+
+    @Override
+    public void addMembers(Map<Long, Long> expenseBooks) {
+        Set<Long> longSet = expenseBooks.keySet();
+        for (Long aLong : longSet) {
+            ContentValues values = new ContentValues();
+            values.put(MemberExpenseBookContract.MEMBER_KEY, aLong);
+            values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBooks.get(aLong));
+            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+        }
+
     }
 
     @Override
@@ -127,4 +138,20 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
             mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
         }
     }
+
+    @Override
+    public void addMembers(long expenseBookId, List<Long> memberList) {
+        for (Long aLong : memberList) {
+            ContentValues values = new ContentValues();
+            values.put(MemberExpenseBookContract.MEMBER_KEY, aLong);
+            values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBookId);
+            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+        }
+    }
+
+    @Override
+    public void addMembers(List<Long> members, ExpenseBook expenseBook) {
+        addMembers(expenseBook.getId(), members);
+    }
+
 }

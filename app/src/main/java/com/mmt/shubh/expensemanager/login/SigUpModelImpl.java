@@ -29,21 +29,22 @@ import javax.inject.Inject;
 public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
 
     private final String TAG = getClass().getName();
-    @Inject
-    ExpenseModel mExpenseModel;
-    @Inject
-    ExpenseBookDataAdapter mExpenseBookDataAdapter;
+    private ExpenseModel mExpenseModel;
+    private ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private TaskProcessor mTaskProcessor;
     private SignUpModelCallback mSignUpModelCallback;
     private MemberRestService memberRestService;
     private Context mContext;
 
     @Inject
-    public SigUpModelImpl(Context context, MemberRestService memberRestService) {
+    public SigUpModelImpl(Context context, MemberRestService memberRestService,
+                          ExpenseBookDataAdapter bookDataAdapter, ExpenseModel expenseModel) {
         mTaskProcessor = TaskProcessor.getTaskProcessor();
         mTaskProcessor.setOnTaskCompleteListener(this);
         mContext = context;
         this.memberRestService = memberRestService;
+        this.mExpenseBookDataAdapter = bookDataAdapter;
+        mExpenseModel = expenseModel;
     }
 
     @Override

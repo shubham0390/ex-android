@@ -8,5 +8,5 @@ import com.mmt.shubh.expensemanager.database.content.Transaction;
  * 5:35 PM
  * TODO:Add class comment.
  */
-public interface TransactionDataAdapter extends DataAdapter<Transaction> {
+public interface TransactionDataAdapter extends IDataAdapter<Transaction> {
 }

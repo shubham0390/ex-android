@@ -31,15 +31,14 @@ public interface Constants {
     String MODE_NEW = "new";
     String KEY_MEMBER_NAME = "member_name";
     String EXTRA_MEMBER_ID = "memberId";
-    String EXTRA_EXPENSE_BOOK_ID = "expenseBookId";
     String EXTRA_GROUP_NAME = "group_name";
     String EXTRA_GROUP_IMAGE_URI = "group_image_uri";
     String EXTRA_GROUP_DESCRIPTION = "group_image_uri";
-    String KEY_DELETE_MEMBER = "delete_member";
+    String EXTRA_DELETE_MEMBER = "delete_member";
 
     String CATEGORY_TYPE_CUSTOM = "custom";
     String CATEGORY_TPYE_DEFAULT = "default";
-    String KEY_EXPENSE_BOOK_ID = "expense_book_id";
+    String EXTRA_EXPENSE_BOOK_ID = "expense_book_id";
 
 
     int ADD_MEMBER_FRAGMENT = 1;
@@ -48,4 +47,5 @@ public interface Constants {
     String ACTION_ADD_MEMBERS = "com.mmt.shubh.expensemanager.ACTION_ADD_MEMBERS";
     String KEY_CONTENT_ID = "contentId";
     String EXTRA_ACCOUNT = "account";
+    String EXTRA_TYPE = "extra_type";
 }

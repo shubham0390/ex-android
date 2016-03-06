@@ -48,6 +48,26 @@ public abstract class AbstractSQLDataAdapter<T> {
         });
     }
 
+    public Observable<List<T>> create(List<T> ts) {
+
+        return Observable.create(subscriber -> {
+            BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
+            try {
+                for (T t : ts) {
+                    long id = mBriteDatabase.insert(mTableName, toContentValues(t));
+                    setTaskId(t, id);
+                }
+                transaction.markSuccessful();
+
+            } finally {
+                transaction.close();
+            }
+            subscriber.onNext(ts);
+            subscriber.onCompleted();
+        });
+    }
+
+
     protected abstract void setTaskId(T t, long id);
 
 

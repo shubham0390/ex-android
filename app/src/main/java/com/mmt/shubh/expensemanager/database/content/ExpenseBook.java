@@ -29,7 +29,8 @@ public class ExpenseBook {
     public long creationTime;
     public List<Member> memberList;
     private long id;
-    private Member owner;
+    private long mOwnerId;
+
     public ExpenseBook() {
     }
 
@@ -81,12 +82,12 @@ public class ExpenseBook {
         this.memberList = memberList;
     }
 
-    public Member getOwner() {
-        return owner;
+    public long getOwnerId() {
+        return mOwnerId;
     }
 
-    public void setOwner(Member ownerId) {
-        owner = ownerId;
+    public void setOwner(long ownerId) {
+        this.mOwnerId = ownerId;
     }
 
     public long getCreationTime() {

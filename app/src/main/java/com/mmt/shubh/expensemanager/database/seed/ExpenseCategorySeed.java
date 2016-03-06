@@ -12,6 +12,7 @@ import com.mmt.shubh.expensemanager.task.TaskResult;
  */
 public class ExpenseCategorySeed extends AbstractTask {
     Context mContext;
+
     public ExpenseCategorySeed(Context context) {
         super(context);
         mContext = context;
@@ -22,11 +23,11 @@ public class ExpenseCategorySeed extends AbstractTask {
         String categoryName[] = {"Air/Railway Ticket", "Alcohol"};
         String categoryImageFile[] = {"tickets", "alcohol"};
         String categoryType = "default";
-        for (int i = 0; i<categoryName.length; i++){
+        for (int i = 0; i < categoryName.length; i++) {
             ExpenseCategory expenseCategory = new ExpenseCategory(categoryName[i],
                     categoryType, categoryImageFile[i]);
             CategorySQLDataAdapter categorySQLDataAdapter = new CategorySQLDataAdapter(mContext);
-            categorySQLDataAdapter.save(expenseCategory);
+            categorySQLDataAdapter.create(expenseCategory);
         }
         return null;
     }

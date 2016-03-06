@@ -1,6 +1,7 @@
 package com.mmt.shubh.expensemanager.expense;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
@@ -12,6 +13,7 @@ import com.mmt.shubh.expensemanager.debug.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -27,34 +29,31 @@ import rx.schedulers.Schedulers;
  */
 public class ExpenseModel {
 
-    @Inject
     ExpenseDataAdapter mExpenseDataAdapter;
-    @Inject
     MemberExpenseDataAdapter mMemberExpenseDataAdapter;
-    @Inject
     TransactionDataAdapter mTransactionDataAdapter;
-    @Inject
     AccountDataAdapter mAccountDataAdapter;
-
+    MemberDataAdapter mMemberDataAdapter;
     private String LOG_TAG = getClass().getName();
 
     @Inject
     public ExpenseModel(ExpenseDataAdapter expenseDataAdapter,
                         MemberExpenseDataAdapter memberDataAdapter,
                         TransactionDataAdapter transactionDataAdapter,
-                        AccountDataAdapter accountDataAdapter) {
+                        AccountDataAdapter accountDataAdapter, MemberDataAdapter DataAdapter) {
         mExpenseDataAdapter = expenseDataAdapter;
         mMemberExpenseDataAdapter = memberDataAdapter;
         mTransactionDataAdapter = transactionDataAdapter;
         mAccountDataAdapter = accountDataAdapter;
+        mMemberDataAdapter = DataAdapter;
     }
 
     public void createExpense(long accountId, Expense expense) {
         Logger.methodStart(LOG_TAG, "createExpense");
         long transactionId = createTransaction(expense);
         mExpenseDataAdapter.create(expense)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.immediate())
+                .subscribeOn(Schedulers.immediate())
                 .subscribe(new Observer<Expense>() {
                     @Override
                     public void onCompleted() {
@@ -82,8 +81,8 @@ public class ExpenseModel {
         Map<Long, Double> doubleMap = expense.getMemberMap();
         long expenseID = expense.getId();
         List<MemberExpense> memberExpenses = new ArrayList<>();
-
-        for (long memberId : doubleMap.keySet()) {
+        Set<Long> longs = doubleMap.keySet();
+        for (long memberId : longs) {
 
             double sharedAmount = getSharedAmount(expense.getDistrubtionType(),
                     expense.getExpenseAmount(), doubleMap.size(), doubleMap.get(memberId));
@@ -119,9 +118,11 @@ public class ExpenseModel {
         transaction.setDate(expense.getExpenseDate());
         transaction.setType(Transaction.TYPE_DEBIT);
         transaction.setAccountKey(1);
-        long id = mTransactionDataAdapter.create(transaction);
+        mTransactionDataAdapter.create(transaction)
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate());
         Logger.methodEnd(LOG_TAG, "createTransaction");
-        return id;
+        return transaction.getId();
     }
 
     private double getSharedAmount(int sharedType, double totalAmount, int memberCount, double sharedAmount) {
@@ -159,5 +160,9 @@ public class ExpenseModel {
 
     public AccountDataAdapter getAccountDataAdapter() {
         return mAccountDataAdapter;
+    }
+
+    public MemberDataAdapter getMemberDataAdapter() {
+        return mMemberDataAdapter;
     }
 }

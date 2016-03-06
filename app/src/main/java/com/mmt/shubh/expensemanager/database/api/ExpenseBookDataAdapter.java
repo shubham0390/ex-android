@@ -4,6 +4,7 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
 
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 
@@ -16,7 +17,12 @@ public interface ExpenseBookDataAdapter extends IDataAdapter<ExpenseBook> {
 
     void addMembers(List<Member> memberList, long expenseBookId);
 
-    void addMembers(List<Member> members, ExpenseBook expenseBook);
+    void addMembers(long expenseBookId, List<Long> memberList);
+
+    void addMembers(List<Long> members, ExpenseBook expenseBook);
 
     Observable<List<ExpenseBook>> getByMemberId(long id);
+
+
+    void addMembers(Map<Long, Long> expenseBooks);
 }

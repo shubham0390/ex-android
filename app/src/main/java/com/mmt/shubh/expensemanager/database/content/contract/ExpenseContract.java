@@ -1,7 +1,5 @@
 package com.mmt.shubh.expensemanager.database.content.contract;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.provider.BaseColumns;
 
 public interface ExpenseContract extends BaseColumns, BaseContract {
@@ -33,39 +31,5 @@ public interface ExpenseContract extends BaseColumns, BaseContract {
     String TRANSACTION_KEY = "transaction_key";
     String OWNER_KEY = "owner_key";
     String ACCOUNT_KEY = "account_key";
-    Uri EXPENSE_URI = new Uri.Builder()
-            .scheme(ContentResolver.SCHEME_CONTENT)
-            .authority(AUTHORITY)
-            .path(PATH_EXPENSE)
-            .build();
 
-    Uri EXPENSE_LIST_URI = new Uri.Builder()
-            .scheme(ContentResolver.SCHEME_CONTENT)
-            .authority(AUTHORITY)
-            .path(PATH_EXPENSE_LIST)
-            .build();
-    /**
-     * Give all expense for a particular member , Expense Book and current year.
-     * add Member Id and Expense book id ad query parameter.
-     */
-    Uri EXPENSE_MEMBER_ID_EXPENSE_BOOK_ID_BY_MONTH_FOR_CURRENT_YEAR = EXPENSE_URI.buildUpon()
-            .appendPath(MemberContract.PATH_MEMBER)
-            .appendPath(ExpenseBookContract.PATH_EXPENSE_BOOK)
-            .appendPath(PATH_MONTH)
-            .appendPath(PATH_YEAR)
-            .build();
-    String COLUMN_MONTH = "month";
-
-    String[] PROJECTION_EXPENSE_SUM = {"SUM( "
-            + ExpenseContract.EXPENSE_AMOUNT
-            + ") AS" +
-            "STRFTIME(\"%m\", " + ExpenseContract.EXPENSE_DATE + ") AS " + COLUMN_MONTH};
-
-    String SELECTION_EXPENSE_WITH_DATE_MEMBER_EXPENSE_BOOK = ExpenseContract.EXPENSE_BOOK_KEY + "=? AND " +
-            "STRFTIME(\"%Y\",expenses.expense_date) =?";
-
-    String GROUP_BY_MONTH_AND_YEAR_MEMBER_EXEPENSE_BOOK = "STRFTIME(\"%m-%Y\","
-            + ExpenseContract.TABLE_NAME + "." + ExpenseContract.EXPENSE_DATE + " ), "
-            + ExpenseContract.TABLE_NAME + "." + ExpenseContract.EXPENSE_BOOK_KEY;
-    ;
 }

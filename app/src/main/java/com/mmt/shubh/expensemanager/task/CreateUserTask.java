@@ -2,20 +2,16 @@ package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
 
-import com.mmt.shubh.expensemanager.settings.UserSettings;
-import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 public class CreateUserTask extends AbstractTask {
 
-    private String TAG = getClass().getName();
-
     public final static String ACTION_CREATE_USER = "com.mmt.shubh.ACTION_CREATE_USER";
-
+    private String TAG = getClass().getName();
     private UserInfo mUserInfo;
 
     private MemberRestService memberRestService;
@@ -56,7 +52,7 @@ public class CreateUserTask extends AbstractTask {
         return userInfo;
     }
 
-    public Member createMember(UserInfo userInfo, Context context) {
+    /*public Member createMember(UserInfo userInfo, Context context) {
         Member member = new Member();
         if (userInfo != null) {
             member.setCoverPhotoUrl(userInfo.getCoverPhotoUrl());
@@ -65,11 +61,11 @@ public class CreateUserTask extends AbstractTask {
             member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
             member.setMemberPhoneNumber(userInfo.getPhoneNumber());
         }
-        MemberSQLDataAdapter sqlMemberDataAdapter = new MemberSQLDataAdapter(context);
+        MemberSQLDataAdapter sqlMemberDataAdapter =
         sqlMemberDataAdapter.create(member);
 
         return member;
-    }
+    }*/
 
 
     @Override
@@ -90,7 +86,7 @@ public class CreateUserTask extends AbstractTask {
                 Logger.debug(TAG, "user created successfully");
                 UserSettings userSettings = UserSettings.getInstance();
                 userSettings.setUserInfo(mUserInfo);
-                createMember(mUserInfo, mContext);
+                //createMember(mUserInfo, mContext);
                /* memberRestService.registerMember(createMember(mUserInfo, mContext))
                         .subscribeOn(Schedulers.immediate())
                         .observeOn(Schedulers.immediate())

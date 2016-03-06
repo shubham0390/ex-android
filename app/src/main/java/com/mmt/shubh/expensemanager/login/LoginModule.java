@@ -3,7 +3,9 @@ package com.mmt.shubh.expensemanager.login;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
@@ -31,8 +33,9 @@ public class LoginModule {
 
     @Provides
     @ActivityScope
-    ISignUpModel providerSignUpModel(Context context, MemberRestService restService) {
-        return new SigUpModelImpl(context, restService);
+    ISignUpModel providerSignUpModel(Context context, MemberRestService restService,
+                                     ExpenseBookDataAdapter expenseBookDataAdapter, ExpenseModel expenseModel) {
+        return new SigUpModelImpl(context, restService, expenseBookDataAdapter, expenseModel);
     }
 
     @Provides
@@ -65,8 +68,9 @@ public class LoginModule {
     public ExpenseModel provideExpenseModel(ExpenseDataAdapter expenseDataAdapter,
                                             MemberExpenseDataAdapter memberDataAdapter,
                                             TransactionDataAdapter transactionDataAdapter,
-                                            AccountDataAdapter accountDataAdapter) {
-        return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter, accountDataAdapter);
+                                            AccountDataAdapter accountDataAdapter, MemberDataAdapter dataAdapter) {
+        return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter,
+                accountDataAdapter, dataAdapter);
     }
 
 

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
@@ -39,7 +40,9 @@ public class ModuleExpenseListFragment {
     public ExpenseModel provideExpenseModel(ExpenseDataAdapter expenseDataAdapter,
                                             MemberExpenseDataAdapter memberDataAdapter,
                                             TransactionDataAdapter transactionDataAdapter,
-                                            AccountDataAdapter accountDataAdapter) {
-        return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter, accountDataAdapter);
+                                            AccountDataAdapter accountDataAdapter,
+                                            MemberDataAdapter memberData) {
+        return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter,
+                accountDataAdapter, memberData);
     }
 }

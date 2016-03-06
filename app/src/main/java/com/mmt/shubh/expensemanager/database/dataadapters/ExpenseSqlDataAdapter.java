@@ -249,4 +249,38 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
 
+    @Override
+    public Observable<List<ExpenseListViewModel>> getAllSharedAmount(long id, long id2) {
+        String q = "SELECT " +
+                " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  "
+                + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key"
+                + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key"
+                + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = e.owner_key";
+        q = q + " WHERE  e.id IN " + "( " +
+                " SELECT m1.expense_key " +
+                " FROM member_expense m1 " +
+                " INNER JOIN member_expense m2 " +
+                " ON m1.expense_key = m2.expense_key " +
+                " WHERE m1.member_key = " + id + " AND m2.member_key = " + id2 + " )";
+
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
+    }
+
+    @Override
+    public Observable<List<Expense>> create(List<Expense> ts) {
+        return null;
+    }
 }

@@ -63,19 +63,19 @@ public class DataModule implements IDataModule {
     @Provides
     @Singleton
     public TransactionDataAdapter provideTransactionDataAdapter() {
-        return new TransactionSQLDataAdapter(mContext);
+        return new TransactionSQLDataAdapter(getBriteDatabase());
     }
 
     @Provides
     @Singleton
     public MemberExpenseDataAdapter provideMemberExpenseDataAdapter() {
-        return new MemberExpenseSQLDataAdapter(mContext);
+        return new MemberExpenseSQLDataAdapter(getBriteDatabase());
     }
 
     @Provides
     @Singleton
-    public MemberDataAdapter provideMemberDataAdapter(BriteDatabase briteDatabase) {
-        return new MemberSQLDataAdapter(briteDatabase);
+    public MemberDataAdapter provideMemberDataAdapter() {
+        return new MemberSQLDataAdapter(getBriteDatabase());
     }
 
     @Provides

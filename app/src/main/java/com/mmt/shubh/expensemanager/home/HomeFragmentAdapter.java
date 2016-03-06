@@ -1,9 +1,11 @@
 package com.mmt.shubh.expensemanager.home;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.member.MemberListFragment;
 
 /**
@@ -14,8 +16,8 @@ import com.mmt.shubh.expensemanager.member.MemberListFragment;
  */
 public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private int mTabCount;
     CharSequence mTitles[];
+    private int mTabCount;
 
     public HomeFragmentAdapter(FragmentManager fm, int tabCount, CharSequence[] pageTitels) {
         super(fm);
@@ -25,11 +27,21 @@ public class HomeFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        MemberListFragment fragment;
+        Bundle bundle = new Bundle();
         switch (position) {
             case 0:
-                return new MemberListFragment();
+                fragment = new MemberListFragment();
+                bundle.putInt(Constants.EXTRA_TYPE, MemberListFragment.TYPE_MEMBER);
+                bundle.putBoolean(Constants.EXTRA_DELETE_MEMBER, false);
+                fragment.setArguments(bundle);
+                return fragment;
             case 1:
-                return new MemberListFragment();
+                fragment = new MemberListFragment();
+                bundle.putInt(Constants.EXTRA_TYPE, MemberListFragment.TYPE_MEMBER);
+                bundle.putBoolean(Constants.EXTRA_DELETE_MEMBER, false);
+                fragment.setArguments(bundle);
+                return fragment;
         }
         return null;
     }

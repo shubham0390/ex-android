@@ -45,7 +45,7 @@ import timber.log.Timber;
 public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailView, AccountDetailPresenter>
         implements IAccountDetailView {
 
-    @Bind(R.id.expenseList)
+    @Bind(R.id.expense_list)
     ExpenseListView mExpenseListView;
 
     @Bind(R.id.accountSummaryChart)
