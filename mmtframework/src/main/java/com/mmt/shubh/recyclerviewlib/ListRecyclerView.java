@@ -33,20 +33,27 @@ public class ListRecyclerView extends RecyclerView {
     }
 
     private void init(Context context) {
-        if(isInEditMode()){
+        if (isInEditMode()) {
             return;
         }
         mItemClickSupport = ItemClickSupport.addTo(this);
         setLayoutManager(new LinearLayoutManager(context));
-        addItemDecoration(new DividerItemDecoration(context));
         setItemAnimator(new DefaultItemAnimator());
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mItemClickSupport.setOnItemClickListener(onItemClickListener);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
+        mItemClickSupport.setOnItemLongClickListener(longClickListener);
     }
 
     public interface OnItemClickListener {
         /**
          * Callback method to be invoked when an item in this AdapterView has
          * been clicked.
-         * <p/>
+         * <p>
          * Implementers can call getItemAtPosition(position) if they need
          * to access the data associated with the selected item.
          *
@@ -64,7 +71,7 @@ public class ListRecyclerView extends RecyclerView {
         /**
          * Callback method to be invoked when an item in this view has been
          * clicked and held.
-         * <p/>
+         * <p>
          * Implementers can call getItemAtPosition(position) if they need to access
          * the data associated with the selected item.
          *
@@ -74,13 +81,5 @@ public class ListRecyclerView extends RecyclerView {
          * @return true if the callback consumed the long click, false otherwise
          */
         boolean onItemLongClick(RecyclerView parent, View view, int position, long id);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mItemClickSupport.setOnItemClickListener(onItemClickListener);
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
-        mItemClickSupport.setOnItemLongClickListener(longClickListener);
     }
 }
