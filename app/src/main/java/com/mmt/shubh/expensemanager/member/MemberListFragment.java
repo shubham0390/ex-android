@@ -27,13 +27,16 @@ import java.util.List;
  * TODO:Add class comment.
  */
 public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, List<Member>, MVPLCEView<List<Member>>,
-        MemberListFragmentPresenter> {
+        MemberListFragmentPresenter> implements MemberListAdapterCallback {
 
+    public static final int TYPE_EXPENSE_BOOK = 1;
+    public static final int TYPE_MEMBER = 2;
     List<Member> mMemberList;
     private MemberListAdapter mListAdapter;
     private boolean mIsMemberDeletable;
-
     private Bundle mArguments;
+    private int mType = 1;
+    private long mExpenseBookId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,9 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (mArguments != null) {
-            mIsMemberDeletable = mArguments.getBoolean(Constants.KEY_DELETE_MEMBER);
+            mIsMemberDeletable = mArguments.getBoolean(Constants.EXTRA_DELETE_MEMBER);
+            mType = mArguments.getInt(Constants.EXTRA_TYPE, TYPE_MEMBER);
+            mExpenseBookId = mArguments.getLong(Constants.EXTRA_EXPENSE_BOOK_ID);
         }
         mListAdapter = new MemberListAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
@@ -109,8 +114,15 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        showLoading(false);
-        mPresenter.loadMembers(getLoaderManager(), mArguments);
+        showLoading(true);
+        switch (mType) {
+            case TYPE_EXPENSE_BOOK:
+                mPresenter.loadAllMembersByExpenseBook(mExpenseBookId);
+                break;
+            case TYPE_MEMBER:
+                mPresenter.loadAllMembers();
+                break;
+        }
     }
 
     @Override
@@ -119,6 +131,10 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
                 .memberListFragmentModule(new MemberListFragmentModule())
                 .mainComponent(mainComponent).build();
         component.inject(this);
+    }
 
+    @Override
+    public void onMemberDelete(long memberId, long expenseBookId) {
+        mPresenter.deleteMemberFromExpenseBook(memberId, expenseBookId);
     }
 }

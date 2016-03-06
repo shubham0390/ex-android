@@ -106,7 +106,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             mMemberName.setText(member.getMemberName());
             mMemberEmail.setText(member.getMemberEmail());
             String imageUrl = member.getProfilePhotoUrl();
-            /*mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.INVISIBLE);*/
+            mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
 
             if (!TextUtils.isEmpty(imageUrl)) {

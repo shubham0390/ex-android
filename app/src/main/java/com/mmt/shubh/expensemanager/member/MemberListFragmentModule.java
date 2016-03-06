@@ -3,6 +3,8 @@ package com.mmt.shubh.expensemanager.member;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
@@ -25,8 +27,15 @@ public class MemberListFragmentModule {
 
     @Provides
     @ActivityScope
-    MemberListFragmentPresenter provideMemberListFragmentPresenter(Context context, MemberDataAdapter memberDataAdapter) {
-        return new MemberListFragmentPresenter(context, memberDataAdapter);
+    MemberListFragmentPresenter provideMemberListFragmentPresenter(Context context, MemberModel memberModel) {
+        return new MemberListFragmentPresenter(context, memberModel);
+    }
+
+    @Provides
+    @ActivityScope
+    MemberModel provideMemberModel(MemberDataAdapter memberDataAdapter, ExpenseDataAdapter expenseDataAdapter,
+                                   ExpenseBookDataAdapter expenseBookDataAdapter) {
+        return new MemberModel(memberDataAdapter, expenseDataAdapter, expenseBookDataAdapter);
     }
 
     @Provides

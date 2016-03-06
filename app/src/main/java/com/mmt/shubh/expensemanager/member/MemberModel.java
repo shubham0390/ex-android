@@ -38,19 +38,12 @@ public class MemberModel {
 
 
     public Observable<Member> getMemberDetails(final long id) {
-        return Observable.create(subscriber -> {
-            Member member = mMemberDataAdapter.get(id);
-            subscriber.onNext(member);
-            subscriber.onCompleted();
-        });
+        return mMemberDataAdapter.get(id);
     }
 
     public Observable<List<Member>> getAllMembers() {
-        return Observable.create(subscriber -> {
-            List<Member> members = mMemberDataAdapter.getAll();
-            subscriber.onNext(members);
-            subscriber.onCompleted();
-        });
+        return mMemberDataAdapter.getAll();
+
     }
 
     public Observable<List<ExpenseListViewModel>> loadAllExpenseByMemberId(long id) {
@@ -59,5 +52,17 @@ public class MemberModel {
 
     public Observable<List<ExpenseBook>> loadAllExpneseBooksByMemberId(long id) {
         return mExpenseBookDataAdapter.getByMemberId(id);
+    }
+
+    public Observable<List<Member>> loadAllMemberByExpenseBookId(long id) {
+        return mMemberDataAdapter.getAllMemberByExpenseBookId(id);
+    }
+
+    public Observable<List<ExpenseListViewModel>> getAllSharedExpense(long id, long id2) {
+        return mExpenseDataAdapter.getAllSharedAmount(id, id2);
+    }
+
+    public Observable<Boolean> deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
+        return mMemberDataAdapter.deleteMemberFromExpenseBook(memberId, expenseBookId);
     }
 }

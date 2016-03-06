@@ -1,20 +1,16 @@
 package com.mmt.shubh.expensemanager.member;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 
-import com.mmt.shubh.expensemanager.Constants;
-import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -23,12 +19,15 @@ import java.util.List;
  * TODO:Add class comment.
  */
 public class MemberListFragmentPresenter extends MVPAbstractPresenter<MVPLCEView<List<Member>>>
-        implements MVPPresenter<MVPLCEView<List<Member>>>, LoaderManager.LoaderCallbacks<List<Member>> {
+        implements MVPPresenter<MVPLCEView<List<Member>>> {
 
     private Context mContext;
 
-    public MemberListFragmentPresenter(Context context, MemberDataAdapter memberDataAdapter) {
+    private MemberModel mMemberModel;
+
+    public MemberListFragmentPresenter(Context context, MemberModel memberModel) {
         mContext = context;
+        mMemberModel = memberModel;
     }
 
     @Override
@@ -41,48 +40,28 @@ public class MemberListFragmentPresenter extends MVPAbstractPresenter<MVPLCEView
 
     }
 
-    public void loadMembers(LoaderManager loaderManager, Bundle bundle) {
-        loaderManager.initLoader(12, bundle, this).forceLoad();
+    public void loadAllMembers() {
+        mMemberModel.getAllMembers()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(d -> getView().setData(d), e -> getView().showError(e, false));
+    }
+
+
+    void loadAllMembersByExpenseBook(long expenseBookId) {
+        mMemberModel.loadAllMemberByExpenseBookId(expenseBookId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(d -> getView().setData(d), e -> getView().showError(e, false));
     }
 
     public void deleteMember(long id) {
 
     }
 
-
-    public static class MemberListLoader extends AsyncTaskLoader<List<Member>> {
-        long mId;
-
-        public MemberListLoader(Context context, long expenseBookId) {
-            super(context);
-            mId = expenseBookId;
-        }
-
-        @Override
-        public List<Member> loadInBackground() {
-            MemberDataAdapter dataAdapter = new MemberSQLDataAdapter(getContext());
-            if (mId != -1) {
-                return dataAdapter.getAllMemberByExpenseBookId(mId);
-            }
-            return dataAdapter.getAll();
-        }
+    public void deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
+        mMemberModel.deleteMemberFromExpenseBook(memberId, expenseBookId);
+        getView().loadData(false);
     }
 
-    @Override
-    public Loader<List<Member>> onCreateLoader(int id, Bundle args) {
-        if (args != null) {
-            long exbId = args.getLong(Constants.KEY_EXPENSE_BOOK_ID);
-            return new MemberListLoader(mContext, exbId);
-        }
-        return new MemberListLoader(mContext, -1);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Member>> loader, List<Member> data) {
-        getView().setData(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<Member>> loader) {
-    }
 }
