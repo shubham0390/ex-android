@@ -74,8 +74,8 @@ public class DataModule implements IDataModule {
 
     @Provides
     @Singleton
-    public MemberDataAdapter provideMemberDataAdapter() {
-        return new MemberSQLDataAdapter(mContext);
+    public MemberDataAdapter provideMemberDataAdapter(BriteDatabase briteDatabase) {
+        return new MemberSQLDataAdapter(briteDatabase);
     }
 
     @Provides
