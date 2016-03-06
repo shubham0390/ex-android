@@ -9,8 +9,8 @@ import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,16 +39,11 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     @Override
     public TaskResult execute() {
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
-        List<UserInfo> userInfos = sqlDataAdapter.getAll();
-        if (userInfos != null && !userInfos.isEmpty()) {
-            UserInfo userInfo = userInfos.get(0);
-            createPrivateExpenseBook(userInfo);
-            createAccount();
-            return new TaskResult(true, "", 4);
-        }
+        UserSettings userSettings = UserSettings.getInstance();
+        UserInfo userInfo = userSettings.getUserInfo();
+        createPrivateExpenseBook(userInfo);
+        return new TaskResult(true, "", 4);
 
-        return new TaskResult(false, "", 4);
     }
 
     @VisibleForTesting
