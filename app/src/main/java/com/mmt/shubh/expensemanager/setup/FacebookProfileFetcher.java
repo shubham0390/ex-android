@@ -40,6 +40,7 @@ public class FacebookProfileFetcher extends ProfileFetcher {
         handler.post(() -> new GraphRequest(
                 AccessToken.getCurrentAccessToken(), "/" + Profile.getCurrentProfile().getId(),
                 null, HttpMethod.GET, response -> {
+
             Profile profile1 = Profile.getCurrentProfile();
             Log.d(TAG, response.toString());
             try {
