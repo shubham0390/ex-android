@@ -42,6 +42,7 @@ public class FacebookProfileFetcher extends ProfileFetcher {
                 null, HttpMethod.GET, response -> {
             Profile profile1 = Profile.getCurrentProfile();
             Log.d(TAG, response.toString());
+
             try {
                 JSONObject jsonObject = response.getJSONObject();
                 String emailID = jsonObject.getString("email");
