@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
@@ -15,6 +16,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Subham Tyagi,
@@ -23,7 +26,7 @@ import rx.Observable;
  * TODO:Add class comment.
  */
 @ActivityScope
-public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> implements AccountDataAdapter {
+public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> implements AccountDataAdapter, AccountContract {
 
 
     @Inject
@@ -64,14 +67,26 @@ public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> imple
 
     @Override
     public double getAccountBalance(long accountId) {
-        return 3000;//get(accountId).getAccountBalance();
+        final double[] accountBalance = {0D};
+        getSingleResultByColumn(AccountContract._ID, accountId)
+                .observeOn(Schedulers.immediate())
+                .subscribeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                            accountBalance[0] = d.getAccountBalance();
+                        }, e -> {
+                            Timber.e(e.getMessage());
+                        }
+                );
+        return accountBalance[0];
     }
 
     @Override
+    @WorkerThread
     public void updateAmount(long accountId, double balanceAmount) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(AccountContract.ACCOUNT_BALANCE, balanceAmount);
-        //update(AccountContract.ACCOUNT_URI, accountId, contentValues);
+        mBriteDatabase.update(mTableName, contentValues, _ID + " = " + accountId);
+
     }
 
     @Override

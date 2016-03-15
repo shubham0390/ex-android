@@ -35,20 +35,20 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
+        android:id="@+id/add_expense_book_feb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="160dp"
         android:layout_marginRight="@dimen/fab_margin"
-        android:src="@drawable/ic_clear_white_24dp"
+        android:src="@drawable/ic_clear_24dp"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB2"
+        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab1"
+        android:id="@+id/add_expense_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -56,7 +56,7 @@
         android:layout_marginRight="@dimen/fab_margin"
         android:src="@drawable/ic_message_white_24dp"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB1"
+        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 

@@ -1,58 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/drawer_header"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/drawer_header"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:background="@color/colorPrimary"
+    android:layout_height="120dp"
+    android:background="@color/colorPrimaryDark"
     custom:insetForeground="#4000">
 
     <ImageView
         android:id="@+id/cover_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/abc_search_hint"
-        />
+        android:contentDescription="@string/abc_search_hint" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:paddingEnd="32dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:paddingStart="32dp"
-        >
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_medium"
+        android:paddingRight="@dimen/spacing_medium"
+        android:paddingStart="@dimen/spacing_medium">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:src="@drawable/member_avatar_white_48dp"
             custom:border_color="@color/colorAccent"
-            custom:border_width="2dp"
-            android:src="@drawable/member_avatar_white_48dp"/>
+            custom:border_width="2dp" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profile_image"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/profile_image"
+            android:text="Subham Tyagi"
             android:textColor="@color/milky_white"
-            android:textStyle="bold"
             android:textSize="16sp"
-            tool:text="Subham Tyagi"
-            />
+            android:textStyle="bold" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/email_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/milky_white"
             android:layout_below="@id/account_name"
-            tool:text="Hello how are tou"/>
+            android:layout_toRightOf="@id/profile_image"
+            android:text="Hello how are tou"
+            android:textColor="@color/milky_white" />
     </RelativeLayout>
 </FrameLayout>
 

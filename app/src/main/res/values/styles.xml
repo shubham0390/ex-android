@@ -18,7 +18,7 @@
     </style>
     <style name="SplashScreen" parent="AppTheme">
         <item name="android:textColor">@color/milky_white</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
     <style name="SummaryActivity" parent="AppTheme">
         <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>

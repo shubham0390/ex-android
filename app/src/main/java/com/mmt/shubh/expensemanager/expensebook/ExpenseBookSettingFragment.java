@@ -68,7 +68,7 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
     }
 
     private void setupToolbar() {
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setTitle(R.string.action_settings);
         mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
     }

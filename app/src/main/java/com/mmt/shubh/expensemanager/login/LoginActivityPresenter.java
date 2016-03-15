@@ -60,9 +60,9 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         mGoogleLoginHelper.setUp(plusSignInButton);
     }
 
-    public void setupFacebookLogin(TextView faceBookLoginButton) {
+    public void setupFacebookLogin(TextView faceBookLoginButton, AppCompatActivity activity) {
         Logger.debug(TAG, "Setting Up facebook login");
-        mFacebookLoginHelper = new FacebookLoginHelper(mContext, this);
+        mFacebookLoginHelper = new FacebookLoginHelper(activity, this);
         mFacebookLoginHelper.setUp(faceBookLoginButton);
     }
 

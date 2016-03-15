@@ -96,6 +96,7 @@ public class SeedDataTask extends AbstractTask {
     }
 
     private void parseJsonMemberString(String s) {
+        Logger.methodStart(LOG_TAG, "addmember");
         try {
             JSONArray jsonArray = new JSONArray(s);
             List<Member> members = new ArrayList<>();
@@ -110,14 +111,22 @@ public class SeedDataTask extends AbstractTask {
                 members.add(member);
             }
             MemberDataAdapter memberDataAdapter = mExpenseModel.getMemberDataAdapter();
-            memberDataAdapter.create(members);
+            memberDataAdapter.create(members).subscribeOn(Schedulers.immediate())
+                    .observeOn(Schedulers.immediate())
+                    .subscribe(d -> {
+                        Timber.i("Member added successfully"+d.size());
+                    });
+            ;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Logger.methodEnd(LOG_TAG, "addMembr");
+
 
     }
 
     private void createExpense() {
+        List<Expense> expenses =  new ArrayList<>();
         for (int i = 1; i < 30; i++) {
             Expense expense = new Expense();
             expense.setExpenseAmount(1000);
@@ -136,8 +145,14 @@ public class SeedDataTask extends AbstractTask {
             map.put(getMemberId(), 1D);
             map.put(getMemberId(), 1D);
             expense.setMemberMap(map);
-            mExpenseModel.createExpense(1, expense);
+            expenses.add(expense);
+
         }
+        mExpenseModel.createExpense(expenses).subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                    Timber.i("Expenses added successfully");
+                });;
     }
 
     private void addExpenseBook(String jsonString) {

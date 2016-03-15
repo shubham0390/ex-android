@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/bank_image"
         style="@style/ListItemIcon"
-        android:src="@drawable/ic_account_balance_black_24dp"/>
+        android:src="@drawable/ic_account_balance_24dp"/>
 
     <TextView
         android:id="@+id/bank_name"

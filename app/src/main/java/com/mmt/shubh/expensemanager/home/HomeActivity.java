@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,8 @@ import android.view.animation.AnimationUtils;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.base.DrawerBaseActivity;
+import com.mmt.shubh.expensemanager.expense.AddExpenseActivity;
+import com.mmt.shubh.expensemanager.expensebook.ExpenseBookAddUpdateActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,14 +21,18 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
 
     @Bind(R.id.viewpager)
     ViewPager pager;
+
     @Bind(R.id.tabs)
     TabLayout tabs;
+
     @Bind(R.id.fab)
     FloatingActionButton mFab;
-    @Bind(R.id.fab1)
-    FloatingActionButton mFab1;
-    @Bind(R.id.fab2)
-    FloatingActionButton mFab2;
+
+    @Bind(R.id.add_expense_fab)
+    FloatingActionButton mAddExpenseFab;
+
+    @Bind(R.id.add_expense_book_feb)
+    FloatingActionButton mAddExpenseBookFab;
 
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
@@ -38,14 +45,15 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
         int id = v.getId();
         switch (id) {
             case R.id.fab:
-
                 animateFAB();
                 break;
-            case R.id.fab1:
-
+            case R.id.add_expense_fab:
+                Intent intent = new Intent(HomeActivity.this, AddExpenseActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.fab2:
-
+            case R.id.add_expense_book_feb:
+                Intent intent1 = new Intent(HomeActivity.this, ExpenseBookAddUpdateActivity.class);
+                startActivity(intent1);
                 break;
         }
     };
@@ -66,8 +74,8 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
         mFab.setOnClickListener(mOnClickListener);
-        mFab1.setOnClickListener(mOnClickListener);
-        mFab2.setOnClickListener(mOnClickListener);
+        mAddExpenseFab.setOnClickListener(mOnClickListener);
+        mAddExpenseBookFab.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -88,8 +96,7 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
 
     @Override
     public void onPageSelected(int position) {
-      /*  mTracker.setScreenName("Image~" + getClass().getSimpleName());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
+
     }
 
     @Override
@@ -101,18 +108,18 @@ public class HomeActivity extends DrawerBaseActivity implements ViewPager.OnPage
 
         if (isFabOpen) {
             mFab.startAnimation(rotate_backward);
-            mFab1.startAnimation(fab_close);
-            mFab2.startAnimation(fab_close);
-            mFab1.setClickable(false);
-            mFab2.setClickable(false);
+            mAddExpenseFab.startAnimation(fab_close);
+            mAddExpenseBookFab.startAnimation(fab_close);
+            mAddExpenseFab.setClickable(false);
+            mAddExpenseBookFab.setClickable(false);
             isFabOpen = false;
 
         } else {
             mFab.startAnimation(rotate_forward);
-            mFab1.startAnimation(fab_open);
-            mFab2.startAnimation(fab_open);
-            mFab1.setClickable(true);
-            mFab2.setClickable(true);
+            mAddExpenseFab.startAnimation(fab_open);
+            mAddExpenseBookFab.startAnimation(fab_open);
+            mAddExpenseFab.setClickable(true);
+            mAddExpenseBookFab.setClickable(true);
             isFabOpen = true;
         }
     }

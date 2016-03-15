@@ -278,9 +278,4 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
-
-    @Override
-    public Observable<List<Expense>> create(List<Expense> ts) {
-        return null;
-    }
 }

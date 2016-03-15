@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -26,6 +27,9 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     private CallbackManager mCallbackManager;
 
     private SignUpCallback mCallback;
+
+    private Activity mActivity;
+
     private View.OnClickListener mFacebookLoginButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -33,7 +37,8 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
         }
     };
 
-    public FacebookLoginHelper(Context applicationContext, SignUpCallback iSignUpPresenter) {
+    public FacebookLoginHelper(Activity applicationContext, SignUpCallback iSignUpPresenter) {
+        mActivity = applicationContext;
         mContext = applicationContext.getApplicationContext();
         mCallback = iSignUpPresenter;
     }
@@ -41,6 +46,9 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     public void setUp(Object object) {
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, this);
+        ((TextView)object).setOnClickListener(v->{
+            signIn(mActivity);
+        });
     }
 
     @Override

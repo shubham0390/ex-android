@@ -68,7 +68,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
         ButterKnife.bind(this);
         initializeToolbar();
         getSupportActionBar().setElevation(0);
-        mLoginActivityPresenter.setupFacebookLogin(mFacebookLoginButton);
+        mLoginActivityPresenter.setupFacebookLogin(mFacebookLoginButton,this);
         mLoginActivityPresenter.setupGoogleLogin(mPlusSignInButton, this);
         mLoginActivityPresenter.attachView(this);
     }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sortContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_blue_bright">
+
+    <LinearLayout
+        android:id="@+id/reveal_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/asc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="ASC" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="DESC" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/sortByDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date" />
+
+        <TextView
+            android:id="@+id/sortByExpenseBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expense Book" />
+
+        <TextView
+            android:id="@+id/sortByMember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Member" />
+
+        <TextView
+            android:id="@+id/sortByAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account" />
+    </LinearLayout>
+
+</io.codetail.widget.RevealFrameLayout>

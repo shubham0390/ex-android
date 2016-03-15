@@ -112,6 +112,7 @@
         <activity android:name=".member.MemberDetailActivity"/>
         <activity android:name=".expensebook.ExpenseBookActivity"/>
         <activity android:name=".expensebook.ExpenseBookAddUpdateActivity"/>
+        <activity android:name=".expense.AddExpenseActivity"/>
         <activity
             android:name=".account.AccountActivity"
             android:label="@string/title_activity_account"/>

@@ -11,15 +11,20 @@ import com.mmt.shubh.expensemanager.database.content.Transaction;
 import com.mmt.shubh.expensemanager.debug.Logger;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Subham Tyagi,
@@ -29,11 +34,11 @@ import rx.schedulers.Schedulers;
  */
 public class ExpenseModel {
 
-    ExpenseDataAdapter mExpenseDataAdapter;
-    MemberExpenseDataAdapter mMemberExpenseDataAdapter;
-    TransactionDataAdapter mTransactionDataAdapter;
-    AccountDataAdapter mAccountDataAdapter;
-    MemberDataAdapter mMemberDataAdapter;
+    private ExpenseDataAdapter mExpenseDataAdapter;
+    private MemberExpenseDataAdapter mMemberExpenseDataAdapter;
+    private TransactionDataAdapter mTransactionDataAdapter;
+    private AccountDataAdapter mAccountDataAdapter;
+    private MemberDataAdapter mMemberDataAdapter;
     private String LOG_TAG = getClass().getName();
 
     @Inject
@@ -46,44 +51,42 @@ public class ExpenseModel {
         mTransactionDataAdapter = transactionDataAdapter;
         mAccountDataAdapter = accountDataAdapter;
         mMemberDataAdapter = DataAdapter;
+        Timber.tag(getClass().getName());
     }
 
-    public void createExpense(long accountId, Expense expense) {
+    public Observable<Expense> createExpense(Expense expense) {
+        return Observable.create(subscriber -> {
+
+            createExpenses(expense);
+        });
+    }
+
+    private void createExpenses(Expense expense) {
         Logger.methodStart(LOG_TAG, "createExpense");
+        deductAmountFromAccount(expense.getAccountKey(), expense.getExpenseAmount());
         long transactionId = createTransaction(expense);
+        expense.setTransactionKey(transactionId);
         mExpenseDataAdapter.create(expense)
                 .observeOn(Schedulers.immediate())
                 .subscribeOn(Schedulers.immediate())
-                .subscribe(new Observer<Expense>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(d -> {
+                    addExpenseForMember(expense);
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Expense expense) {
-                        addExpenseForMember(expense);
-                        expense.setTransactionKey(transactionId);
-                    }
+                }, e -> {
+                    Timber.e("Unable to create expense.");
                 });
-
-
-        //deductAmountFromAccount(accountId,expense.getFormatedExpenseAmount());
-        Logger.methodStart(LOG_TAG, "createExpense");
     }
 
     private void addExpenseForMember(Expense expense) {
+        Logger.methodStart(LOG_TAG, "addExpenseForMember");
         Map<Long, Double> doubleMap = expense.getMemberMap();
         long expenseID = expense.getId();
         List<MemberExpense> memberExpenses = new ArrayList<>();
-        Set<Long> longs = doubleMap.keySet();
-        for (long memberId : longs) {
+        Iterator iterator = doubleMap.keySet().iterator();
 
+
+        while (iterator.hasNext()) {
+            int memberId = (int) iterator.next();
             double sharedAmount = getSharedAmount(expense.getDistrubtionType(),
                     expense.getExpenseAmount(), doubleMap.size(), doubleMap.get(memberId));
 
@@ -102,11 +105,19 @@ public class ExpenseModel {
             memberExpense.setBalanceAmount(expense.getExpenseAmount() - sharedAmount);
             memberExpenses.add(memberExpense);
         }
-        mMemberExpenseDataAdapter.create(memberExpenses);
+        mMemberExpenseDataAdapter.create(memberExpenses)
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                }, e -> {
+                    Timber.e(e.getMessage());
+                });
+        Logger.methodEnd(LOG_TAG, "addExpenseForMember");
     }
 
     public void deductAmountFromAccount(long accountId, double amount) {
-        double balanceAmount = 3000; //mAccountDataAdapter.getAccountBalance(accountId);
+        Timber.i("Detecting money from accoun");
+        double balanceAmount = mAccountDataAdapter.getAccountBalance(accountId);
         mAccountDataAdapter.updateAmount(accountId, balanceAmount - amount);
     }
 
@@ -117,10 +128,11 @@ public class ExpenseModel {
         transaction.setName(expense.getExpenseName());
         transaction.setDate(expense.getExpenseDate());
         transaction.setType(Transaction.TYPE_DEBIT);
-        transaction.setAccountKey(1);
+        transaction.setAccountKey(expense.getAccountKey());
         mTransactionDataAdapter.create(transaction)
                 .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate());
+                .observeOn(Schedulers.immediate())
+                .subscribe(d->{},e->{Timber.e(e.getMessage());});
         Logger.methodEnd(LOG_TAG, "createTransaction");
         return transaction.getId();
     }
@@ -165,4 +177,15 @@ public class ExpenseModel {
     public MemberDataAdapter getMemberDataAdapter() {
         return mMemberDataAdapter;
     }
+
+    public Observable<List<Expense>> createExpense(List<Expense> expenses) {
+
+        return Observable.create(subscriber -> {
+            for (Expense expense : expenses) {
+                createExpenses(expense);
+            }
+        });
+    }
+
+
 }

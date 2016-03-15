@@ -79,7 +79,7 @@ public class ToolBarActivity extends MVPActivity {
     protected void toggleHomeBackButton(boolean value) {
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
-            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            ab.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             ab.setDisplayHomeAsUpEnabled(value);
         }
     }

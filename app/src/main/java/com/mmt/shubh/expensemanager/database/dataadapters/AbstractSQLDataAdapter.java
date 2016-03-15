@@ -7,11 +7,13 @@ import android.provider.BaseColumns;
 import com.mmt.shubh.database.QueryBuilder;
 import com.mmt.shubh.database.Selection;
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Created by subhamtyagi on 2/24/16.
@@ -99,14 +101,42 @@ public abstract class AbstractSQLDataAdapter<T> {
         return Observable.create(subscriber -> {
             Selection selection = new Selection(BaseColumns._ID, Selection.EQUAL, id);
             QueryBuilder queryBuilder = new QueryBuilder();
-            queryBuilder.addFrom(mTableName)
-                    .addProjection(null).addSelection(selection);
-            mBriteDatabase.createQuery(mTableName, queryBuilder.build()).subscribe(query -> {
-                subscriber.onNext(parseCursor(query.run()));
-            });
+            queryBuilder.addFrom(mTableName).addProjection(null).addSelection(selection);
+            mBriteDatabase.createQuery(mTableName, queryBuilder.build()).map(MAP);
         });
     }
 
+    private Func1<SqlBrite.Query, List<T>> MAP_LIST = query -> {
+        List<T> tList = new ArrayList<>();
+        Cursor cursor = query.run();
+        try {
+            while (cursor.moveToNext()) {
+                T t = parseCursor(cursor);
+                tList.add(t);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return tList;
+    };
+
+
+    private Func1<SqlBrite.Query, T> MAP = query -> {
+        T t = null;
+        Cursor cursor = query.run();
+        try {
+            while (cursor.moveToNext()) {
+                t = parseCursor(cursor);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return t;
+    };
 
     public Observable<List<T>> getAll() {
         QueryBuilder queryBuilder = new QueryBuilder();
@@ -124,7 +154,7 @@ public abstract class AbstractSQLDataAdapter<T> {
         QueryBuilder queryBuilder = new QueryBuilder();
         queryBuilder.addFrom(mTableName)
                 .addProjection(null).addSelection(selection);
-        return mBriteDatabase.createQuery(mTableName, queryBuilder.build()).mapToList(this::parseCursor);
+        return mBriteDatabase.createQuery(mTableName, queryBuilder.build()).map(MAP_LIST);
     }
 
     public Observable<T> getSingleResultByColumn(String column, long value) {
@@ -137,9 +167,7 @@ public abstract class AbstractSQLDataAdapter<T> {
             QueryBuilder queryBuilder = new QueryBuilder();
             queryBuilder.addFrom(mTableName)
                     .addProjection(null).addSelection(selection);
-            mBriteDatabase.createQuery(mTableName, queryBuilder.build()).subscribe(query -> {
-                subscriber.onNext(parseCursor(query.run()));
-            });
+            mBriteDatabase.createQuery(mTableName, queryBuilder.build()).map(MAP);
         });
     }
 }
