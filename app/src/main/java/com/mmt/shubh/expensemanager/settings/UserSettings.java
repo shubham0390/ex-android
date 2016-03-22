@@ -14,6 +14,7 @@
  */
 package com.mmt.shubh.expensemanager.settings;
 
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
 public class UserSettings {
@@ -54,5 +55,9 @@ public class UserSettings {
 
     public void setUserInfo(UserInfo userInfo) {
         mUserInfo = userInfo;
+    }
+
+    public void setPrivateExpenseBook(ExpenseBook d) {
+
     }
 }
