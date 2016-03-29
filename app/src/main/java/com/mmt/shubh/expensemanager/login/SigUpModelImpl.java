@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
@@ -31,20 +32,20 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private final String TAG = getClass().getName();
     private ExpenseModel mExpenseModel;
     private ExpenseBookDataAdapter mExpenseBookDataAdapter;
+    private UserInfoDataAdapter mUserInfoDataAdapter;
     private TaskProcessor mTaskProcessor;
     private SignUpModelCallback mSignUpModelCallback;
-    private MemberRestService memberRestService;
     private Context mContext;
 
     @Inject
-    public SigUpModelImpl(Context context, MemberRestService memberRestService,
-                          ExpenseBookDataAdapter bookDataAdapter, ExpenseModel expenseModel) {
+    public SigUpModelImpl(Context context, ExpenseBookDataAdapter bookDataAdapter, ExpenseModel expenseModel
+            , UserInfoDataAdapter userInfoDataAdapter) {
         mTaskProcessor = TaskProcessor.getTaskProcessor();
         mTaskProcessor.setOnTaskCompleteListener(this);
         mContext = context;
-        this.memberRestService = memberRestService;
         this.mExpenseBookDataAdapter = bookDataAdapter;
         mExpenseModel = expenseModel;
+        mUserInfoDataAdapter = userInfoDataAdapter;
     }
 
     @Override
@@ -60,7 +61,14 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     @Override
     public void registerUser(String fullName, String emailAddress, String password, int mobileNo) {
         Logger.debug(TAG, "Adding create user task to task processor");
-        mTaskProcessor.execute(new CreateUserTask(mContext, fullName, emailAddress, password, mobileNo, memberRestService));
+        mTaskProcessor.execute(new CreateUserTask(mContext, fullName, emailAddress, password,
+                mobileNo, mUserInfoDataAdapter, mExpenseModel.getMemberDataAdapter()));
+    }
+
+    @Override
+    public void registerUser(UserInfo userInfo) {
+        Logger.debug(TAG, "Adding create user task to task processor");
+        mTaskProcessor.execute(new CreateUserTask(mContext, userInfo, mUserInfoDataAdapter, mExpenseModel.getMemberDataAdapter()));
     }
 
     @Override
@@ -74,7 +82,10 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
             case ProfileFetchingTask.ACTION_PROFILE_FETCH:
                 Logger.debug(TAG, "Profile fetching successful .Starting setup task");
                 mSignUpModelCallback.updateProgress(R.string.about);
-                mTaskProcessor.execute(new CreateUserTask(mContext, (UserInfo) taskResult.getResult(), memberRestService));
+                //mSignUpModelCallback.onMobileNoRequired();
+                mTaskProcessor.execute(new CreateUserTask(mContext, (UserInfo) taskResult.getResult()
+                        , mUserInfoDataAdapter, mExpenseModel.getMemberDataAdapter()));
+
                 break;
             case CreateUserTask.ACTION_CREATE_USER:
                 Logger.debug(TAG, "User creation task complete");

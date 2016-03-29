@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.login;
 
 import android.support.annotation.StringRes;
 
+import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
 
 /**
@@ -18,6 +19,8 @@ public interface ISignUpModel {
 
     void registerUser(String fullName, String emailAddress, String password, int mobileNo);
 
+    void registerUser(UserInfo userInfo);
+
     void registerUserWithSocial(ProfileFetcher profileFetcher);
 
 
@@ -27,5 +30,7 @@ public interface ISignUpModel {
         void updateProgress(@StringRes int about);
 
         void onError(int statusCode);
+
+        void onMobileNoRequired();
     }
 }

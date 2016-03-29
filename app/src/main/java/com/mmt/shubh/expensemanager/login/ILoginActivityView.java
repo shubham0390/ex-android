@@ -17,7 +17,7 @@ public interface ILoginActivityView extends MVPView {
 
     void navigateToHome();
 
-    void setInvalidCredentialError();
-
     void showError(@StringRes int messageRes);
+
+    void showAskMobileScreen();
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.setup.FacebookProfileFetcher;
 import com.mmt.shubh.expensemanager.setup.GoogleProfileFetcher;
@@ -39,11 +40,15 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
 
     private FacebookLoginHelper mFacebookLoginHelper;
 
+    private UserInfoDataAdapter mUserInfoDataAdapter;
+
     @Inject
-    public LoginActivityPresenter(Context context, ISignUpModel signUpModel) {
+    public LoginActivityPresenter(Context context, ISignUpModel signUpModel,UserInfoDataAdapter userInfoDataAdapter) {
         mContext = context;
         mSignUpModel = signUpModel;
         mSignUpModel.registerCallback(this);
+        mUserInfoDataAdapter = userInfoDataAdapter;
+
     }
 
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -72,11 +77,11 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         switch (type) {
             case GOOGLE:
                 Logger.debug(TAG, "Google login finished. Fetching User profile");
-                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getGoogleAccount());
+                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getGoogleAccount(),mUserInfoDataAdapter);
                 break;
             case FACEBOOK:
                 Logger.debug(TAG, "Facebook login finished. Fetching User profile");
-                profileFetcher = new FacebookProfileFetcher();
+                profileFetcher = new FacebookProfileFetcher(mUserInfoDataAdapter);
                 break;
         }
         mSignUpModel.registerUserWithSocial(profileFetcher);
@@ -116,6 +121,11 @@ public class LoginActivityPresenter extends MVPAbstractPresenter<ILoginActivityV
         else {
             getView().showError(R.string.login_failed);
         }
+    }
+
+    @Override
+    public void onMobileNoRequired() {
+        getView().showAskMobileScreen();
     }
 
     @Override

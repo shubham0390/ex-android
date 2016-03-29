@@ -8,6 +8,7 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
@@ -34,8 +35,9 @@ public class LoginModule {
     @Provides
     @ActivityScope
     ISignUpModel providerSignUpModel(Context context, MemberRestService restService,
-                                     ExpenseBookDataAdapter expenseBookDataAdapter, ExpenseModel expenseModel) {
-        return new SigUpModelImpl(context, restService, expenseBookDataAdapter, expenseModel);
+                                     ExpenseBookDataAdapter expenseBookDataAdapter, ExpenseModel expenseModel,
+                                     UserInfoDataAdapter userInfoDataAdapter) {
+        return new SigUpModelImpl(context, expenseBookDataAdapter, expenseModel,userInfoDataAdapter);
     }
 
     @Provides
@@ -52,8 +54,8 @@ public class LoginModule {
 
     @Provides
     @ActivityScope
-    LoginActivityPresenter provideLoginActivityPresenter(ISignUpModel signUpModel) {
-        return new LoginActivityPresenter(mLoginActivity, signUpModel);
+    LoginActivityPresenter provideLoginActivityPresenter(ISignUpModel signUpModel,UserInfoDataAdapter userInfoDataAdapter) {
+        return new LoginActivityPresenter(mLoginActivity, signUpModel,userInfoDataAdapter);
     }
 
     @Provides
