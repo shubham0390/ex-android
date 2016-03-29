@@ -112,6 +112,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             if (!TextUtils.isEmpty(imageUrl)) {
                 Glide.with(mProfileImage.getContext())
                         .load(imageUrl).animate(anim)
+                        .placeholder(R.drawable.member_avatar_white_48dp)
                         .centerCrop().fitCenter()
                         .into(mProfileImage);
             }

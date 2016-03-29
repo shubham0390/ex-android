@@ -24,4 +24,8 @@ public class BaseSection {
     public int hashCode() {
         return mSectionName.hashCode();
     }
+
+    public void update(BaseSection section) {
+
+    }
 }

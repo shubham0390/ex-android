@@ -5,7 +5,16 @@ package com.mmt.shubh.expensemanager.database.content;
  */
 public class ModelFactory {
 
+
     public static Expense getExpense() {
         return new Expense();
+    }
+
+    public static UserInfo getUserInfo() {
+        return new UserInfo();
+    }
+
+    public static MemberExpense getNewMemberExpense() {
+        return new MemberExpense();
     }
 }

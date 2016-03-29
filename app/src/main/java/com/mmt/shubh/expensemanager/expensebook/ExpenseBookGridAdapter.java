@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.expensebook;
 
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 
@@ -38,7 +40,7 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
     @Override
     public ExpenseBookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_expense_book, parent, false);
+        View view = inflater.inflate(R.layout.grid_item_expense_book, parent, false);
         return new ExpenseBookViewHolder(view);
     }
 
@@ -80,12 +82,6 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
         @Bind(R.id.expense_book_title)
         TextView TitleTextView;
 
-        @Bind(R.id.expense_book_type)
-        TextView mTypeTextView;
-
-        @Bind(R.id.expense_book_description)
-        TextView mDescriptionTextView;
-
         @Bind(R.id.image)
         ImageView mProfileImage;
 
@@ -97,23 +93,20 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
 
         public void bindView(ExpenseBook expenseBook) {
             TitleTextView.setText(expenseBook.getName());
-            mTypeTextView.setText(expenseBook.getType());
-
             ColorGenerator generator = ColorGenerator.MATERIAL;
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(String.valueOf(expenseBook.getName().charAt(0)), generator.getRandomColor());
-            mProfileImage.setImageDrawable(drawable);
-            switch (mMode) {
-                case ExpenseBookListView.MODE_EXPENSE_BOOK:
-                    mDescriptionTextView.setText(expenseBook.getDescription());
-                    TitleTextView.setTypeface(null, Typeface.BOLD);
-                    break;
-                case ExpenseBookListView.MODE_MEMBER:
-                case ExpenseBookListView.MODE_SUMMARY:
-                    mDescriptionTextView.setVisibility(View.GONE);
-                    TitleTextView.setTypeface(null, Typeface.NORMAL);
-            }
-
+            if (!TextUtils.isEmpty(expenseBook.getProfileImagePath())) {
+                Glide.with(mProfileImage.getContext())
+                        .load(expenseBook.getProfileImagePath())
+                        .placeholder(drawable)
+                        .centerCrop()
+                        .into(mProfileImage);
+            } else
+                mProfileImage.setImageDrawable(drawable);
+            TitleTextView.setTypeface(null, Typeface.NORMAL);
         }
+
     }
+
 }

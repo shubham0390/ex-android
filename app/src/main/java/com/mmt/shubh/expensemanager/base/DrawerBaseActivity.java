@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.mmt.shubh.expensemanager.category.CategoryActivity;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookActivity;
 import com.mmt.shubh.expensemanager.home.HomeActivity;
 import com.mmt.shubh.expensemanager.home.SummaryActivity;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import butterknife.Bind;
 
@@ -129,12 +131,14 @@ public class DrawerBaseActivity extends ToolBarActivity {
     }
 
     protected void populateDrawerItems() {
+
+        mUserInfo = UserSettings.getInstance().getUserInfo();
         if (mUserInfo != null) {
-            mUserInfo = getIntent().getParcelableExtra("Account");
-            ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
-            ImageView coverImage = (ImageView) findViewById(R.id.cover_image_view);
-            TextView displayName = (TextView) findViewById(R.id.account_name);
-            TextView emailId = (TextView) findViewById(R.id.email_id);
+            View view = mNavigationView.getHeaderView(0);
+            ImageView profileImage = (ImageView) view.findViewById(R.id.profile_image);
+            ImageView coverImage = (ImageView) view.findViewById(R.id.cover_image_view);
+            TextView displayName = (TextView) view.findViewById(R.id.account_name);
+            TextView emailId = (TextView) view.findViewById(R.id.email_id);
 
             if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
                 Glide.with(this)

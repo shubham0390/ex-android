@@ -3,8 +3,10 @@ package com.mmt.shubh.recyclerviewlib.adapter.section;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by shubham on 12/2/15.
@@ -39,14 +41,26 @@ public abstract class AbstractSectionIndexer<D> {
         for (int i = 0; i < dataList.size(); i++) {
 
             BaseSection section = getSectionForData(dataList.get(i));
+            Set<Map.Entry<Integer, BaseSection>> entries = mSections.entrySet();
 
-            if (!mSections.containsValue(section)) {
+            Iterator<Map.Entry<Integer, BaseSection>> iterator = entries.iterator();
+            boolean isFound = false;
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, BaseSection> entry = iterator.next();
+                BaseSection baseSection = entry.getValue();
+                if (baseSection.equals(section)) {
+                    baseSection.update(section);
+                    isFound = true;
+                }
+            }
+            if (isFound) {
                 section.mFirstPosition = size + i;
                 section.mSectionedIndex = section.mFirstPosition + offset;
                 mSections.put(offset, section);
                 ++offset;
             }
         }
+
         mPreviousOffset = offset;
         return mSections;
     }

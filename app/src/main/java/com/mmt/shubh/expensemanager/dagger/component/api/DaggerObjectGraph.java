@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.dagger.component.api;
 
-import com.mmt.shubh.expensemanager.home.SplashActivity;
+import com.mmt.shubh.expensemanager.onboarding.SplashActivity;
 
 /**
  * Created by Subham Tyagi,
@@ -9,7 +9,5 @@ import com.mmt.shubh.expensemanager.home.SplashActivity;
  * TODO:Add class comment.
  */
 public interface DaggerObjectGraph {
-
-    void inject(SplashActivity mainActivity);
 
 }

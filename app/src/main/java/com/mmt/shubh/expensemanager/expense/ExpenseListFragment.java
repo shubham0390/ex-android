@@ -65,7 +65,7 @@ public class ExpenseListFragment extends SupportMVPLCEFragment<ListRecyclerView,
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mExpensesAdapter = new ExpenseListAdapter(ExpenseListView.MODE_SUMMARY);
+        mExpensesAdapter = new ExpenseListAdapter(mContentView,ExpenseListView.MODE_SUMMARY);
         mContentView.setAdapter(mExpensesAdapter);
     }
 
@@ -101,7 +101,7 @@ public class ExpenseListFragment extends SupportMVPLCEFragment<ListRecyclerView,
     public void setData(List<ExpenseListViewModel> data) {
         mExpenseListViewModels = data;
         showContent();
-        mExpensesAdapter.addData(data);
+        mExpensesAdapter.setData(data);
     }
 
     @Override

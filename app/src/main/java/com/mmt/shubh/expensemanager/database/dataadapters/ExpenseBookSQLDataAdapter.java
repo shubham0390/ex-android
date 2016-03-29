@@ -31,35 +31,6 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
         mContext = context;
     }
 
-    /**
-     * Check if any group present for provided group name.
-     *
-     * @param context
-     * @param groupName
-     * @return <code>true</code> if {@link  ExpenseBook} already present otherwise
-     * <code>false</code>.
-     */
-    public boolean isExpenseBookExsist(Context context, String groupName) {
-       /* Cursor cursor = null;
-
-        try {
-            cursor = context.getContentResolver().query(EXPENSE_BOOK_URI,
-                    BaseContract.ID_PROJECTION, ExpenseBookContract.EXPENSE_BOOK_NAME + " = ?",
-                    new String[]{groupName}, null);
-            if (cursor == null || cursor.getCount() <= 0) {
-                return false;
-            } else {
-                return true;
-            }
-
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }*/
-        return false;
-    }
-
     @Override
     public ExpenseBook parseCursor(Cursor cursor) {
         ExpenseBook expenseBook = new ExpenseBook();
@@ -122,6 +93,11 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
             mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
         }
 
+    }
+
+    @Override
+    public Observable<List<ExpenseBook>> getPrivateExpenseBook() {
+        return getResultByColumn(EXPENSE_BOOK_TYPE, "Private");
     }
 
     @Override

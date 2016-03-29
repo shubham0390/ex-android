@@ -24,4 +24,9 @@ public class StringsUtils {
         }
     }
 
+    public static String getLocalisedAmountString(double expenseAmount) {
+
+        String value = "Rs. " + expenseAmount;
+        return value;
+    }
 }

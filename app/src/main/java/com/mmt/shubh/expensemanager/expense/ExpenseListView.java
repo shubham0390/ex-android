@@ -59,7 +59,7 @@ public class ExpenseListView extends FrameLayout {
     public void init(Context context) {
         ListRecyclerView listRecyclerView = new ListRecyclerView(context);
         addView(listRecyclerView);
-        mExpenseListAdapter = new ExpenseListAdapter(mMode);
+        mExpenseListAdapter = new ExpenseListAdapter(listRecyclerView,mMode);
         listRecyclerView.setAdapter(mExpenseListAdapter);
         listRecyclerView.setOnItemClickListener(mItemClickListener);
     }
@@ -69,6 +69,11 @@ public class ExpenseListView extends FrameLayout {
     }
 
     public void addData(List<ExpenseListViewModel> listViewModels) {
-        mExpenseListAdapter.addData(listViewModels);
+        mExpenseListAdapter.setData(listViewModels);
+    }
+
+    public void showEmptyMessage() {
+
+
     }
 }

@@ -5,6 +5,7 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 
 import java.util.List;
@@ -59,10 +60,14 @@ public class MemberModel {
     }
 
     public Observable<List<ExpenseListViewModel>> getAllSharedExpense(long id, long id2) {
-        return mExpenseDataAdapter.getAllSharedAmount(id, id2);
+        return mExpenseDataAdapter.getAllSharedExpenseList(id, id2);
     }
 
     public Observable<Boolean> deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
         return mMemberDataAdapter.deleteMemberFromExpenseBook(memberId, expenseBookId);
+    }
+
+    public Observable<List<MemberExpense>> getMemberExpenses(long id, long id2) {
+        return mExpenseDataAdapter.getSharedExpenseDetails(id, id2);
     }
 }

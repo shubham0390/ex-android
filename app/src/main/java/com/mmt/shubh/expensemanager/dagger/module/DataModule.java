@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
@@ -18,6 +19,7 @@ import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.TransactionSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -82,6 +84,12 @@ public class DataModule implements IDataModule {
     @Singleton
     ExpenseBookDataAdapter provideExpenseBookDataAdapter() {
         return new ExpenseBookSQLDataAdapter(mContext, getBriteDatabase());
+    }
+
+    @Provides
+    @Singleton
+    public UserInfoDataAdapter provideUserInfoDataAdapter() {
+        return new UserInfoSQLDataAdapter(getBriteDatabase());
     }
 
     @Override

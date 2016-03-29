@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
@@ -63,15 +64,35 @@ public class ExpenseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         generateHashKey();
+        enbaleStrictMode();
+
         instance = this;
         mContext = getApplicationContext();
+
         buildComponentAndInject();
+
         Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                 .build());
         JodaTimeAndroid.init(this);
+    }
+
+    private void enbaleStrictMode() {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()   // or .detectAll() for all detectable problems
+                .penaltyLog()
+                .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
     }
 
     /**

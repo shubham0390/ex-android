@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res/android">
 
+    <string name="facebook_app_id">1812295508997930</string>
+
     <!-- Common and app specific string -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -158,8 +160,6 @@
     <string name="full_name">Full name</string>
     <string name="bank_name"><![CDATA[Bank & Name]]></string>
 
-
-    <string name="facebook_app_id">409420569245230</string>
     <string name="title_activity_expense_book">Expense Book</string>
 
     <string name="hello_world">Hello world!</string>

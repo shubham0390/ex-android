@@ -2,20 +2,23 @@ package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 import com.mmt.shubh.expensemanager.debug.Logger;
-import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
+
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 public class CreateUserTask extends AbstractTask {
 
     public final static String ACTION_CREATE_USER = "com.mmt.shubh.ACTION_CREATE_USER";
     private String TAG = getClass().getName();
     private UserInfo mUserInfo;
-
-    private MemberRestService memberRestService;
-
+    private UserInfoDataAdapter mUserInfoDataAdapter;
+    private MemberDataAdapter mMemberDataAdapter;
     private String mFullName;
     private String mEmailAddress;
     private int mMobileNumber;
@@ -23,19 +26,23 @@ public class CreateUserTask extends AbstractTask {
 
 
     public CreateUserTask(Context context, String fullName, String emailAddress, String password,
-                          int mobileNo, MemberRestService memberRestService) {
+                          int mobileNo, UserInfoDataAdapter userInfoDataAdapter,MemberDataAdapter memberDataAdapter) {
         super(context);
         mFullName = fullName;
         mEmailAddress = emailAddress;
         mMobileNumber = mobileNo;
         mPassword = password;
-        this.memberRestService = memberRestService;
+        mUserInfoDataAdapter = userInfoDataAdapter;
+        mMemberDataAdapter = memberDataAdapter;
+        mUserInfo = createUser();
+
     }
 
-    public CreateUserTask(Context mContext, UserInfo userInfo, MemberRestService memberRestService) {
+    public CreateUserTask(Context mContext, UserInfo userInfo, UserInfoDataAdapter userInfoDataAdapter,MemberDataAdapter memberDataAdapter) {
         super(mContext);
         mUserInfo = userInfo;
-        this.memberRestService = memberRestService;
+        mUserInfoDataAdapter = userInfoDataAdapter;
+        mMemberDataAdapter = memberDataAdapter;
     }
 
 
@@ -52,7 +59,7 @@ public class CreateUserTask extends AbstractTask {
         return userInfo;
     }
 
-    /*public Member createMember(UserInfo userInfo, Context context) {
+    public Member createMember(UserInfo userInfo) {
         Member member = new Member();
         if (userInfo != null) {
             member.setCoverPhotoUrl(userInfo.getCoverPhotoUrl());
@@ -61,16 +68,33 @@ public class CreateUserTask extends AbstractTask {
             member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
             member.setMemberPhoneNumber(userInfo.getPhoneNumber());
         }
-        MemberSQLDataAdapter sqlMemberDataAdapter =
-        sqlMemberDataAdapter.create(member);
-
         return member;
-    }*/
+    }
 
 
     @Override
     public TaskResult execute() {
-        return registerUser();
+
+        mMemberDataAdapter.create(createMember(mUserInfo))
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate()).subscribe(new Subscriber<Member>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Member member) {
+                mUserInfo.setMemberKey(member.getId());
+                mTaskResult = registerUser();
+            }
+        });
+        return mTaskResult;
     }
 
     private TaskResult registerUser() {
@@ -79,22 +103,16 @@ public class CreateUserTask extends AbstractTask {
             if (mUserInfo == null) {
                 mUserInfo = createUser();
             }
-            UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(mContext);
-            long id = sqlDataAdapter.create(mUserInfo);
-            if (id > 0) {
-                mTaskResult.setIsSuccess(true);
+            mUserInfoDataAdapter.create(mUserInfo)
+                    .observeOn(Schedulers.immediate())
+                    .subscribeOn(Schedulers.immediate()).subscribe(d -> {
                 Logger.debug(TAG, "user created successfully");
                 UserSettings userSettings = UserSettings.getInstance();
-                userSettings.setUserInfo(mUserInfo);
-                //createMember(mUserInfo, mContext);
-               /* memberRestService.registerMember(createMember(mUserInfo, mContext))
-                        .subscribeOn(Schedulers.immediate())
-                        .observeOn(Schedulers.immediate())
-                        .subscribe(memberObserver);*/
-            } else {
+                userSettings.setUserInfo(d);
+            }, e -> {
                 mTaskResult.setIsSuccess(false);
-                Logger.debug(TAG, "user creation failed");
-            }
+                Logger.debug(TAG, "user creation failed" + e.getMessage());
+            });
         } else {
             mTaskResult.setIsSuccess(false);
             mTaskResult.setStatusCode(TaskResultStatus.NO_INTERNET_CONNECTION);

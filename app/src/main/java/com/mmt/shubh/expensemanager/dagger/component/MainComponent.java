@@ -14,6 +14,7 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -47,6 +48,8 @@ public interface MainComponent extends DaggerObjectGraph {
     MemberDataAdapter getMemberDataAdapter();
 
     ExpenseBookDataAdapter getExpenseBookDataAdapter();
+
+    UserInfoDataAdapter getUserInfoDataAdapter();
 
     Retrofit getRetrofit();
 

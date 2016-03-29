@@ -39,28 +39,21 @@ public class SplashActivityPresenter extends MVPAbstractPresenter<SplashView> im
     }
 
     public void checkLoginStatus() {
-        mSplashModel.getUserInfo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<UserInfo>>() {
-                    @Override
-                    public void onCompleted() {
+        UserInfo userInfo = UserSettings.getInstance().getUserInfo();
+        if (userInfo != null) {
+            getView().showHomeScreen();
+        } else
+            mSplashModel.getUserInfo()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::checkUserInfo, this::checkError);
+    }
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        checkError(e);
-                    }
-
-                    @Override
-                    public void onNext(List<UserInfo> userInfos) {
-                        if (userInfos != null && userInfos.size() > 0)
-                            checkUserInfo(userInfos.get(0));
-                        else
-                            getView().showLoginScreen();
-                    }
-                });
+    private void checkUserInfo(List<UserInfo> userInfos) {
+        if (userInfos != null && userInfos.size() > 0)
+            checkUserInfo(userInfos.get(0));
+        else
+            getView().showLoginScreen();
     }
 
     private void checkError(Throwable throwable) {
@@ -74,23 +67,11 @@ public class SplashActivityPresenter extends MVPAbstractPresenter<SplashView> im
             UserSettings.getInstance().setUserInfo(userInfo);
             mSplashModel.getPrivateExpenseBook()
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io()).subscribe(new Subscriber<List<ExpenseBook>>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onNext(List<ExpenseBook> expenseBooks) {
-                    UserSettings.getInstance().setPrivateExpenseBook(expenseBooks.get(0));
-                    getView().showHomeScreen();
-                }
-            });
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(d -> {
+                        UserSettings.getInstance().setPrivateExpenseBook(d.get(0));
+                        getView().showHomeScreen();
+                    }, this::checkError);
         }
     }
 }

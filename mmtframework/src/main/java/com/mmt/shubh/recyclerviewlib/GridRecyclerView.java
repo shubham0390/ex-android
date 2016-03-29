@@ -40,19 +40,11 @@ public class GridRecyclerView extends RecyclerView {
         setItemAnimator(new DefaultItemAnimator());
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(ListRecyclerView.OnItemClickListener onItemClickListener) {
         mItemClickSupport.setOnItemClickListener(onItemClickListener);
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener longClickListener) {
+    public void setOnItemLongClickListener(ListRecyclerView.OnItemLongClickListener longClickListener) {
         mItemClickSupport.setOnItemLongClickListener(longClickListener);
-    }
-
-    public interface OnItemClickListener extends ListRecyclerView.OnItemClickListener {
-
-    }
-
-    public interface OnItemLongClickListener extends ListRecyclerView.OnItemLongClickListener {
-
     }
 }

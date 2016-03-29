@@ -9,6 +9,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
 import com.facebook.Profile;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 
 import org.json.JSONException;
@@ -25,6 +26,10 @@ public class FacebookProfileFetcher extends ProfileFetcher {
     private static final String TAG = FacebookProfileFetcher.class.getSimpleName();
 
     private UserInfo userInfo;
+
+    public FacebookProfileFetcher(UserInfoDataAdapter mUserInfoDataAdapter) {
+        super(mUserInfoDataAdapter);
+    }
 
     @Override
     public UserInfo fetchUserAccountDetails(final Context context) {
@@ -48,7 +53,6 @@ public class FacebookProfileFetcher extends ProfileFetcher {
                 String emailID = jsonObject.getString("email");
                 userInfo.setEmailAddress(emailID);
                 userInfo.setProfilePhotoUrl(profile1.getProfilePictureUri(512, 512).toString());
-                FacebookProfileFetcher.this.update(context, userInfo);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

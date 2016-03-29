@@ -8,19 +8,24 @@ import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
+import com.mmt.shubh.expensemanager.database.content.MemberExpense;
+import com.mmt.shubh.expensemanager.database.content.ModelFactory;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContract;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Created by Subham Tyagi,
@@ -98,7 +103,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 " e.transaction_key ," +
                 " e.expense_name ," +
                 " ec.category_name," +
-                " ec.category_image ," +
+                " eb._id ," +
                 " eb.name ," +
                 " m.name ," +
                 " m._id ," +
@@ -118,16 +123,20 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
     private ExpenseListViewModel parseCursorForExpenseViewModel(Cursor cursor) {
 
         ExpenseListViewModel model = new ExpenseListViewModel();
-        model.setExpenseId(cursor.getLong(cursor.getColumnIndex(ExpenseContract.RECORD_ID)));
-        model.setExpenseTitle(cursor.getString(cursor.getColumnIndex(ExpenseContract.EXPENSE_NAME)));
-        model.setCategoryImage(cursor.getInt(cursor.getColumnIndex(CategoryContract.CATEGORY_IMAGE_NAME)));
-        model.setCategoryName(cursor.getString(cursor.getColumnIndex(CategoryContract.CATEGORY_NAME)));
-        model.setExpenseAmount(cursor.getDouble(cursor.getColumnIndex(ExpenseContract.EXPENSE_AMOUNT)));
-        model.setExpenseDate(cursor.getLong(cursor.getColumnIndex(ExpenseContract.EXPENSE_DATE)));
-        model.setMemberName(cursor.getString(cursor.getColumnIndex(MemberContract.MEMBER_NAME)));
-        model.setAccountName(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_NAME)));
-        model.setAccountType(cursor.getString(cursor.getColumnIndex(AccountContract.ACCOUNT_TYPE)));
-        model.setExpenseBookName(cursor.getString(cursor.getColumnIndex(ExpenseBookContract.EXPENSE_BOOK_NAME)));
+        model.setExpenseId(cursor.getLong(0));
+        model.setExpenseAmount(cursor.getDouble(1));
+        model.setExpenseDate(cursor.getLong(2));
+        model.setTransactionId(cursor.getLong(3));
+        model.setExpenseTitle(cursor.getString(4));
+        //model.setCategoryImage(cursor.getInt(cursor.getColumnIndex(CategoryContract.CATEGORY_IMAGE_NAME)));
+        model.setCategoryName(cursor.getString(5));
+        model.setExpenseBookId(6);
+        model.setExpenseBookName(cursor.getString(7));
+        model.setMemberName(cursor.getString(8));
+        model.setOwnerId(cursor.getLong(9));
+        model.setAccountName(cursor.getString(10));
+        model.setAccountType(cursor.getString(11));
+
         return model;
     }
 
@@ -140,7 +149,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 " e.transaction_key ," +
                 " e.expense_name ," +
                 " ec.category_name," +
-                " ec.category_image ," +
+                " eb._id ," +
                 " eb.name ," +
                 " m.name ," +
                 " m._id ," +
@@ -205,7 +214,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 " e.transaction_key ," +
                 " e.expense_name ," +
                 " ec.category_name," +
-                " ec.category_image ," +
+                " eb._id ," +
                 " eb.name ," +
                 " m.name ," +
                 " m._id ," +
@@ -225,14 +234,14 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
 
     @Override
     public Observable<List<ExpenseListViewModel>> getExpenseByAccountId(final long accountId) {
-        String q = "SELECT " +
-                " e._id," +
+        String q = "SELECT "
+                + " e._id," +
                 " e.expense_amount," +
                 " e.expense_date," +
                 " e.transaction_key ," +
                 " e.expense_name ," +
                 " ec.category_name," +
-                " ec.category_image ," +
+                " eb._id ," +
                 " eb.name ," +
                 " m.name ," +
                 " m._id ," +
@@ -250,7 +259,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
     }
 
     @Override
-    public Observable<List<ExpenseListViewModel>> getAllSharedAmount(long id, long id2) {
+    public Observable<List<ExpenseListViewModel>> getAllSharedExpenseList(long id, long id2) {
         String q = "SELECT " +
                 " e._id," +
                 " e.expense_amount," +
@@ -258,6 +267,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 " e.transaction_key ," +
                 " e.expense_name ," +
                 " ec.category_name," +
+                " eb._id ," +
                 " eb.name ," +
                 " m.name ," +
                 " m._id ," +
@@ -269,13 +279,54 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key"
                 + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key"
                 + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = e.owner_key";
-        q = q + " WHERE  e.id IN " + "( " +
-                " SELECT m1.expense_key " +
-                " FROM member_expense m1 " +
-                " INNER JOIN member_expense m2 " +
-                " ON m1.expense_key = m2.expense_key " +
-                " WHERE m1.member_key = " + id + " AND m2.member_key = " + id2 + " )";
+        q = q + " WHERE  e._id IN "
+                + " ( "
+                + " SELECT expense_key "
+                + " FROM member_expense "
+                + " WHERE expense_key "
+                + " IN "
+                + " ("
+                + " SELECT expense_key "
+                + " FROM member_expense "
+                + " WHERE member_key = 9"
+                + " )"
+                + " AND member_key = 16) GROUP BY eb._id ORDER BY e.expense_date ";
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
+    }
+
+    @Override
+    public Observable<List<MemberExpense>> getSharedExpenseDetails(long id, long id2) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT * FROM ");
+        sb.append(MemberExpenseContract.TABLE_NAME);
+        sb.append(" WHERE ")
+                .append(MemberExpenseContract.MEMBER_KEY)
+                .append(" IN ")
+                .append(" ( SELECT ")
+                .append(MemberExpenseContract.EXPENSE_KEY)
+                .append(" FROM ")
+                .append(MemberExpenseContract.TABLE_NAME)
+                .append(" WHERE ")
+                .append(MemberExpenseContract.MEMBER_KEY)
+                .append(" = ")
+                .append(id)
+                .append(" ) AND ")
+                .append(MemberExpenseContract.MEMBER_KEY)
+                .append(" = ")
+                .append(id2);
+        String s = sb.toString();
+        return mBriteDatabase.createQuery(MemberExpenseContract.TABLE_NAME, s).mapToList(this::parseMemberExpense);
+    }
+
+    private MemberExpense parseMemberExpense(Cursor cursor) {
+        MemberExpense memberExpense = ModelFactory.getNewMemberExpense();
+        memberExpense.setMemberKey(cursor.getLong(cursor.getColumnIndex(MemberExpenseContract.MEMBER_KEY)));
+        memberExpense.setExpenseKey(cursor.getLong(cursor.getColumnIndex(MemberExpenseContract.EXPENSE_KEY)));
+        memberExpense.setBalanceAmount(cursor.getLong(cursor.getColumnIndex(MemberExpenseContract.BALANCE_AMOUNT)));
+        memberExpense.setDebitAmount(cursor.getLong(cursor.getColumnIndex(MemberExpenseContract.DEBIT_AMOUNT)));
+        memberExpense.setShareAmount(cursor.getLong(cursor.getColumnIndex(MemberExpenseContract.SHARE_AMOUNT)));
+        return memberExpense;
     }
 }

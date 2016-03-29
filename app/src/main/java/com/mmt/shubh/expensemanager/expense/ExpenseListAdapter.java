@@ -3,6 +3,10 @@ package com.mmt.shubh.expensemanager.expense;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.mmt.shubh.recyclerviewlib.adapter.section.AbstractSectionIndexer;
+import com.mmt.shubh.recyclerviewlib.adapter.section.SectionAdapter;
+import com.mmt.shubh.recyclerviewlib.adapter.section.SectionViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,26 +16,40 @@ import java.util.List;
  * 9:18 AM
  * TODO:Add class comment.
  */
-public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder> {
+public class ExpenseListAdapter extends SectionAdapter<ExpenseListViewModel, ExpenseListAdapter.ViewHolder> {
 
     private List<ExpenseListViewModel> mExpenseListViewModels;
 
     private int mMode;
 
-    public ExpenseListAdapter(int mode) {
+    public ExpenseListAdapter(RecyclerView recyclerView, int mode) {
+        super(recyclerView, getSectionIndexer(mode));
         mExpenseListViewModels = new ArrayList<>();
         mMode = mode;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(new ListItemExpense(parent.getContext()));
+    private static AbstractSectionIndexer<ExpenseListViewModel> getSectionIndexer(int mode) {
+        switch (mode) {
+            case ExpenseListView.MODE_ACCOUNT:
+                return new ExpenseBookSectionIndexer();
+            case ExpenseListView.MODE_EXPENSE_BOOK:
+            case ExpenseListView.MODE_MEMBER:
+            case ExpenseListView.MODE_SUMMARY:
+                return new ExpenseTimeSectionIndexer();
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    protected void onBindItemViewHolder(ViewHolder holder, int position) {
         holder.bindView(mExpenseListViewModels.get(position));
     }
+
+    @Override
+    protected ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(new ListItemExpense(parent.getContext()));
+    }
+
 
     @Override
     public int getItemCount() {
@@ -43,7 +61,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends SectionViewHolder {
         ListItemExpense mListItemExpense;
 
         public ViewHolder(ListItemExpense itemView) {

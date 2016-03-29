@@ -58,7 +58,7 @@ public class SeedDataTask extends AbstractTask {
     @Override
     public TaskResult execute() {
         addBankAccounts(getJsonStringFromUrl("https://www.mockaroo.com/cad293a0/download?count=5&key=327934b0"));
-        parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=20&key=327934b0"));
+        parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=10&key=327934b0"));
         addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=10&key=327934b0"));
         addExpenseBookMember(getJsonStringFromUrl("https://www.mockaroo.com/1d05f980/download?count=50&key=327934b0"));
         createExpense();
@@ -114,7 +114,7 @@ public class SeedDataTask extends AbstractTask {
             memberDataAdapter.create(members).subscribeOn(Schedulers.immediate())
                     .observeOn(Schedulers.immediate())
                     .subscribe(d -> {
-                        Timber.i("Member added successfully"+d.size());
+                        Timber.i("Member added successfully" + d.size());
                     });
             ;
         } catch (JSONException e) {
@@ -126,33 +126,64 @@ public class SeedDataTask extends AbstractTask {
     }
 
     private void createExpense() {
-        List<Expense> expenses =  new ArrayList<>();
-        for (int i = 1; i < 30; i++) {
+        List<Expense> expenses = new ArrayList<>();
+        for (int i = 1; i < 300; i++) {
             Expense expense = new Expense();
             expense.setExpenseAmount(1000);
             expense.setExpenseBookId(getExpenseBookId());
             expense.setExpenseCategoryId(i % 2);
             expense.setExpenseDate(new Date().getTime());
-            expense.setExpenseDescription("ajsedflojsldfjg");
+            expense.setExpenseDescription("This is testing expense");
             expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
-            expense.setExpenseName("sdjjfhksdjfhk");
-            expense.setExpensePlace("sdkjfcksjdnfks");
+            expense.setExpenseName("Testing Expense " + i);
+            expense.setExpensePlace("Delhi");
             expense.setOwnerId(getMemberId());
             expense.setAccountKey(getAccountId());
             Map map = new HashMap<>();
-            map.put(getMemberId(), 1D);
-            map.put(getMemberId(), 1D);
-            map.put(getMemberId(), 1D);
-            map.put(getMemberId(), 1D);
+            map.put(getMemberId(), getAmount(getBoolean(i, 1)));
+            map.put(getMemberId(), getAmount(getBoolean(i, 2)));
+            map.put(getMemberId(), getAmount(getBoolean(i, 3)));
+            map.put(getMemberId(), getAmount(getBoolean(i, 4)));
             expense.setMemberMap(map);
             expenses.add(expense);
 
         }
-        mExpenseModel.createExpense(expenses).subscribeOn(Schedulers.immediate())
+        mExpenseModel.createExpense(expenses)
+                .subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate())
                 .subscribe(d -> {
                     Timber.i("Expenses added successfully");
-                });;
+                });
+        ;
+    }
+
+    private boolean getBoolean(int i, int i2) {
+        if (i2 == 1) {
+            if (isPrimeNumber(i)) {
+                return true;
+            }
+        } else {
+            if (i % i2 == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isPrimeNumber(int number) {
+
+        for (int i = 2; i <= number / 2; i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private double getAmount(boolean value) {
+        return value ? 1000D : 0D;
     }
 
     private void addExpenseBook(String jsonString) {
@@ -295,7 +326,7 @@ public class SeedDataTask extends AbstractTask {
 
     private int getAccountId() {
         Random random = new Random();
-        return random.nextInt(6 - 1);
+        return random.nextInt(5 - 1);
     }
 
     @Override

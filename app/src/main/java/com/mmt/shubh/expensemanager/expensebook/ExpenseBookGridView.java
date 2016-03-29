@@ -27,7 +27,7 @@ public class ExpenseBookGridView extends LinearLayout {
     public static final int MODE_MEMBER = 1;
     public static final int MODE_SUMMARY = 2;
 
-    ExpenseBookListAdapter mExpenseBookListAdapter;
+    ExpenseBookGridAdapter mExpenseBookListAdapter;
 
     TextView mEmptyText;
 
@@ -75,7 +75,7 @@ public class ExpenseBookGridView extends LinearLayout {
         mEmptyText = (TextView) findViewById(R.id.empty_text);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mMoreTextView = (TextView) findViewById(R.id.more);
-        mExpenseBookListAdapter = new ExpenseBookListAdapter();
+        mExpenseBookListAdapter = new ExpenseBookGridAdapter();
 
         listRecyclerView.setAdapter(mExpenseBookListAdapter);
         listRecyclerView.setOnItemClickListener(mItemClickListener);
@@ -100,7 +100,7 @@ public class ExpenseBookGridView extends LinearLayout {
         mMoreTextView.setText("More");
         isExpended = false;
         List<ExpenseBook> expenseBooks = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 6; i++) {
             expenseBooks.add(mExpenseBooks.get(i));
         }
         mExpenseBookListAdapter.clear();

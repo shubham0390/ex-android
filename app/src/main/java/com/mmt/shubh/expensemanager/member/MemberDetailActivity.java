@@ -2,6 +2,8 @@ package com.mmt.shubh.expensemanager.member;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
@@ -19,12 +21,18 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
+import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
+import com.mmt.shubh.expensemanager.expensebook.ExpenseBookGridView;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookListView;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
+import com.mmt.shubh.expensemanager.utils.StringsUtils;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,15 +63,25 @@ public class MemberDetailActivity extends ToolBarActivity {
     TextView mMemberNameTextView;
 
     @Bind(R.id.expense_book_list)
-    ExpenseBookListView mExpenseBookListView;
+    ExpenseBookGridView mExpenseBookListView;
 
     @Bind(R.id.expense_list)
     ExpenseListView mExpenseListView;
+
     @Bind(R.id.expense_card)
     CardView mExpenseCardView;
 
     @Bind(R.id.count)
     TextView mMemberCountTextView;
+
+    @Bind(R.id.total_expense)
+    TextView mTotalExpenseTextView;
+
+    @Bind(R.id.balance_amount)
+    TextView mBalanceAmountTextView;
+
+    @Bind(R.id.balance_amount_title)
+    TextView mBalanceAmountTitleTextView;
 
     @Inject
     MemberModel mMemberModel;
@@ -87,7 +105,7 @@ public class MemberDetailActivity extends ToolBarActivity {
         Glide.with(this)
                 .load(mMember.getProfilePhotoUrl())
                 .fitCenter()
-                //.placeholder(R.drawable.member_avatar_white_48dp)
+                .placeholder(R.drawable.member_avatar_white_48dp)
                 .override((int) Utilities.pxFromDp(this, 60), (int) Utilities.pxFromDp(this, 60))
                 .into(mProfileImageView);
 
@@ -139,11 +157,53 @@ public class MemberDetailActivity extends ToolBarActivity {
                     Timber.e("Unable to load expense for member %s", e.getMessage());
                 });
 
-        mMemberModel.getAllSharedExpense(mMember.getId(), UserSettings.getInstance().getUserId()).subscribeOn(Schedulers.io())
+        mMemberModel.getAllSharedExpense(mMember.getId(), UserSettings.getInstance().getUserId())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(d -> mExpenseListView.addData(d), e -> {
+                .subscribe(d -> {
+                    calculateTotalExpense(d);
+                    if (d != null && d.size() > 0) {
+                        mExpenseListView.addData(d);
+                    } else {
+                        mExpenseListView.showEmptyMessage();
+                    }
+                }, e -> {
                     Timber.e("Unable to load expense for member %s", e.getMessage());
                 });
+        mMemberModel.getMemberExpenses(mMember.getId(), UserSettings.getInstance().getUserId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(d -> {
+                    double otherRemainingAmount = 0;
+                    final double[] myRemainingAmount = {0};
+                    for (MemberExpense memberExpense : d) {
+                        otherRemainingAmount += memberExpense.getBalanceAmount();
+                    }
+                    final double finalOtherRemainingAmount = otherRemainingAmount;
+                    mMemberModel.getMemberExpenses(mMember.getId(), UserSettings.getInstance().getUserId())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe(d2 -> {
+                                for (MemberExpense memberExpense : d) {
+                                    myRemainingAmount[0] += memberExpense.getBalanceAmount();
+                                }
+                                double diff = myRemainingAmount[0] - finalOtherRemainingAmount;
+                                new Handler(Looper.getMainLooper()).post(() ->
+                                        mBalanceAmountTextView.setText(StringsUtils.getLocalisedAmountString(diff)));
+                            }, e2 -> {
+                                Timber.e(e2.getMessage());
+                            });
+                }, e -> {
+                    Timber.e(e.getMessage());
+                });
+    }
+
+    private void calculateTotalExpense(List<ExpenseListViewModel> d) {
+        double expenseAmount = 0;
+        for (ExpenseListViewModel expenseListViewModel : d) {
+            expenseAmount += expenseListViewModel.getExpenseAmount();
+        }
+        mTotalExpenseTextView.setText(StringsUtils.getLocalisedAmountString(expenseAmount));
     }
 
     @Override

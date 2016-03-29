@@ -87,22 +87,18 @@ public class ExpenseModel {
 
         while (iterator.hasNext()) {
             int memberId = (int) iterator.next();
+            double paidAmount = doubleMap.get(memberId);
             double sharedAmount = getSharedAmount(expense.getDistrubtionType(),
-                    expense.getExpenseAmount(), doubleMap.size(), doubleMap.get(memberId));
+                    expense.getExpenseAmount(), doubleMap.size(), paidAmount);
 
             MemberExpense memberExpense = new MemberExpense();
 
             memberExpense.setMemberKey(memberId);
             memberExpense.setExpenseKey(expenseID);
             memberExpense.setShareAmount(sharedAmount);
+            memberExpense.setDebitAmount(paidAmount);
 
-            if (memberId == expense.getOwnerId()) {
-                memberExpense.setDebitAmount(expense.getExpenseAmount());
-            } else {
-                memberExpense.setDebitAmount(0);
-            }
-
-            memberExpense.setBalanceAmount(expense.getExpenseAmount() - sharedAmount);
+            memberExpense.setBalanceAmount(paidAmount - sharedAmount);
             memberExpenses.add(memberExpense);
         }
         mMemberExpenseDataAdapter.create(memberExpenses)
@@ -132,7 +128,10 @@ public class ExpenseModel {
         mTransactionDataAdapter.create(transaction)
                 .subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate())
-                .subscribe(d->{},e->{Timber.e(e.getMessage());});
+                .subscribe(d -> {
+                }, e -> {
+                    Timber.e(e.getMessage());
+                });
         Logger.methodEnd(LOG_TAG, "createTransaction");
         return transaction.getId();
     }

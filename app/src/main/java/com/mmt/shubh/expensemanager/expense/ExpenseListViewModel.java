@@ -16,12 +16,15 @@ public class ExpenseListViewModel {
     private int mCategoryImage;
     private String mExpenseTitle;
     private double mExpenseAmount;
-    private String mMemberName;
-    private String mMemberProfileImage;
+    private String mOwnerName;
+    private String mOwnerProfileImage;
     private long mExpenseDate;
     private String mAccountName;
     private String mAccountType;
     private String mExpenseBookName;
+    private long mTransactionId;
+    private long mExpenseBookId;
+    private long mOwnerId;
 
     public int getCategoryImage() {
         return mCategoryImage;
@@ -77,11 +80,11 @@ public class ExpenseListViewModel {
     }
 
     public String getMemberName() {
-        return mMemberName;
+        return mOwnerName;
     }
 
     public ExpenseListViewModel setMemberName(String memberName) {
-        mMemberName = memberName;
+        mOwnerName = memberName;
         return this;
     }
 
@@ -113,11 +116,11 @@ public class ExpenseListViewModel {
     }
 
     public String getMemberProfileImage() {
-        return mMemberProfileImage;
+        return mOwnerProfileImage;
     }
 
     public void setMemberProfileImage(String memberProfileImage) {
-        mMemberProfileImage = memberProfileImage;
+        mOwnerProfileImage = memberProfileImage;
     }
 
     public String getExpenseBookName() {
@@ -126,5 +129,29 @@ public class ExpenseListViewModel {
 
     public void setExpenseBookName(String expenseBookName) {
         mExpenseBookName = expenseBookName;
+    }
+
+    public long getTransactionId() {
+        return mTransactionId;
+    }
+
+    public long getExpenseBookId() {
+        return mExpenseBookId;
+    }
+
+    public void setTransactionId(long mTransactionId) {
+        this.mTransactionId = mTransactionId;
+    }
+
+    public void setExpenseBookId(long mExpenseBookId) {
+        this.mExpenseBookId = mExpenseBookId;
+    }
+
+    public long getOwnerId() {
+        return mOwnerId;
+    }
+
+    public void setOwnerId(long mOwnerId) {
+        this.mOwnerId = mOwnerId;
     }
 }

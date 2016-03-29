@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.setup;
 import android.content.Context;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.debug.Logger;
 
@@ -17,7 +18,8 @@ public class GoogleProfileFetcher extends ProfileFetcher {
 
     private GoogleSignInAccount mGoogleSignInAccount;
 
-    public GoogleProfileFetcher(GoogleSignInAccount googleSignInAccount) {
+    public GoogleProfileFetcher(GoogleSignInAccount googleSignInAccount,UserInfoDataAdapter userInfoDataAdapter) {
+        super(userInfoDataAdapter);
         mGoogleSignInAccount = googleSignInAccount;
     }
 

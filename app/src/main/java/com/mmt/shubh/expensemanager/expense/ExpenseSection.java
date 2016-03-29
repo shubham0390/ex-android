@@ -7,13 +7,10 @@ import com.mmt.shubh.recyclerviewlib.adapter.section.BaseSection;
  */
 public class ExpenseSection extends BaseSection {
 
-    double amount;
+    public double mAmount;
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    @Override
+    public void update(BaseSection section) {
+        mAmount += ((ExpenseSection) section).mAmount;
     }
 }

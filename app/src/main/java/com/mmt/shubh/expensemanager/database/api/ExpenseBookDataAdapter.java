@@ -25,4 +25,6 @@ public interface ExpenseBookDataAdapter extends IDataAdapter<ExpenseBook> {
 
 
     void addMembers(Map<Long, Long> expenseBooks);
+
+    Observable<List<ExpenseBook>> getPrivateExpenseBook();
 }

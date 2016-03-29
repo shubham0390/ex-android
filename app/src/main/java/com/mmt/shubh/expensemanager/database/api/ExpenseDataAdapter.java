@@ -1,6 +1,7 @@
 package com.mmt.shubh.expensemanager.database.api;
 
 import com.mmt.shubh.expensemanager.database.content.Expense;
+import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 
@@ -20,5 +21,7 @@ public interface ExpenseDataAdapter extends IDataAdapter<Expense> {
 
     Observable<List<ExpenseListViewModel>> getExpenseByAccountId(long id);
 
-    Observable<List<ExpenseListViewModel>> getAllSharedAmount(long id, long id2);
+    Observable<List<ExpenseListViewModel>> getAllSharedExpenseList(long id, long id2);
+
+    Observable<List<MemberExpense>> getSharedExpenseDetails(long id, long id2);
 }

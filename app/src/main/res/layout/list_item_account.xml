@@ -18,7 +18,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_home_black_24dp"
-            app:border_color="@color/colorAccent"/>
+            app:civ_border_color="@color/colorAccent"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/account_name"
