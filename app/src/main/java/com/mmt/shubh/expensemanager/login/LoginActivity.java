@@ -47,11 +47,6 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     @Inject
     LoginActivityPresenter mLoginActivityPresenter;
 
-    @Bind(R.id.login_card)
-    CardView mLoginCard;
-
-    private LoginActivityComponent mComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +62,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        mComponent = DaggerLoginActivityComponent.builder()
+        LoginActivityComponent mComponent = DaggerLoginActivityComponent.builder()
                 .loginModule(new LoginModule(this))
                 .mainComponent(mainComponent).build();
         mComponent.inject(this);
@@ -92,7 +87,6 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     private void showSocialLogin() {
 
         mSocialContainer.setVisibility(View.VISIBLE);
-        mLoginCard.setVisibility(View.INVISIBLE);
         showBackButton(false);
     }
 
