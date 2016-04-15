@@ -48,7 +48,7 @@ public class MemberModel {
     }
 
     public Observable<List<ExpenseListViewModel>> loadAllExpenseByMemberId(long id) {
-        return mExpenseDataAdapter.getExpenseByMemberId(id);
+        return mExpenseDataAdapter.getExpensesWithFilters(id);
     }
 
     public Observable<List<ExpenseBook>> loadAllExpneseBooksByMemberId(long id) {

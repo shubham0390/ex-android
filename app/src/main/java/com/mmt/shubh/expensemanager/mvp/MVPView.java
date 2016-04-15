@@ -1,5 +1,9 @@
 package com.mmt.shubh.expensemanager.mvp;
 
+import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
+
+import java.util.List;
+
 /**
  * Created by Subham Tyagi,
  * on 20/Aug/2015,
@@ -7,5 +11,4 @@ package com.mmt.shubh.expensemanager.mvp;
  * TODO:Add class comment.
  */
 public interface MVPView {
-
 }

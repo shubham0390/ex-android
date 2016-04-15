@@ -17,4 +17,8 @@ public class ModelFactory {
     public static MemberExpense getNewMemberExpense() {
         return new MemberExpense();
     }
+
+    public static ExpenseCategory getCategory() {
+        return new ExpenseCategory();
+    }
 }

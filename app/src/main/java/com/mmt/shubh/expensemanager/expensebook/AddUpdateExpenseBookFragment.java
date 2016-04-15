@@ -29,6 +29,7 @@ import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.mvp.MVPView;
+import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
 import org.parceler.Parcels;
@@ -41,7 +42,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.

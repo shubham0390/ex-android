@@ -11,9 +11,9 @@ import org.joda.time.format.DateTimeFormatter;
  * TODO:Add class comment.
  */
 public class DateUtil {
-    public static String getLocalizedDate(long aLong) {
+    public static String getLocalizedDate(long time) {
 
-        DateTime dateTime = new DateTime(aLong);
+        DateTime dateTime = new DateTime(time);
         DateTime today = new DateTime();
         DateTime yesterday = today.minusDays(1);
 
@@ -22,10 +22,9 @@ public class DateUtil {
         if (dateTime.toLocalDate().equals(today.toLocalDate())) {
             return "Today " + timeFormatter.print(dateTime);
         } else if (dateTime.toLocalDate().equals(yesterday.toLocalDate())) {
-            return "Yesterday " + timeFormatter.print(dateTime);
+            return "Yesterday ";
         } else {
-            /*EEE hh:mma */
-            return DateTimeFormat.forPattern("MMM d, yyyy").print(aLong);
+            return DateTimeFormat.forPattern("MMM d, yyyy").print(time);
         }
     }
 

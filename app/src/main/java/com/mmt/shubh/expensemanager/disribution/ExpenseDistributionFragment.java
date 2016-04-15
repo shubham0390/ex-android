@@ -3,7 +3,6 @@ package com.mmt.shubh.expensemanager.disribution;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
-import com.mmt.shubh.expensemanager.expense.DistributionPresenter;
 
 /**
  * Created by Subham Tyagi,

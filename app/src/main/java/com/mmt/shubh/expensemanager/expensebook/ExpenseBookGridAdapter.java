@@ -6,14 +6,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.bumptech.glide.Glide;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,7 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
         TextView TitleTextView;
 
         @Bind(R.id.image)
-        ImageView mProfileImage;
+        CircleImageView mProfileImage;
 
 
         public ExpenseBookViewHolder(View itemView) {
@@ -96,14 +95,11 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
             ColorGenerator generator = ColorGenerator.MATERIAL;
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(String.valueOf(expenseBook.getName().charAt(0)), generator.getRandomColor());
+//            mProfileImage.setImageDrawable(drawable);
             if (!TextUtils.isEmpty(expenseBook.getProfileImagePath())) {
-                Glide.with(mProfileImage.getContext())
-                        .load(expenseBook.getProfileImagePath())
-                        .placeholder(drawable)
-                        .centerCrop()
-                        .into(mProfileImage);
-            } else
-                mProfileImage.setImageDrawable(drawable);
+                mProfileImage.loadImage(expenseBook.getProfileImagePath());
+            }
+
             TitleTextView.setTypeface(null, Typeface.NORMAL);
         }
 

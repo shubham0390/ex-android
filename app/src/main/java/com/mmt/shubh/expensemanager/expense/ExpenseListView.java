@@ -3,13 +3,10 @@ package com.mmt.shubh.expensemanager.expense;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mmt.shubh.expensemanager.expense.ExpenseListAdapter;
-import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
+import com.mmt.shubh.expensemanager.expense.adapters.ExpenseListAdapter;
 import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
@@ -26,13 +23,10 @@ public class ExpenseListView extends FrameLayout {
 
     ExpenseListAdapter mExpenseListAdapter;
 
-    int mMode;
-    private ListRecyclerView.OnItemClickListener mItemClickListener = new ListRecyclerView.OnItemClickListener() {
-        @Override
-        public boolean onItemClick(RecyclerView parent, View view, int position, long id) {
-            // TODO: 2/20/16 Open expense detail view from here
-            return false;
-        }
+    int mMode = MODE_MEMBER;
+    private ListRecyclerView.OnItemClickListener mItemClickListener = (parent, view, position, id) -> {
+        // TODO: 2/20/16 Open expense detail view from here
+        return false;
     };
 
     public ExpenseListView(Context context) {
@@ -59,13 +53,14 @@ public class ExpenseListView extends FrameLayout {
     public void init(Context context) {
         ListRecyclerView listRecyclerView = new ListRecyclerView(context);
         addView(listRecyclerView);
-        mExpenseListAdapter = new ExpenseListAdapter(listRecyclerView,mMode);
+        mExpenseListAdapter = new ExpenseListAdapter(listRecyclerView, mMode);
         listRecyclerView.setAdapter(mExpenseListAdapter);
         listRecyclerView.setOnItemClickListener(mItemClickListener);
     }
 
     public void setMode(int mode) {
         mMode = mode;
+        mExpenseListAdapter.setMode(mode);
     }
 
     public void addData(List<ExpenseListViewModel> listViewModels) {

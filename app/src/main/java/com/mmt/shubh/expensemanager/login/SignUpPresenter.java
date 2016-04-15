@@ -90,4 +90,9 @@ public class SignUpPresenter extends MVPAbstractPresenter<ISignUpViews> implemen
 
     }
 
+    @Override
+    public void onMobileNoRequired() {
+
+    }
+
 }

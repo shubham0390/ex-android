@@ -11,12 +11,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.settings.SettingsActivity;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
@@ -27,6 +24,8 @@ import com.mmt.shubh.expensemanager.expensebook.ExpenseBookActivity;
 import com.mmt.shubh.expensemanager.home.HomeActivity;
 import com.mmt.shubh.expensemanager.home.SummaryActivity;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
+import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
+import com.mmt.shubh.expensemanager.ui.view.SimpleImageView;
 
 import butterknife.Bind;
 
@@ -135,23 +134,18 @@ public class DrawerBaseActivity extends ToolBarActivity {
         mUserInfo = UserSettings.getInstance().getUserInfo();
         if (mUserInfo != null) {
             View view = mNavigationView.getHeaderView(0);
-            ImageView profileImage = (ImageView) view.findViewById(R.id.profile_image);
-            ImageView coverImage = (ImageView) view.findViewById(R.id.cover_image_view);
+            CircleImageView profileImage = (CircleImageView) view.findViewById(R.id.profile_image);
+            SimpleImageView coverImage = (SimpleImageView) view.findViewById(R.id.cover_image_view);
             TextView displayName = (TextView) view.findViewById(R.id.account_name);
             TextView emailId = (TextView) view.findViewById(R.id.email_id);
 
             if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
-                Glide.with(this)
-                        .load(mUserInfo.getCoverPhotoUrl())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(coverImage);
-
+                coverImage.loadImage(mUserInfo.getCoverPhotoUrl());
             }
 
-            Glide.with(this).load(mUserInfo.getProfilePhotoUrl())
-                    .placeholder(R.drawable.member_avatar_white_48dp)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(profileImage);
+            if (!TextUtils.isEmpty(mUserInfo.getProfilePhotoUrl())) {
+                profileImage.loadImage(mUserInfo.getCoverPhotoUrl());
+            }
 
             displayName.setText(mUserInfo.getDisplayName());
             emailId.setText(mUserInfo.getEmailAddress());

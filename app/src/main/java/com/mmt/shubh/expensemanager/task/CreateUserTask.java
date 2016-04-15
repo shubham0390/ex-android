@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class CreateUserTask extends AbstractTask {
 
@@ -26,7 +27,7 @@ public class CreateUserTask extends AbstractTask {
 
 
     public CreateUserTask(Context context, String fullName, String emailAddress, String password,
-                          int mobileNo, UserInfoDataAdapter userInfoDataAdapter,MemberDataAdapter memberDataAdapter) {
+                          int mobileNo, UserInfoDataAdapter userInfoDataAdapter, MemberDataAdapter memberDataAdapter) {
         super(context);
         mFullName = fullName;
         mEmailAddress = emailAddress;
@@ -38,7 +39,7 @@ public class CreateUserTask extends AbstractTask {
 
     }
 
-    public CreateUserTask(Context mContext, UserInfo userInfo, UserInfoDataAdapter userInfoDataAdapter,MemberDataAdapter memberDataAdapter) {
+    public CreateUserTask(Context mContext, UserInfo userInfo, UserInfoDataAdapter userInfoDataAdapter, MemberDataAdapter memberDataAdapter) {
         super(mContext);
         mUserInfo = userInfo;
         mUserInfoDataAdapter = userInfoDataAdapter;
@@ -77,22 +78,12 @@ public class CreateUserTask extends AbstractTask {
 
         mMemberDataAdapter.create(createMember(mUserInfo))
                 .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate()).subscribe(new Subscriber<Member>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Member member) {
-                mUserInfo.setMemberKey(member.getId());
-                mTaskResult = registerUser();
-            }
+                .observeOn(Schedulers.immediate()).subscribe(member -> {
+            mUserInfo.setMemberKey(member.getId());
+            mTaskResult = registerUser();
+        }
+                , error -> {
+            Timber.e(error.getMessage());
         });
         return mTaskResult;
     }

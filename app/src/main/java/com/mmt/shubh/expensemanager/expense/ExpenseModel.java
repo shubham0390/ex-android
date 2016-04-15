@@ -14,15 +14,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -157,7 +152,7 @@ public class ExpenseModel {
     }
 
     public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(final long memberId) {
-        return mExpenseDataAdapter.getExpenseByMemberId(memberId);
+        return mExpenseDataAdapter.getExpensesWithFilters(memberId);
     }
 
     public Observable<List<ExpenseListViewModel>> getAllExpenseForExpenseBook(final long expenseBookId) {
@@ -165,7 +160,7 @@ public class ExpenseModel {
     }
 
     public Observable<List<ExpenseListViewModel>> loadExpenseWithFilter(final ExpenseFilter filter) {
-        return mExpenseDataAdapter.getExpenseByMemberId(filter);
+        return mExpenseDataAdapter.getExpensesWithFilters(filter);
 
     }
 

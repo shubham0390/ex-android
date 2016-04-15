@@ -3,12 +3,18 @@ package com.mmt.shubh.expensemanager.login;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.DeviceDetails;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.debug.Logger;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
+import com.mmt.shubh.expensemanager.gsm.GCMTokenEvent;
 import com.mmt.shubh.expensemanager.service.rest.service.MemberRestService;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
 import com.mmt.shubh.expensemanager.task.CreateUserTask;
 import com.mmt.shubh.expensemanager.task.ExpenseBookAndCashAccountSetupAccount;
@@ -17,8 +23,13 @@ import com.mmt.shubh.expensemanager.task.ProfileFetchingTask;
 import com.mmt.shubh.expensemanager.task.SeedDataTask;
 import com.mmt.shubh.expensemanager.task.TaskProcessor;
 import com.mmt.shubh.expensemanager.task.TaskResult;
+import com.squareup.otto.Subscribe;
+
+import java.util.List;
 
 import javax.inject.Inject;
+
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -35,17 +46,21 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
     private UserInfoDataAdapter mUserInfoDataAdapter;
     private TaskProcessor mTaskProcessor;
     private SignUpModelCallback mSignUpModelCallback;
+    private MemberRestService mMemberRestService;
+    private CategoryDataAdapter mCategoryDataAdapter;
     private Context mContext;
 
     @Inject
     public SigUpModelImpl(Context context, ExpenseBookDataAdapter bookDataAdapter, ExpenseModel expenseModel
-            , UserInfoDataAdapter userInfoDataAdapter) {
+            , UserInfoDataAdapter userInfoDataAdapter, MemberRestService memberRestService, CategoryDataAdapter categoryDataAdapter) {
         mTaskProcessor = TaskProcessor.getTaskProcessor();
         mTaskProcessor.setOnTaskCompleteListener(this);
         mContext = context;
         this.mExpenseBookDataAdapter = bookDataAdapter;
         mExpenseModel = expenseModel;
         mUserInfoDataAdapter = userInfoDataAdapter;
+        mMemberRestService = memberRestService;
+        mCategoryDataAdapter = categoryDataAdapter;
     }
 
     @Override
@@ -94,22 +109,39 @@ public class SigUpModelImpl implements ISignUpModel, OnTaskCompleteListener {
             case ExpenseBookAndCashAccountSetupAccount.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK:
                 Logger.debug(TAG, "Account setup complete.Launching home activity");
                 TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
-                taskProcessor.execute(new SeedDataTask(mContext, mExpenseModel, mExpenseBookDataAdapter));
+                taskProcessor.execute(new SeedDataTask(mContext, mExpenseModel, mExpenseBookDataAdapter, mCategoryDataAdapter));
                 break;
             case SeedDataTask.ACTION_SEED:
-                Logger.debug(TAG, "Data seed Succefull");
+                Logger.debug(TAG, "Data seed Successful");
                 mSignUpModelCallback.onSuccess();
 
         }
     }
 
     private void handleCreateUserTaskResult(TaskResult taskResult) {
-
+        //registering user with server
         Logger.debug(TAG, "User created successful .Starting setup task");
         mTaskProcessor.execute(new ExpenseBookAndCashAccountSetupAccount(mContext, mExpenseModel, mExpenseBookDataAdapter));
-
         mSignUpModelCallback.onError(taskResult.getStatusCode());
+    }
 
-
+    @Subscribe
+    public void onGCMTokenReceived(GCMTokenEvent event) {
+        DeviceDetails deviceDetails = new DeviceDetails(mContext);
+        deviceDetails.setGcmToken(event.mGCMToken);
+        long memberKey = UserSettings.getInstance().getUserInfo().getMemberKey();
+        mExpenseModel.getMemberDataAdapter().get(memberKey)
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(member -> {
+                    member.setDeviceDetails(deviceDetails);
+                    Member registerMember = mMemberRestService.registerMember(member);
+                    List<ExpenseBook> expenseBooks = registerMember.getExpenseBooks();
+                    mExpenseBookDataAdapter.create(expenseBooks);
+                    mExpenseModel.getAccountDataAdapter().create(registerMember.getAccounts());
+                    //Adding seed data
+                    TaskProcessor taskProcessor = TaskProcessor.getTaskProcessor();
+                    taskProcessor.execute(new SeedDataTask(mContext, mExpenseModel, mExpenseBookDataAdapter, mCategoryDataAdapter));
+                });
     }
 }

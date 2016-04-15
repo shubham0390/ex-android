@@ -23,17 +23,14 @@ import butterknife.ButterKnife;
  */
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
+    private static final String CATERGORY_IMAGE_PREFIX = "ic_icon_category_";
+    private static Context mContext;
     private List<ExpenseCategory> mCategories;
-
     private String mSelectedCategory;
 
-    private static final String CATERGORY_IMAGE_PREFIX = "ic_icon_category_";
 
-    private static Context mContext;
-
-
-    public CategoryAdapter(List<ExpenseCategory> categories, Context context) {
-        mCategories = new ArrayList<>(categories);
+    public CategoryAdapter(Context context) {
+        mCategories = new ArrayList<>();
         mContext = context;
     }
 
@@ -104,6 +101,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         mCategories.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
+
+    public void setData(List<ExpenseCategory> data) {
+        mCategories = data;
+        notifyDataSetChanged();
+    }
+
+    public String getSelectedCategory() {
+        return mSelectedCategory;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
@@ -120,7 +127,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             mView = view;
         }
 
-        public void bindView(ExpenseCategory categoryMetaData){
+        public void bindView(ExpenseCategory categoryMetaData) {
             String fileName = "drawable/" + CATERGORY_IMAGE_PREFIX + categoryMetaData
                     .getCategoryImageName();
             int imageResource = mContext.getResources().getIdentifier(fileName, null,
@@ -130,9 +137,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             mCategoryName.setText(categoryMetaData.getCategoryName());
 
         }
-    }
-
-    public String getSelectedCategory(){
-        return mSelectedCategory;
     }
 }

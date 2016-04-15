@@ -18,7 +18,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.mmt.shubh.expensemanager.ui.view.CircleImageView
             android:id="@+id/list_image_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,39 +42,44 @@
         android:layout_height="wrap_content"
         >
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/expense_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/container1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <ImageView
-            android:id="@+id/image_account_type"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_below="@id/expense_title"
-            android:src="@drawable/ic_credit_card_black_18dp"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/expense_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_micro"
+                android:layout_weight=".7"
+                android:ellipsize="marquee"
+                android:textSize="16sp"
+                tool:text="Expense Name12345676"/>
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/account_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/expense_title"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_toRightOf="@id/image_account_type"
-            android:textSize="12sp"
-            />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/expense_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tool:text="Rs. 10000"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/expense_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:textSize="12sp"
+            android:layout_below="@id/member_name"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textSize="14sp"
+            tool:text="Yesterday"
             />
 
 
@@ -82,32 +87,27 @@
             android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/account_name"
+            android:layout_below="@id/container1"
+            android:ellipsize="marquee"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp"/>
+            android:textSize="14sp"
+            tool:text="Paid By Subham T in ExpenseBook1"/>
 
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/expense_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/expense_date"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp"/>
-
-        <android.support.v7.widget.AppCompatTextView
+        <!--<android.support.v7.widget.AppCompatTextView
             android:id="@+id/expense_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/expense_amount"
+            android:layout_below="@id/member_name"
             android:layout_marginTop="@dimen/spacing_micro"
             android:background="@color/colorAccent"
+            android:drawableLeft="@drawable/ic_group_black_18dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="center_vertical"
             android:padding="@dimen/spacing_micro"
             android:textSize="10sp"
-            />
+            tool:text="Expense Book"
+            />-->
     </RelativeLayout>
 </LinearLayout>

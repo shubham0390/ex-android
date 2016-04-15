@@ -11,9 +11,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         TextView mMemberEmail;
 
         @Bind(R.id.list_image_icon)
-        ImageView mProfileImage;
+        CircleImageView mProfileImage;
 
         @Bind(R.id.delete_member)
         ImageView mDeleteImageView;
@@ -110,11 +110,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
             Animation anim = AnimationUtils.loadAnimation(mProfileImage.getContext(), android.R.anim.fade_in);
 
             if (!TextUtils.isEmpty(imageUrl)) {
-                Glide.with(mProfileImage.getContext())
-                        .load(imageUrl).animate(anim)
-                        .placeholder(R.drawable.member_avatar_white_48dp)
-                        .centerCrop().fitCenter()
-                        .into(mProfileImage);
+                mProfileImage.loadImage(imageUrl);
             }
         }
 

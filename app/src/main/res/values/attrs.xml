@@ -1,29 +1,36 @@
 <resources>
     <declare-styleable name="ScrimInsetsView">
-        <attr name="insetForeground1" format="reference|color"/>
+        <attr name="insetForeground1" format="reference|color" />
     </declare-styleable>
     <declare-styleable name="BezelImageView">
-        <attr name="maskDrawable" format="reference"/>
-        <attr name="borderDrawable" format="reference"/>
-        <attr name="desaturateOnPress" format="boolean"/>
+        <attr name="maskDrawable" format="reference" />
+        <attr name="borderDrawable" format="reference" />
+        <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ExTextView">
         <attr name="fontStyle">
-            <flag name="lobsterTwoBold" value="1"/>
-            <flag name="lobsterTwoBoldItalic" value="2"/>
-            <flag name="lobsterTwoItalic" value="3"/>
-            <flag name="lobsterTwoRegular" value="4"/>
-            <flag name="pacifico" value="5"/>/
-            <flag name="playfairDisplayBlack" value="6"/>
-            <flag name="playfairDisplayBlackItalic" value="7"/>
-            <flag name="playfairDisplayBold" value="8"/>
-            <flag name="playfairDisplayBoldItalic" value="9"/>
-            <flag name="playfairDisplayItalic" value="10"/>
-            <flag name="playfairDisplayRegular" value="11"/>
+            <flag name="lobsterTwoBold" value="1" />
+            <flag name="lobsterTwoBoldItalic" value="2" />
+            <flag name="lobsterTwoItalic" value="3" />
+            <flag name="lobsterTwoRegular" value="4" />
+            <flag name="pacifico" value="5" />/
+            <flag name="playfairDisplayBlack" value="6" />
+            <flag name="playfairDisplayBlackItalic" value="7" />
+            <flag name="playfairDisplayBold" value="8" />
+            <flag name="playfairDisplayBoldItalic" value="9" />
+            <flag name="playfairDisplayItalic" value="10" />
+            <flag name="playfairDisplayRegular" value="11" />
         </attr>
     </declare-styleable>
     <declare-styleable name="ChooserView">
-        <attr name="chooser_view_title" format="reference"/>
+        <attr name="chooser_view_title" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
     </declare-styleable>
 </resources>

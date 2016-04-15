@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
-import com.mmt.shubh.expensemanager.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
+import com.mmt.shubh.expensemanager.ui.view.AutoResizeEditText;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
 /**

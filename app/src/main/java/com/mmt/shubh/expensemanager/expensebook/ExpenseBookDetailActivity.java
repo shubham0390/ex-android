@@ -8,18 +8,16 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mmt.shubh.expensemanager.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
+import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
 import org.parceler.Parcels;
@@ -33,7 +31,7 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
     private ExpenseBook mExpenseBook;
 
     @Bind(R.id.logo)
-    ImageView mLogoImageView;
+    CircleImageView mLogoImageView;
 
     @Bind(R.id.expense_book_title)
     TextView mTitleTextView;
@@ -81,15 +79,9 @@ public class ExpenseBookDetailActivity extends ToolBarActivity implements
         ColorGenerator generator = ColorGenerator.MATERIAL;
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(String.valueOf(mExpenseBook.getName().charAt(0)), generator.getRandomColor());
-
+        mLogoImageView.setImageDrawable(drawable);
         if (TextUtils.isEmpty(mExpenseBook.getProfileImagePath())) {
-            Glide.with(this)
-                    .load(mExpenseBook.getProfileImagePath())
-                    .placeholder(drawable)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(mLogoImageView);
-        } else {
-            mLogoImageView.setImageDrawable(drawable);
+            mLogoImageView.loadImage(mExpenseBook.getProfileImagePath());
         }
     }
 

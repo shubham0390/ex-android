@@ -15,9 +15,119 @@
   ~  limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/headerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+
+            <!-- <android.support.v7.widget.AppCompatTextView
+                 android:id="@+id/expense_book"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:background="@color/colorAccent"
+                 android:drawableLeft="@drawable/ic_group_black_18dp"
+                 android:drawablePadding="@dimen/spacing_normal"
+                 android:gravity="center_vertical"
+                 android:textColor="@color/milky_white"
+                 android:textSize="14sp"
+                 tools:text="Expense Book"/>-->
+
+            <RelativeLayout
+                android:id="@+id/header_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_weight=".7">
+
+                <com.mmt.shubh.expensemanager.ui.view.CircleImageView
+                    android:id="@+id/category_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_home_black_24dp"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_toRightOf="@id/category_image"
+                    android:gravity="center"
+                    android:textColor="@color/milky_white"
+                    android:textSize="14sp"
+                    tools:text="Air/Railway Tickets"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/expense_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/category_name"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_toRightOf="@id/category_image"
+                    android:layout_weight=".7"
+                    android:ellipsize="marquee"
+                    android:textColor="@color/milky_white"
+                    android:textSize="14sp"
+                    tools:text="Expense Name12345676"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/expense_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/expense_title"
+                    android:layout_marginBottom="@dimen/spacing_micro"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:layout_toRightOf="@id/category_image"
+                    android:textColor="@color/milky_white"
+                    android:textSize="14sp"
+                    tools:text="Yesterday"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/expense_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_weight=".3"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/milky_white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Rs. 10000"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:ellipsize="marquee"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/milky_white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Created By Subham Tyagi"/>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -11,32 +11,56 @@ import android.widget.ArrayAdapter;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
-import com.mmt.shubh.expensemanager.expense.ExpenseListFragment;
+import com.mmt.shubh.expensemanager.expense.ExpenseListView;
+import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SummaryActivity extends ToolBarActivity {
+public class SummaryActivity extends ToolBarActivity implements ISummaryActivityView {
 
     @Bind(R.id.time_filter_spinner)
     AppCompatSpinner mTimeFilterSpinner;
 
-    private ExpenseListFragment mExpenseListFragment;
-
+    @Bind(R.id.expense_list)
+    ExpenseListView mExpenseListView;
+    @Inject
+    SummaryActivityPresenter mPresenter;
     private ExpenseFilter mExpenseFilter = new ExpenseFilter();
+    private AdapterView.OnItemSelectedListener mTimeFilterItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            mExpenseFilter.setTimeFilter(position);
+            mExpenseFilter.setMemberId(UserSettings.getInstance().getUserInfo().getId());
+            mPresenter.loadExpenseWithFilters(mExpenseFilter);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
+        mPresenter.attachView(this);
         ButterKnife.bind(this);
         initializeToolbar();
         toggleHomeBackButton(true);
         createSpinnerDropDown();
+        mExpenseFilter.setTimeFilter(0);
+        mExpenseFilter.setMemberId(UserSettings.getInstance().getUserInfo().getId());
+        mPresenter.loadExpenseWithFilters(mExpenseFilter);
     }
 
     @Override
@@ -57,7 +81,6 @@ public class SummaryActivity extends ToolBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Add animals into spinner dynamically
     private void createSpinnerDropDown() {
 
         List<String> list = new ArrayList<>();
@@ -73,18 +96,25 @@ public class SummaryActivity extends ToolBarActivity {
         mTimeFilterSpinner.setOnItemSelectedListener(mTimeFilterItemSelectedListener);
     }
 
-    private AdapterView.OnItemSelectedListener mTimeFilterItemSelectedListener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            mExpenseFilter.setTimeFilter(position+1);
-            mExpenseFilter.setMemberId(1);
-            mExpenseListFragment = (ExpenseListFragment) getSupportFragmentManager().findFragmentByTag("ExpenseList");
-            mExpenseListFragment.applyExpenseFilter(mExpenseFilter);
+    @Override
+    public void showExpenseList(List<ExpenseListViewModel> expenses) {
+        if (expenses != null && expenses.size() > 0) {
+            mExpenseListView.addData(expenses);
+        } else {
+            mExpenseListView.showEmptyMessage();
         }
+    }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
+    @Override
+    protected void injectDependencies(MainComponent mainComponent) {
+        DaggerSummaryActivityComponent.builder()
+                .mainComponent(mainComponent)
+                .build().inject(this);
+    }
 
-        }
-    };
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView(false);
+    }
 }

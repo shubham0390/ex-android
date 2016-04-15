@@ -22,6 +22,7 @@ import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.expense.adapters.ExpenseListAdapter;
 import com.mmt.shubh.expensemanager.home.DaggerSummaryActivityComponent;
 import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
@@ -118,8 +119,9 @@ public class ExpenseListFragment extends SupportMVPLCEFragment<ListRecyclerView,
     protected void injectDependencies(MainComponent mainComponent) {
         DaggerSummaryActivityComponent.builder()
                 .mainComponent(mainComponent)
-                .moduleExpenseListFragment(new ModuleExpenseListFragment())
+                //.moduleExpenseListFragment(new ModuleExpenseListFragment())
                 .build()
-                .inject(this);
+        //        .inject(this)
+        ;
     }
 }

@@ -252,4 +252,6 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="login_failed">Unable to login</string>
     <string name="no_account_present">No account present</string>
+    <string name="error_message_emptydata">No Data</string>
+    <string name="expense_item_member_detail_string">%1$s in %2$s</string>
 </resources>

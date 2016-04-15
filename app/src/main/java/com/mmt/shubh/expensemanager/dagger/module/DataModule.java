@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.dagger.module.api.IDataModule;
 import com.mmt.shubh.expensemanager.database.DatabaseHelper;
+import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
@@ -14,6 +15,7 @@ import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.AccountSQLDataAdapter;
+import com.mmt.shubh.expensemanager.database.dataadapters.CategorySQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseBookSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.ExpenseSqlDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.MemberExpenseSQLDataAdapter;
@@ -90,6 +92,12 @@ public class DataModule implements IDataModule {
     @Singleton
     public UserInfoDataAdapter provideUserInfoDataAdapter() {
         return new UserInfoSQLDataAdapter(getBriteDatabase());
+    }
+
+    @Provides
+    @Singleton
+    public CategoryDataAdapter provideCategoryDataAdapter(){
+        return new CategorySQLDataAdapter(mBriteDatabase);
     }
 
     @Override

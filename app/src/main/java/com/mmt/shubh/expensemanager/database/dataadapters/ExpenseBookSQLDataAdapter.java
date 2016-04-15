@@ -90,7 +90,7 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
             ContentValues values = new ContentValues();
             values.put(MemberExpenseBookContract.MEMBER_KEY, aLong);
             values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBooks.get(aLong));
-            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+            mBriteDatabase.insert(MemberExpenseBookContract.TABLE_NAME, values);
         }
 
     }
@@ -111,7 +111,7 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
             ContentValues values = new ContentValues();
             values.put(MemberExpenseBookContract.MEMBER_KEY, member.getId());
             values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBookId);
-            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+            mBriteDatabase.insert(MemberExpenseBookContract.TABLE_NAME, values);
         }
     }
 
@@ -121,7 +121,7 @@ public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBoo
             ContentValues values = new ContentValues();
             values.put(MemberExpenseBookContract.MEMBER_KEY, aLong);
             values.put(MemberExpenseBookContract.EXPENSE_BOOK_KEY, expenseBookId);
-            mContext.getContentResolver().insert(MemberExpenseBookContract.MEMBER_EXPENSE_BOOK_URI, values);
+            mBriteDatabase.insert(MemberExpenseBookContract.TABLE_NAME, values);
         }
     }
 

@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.expense.adapters.AddExpenseFragmentAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

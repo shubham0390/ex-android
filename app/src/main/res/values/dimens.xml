@@ -58,4 +58,5 @@
     <integer name="disabled_alpha_animation_duration">100</integer>
     <integer name="dock_enter_exit_duration">250</integer>
     <dimen name="tab_max_width">24dp</dimen>
+    <dimen name="avatar_image_size">40dp</dimen>
 </resources>

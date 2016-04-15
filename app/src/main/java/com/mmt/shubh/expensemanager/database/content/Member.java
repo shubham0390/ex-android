@@ -17,26 +17,32 @@ package com.mmt.shubh.expensemanager.database.content;
 
 import android.os.Parcel;
 
+import java.util.List;
+
 @org.parceler.Parcel(value = org.parceler.Parcel.Serialization.BEAN)
 public class Member {
 
     private long id;
+
     private String memberName;
+
     private String memberEmail;
+
     private int memberPhoneNumber;
+
     private String coverPhotoUrl;
+
     private String profilePhotoUrl;
 
-    public Member() {
-    }
+    private boolean isRegistered;
 
-    protected Member(Parcel in) {
-        memberName = in.readString();
-        memberEmail = in.readString();
-        memberPhoneNumber = in.readInt();
-        coverPhotoUrl = in.readString();
-        profilePhotoUrl = in.readString();
-    }
+    private boolean isActive;
+
+    private DeviceDetails deviceDetails;
+
+    private List<ExpenseBook> expenseBooks;
+
+    private List<Account> accounts;
 
     public long getId() {
         return id;
@@ -84,6 +90,46 @@ public class Member {
 
     public void setMemberPhoneNumber(int memberPhoneNumber) {
         this.memberPhoneNumber = memberPhoneNumber;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public void setIsRegistered(boolean isRegistered) {
+        this.isRegistered = isRegistered;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public DeviceDetails getDeviceDetails() {
+        return deviceDetails;
+    }
+
+    public void setDeviceDetails(DeviceDetails deviceDetails) {
+        this.deviceDetails = deviceDetails;
+    }
+
+    public List<ExpenseBook> getExpenseBooks() {
+        return expenseBooks;
+    }
+
+    public void setExpenseBooks(List<ExpenseBook> expenseBooks) {
+        this.expenseBooks = expenseBooks;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     @Override

@@ -19,13 +19,11 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContr
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.List;
 import java.util.Map;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by Subham Tyagi,
@@ -94,7 +92,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
     }
 
     @Override
-    public Observable<List<ExpenseListViewModel>> getExpenseByMemberId(long memberId) {
+    public Observable<List<ExpenseListViewModel>> getExpensesWithFilters(long memberId) {
 
         String q = "SELECT " +
                 " e._id," +
@@ -136,7 +134,6 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
         model.setOwnerId(cursor.getLong(9));
         model.setAccountName(cursor.getString(10));
         model.setAccountType(cursor.getString(11));
-
         return model;
     }
 
@@ -167,7 +164,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
     }
 
     @Override
-    public Observable<List<ExpenseListViewModel>> getExpenseByMemberId(ExpenseFilter filter) {
+    public Observable<List<ExpenseListViewModel>> getExpensesWithFilters(ExpenseFilter filter) {
         StringBuilder selection = new StringBuilder();
         boolean isExits = false;
         if (filter.getExpenseBookId() > 0) {
@@ -288,9 +285,9 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " ("
                 + " SELECT expense_key "
                 + " FROM member_expense "
-                + " WHERE member_key = 9"
+                + " WHERE member_key = " + id
                 + " )"
-                + " AND member_key = 16) GROUP BY eb._id ORDER BY e.expense_date ";
+                + " AND member_key = " + id2 + ") GROUP BY eb._id ORDER BY e.expense_date ";
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
@@ -298,25 +295,16 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
     @Override
     public Observable<List<MemberExpense>> getSharedExpenseDetails(long id, long id2) {
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT * FROM ");
-        sb.append(MemberExpenseContract.TABLE_NAME);
-        sb.append(" WHERE ")
-                .append(MemberExpenseContract.MEMBER_KEY)
-                .append(" IN ")
-                .append(" ( SELECT ")
-                .append(MemberExpenseContract.EXPENSE_KEY)
-                .append(" FROM ")
-                .append(MemberExpenseContract.TABLE_NAME)
-                .append(" WHERE ")
-                .append(MemberExpenseContract.MEMBER_KEY)
-                .append(" = ")
-                .append(id)
-                .append(" ) AND ")
-                .append(MemberExpenseContract.MEMBER_KEY)
-                .append(" = ")
-                .append(id2);
-        String s = sb.toString();
+        String s = " SELECT * FROM "
+                + MemberExpenseContract.TABLE_NAME
+                + " WHERE "
+                + MemberExpenseContract.MEMBER_KEY
+                + " IN "
+                + " ( SELECT "
+                + MemberExpenseContract.EXPENSE_KEY
+                + " FROM " + MemberExpenseContract.TABLE_NAME
+                + " WHERE " + MemberExpenseContract.MEMBER_KEY + " = " + id
+                + " ) AND " + MemberExpenseContract.MEMBER_KEY + " = " + id2;
         return mBriteDatabase.createQuery(MemberExpenseContract.TABLE_NAME, s).mapToList(this::parseMemberExpense);
     }
 

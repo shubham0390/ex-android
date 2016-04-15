@@ -1,6 +1,6 @@
 <fragment
     android:id="@+id/fragment"
-    android:name="com.mmt.shubh.expensemanager.category.CategoryActivityFragment"
+    android:name="com.mmt.shubh.expensemanager.category.CategoryListFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

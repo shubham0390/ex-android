@@ -13,11 +13,11 @@ import rx.Observable;
  * Created by styagi on 5/28/2015.
  */
 public interface ExpenseDataAdapter extends IDataAdapter<Expense> {
-    Observable<List<ExpenseListViewModel>> getExpenseByMemberId(long memberId);
+    Observable<List<ExpenseListViewModel>> getExpensesWithFilters(long memberId);
 
     Observable<List<ExpenseListViewModel>> getExpenseByExpenseBookId(long expenseBookId);
 
-    Observable<List<ExpenseListViewModel>> getExpenseByMemberId(ExpenseFilter filter);
+    Observable<List<ExpenseListViewModel>> getExpensesWithFilters(ExpenseFilter filter);
 
     Observable<List<ExpenseListViewModel>> getExpenseByAccountId(long id);
 

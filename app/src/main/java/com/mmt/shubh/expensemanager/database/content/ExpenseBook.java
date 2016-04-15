@@ -31,6 +31,8 @@ public class ExpenseBook {
     private long id;
     private long mOwnerId;
 
+    private List<Member> members;
+
     public ExpenseBook() {
     }
 
@@ -98,5 +100,11 @@ public class ExpenseBook {
         this.creationTime = creationTime;
     }
 
+    public List<Member> getMembers() {
+        return members;
+    }
 
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 }

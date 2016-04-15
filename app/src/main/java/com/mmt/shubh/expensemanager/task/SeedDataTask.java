@@ -2,12 +2,14 @@ package com.mmt.shubh.expensemanager.task;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
+import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
@@ -48,15 +50,18 @@ public class SeedDataTask extends AbstractTask {
     ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private String LOG_TAG = getClass().getName();
     private ExpenseModel mExpenseModel;
+    private CategoryDataAdapter mCategoryDataAdapter;
 
-    public SeedDataTask(Context context, ExpenseModel expenseModel, ExpenseBookDataAdapter expenseBookDataAdapter) {
+    public SeedDataTask(Context context, ExpenseModel expenseModel, ExpenseBookDataAdapter expenseBookDataAdapter, CategoryDataAdapter categoryDataAdapter) {
         super(context);
         mExpenseModel = expenseModel;
         mExpenseBookDataAdapter = expenseBookDataAdapter;
+        mCategoryDataAdapter = categoryDataAdapter;
     }
 
     @Override
     public TaskResult execute() {
+        createCategory();
         addBankAccounts(getJsonStringFromUrl("https://www.mockaroo.com/cad293a0/download?count=5&key=327934b0"));
         parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=10&key=327934b0"));
         addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=10&key=327934b0"));
@@ -96,7 +101,7 @@ public class SeedDataTask extends AbstractTask {
     }
 
     private void parseJsonMemberString(String s) {
-        Logger.methodStart(LOG_TAG, "addmember");
+        Logger.methodStart(LOG_TAG, "addMember");
         try {
             JSONArray jsonArray = new JSONArray(s);
             List<Member> members = new ArrayList<>();
@@ -115,14 +120,35 @@ public class SeedDataTask extends AbstractTask {
                     .observeOn(Schedulers.immediate())
                     .subscribe(d -> {
                         Timber.i("Member added successfully" + d.size());
+                    }, error -> {
+                        Timber.i("Member added failed" + error.getMessage());
                     });
             ;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Logger.methodEnd(LOG_TAG, "addMembr");
+        Logger.methodEnd(LOG_TAG, "addMember");
+    }
 
-
+    private void createCategory() {
+        Logger.methodEnd(LOG_TAG, "CreateCategory");
+        String categoryName[] = {"Air/Railway Ticket", "Alcohol"};
+        String categoryImageFile[] = {"tickets", "alcohol"};
+        String categoryType = "default";
+        List<ExpenseCategory> expenseCategories = new ArrayList<>();
+        for (int i = 0; i < categoryName.length; i++) {
+            ExpenseCategory expenseCategory = new ExpenseCategory(categoryName[i], categoryType, categoryImageFile[i]);
+            expenseCategories.add(expenseCategory);
+        }
+        mCategoryDataAdapter.create(expenseCategories).subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(d -> {
+                    Timber.i("Category added successfully" + d.size());
+                }, error -> {
+                    Timber.i("Category added successfully" + error.getMessage());
+                });
+        ;
+        Logger.methodEnd(LOG_TAG, "CreateCategory");
     }
 
     private void createExpense() {
