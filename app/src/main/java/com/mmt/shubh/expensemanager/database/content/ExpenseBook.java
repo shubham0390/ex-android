@@ -22,6 +22,9 @@ import java.util.List;
 @Parcel(value = Parcel.Serialization.BEAN)
 public class ExpenseBook {
 
+    public static String TYPE_PERSONAL = "Private";
+    public static String TYPE_SHARED = "Shared";
+
     public String name;
     public String profileImagePath;
     public String description;

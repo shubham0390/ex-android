@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.expense;
 import android.content.Context;
 
 import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
@@ -41,8 +42,8 @@ public class ModuleExpenseListFragment {
                                             MemberExpenseDataAdapter memberDataAdapter,
                                             TransactionDataAdapter transactionDataAdapter,
                                             AccountDataAdapter accountDataAdapter,
-                                            MemberDataAdapter memberData) {
+                                            MemberDataAdapter memberData, ExpenseBookDataAdapter expenseBookDataAdapter) {
         return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter,
-                accountDataAdapter, memberData);
+                accountDataAdapter, memberData,expenseBookDataAdapter);
     }
 }

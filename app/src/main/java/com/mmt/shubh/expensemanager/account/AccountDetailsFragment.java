@@ -16,7 +16,7 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.mmt.shubh.expensemanager.Constants;
-import com.mmt.shubh.expensemanager.MyYAxisValueFormatter;
+import com.mmt.shubh.expensemanager.utils.MyYAxisValueFormatter;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Account;

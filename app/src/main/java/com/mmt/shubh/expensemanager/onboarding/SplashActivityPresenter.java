@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.onboarding;
 
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -69,7 +67,7 @@ public class SplashActivityPresenter extends MVPAbstractPresenter<SplashView> im
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(d -> {
-                        UserSettings.getInstance().setPrivateExpenseBook(d.get(0));
+                        UserSettings.getInstance().setPersonalExpenseBook(d.get(0));
                         getView().showHomeScreen();
                     }, this::checkError);
         }

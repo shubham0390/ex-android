@@ -50,29 +50,22 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
     public boolean createPrivateExpenseBook(UserInfo userInfo) {
 
         List<Long> members = new ArrayList<>();
-        MemberDataAdapter sqlMemberDataAdapter = mExpenseModel.getMemberDataAdapter();
-        final long[] memberId = new long[1];
-        sqlMemberDataAdapter.get(userInfo.getMemberKey())
-                .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate()).subscribe(member -> {
-            members.add(member.getId());
-            memberId[0] = member.getId();
-        });
-
+        members.add(UserSettings.getInstance().getUserId());
 
         ExpenseBook expenseBook = new ExpenseBook();
-        expenseBook.setType("Private");
+        expenseBook.setType(ExpenseBook.TYPE_PERSONAL);
         expenseBook.setDescription("This is personal expense book of" + userInfo.getEmailAddress());
         expenseBook.setName(userInfo.getDisplayName());
         expenseBook.setProfileImagePath(userInfo.getProfilePhotoUrl());
-        expenseBook.setOwner(memberId[0]);
+        expenseBook.setOwner(UserSettings.getInstance().getUserId());
         expenseBook.setCreationTime(System.currentTimeMillis());
+
         mExpenseBookDataAdapter.create(expenseBook)
                 .subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate())
                 .subscribe(d -> {
                     mExpenseBookDataAdapter.addMembers(members, expenseBook);
-
+                    UserSettings.getInstance().setPersonalExpenseBook(d);
                 });
 
         return false;
@@ -80,7 +73,6 @@ public class ExpenseBookAndCashAccountSetupAccount extends AbstractTask {
 
     public boolean createAccount() {
         AccountDataAdapter dataAdapter = mExpenseModel.getAccountDataAdapter();
-
         Account account = new Account();
         account.setAccountName("Cash");
         account.setAccountBalance(10000);

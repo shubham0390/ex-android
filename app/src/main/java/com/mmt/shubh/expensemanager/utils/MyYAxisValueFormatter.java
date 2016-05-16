@@ -1,4 +1,4 @@
-package com.mmt.shubh.expensemanager;
+package com.mmt.shubh.expensemanager.utils;
 
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;

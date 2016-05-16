@@ -110,6 +110,7 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
                     break;
                 case ExpenseBookListView.MODE_MEMBER:
                 case ExpenseBookListView.MODE_SUMMARY:
+                case ExpenseBookListView.MODE_DIALOG:
                     mDescriptionTextView.setVisibility(View.GONE);
                     TitleTextView.setTypeface(null, Typeface.NORMAL);
             }

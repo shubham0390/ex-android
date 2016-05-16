@@ -93,4 +93,9 @@ public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> imple
     public Observable<List<Account>> loadAllAccounts() {
         return getAll();
     }
+
+    @Override
+    public Observable<List<Account>> getAccountByMember(long memberId) {
+        return getAll();
+    }
 }

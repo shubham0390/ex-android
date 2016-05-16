@@ -26,6 +26,7 @@ public class ExpenseBookListView extends LinearLayout {
     public static final int MODE_EXPENSE_BOOK = 0;
     public static final int MODE_MEMBER = 1;
     public static final int MODE_SUMMARY = 2;
+    public static final int MODE_DIALOG = 3;
 
     ExpenseBookListAdapter mExpenseBookListAdapter;
 
@@ -36,13 +37,14 @@ public class ExpenseBookListView extends LinearLayout {
     ProgressBar mProgressBar;
 
     View mProgressContainer;
+    ListRecyclerView listRecyclerView;
 
     List<ExpenseBook> mExpenseBooks;
     boolean isExpended;
 
     int mMode;
     private ListRecyclerView.OnItemClickListener mItemClickListener = (parent, view, position, id) -> {
-        // TODO: 2/20/16 Open expense detail view from here
+        mExpenseBookListAdapter.getItem(position);
         return false;
     };
 
@@ -69,14 +71,15 @@ public class ExpenseBookListView extends LinearLayout {
 
     public void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.expense_book_list_view, this, true);
-        ListRecyclerView listRecyclerView = (ListRecyclerView) findViewById(R.id.list);
-
+        listRecyclerView = (ListRecyclerView) findViewById(R.id.list);
         mProgressContainer = findViewById(R.id.progress_container);
         mEmptyText = (TextView) findViewById(R.id.empty_text);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mMoreTextView = (TextView) findViewById(R.id.more);
         mExpenseBookListAdapter = new ExpenseBookListAdapter();
-
+        if (isInEditMode()) {
+            return;
+        }
         listRecyclerView.setAdapter(mExpenseBookListAdapter);
         listRecyclerView.setOnItemClickListener(mItemClickListener);
 
@@ -116,7 +119,7 @@ public class ExpenseBookListView extends LinearLayout {
         mExpenseBookListAdapter.setMode(mMode);
         mProgressContainer.setVisibility(GONE);
         mExpenseBooks = expenseBooks;
-        if (expenseBooks.size() <= 2) {
+        if (expenseBooks.size() <= 2 || mMode == MODE_DIALOG) {
             mExpenseBookListAdapter.addData(expenseBooks);
             mMoreTextView.setVisibility(GONE);
         } else {
@@ -129,4 +132,14 @@ public class ExpenseBookListView extends LinearLayout {
         mEmptyText.setText(id);
         mProgressBar.setVisibility(GONE);
     }
+
+    public void setOnItemClickListener(ListRecyclerView.OnItemClickListener itemClickListener){
+        mItemClickListener = itemClickListener;
+        listRecyclerView.setOnItemClickListener(mItemClickListener);
+    }
+
+    public ExpenseBook getItemAtPosition(int position){
+        return mExpenseBookListAdapter.getItem(position);
+    }
+
 }

@@ -1,11 +1,14 @@
 package com.mmt.shubh.expensemanager.expense;
 
+import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
+import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Expense;
+import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.database.content.Transaction;
 import com.mmt.shubh.expensemanager.debug.Logger;
@@ -28,24 +31,27 @@ import timber.log.Timber;
  * TODO:Add class comment.
  */
 public class ExpenseModel {
+    private String LOG_TAG = getClass().getName();
 
     private ExpenseDataAdapter mExpenseDataAdapter;
     private MemberExpenseDataAdapter mMemberExpenseDataAdapter;
     private TransactionDataAdapter mTransactionDataAdapter;
     private AccountDataAdapter mAccountDataAdapter;
     private MemberDataAdapter mMemberDataAdapter;
-    private String LOG_TAG = getClass().getName();
+    private ExpenseBookDataAdapter mExpenseBookDataAdapter;
 
     @Inject
     public ExpenseModel(ExpenseDataAdapter expenseDataAdapter,
                         MemberExpenseDataAdapter memberDataAdapter,
                         TransactionDataAdapter transactionDataAdapter,
-                        AccountDataAdapter accountDataAdapter, MemberDataAdapter DataAdapter) {
+                        AccountDataAdapter accountDataAdapter,
+                        MemberDataAdapter DataAdapter, ExpenseBookDataAdapter expenseBookDataAdapter) {
         mExpenseDataAdapter = expenseDataAdapter;
         mMemberExpenseDataAdapter = memberDataAdapter;
         mTransactionDataAdapter = transactionDataAdapter;
         mAccountDataAdapter = accountDataAdapter;
         mMemberDataAdapter = DataAdapter;
+        mExpenseBookDataAdapter = expenseBookDataAdapter;
         Timber.tag(getClass().getName());
     }
 
@@ -182,4 +188,19 @@ public class ExpenseModel {
     }
 
 
+    public Observable<List<ExpenseBook>> loadAllExpenseBookForMember(long memberId) {
+        return mExpenseBookDataAdapter.getByMemberId(memberId);
+    }
+
+    public Observable<List<Account>> getAllAccount(long memberId) {
+        return mAccountDataAdapter.getAccountByMember(memberId);
+    }
+
+    public Observable<ExpenseBook> getExpenseBook(long expenseBookId) {
+        return mExpenseBookDataAdapter.get(expenseBookId);
+    }
+
+    public Observable<Account> getAccount(long accountId) {
+        return mAccountDataAdapter.get(accountId);
+    }
 }

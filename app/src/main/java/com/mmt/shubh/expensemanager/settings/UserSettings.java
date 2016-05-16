@@ -21,9 +21,9 @@ public class UserSettings {
 
     private volatile static UserSettings INSTANCE;
 
-    private long mUserId;
-
     private UserInfo mUserInfo;
+
+    private ExpenseBook mPersonalExpenseBook;
 
     public static UserSettings getInstance() {
         if (INSTANCE == null) {
@@ -42,12 +42,9 @@ public class UserSettings {
     }
 
     public long getUserId() {
-        return mUserId;
+        return mUserInfo.getId();
     }
 
-    public void setUserId(long mUserId) {
-        this.mUserId = mUserId;
-    }
 
     public UserInfo getUserInfo() {
         return mUserInfo;
@@ -57,7 +54,11 @@ public class UserSettings {
         mUserInfo = userInfo;
     }
 
-    public void setPrivateExpenseBook(ExpenseBook d) {
+    public void setPersonalExpenseBook(ExpenseBook d) {
+        mPersonalExpenseBook = d;
+    }
 
+    public ExpenseBook getPersonalExpenseBook() {
+        return mPersonalExpenseBook;
     }
 }

@@ -6,8 +6,13 @@ import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ModelFactory;
 import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
 import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.Map;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by subhamtyagi on 3/12/16.
@@ -31,15 +36,15 @@ public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> im
     }
 
     public void addExpense(String title, double amount, long accountId, long categoryId,
-                           long date,long ownerKey) {
+                           long date, long ownerKey) {
 
         if (TextUtils.isEmpty(title)) {
-            getView().showEmptyTitleError();
+            getView().onEmptyTitleError();
             return;
         }
 
         if (amount < 1) {
-            getView().showEmptyAmountError();
+            getView().onEmptyAmountError();
         }
         Expense expense = ModelFactory.getExpense();
         expense.setAccountKey(accountId);
@@ -53,16 +58,17 @@ public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> im
         mExpenseModel.createExpense(expense);
 
     }
+
     public void addExpense(String title, double amount, long accountId, long categoryId,
-                           long date, long ownerKey, Map<Long,Double> memberMap) {
+                           long date, long ownerKey, Map<Long, Double> memberMap) {
 
         if (TextUtils.isEmpty(title)) {
-            getView().showEmptyTitleError();
+            getView().onEmptyTitleError();
             return;
         }
 
         if (amount < 1) {
-            getView().showEmptyAmountError();
+            getView().onEmptyAmountError();
         }
         Expense expense = ModelFactory.getExpense();
         expense.setAccountKey(accountId);
@@ -72,10 +78,35 @@ public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> im
         expense.setExpenseCategoryId(categoryId);
         expense.setOwnerId(ownerKey);
         expense.setMemberMap(memberMap);
-        // TODO: 3/12/16 load private expense book in usersettings and get here from there
-        expense.setExpenseBookId(1);
+        expense.setExpenseBookId(UserSettings.getInstance().getPersonalExpenseBook().getId());
         mExpenseModel.createExpense(expense);
-
     }
 
+    public void getExpenseBookByMemberId(long memberId) {
+        mExpenseModel.loadAllExpenseBookForMember(memberId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> getView().onExpenseBookListLoad(data), this::showError);
+    }
+
+    private void showError(Throwable throwable) {
+        Timber.tag(throwable.getMessage());
+    }
+
+    public void getAllAccountByMemberId(long memberId) {
+        mExpenseModel.getAllAccount(memberId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> getView().onAccountListLoad(data));
+    }
+
+    public void getExpenseBook(long expenseBookId) {
+        mExpenseModel.getExpenseBook(expenseBookId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(expenseBook -> {
+                    getView().onExpenseBookLoad(expenseBook);
+                });
+    }
 }

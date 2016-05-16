@@ -36,6 +36,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import timber.log.Timber;
+
 
 /**
  * Created by Subham Tyagi,
@@ -78,6 +80,7 @@ public class ExpenseApplication extends Application {
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                 .build());
         JodaTimeAndroid.init(this);
+        Timber.tag(getClass().getName());
     }
 
     private void enbaleStrictMode() {
@@ -124,9 +127,10 @@ public class ExpenseApplication extends Application {
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
+            Timber.e(e.getMessage());
 
         } catch (NoSuchAlgorithmException e) {
-
+            Timber.e(e.getMessage());
         }
     }
 }

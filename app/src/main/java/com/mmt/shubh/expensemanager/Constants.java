@@ -19,33 +19,32 @@ public interface Constants {
 
     /*Extra/Bundle keys*/
     String KEY_ITEM_ID = "itemId";
-    String KEY_USER_ID = "userId";
     String KEY_EXPENSE_BOOK = "groupId";
-    String KEY_MEMBER_ID = "memberId";
-    String EXTRA_MEMBER = "member";
+
     String KEY_RESULT_CODE = "result_code";
     String KEY_REQUEST_CODE = "request_code";
-    String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";
-    String KEY_FRAGMENT_START_MODE = "expense_book_mode";
+
     String MODE_EDIT_DETAILS = "details";
     String MODE_NEW = "new";
-    String KEY_MEMBER_NAME = "member_name";
+
+    /* Bundle Extra key*/
     String EXTRA_MEMBER_ID = "memberId";
-    String EXTRA_GROUP_NAME = "group_name";
-    String EXTRA_GROUP_IMAGE_URI = "group_image_uri";
-    String EXTRA_GROUP_DESCRIPTION = "group_image_uri";
+    String EXTRA_MEMBER = "member";
     String EXTRA_DELETE_MEMBER = "delete_member";
 
-    String CATEGORY_TYPE_CUSTOM = "custom";
-    String CATEGORY_TPYE_DEFAULT = "default";
+    String EXTRA_EXPENSE_BOOK = "group_name";
     String EXTRA_EXPENSE_BOOK_ID = "expense_book_id";
+
+    String EXTRA_EXPENSE = "expense";
+    String EXTRA_ACCOUNT = "account";
+
+    String EXTRA_TYPE = "extra_type";
 
 
     int ADD_MEMBER_FRAGMENT = 1;
 
     /*Intents Actions*/
     String ACTION_ADD_MEMBERS = "com.mmt.shubh.expensemanager.ACTION_ADD_MEMBERS";
-    String KEY_CONTENT_ID = "contentId";
-    String EXTRA_ACCOUNT = "account";
-    String EXTRA_TYPE = "extra_type";
+    String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";
+
 }

@@ -71,9 +71,11 @@ public class LoginModule {
     public ExpenseModel provideExpenseModel(ExpenseDataAdapter expenseDataAdapter,
                                             MemberExpenseDataAdapter memberDataAdapter,
                                             TransactionDataAdapter transactionDataAdapter,
-                                            AccountDataAdapter accountDataAdapter, MemberDataAdapter dataAdapter) {
+                                            AccountDataAdapter accountDataAdapter,
+                                            MemberDataAdapter dataAdapter,
+                                            ExpenseBookDataAdapter expenseBookDataAdapter) {
         return new ExpenseModel(expenseDataAdapter, memberDataAdapter, transactionDataAdapter,
-                accountDataAdapter, dataAdapter);
+                accountDataAdapter, dataAdapter,expenseBookDataAdapter);
     }
 
 

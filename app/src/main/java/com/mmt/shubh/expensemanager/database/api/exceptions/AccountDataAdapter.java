@@ -21,4 +21,6 @@ public interface AccountDataAdapter extends IDataAdapter<Account> {
     void updateAmount(long accountId, double balanceAmount);
 
     Observable<List<Account>> loadAllAccounts();
+
+    Observable<List<Account>> getAccountByMember(long memberId);
 }

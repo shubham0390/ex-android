@@ -23,9 +23,6 @@
             <flag name="playfairDisplayRegular" value="11" />
         </attr>
     </declare-styleable>
-    <declare-styleable name="ChooserView">
-        <attr name="chooser_view_title" format="reference" />
-    </declare-styleable>
 
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />
