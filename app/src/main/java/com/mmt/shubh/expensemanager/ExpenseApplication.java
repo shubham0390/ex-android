@@ -28,10 +28,10 @@ import android.util.Log;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.dagger.component.api.DaggerObjectGraph;
 
-import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -79,7 +79,7 @@ public class ExpenseApplication extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                 .build());
-        JodaTimeAndroid.init(this);
+        AndroidThreeTen.init(this);
         Timber.tag(getClass().getName());
     }
 

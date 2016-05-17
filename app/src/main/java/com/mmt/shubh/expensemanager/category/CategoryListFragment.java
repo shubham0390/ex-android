@@ -28,10 +28,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 
-public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<ExpenseCategory>, ICategoryListView, CategoryListFragmentPresenter> implements SearchView.OnQueryTextListener {
-
-    @Inject
-    CategoryListFragmentPresenter mCategoryListFragmentPresenter;
+public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<ExpenseCategory>,
+        ICategoryListView, CategoryListFragmentPresenter> implements SearchView.OnQueryTextListener {
 
     private CategoryAdapter mCategoryAdapter;
 
@@ -47,6 +45,12 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
         ButterKnife.bind(this, view);
         setupRecyclerView();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadData(false);
     }
 
     @Override
@@ -137,7 +141,7 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        mCategoryListFragmentPresenter.loadAllCategory();
+        mPresenter.loadAllCategory();
     }
 
     @Override
@@ -146,5 +150,11 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
                 .categoryModule(new CategoryModule())
                 .mainComponent(mainComponent)
                 .build().inject(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView(false);
     }
 }

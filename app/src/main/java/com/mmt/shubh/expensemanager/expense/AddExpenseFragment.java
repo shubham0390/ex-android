@@ -2,14 +2,18 @@ package com.mmt.shubh.expensemanager.expense;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,8 +31,9 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 import com.mmt.shubh.expensemanager.ui.view.AutoResizeEditText;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
 
-import org.joda.time.DateTime;
 import org.parceler.Parcels;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.temporal.ChronoField;
 
 import java.util.List;
 
@@ -43,6 +48,7 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
 
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     @Bind(R.id.expense_title)
     EditText mTitleEditText;
@@ -62,11 +68,20 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
     @Bind(R.id.action_expense_book)
     TextView actionExpenseBook;
 
-    @Bind(R.id.action_camera)
+    @Bind(R.id.action_documents)
     TextView actionImage;
 
     @Bind(R.id.action_comment)
     TextView actionComment;
+
+    @Bind(R.id.bottom_sheet)
+    NestedScrollView mBottomSheet;
+
+    @Bind(R.id.friend_bottom_sheet)
+    NestedScrollView mFriendsBottomSheet;
+
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior mFriendBottomSheetBehavior;
 
     private ExpenseBookListDialog mExpenseBookListDialog;
 
@@ -94,12 +109,13 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
         } else {
             setupDefault();
         }
-
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
+        mFriendBottomSheetBehavior = BottomSheetBehavior.from(mFriendsBottomSheet);
     }
 
     private void setupDefault() {
         setExpenseBookDetail(UserSettings.getInstance().getPersonalExpenseBook());
-        setDate(DateTime.now().getMillis());
+        setDate(DateUtil.getCurrentTimeInMilli());
     }
 
     private void setupExpense() {
@@ -130,6 +146,7 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
                 keyboard.setVisibility(View.GONE);
             }
         });*/
+
     }
 
 
@@ -144,7 +161,11 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
 
     @OnClick(R.id.action_date)
     public void onDateActionClick() {
-
+        LocalDateTime dateTime = LocalDateTime.now();
+        new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
+        LocalDateTime localDateTime = LocalDateTime.of(year,monthOfYear,dayOfMonth,dateTime.getHour(),dateTime.getSecond());
+            setDate(DateUtil.toMilliSeconds(localDateTime));
+        },dateTime.getYear(),dateTime.getMonthValue(),dateTime.getDayOfMonth()).show();
     }
 
     @OnClick(R.id.action_expense_book)
@@ -154,12 +175,25 @@ public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddEx
 
     @OnClick(R.id.action_camera)
     public void onCameraActionClick() {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         } else {
             Toast.makeText(getContext(), R.string.no_camera_error_message, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @OnClick(R.id.action_document)
+    public void onDucmentsClick() {
+
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        Toast.makeText(getContext(), "No implemented yet ", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.action_documents)
+    public void onBillCkick() {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @OnClick(R.id.action_comment)

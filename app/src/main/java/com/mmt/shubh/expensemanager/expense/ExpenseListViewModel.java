@@ -58,7 +58,7 @@ public class ExpenseListViewModel {
     }
 
     public String getExpenseDate() {
-        return DateUtil.getLocalizedDate(mExpenseDate);
+        return DateUtil.getLocalizedDateTime(mExpenseDate);
     }
 
     public ExpenseListViewModel setExpenseDate(long expenseDate) {

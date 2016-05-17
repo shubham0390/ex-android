@@ -5,7 +5,9 @@ import com.mmt.shubh.expensemanager.utils.DateUtil;
 import com.mmt.shubh.recyclerviewlib.adapter.section.AbstractSectionIndexer;
 import com.mmt.shubh.recyclerviewlib.adapter.section.BaseSection;
 
-import org.joda.time.DateTime;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
 
 
 public class ExpenseTimeSectionIndexer extends AbstractSectionIndexer<ExpenseListViewModel> {
@@ -15,9 +17,10 @@ public class ExpenseTimeSectionIndexer extends AbstractSectionIndexer<ExpenseLis
         ExpenseSection section = new ExpenseSection();
         section.update(data.getExpenseAmount());
         long time = data.getExpenseDateInMill();
-        DateTime dateTime = new DateTime(time);
-        String mnth = DateUtil.getMonthName(dateTime.monthOfYear().get());
-        int year = dateTime.year().get();
+        Instant instant = Instant.ofEpochMilli(time);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        String mnth = DateUtil.getMonthName(localDateTime.getMonthValue());
+        int year = localDateTime.getYear();
         section.mSectionName = mnth + ", " + year;
         return section;
     }

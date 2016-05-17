@@ -1,8 +1,10 @@
 package com.mmt.shubh.expensemanager.utils;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.format.DateTimeFormatter;
 
 /**
  * Created by Subham Tyagi,
@@ -11,20 +13,35 @@ import org.joda.time.format.DateTimeFormatter;
  * TODO:Add class comment.
  */
 public class DateUtil {
-    public static String getLocalizedDate(long time) {
+    public static String getLocalizedDateTime(long time) {
+        Instant instant = Instant.ofEpochMilli(time);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime yesterday = today.minusDays(1);
 
-        DateTime dateTime = new DateTime(time);
-        DateTime today = new DateTime();
-        DateTime yesterday = today.minusDays(1);
-
-        DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("hh:mma");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
 
         if (dateTime.toLocalDate().equals(today.toLocalDate())) {
-            return "Today " + timeFormatter.print(dateTime);
+            return "Today ";
         } else if (dateTime.toLocalDate().equals(yesterday.toLocalDate())) {
             return "Yesterday ";
         } else {
-            return DateTimeFormat.forPattern("MMM d, yyyy").print(time);
+            return dateTime.format(timeFormatter);
+        }
+    }
+
+    public static String getLocalizedDate(long time) {
+        Instant instant = Instant.ofEpochMilli(time);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime yesterday = today.minusDays(1);
+
+        if (dateTime.toLocalDate().equals(today.toLocalDate())) {
+            return "Today ";
+        } else if (dateTime.toLocalDate().equals(yesterday.toLocalDate())) {
+            return "Yesterday ";
+        } else {
+            return dateTime.format(DateTimeFormatter.ofPattern("MMM d, yyyy"));
         }
     }
 
@@ -63,13 +80,24 @@ public class DateUtil {
         return null;
     }
 
-    public static int getMonthCount(long key) {
-        DateTime dateTime = new DateTime(key);
-        return dateTime.getMonthOfYear();
+    public static int getMonthCount(long time) {
+        Instant instant = Instant.ofEpochMilli(time);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return dateTime.getMonthValue();
     }
 
-    public static int getMonthYear(long key) {
-        DateTime dateTime = new DateTime(key);
+    public static int getYear(long time) {
+        Instant instant = Instant.ofEpochMilli(time);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         return dateTime.getYear();
+    }
+
+    public static long getCurrentTimeInMilli() {
+
+        return LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    public static long toMilliSeconds(LocalDateTime localDateTime){
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 }

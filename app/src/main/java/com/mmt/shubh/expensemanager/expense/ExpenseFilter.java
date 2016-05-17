@@ -1,7 +1,10 @@
 package com.mmt.shubh.expensemanager.expense;
 
 
-import org.joda.time.DateTime;
+import com.mmt.shubh.expensemanager.utils.DateUtil;
+
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.temporal.ChronoField;
 
 /**
  * Created by Subham Tyagi,
@@ -74,21 +77,21 @@ public class ExpenseFilter {
         //if time filter is set then isLatest has to be false
         isLatest = false;
         mTimeFilter = timeFilter;
-        DateTime today = new DateTime();
-        mStartDate = today.getMillis();
+        LocalDateTime today = LocalDateTime.now();
+        mStartDate = DateUtil.getCurrentTimeInMilli();
         switch (timeFilter) {
             case TIME_FILTER_ALL:
                 timeFilter = 0;
                 break;
             case TIME_FILTER_DAY:
-                int hour = today.hourOfDay().get();
-                mEndDate = new DateTime().minusHours(hour).toDateTime().getMillis();
+                int hour = today.getHour();
+                mEndDate = DateUtil.toMilliSeconds(today.minusHours(hour));
                 break;
             case TIME_FILTER_WEEK:
-                mEndDate = new DateTime().minusWeeks(1).getMillis();
+                mEndDate = DateUtil.toMilliSeconds(today.minusWeeks(1));
                 break;
             case TIME_FILTER_MONTH:
-                mEndDate = new DateTime().minusMonths(1).getMillis();
+                mEndDate = DateUtil.toMilliSeconds(today.minusMonths(1));
                 break;
             case TIME_FILTER_YEAR:
                 break;
