@@ -21,6 +21,8 @@ public interface ExpenseDataAdapter extends IDataAdapter<Expense> {
 
     Observable<List<ExpenseListViewModel>> getExpenseByAccountId(long id);
 
+    Observable<List<ExpenseListViewModel>> getExpenses(String selection);
+
     Observable<List<ExpenseListViewModel>> getAllSharedExpenseList(long id, long id2);
 
     Observable<List<MemberExpense>> getSharedExpenseDetails(long id, long id2);

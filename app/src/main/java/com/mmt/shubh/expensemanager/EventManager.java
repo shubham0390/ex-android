@@ -8,7 +8,7 @@ import com.squareup.otto.ThreadEnforcer;
  */
 public class EventManager {
 
-    private EventManager eventManager =  new EventManager();
+    private static EventManager eventManager = new EventManager();
 
     private Bus mainBus = new Bus(ThreadEnforcer.MAIN);
 
@@ -17,31 +17,27 @@ public class EventManager {
     private EventManager() {
     }
 
-    public EventManager getEventManager() {
-        return eventManager;
+    public static void registerMain(Object object) {
+        eventManager.mainBus.register(object);
     }
 
-    public void registerMain(Object object){
-        mainBus.register(object);
+    public static void unRegisterMain(Object object) {
+        eventManager.mainBus.unregister(object);
     }
 
-    public void unRegisterMain(Object object){
-        mainBus.unregister(object);
+    public static void registerAny(Object object) {
+        eventManager.anyBus.register(object);
     }
 
-    public void registerAny(Object object){
-        anyBus.register(object);
+    public static void unRegisterAny(Object object) {
+        eventManager.anyBus.unregister(object);
     }
 
-    public void unRegisterAny(Object object){
-        anyBus.unregister(object);
+    public static Bus getMainBus() {
+        return eventManager.mainBus;
     }
 
-    public Bus getMainBus(){
-        return mainBus;
-    }
-
-    public Bus getAnyBus(){
-        return anyBus;
+    public static Bus getAnyBus() {
+        return eventManager.anyBus;
     }
 }

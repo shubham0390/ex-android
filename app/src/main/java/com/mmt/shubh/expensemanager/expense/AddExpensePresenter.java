@@ -82,12 +82,7 @@ public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> im
         mExpenseModel.createExpense(expense);
     }
 
-    public void getExpenseBookByMemberId(long memberId) {
-        mExpenseModel.loadAllExpenseBookForMember(memberId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> getView().onExpenseBookListLoad(data), this::showError);
-    }
+
 
     private void showError(Throwable throwable) {
         Timber.tag(throwable.getMessage());
@@ -101,12 +96,5 @@ public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> im
                 .subscribe(data -> getView().onAccountListLoad(data));
     }
 
-    public void getExpenseBook(long expenseBookId) {
-        mExpenseModel.getExpenseBook(expenseBookId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(expenseBook -> {
-                    getView().onExpenseBookLoad(expenseBook);
-                });
-    }
+
 }

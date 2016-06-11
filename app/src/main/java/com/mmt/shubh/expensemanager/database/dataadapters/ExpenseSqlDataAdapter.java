@@ -20,6 +20,9 @@ import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.squareup.sqlbrite.BriteDatabase;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoField;
+
 import java.util.List;
 import java.util.Map;
 
@@ -113,7 +116,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key" +
                 " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key" +
                 " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = " + memberId;
-        q = q + " WHERE " + ExpenseContract.OWNER_KEY + " = " + memberId;
+        q = q + " WHERE " + ExpenseContract.OWNER_KEY + " = " + memberId + " ORDER BY e.expense_date DESC";
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
@@ -158,7 +161,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON e.expense_book_key = eb._id"
                 + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON e.account_key = a._id"
                 + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  e.owner_key = m._id";
-        q = q + " WHERE " + ExpenseContract.EXPENSE_BOOK_KEY + " = " + expenseBookId;
+        q = q + " WHERE " + ExpenseContract.EXPENSE_BOOK_KEY + " = " + expenseBookId + " ORDER BY e.expense_date DESC";
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
@@ -225,12 +228,17 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  e.owner_key = m._id";
         String selectionString = selection.toString();
         if (!TextUtils.isEmpty(selectionString))
-            q = q + " WHERE " + selection.toString();
+            q += " WHERE " + selection.toString();
+
+        q += " ORDER BY e.expense_date DESC ";
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }
 
     @Override
     public Observable<List<ExpenseListViewModel>> getExpenseByAccountId(final long accountId) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate localDate = LocalDate.of(currentDate.getYear(), 1, 1);
+        long currentYearTimeInMilli = localDate.getLong(ChronoField.MILLI_OF_DAY);
         String q = "SELECT "
                 + " e._id," +
                 " e.expense_amount," +
@@ -250,7 +258,34 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key"
                 + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key"
                 + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = e.owner_key";
-        q = q + " WHERE " + ExpenseContract.ACCOUNT_KEY + " = " + accountId;
+        q = q + " WHERE " + ExpenseContract.ACCOUNT_KEY + " = " + accountId + " AND e.expense_date >" + currentYearTimeInMilli + " ORDER BY e.expense_date DESC";
+
+        return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
+    }
+
+    @Override
+    public Observable<List<ExpenseListViewModel>> getExpenses(String selection) {
+
+        String q = "SELECT "
+                + " e._id," +
+                " e.expense_amount," +
+                " e.expense_date," +
+                " e.transaction_key ," +
+                " e.expense_name ," +
+                " ec.category_name," +
+                " eb._id ," +
+                " eb.name ," +
+                " m.name ," +
+                " m._id ," +
+                " a.account_name ," +
+                " a.account_type " +
+                " FROM "
+                + ExpenseContract.TABLE_NAME
+                + " e INNER JOIN " + CategoryContract.TABLE_NAME + " ec ON ec._id=e.category_key  "
+                + " INNER JOIN " + ExpenseBookContract.TABLE_NAME + " eb ON eb._id = e.expense_book_key"
+                + " INNER JOIN " + AccountContract.TABLE_NAME + " a ON a._id = e.account_key"
+                + " INNER JOIN " + MemberContract.TABLE_NAME + " m ON  m._id = e.owner_key";
+        q = q + " WHERE " + selection + " ORDER BY e.expense_date DESC";
 
         return mBriteDatabase.createQuery(mTableName, q).mapToList(this::parseCursorForExpenseViewModel);
     }

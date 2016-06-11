@@ -12,7 +12,9 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
+import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
+import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookContract;
 import com.mmt.shubh.expensemanager.debug.Logger;
@@ -28,6 +30,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,12 +65,12 @@ public class SeedDataTask extends AbstractTask {
 
     @Override
     public TaskResult execute() {
-        createCategory();
+        createCategory(getJsonStringFromUrl("https://www.mockaroo.com/e1f31670/download?count=12&key=327934b0"));
         addBankAccounts(getJsonStringFromUrl("https://www.mockaroo.com/cad293a0/download?count=5&key=327934b0"));
         parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=10&key=327934b0"));
-        addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=10&key=327934b0"));
+        addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=5&key=327934b0"));
         addExpenseBookMember(getJsonStringFromUrl("https://www.mockaroo.com/1d05f980/download?count=50&key=327934b0"));
-        createExpense();
+        createExpense(getJsonStringFromUrl("https://www.mockaroo.com/ca883930/download?count=300&key=327934b0"));
         createTaskResult(true, 12, "");
         return mTaskResult;
     }
@@ -112,7 +116,7 @@ public class SeedDataTask extends AbstractTask {
                 member.setMemberEmail(jsonObject.getString(MemberContract.MEMBER_EMAIL));
                 member.setProfilePhotoUrl(jsonObject.getString(MemberContract.MEMBER_IMAGE_URI));
                 member.setCoverPhotoUrl(jsonObject.getString(MemberContract.MEMBER_COVER_IMAGE_URL));
-                member.setMemberPhoneNumber(1234567890 + i);
+                member.setMemberPhoneNumber(jsonObject.getString(MemberContract.MEMBER_PHONE_NUMBER));
                 members.add(member);
             }
             MemberDataAdapter memberDataAdapter = mExpenseModel.getMemberDataAdapter();
@@ -130,15 +134,21 @@ public class SeedDataTask extends AbstractTask {
         Logger.methodEnd(LOG_TAG, "addMember");
     }
 
-    private void createCategory() {
+    private void createCategory(String jsonStringFromUrl) {
         Logger.methodEnd(LOG_TAG, "CreateCategory");
-        String categoryName[] = {"Air/Railway Ticket", "Alcohol"};
-        String categoryImageFile[] = {"tickets", "alcohol"};
-        String categoryType = "default";
         List<ExpenseCategory> expenseCategories = new ArrayList<>();
-        for (int i = 0; i < categoryName.length; i++) {
-            ExpenseCategory expenseCategory = new ExpenseCategory(categoryName[i], categoryType, categoryImageFile[i]);
-            expenseCategories.add(expenseCategory);
+        try {
+            JSONArray jsonArray = new JSONArray(jsonStringFromUrl);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                ExpenseCategory account = new ExpenseCategory();
+                account.setCategoryName(jsonObject.getString(CategoryContract.CATEGORY_NAME));
+                account.setCategoryImageName(jsonObject.getString(CategoryContract.CATEGORY_IMAGE_NAME));
+                account.setCategoryType(jsonObject.getString(CategoryContract.CATEGORY_TYPE));
+                expenseCategories.add(account);
+            }
+        } catch (JSONException e) {
+            Timber.e(e.getMessage());
         }
         mCategoryDataAdapter.create(expenseCategories).subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate())
@@ -151,28 +161,40 @@ public class SeedDataTask extends AbstractTask {
         Logger.methodEnd(LOG_TAG, "CreateCategory");
     }
 
-    private void createExpense() {
+    private void createExpense(String jsonStringFromUrl) {
+        Logger.methodStart(LOG_TAG, "Create Expense");
         List<Expense> expenses = new ArrayList<>();
-        for (int i = 1; i < 300; i++) {
-            Expense expense = new Expense();
-            expense.setExpenseAmount(1000);
-            expense.setExpenseBookId(getExpenseBookId());
-            expense.setExpenseCategoryId(i % 2);
-            expense.setExpenseDate(new Date().getTime());
-            expense.setExpenseDescription("This is testing expense");
-            expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
-            expense.setExpenseName("Testing Expense " + i);
-            expense.setExpensePlace("Delhi");
-            expense.setOwnerId(getMemberId());
-            expense.setAccountKey(getAccountId());
-            Map map = new HashMap<>();
-            map.put(getMemberId(), getAmount(getBoolean(i, 1)));
-            map.put(getMemberId(), getAmount(getBoolean(i, 2)));
-            map.put(getMemberId(), getAmount(getBoolean(i, 3)));
-            map.put(getMemberId(), getAmount(getBoolean(i, 4)));
-            expense.setMemberMap(map);
-            expenses.add(expense);
+        SimpleDateFormat sdf =  new SimpleDateFormat("yyyy/mm/dd");
+        try {
+            JSONArray jsonArray = new JSONArray(jsonStringFromUrl);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Expense expense = new Expense();
+                expense.setExpenseAmount(jsonObject.getDouble(ExpenseContract.EXPENSE_AMOUNT));
+                expense.setExpenseBookId(jsonObject.getInt(ExpenseContract.EXPENSE_BOOK_KEY));
+                expense.setExpenseCategoryId(jsonObject.getInt(ExpenseContract.CATEGORY_KEY));
+                String date = jsonObject.getString(ExpenseContract.EXPENSE_DATE);
+                expense.setExpenseDate(sdf.parse(date).getTime());
+                expense.setExpenseDescription("This is testing expense");
+                expense.setDistrubtionType(Expense.DISTRIBUTION_EQUALLY);
+                expense.setExpenseName("Testing Expense " + i);
+                expense.setExpensePlace(jsonObject.getString(ExpenseContract.EXPENSE_PLACE));
+                expense.setOwnerId(jsonObject.getInt(ExpenseContract.OWNER_KEY));
+                expense.setAccountKey(jsonObject.getInt(ExpenseContract.ACCOUNT_KEY));
+                Map map = new HashMap<>();
+                map.put(getMemberId(), getAmount(getBoolean(i, 1)));
+                map.put(getMemberId(), getAmount(getBoolean(i, 2)));
+                map.put(getMemberId(), getAmount(getBoolean(i, 3)));
+                map.put(getMemberId(), getAmount(getBoolean(i, 4)));
+                expense.setMemberMap(map);
+                expenses.add(expense);
 
+            }
+        } catch (JSONException e) {
+
+            Timber.e(e.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         mExpenseModel.createExpense(expenses)
                 .subscribeOn(Schedulers.immediate())
@@ -180,7 +202,7 @@ public class SeedDataTask extends AbstractTask {
                 .subscribe(d -> {
                     Timber.i("Expenses added successfully");
                 });
-        ;
+        Logger.methodEnd(LOG_TAG, "create expense");
     }
 
     private boolean getBoolean(int i, int i2) {

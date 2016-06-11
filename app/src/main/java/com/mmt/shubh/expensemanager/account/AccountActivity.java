@@ -21,10 +21,6 @@ import butterknife.ButterKnife;
 
 public class AccountActivity extends ToolBarActivity implements IAccountActivityView<List<Account>> {
 
-    public static final int MODE_ADD = 0;
-    public static final int MODE_LIST = 1;
-    public static final int MODE_VIEW = 2;
-
     @Bind(R.id.sliding_tabs)
     TabLayout mTabLayout;
 

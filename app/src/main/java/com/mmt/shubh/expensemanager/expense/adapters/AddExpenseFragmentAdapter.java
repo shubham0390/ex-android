@@ -10,7 +10,7 @@ import com.mmt.shubh.expensemanager.expense.SharedFragment;
 
 public class AddExpenseFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private static final int ITEM_COUNT = 2;
+    private static final int ITEM_COUNT = 1;
 
     public AddExpenseFragmentAdapter(FragmentManager fm) {
         super(fm);

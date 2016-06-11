@@ -67,7 +67,7 @@ public class CreateUserTask extends AbstractTask {
             member.setMemberEmail(userInfo.getEmailAddress());
             member.setMemberName(userInfo.getDisplayName());
             member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
-            member.setMemberPhoneNumber(userInfo.getPhoneNumber());
+            member.setMemberPhoneNumber(String.valueOf(userInfo.getPhoneNumber()));
         }
         return member;
     }
@@ -79,12 +79,12 @@ public class CreateUserTask extends AbstractTask {
         mMemberDataAdapter.create(createMember(mUserInfo))
                 .subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate()).subscribe(member -> {
-            mUserInfo.setMemberKey(member.getId());
-            mTaskResult = registerUser();
-        }
+                    mUserInfo.setMemberKey(member.getId());
+                    mTaskResult = registerUser();
+                }
                 , error -> {
-            Timber.e(error.getMessage());
-        });
+                    Timber.e(error.getMessage());
+                });
         return mTaskResult;
     }
 

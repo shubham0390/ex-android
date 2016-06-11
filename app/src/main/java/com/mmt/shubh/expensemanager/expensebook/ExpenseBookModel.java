@@ -108,7 +108,7 @@ public class ExpenseBookModel {
                 member.setMemberName(name);
                 member.setMemberEmail(email);
                 member.setProfilePhotoUrl(photoURI);
-                member.setMemberPhoneNumber(phoneNo);
+                member.setMemberPhoneNumber(String.valueOf(phoneNo));
             }
         } finally {
             if (contactsCursor != null) {

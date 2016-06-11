@@ -37,7 +37,7 @@ public class ExpenseProvider extends ContentProvider {
     private static final int EXPENSE_ID = EXPENSE + 1;
     private static final int MEMBER_EXPENSE_LIST = EXPENSE + 2;
     private static final int EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR = EXPENSE + 4;
-    private static final String MEMBER_BASE_PATH = MemberContract.PATH_MEMBER;
+    private static final String MEMBER_BASE_PATH = "";//MemberContract.PATH_MEMBER;
     private static final int MEMBER_BASE = 0x1000;
     private static final int MEMBER = MEMBER_BASE;
     private static final int MEMBER_ID = MEMBER + 1;
@@ -96,20 +96,20 @@ public class ExpenseProvider extends ContentProvider {
         matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE_LIST + "/#", MEMBER_EXPENSE_LIST);
 
 
-        matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE
+        /*matcher.addURI(BaseContract.AUTHORITY, ExpenseContract.PATH_EXPENSE
                         + "/" + MemberContract.PATH_MEMBER
                         + "/" + ExpenseBookContract.PATH_EXPENSE_BOOK
                         + "/" + ExpenseContract.PATH_MONTH
                         + "/" + ExpenseContract.PATH_YEAR,
-                EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR);
+                EXPENSE_MEMBER_EXPENSE_BOOK_MONTH_YEAR);*/
 
         /*Get all member*/
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_BASE_PATH, MEMBER);
         /*Get single member with id*/
         matcher.addURI(BaseContract.AUTHORITY, MEMBER_BASE_PATH + "/#", MEMBER_ID);
         /*Get all Member for a expense book with id*/
-        matcher.addURI(BaseContract.AUTHORITY, ExpenseBookContract.PATH_EXPENSE_BOOK
-                + "/" + MemberContract.PATH_MEMBER + "/#", EXPENSE_BOOK_MEMBER);
+      /*  matcher.addURI(BaseContract.AUTHORITY, ExpenseBookContract.PATH_EXPENSE_BOOK
+                + "/" + MemberContract.PATH_MEMBER + "/#", EXPENSE_BOOK_MEMBER);*/
 
         /*Get all expense book*/
         matcher.addURI(BaseContract.AUTHORITY, EXPENSE_BOOK_BASE_PATH, EXPENSE_BOOK);

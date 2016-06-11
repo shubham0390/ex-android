@@ -18,9 +18,4 @@ public interface ExpenseBookContract extends BaseColumns, BaseContract {
 
     Uri EXPENSE_BOOK_URI = new Uri.Builder().scheme(ContentResolver.SCHEME_CONTENT).authority(AUTHORITY).path(PATH_EXPENSE_BOOK).build();
 
-    Uri EXPENSE_BOOK_MEMBER_URI = EXPENSE_BOOK_URI.buildUpon().appendPath(MemberContract.PATH_MEMBER).build();
-
-    Uri EXPENSE_BOOK_EXPENSE_URI = EXPENSE_BOOK_URI.buildUpon().path(ExpenseContract.PATH_EXPENSE).build();
-
-
 }

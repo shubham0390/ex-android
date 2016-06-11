@@ -16,9 +16,9 @@ public interface AddExpenseView extends MVPView{
 
     void onEmptyAmountError();
 
-    void onExpenseBookListLoad(List<ExpenseBook> expenseBookList);
+
 
     void onAccountListLoad(List<Account> data);
 
-    void onExpenseBookLoad(ExpenseBook expenseBook);
+
 }

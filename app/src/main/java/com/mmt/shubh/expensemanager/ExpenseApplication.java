@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Base64;
@@ -66,21 +67,26 @@ public class ExpenseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        generateHashKey();
-        enbaleStrictMode();
-
         instance = this;
         mContext = getApplicationContext();
+        //enbaleStrictMode();
+        new InitlizarionTask().execute();
+    }
 
-        buildComponentAndInject();
+    private class InitlizarionTask extends AsyncTask<Void, Void, Void> {
 
-        Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
-                .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
-                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
-                .build());
-        AndroidThreeTen.init(this);
-        Timber.tag(getClass().getName());
+        @Override
+        protected Void doInBackground(Void... params) {
+            generateHashKey();
+            buildComponentAndInject();
+            Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
+                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
+                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
+                    .build());
+            AndroidThreeTen.init(ExpenseApplication.instance);
+            Timber.tag(getClass().getName());
+            return null;
+        }
     }
 
     private void enbaleStrictMode() {

@@ -11,9 +11,6 @@ import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;
 
-/**
- * Created by subhamtyagi on 2/20/16.
- */
 public class ExpenseListView extends FrameLayout {
 
     public static final int MODE_ACCOUNT = 0;

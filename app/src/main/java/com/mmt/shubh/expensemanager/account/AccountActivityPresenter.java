@@ -14,7 +14,6 @@ import rx.schedulers.Schedulers;
 
 public class AccountActivityPresenter extends MVPAbstractPresenter<IAccountActivityView<List<Account>>> {
 
-    @Inject
     AccountDataAdapter mAccountDataAdapter;
 
     @Inject

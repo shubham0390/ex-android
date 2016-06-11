@@ -15,7 +15,6 @@
 
 package com.mmt.shubh.expensemanager.database.content;
 
-import android.os.Parcel;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Member {
 
     private String memberEmail;
 
-    private int memberPhoneNumber;
+    private String memberPhoneNumber;
 
     private String coverPhotoUrl;
 
@@ -84,11 +83,11 @@ public class Member {
         this.profilePhotoUrl = profilePhotoUrl;
     }
 
-    public int getMemberPhoneNumber() {
+    public String getMemberPhoneNumber() {
         return memberPhoneNumber;
     }
 
-    public void setMemberPhoneNumber(int memberPhoneNumber) {
+    public void setMemberPhoneNumber(String memberPhoneNumber) {
         this.memberPhoneNumber = memberPhoneNumber;
     }
 

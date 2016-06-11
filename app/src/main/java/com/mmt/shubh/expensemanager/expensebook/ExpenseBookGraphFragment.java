@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
  */
 public class ExpenseBookGraphFragment extends Fragment {
 
-    @Bind(R.id.chart1)
     BarChart mChart;
 
     @Override

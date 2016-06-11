@@ -1,6 +1,5 @@
 package com.mmt.shubh.expensemanager.account;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -56,8 +55,6 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
     @Inject
     AccountDetailPresenter mAccountDetailPresenter;
 
-    private Typeface mTf;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,19 +70,14 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
         mChart.setDrawBarShadow(true);
         mChart.setDrawGridBackground(false);
         mChart.setDrawValueAboveBar(true);
-
-        mTf = Typeface.createFromAsset(getActivity().getAssets(), "Pacifico.ttf");
-
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setSpaceBetweenLabels(1);
 
         YAxisValueFormatter custom = new MyYAxisValueFormatter();
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setTypeface(mTf);
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawLabels(false);
@@ -97,7 +89,6 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setTypeface(mTf);
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawAxisLine(false);
         rightAxis.setLabelCount(8, false);
@@ -146,16 +137,17 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
             return;
         }
 
-        ArrayList<String> xVals = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>(12);
         addMnth(xVals);
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>(12);
 
         Set<Integer> keySet = mapData.keySet();
         for (Integer key : keySet) {
-            BarEntry barEntry = new BarEntry((float) mapData.get(key).doubleValue(), key);
+            BarEntry barEntry = new BarEntry((float) mapData.get(key).doubleValue(), key - 1);
             yVals1.add(barEntry);
         }
+
         BarDataSet set1 = new BarDataSet(yVals1, "DataSet");
         set1.setBarSpacePercent(35f);
         set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
@@ -204,6 +196,7 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
         strings.add("Jun");
         strings.add("Jul");
         strings.add("Aug");
+        strings.add("Sep");
         strings.add("Oct");
         strings.add("Nov");
         strings.add("Dec");

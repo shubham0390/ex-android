@@ -32,7 +32,7 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     public static final int TYPE_EXPENSE_BOOK = 1;
     public static final int TYPE_MEMBER = 2;
     List<Member> mMemberList;
-    private MemberListAdapter mListAdapter;
+    private MemberAdapter mListAdapter;
     private boolean mIsMemberDeletable;
     private Bundle mArguments;
     private int mType = 1;
@@ -60,7 +60,7 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
             mType = mArguments.getInt(Constants.EXTRA_TYPE, TYPE_MEMBER);
             mExpenseBookId = mArguments.getLong(Constants.EXTRA_EXPENSE_BOOK_ID);
         }
-        mListAdapter = new MemberListAdapter();
+        mListAdapter = new MemberAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
         mContentView.setAdapter(mListAdapter);
         setupListener();

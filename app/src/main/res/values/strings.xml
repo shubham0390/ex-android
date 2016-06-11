@@ -254,9 +254,15 @@
     <string name="no_account_present">No account present</string>
     <string name="error_message_emptydata">No Data</string>
     <string name="expense_item_member_detail_string">%1$s in %2$s</string>
-    <string name="no_camera_error_message">Device do not have camera</string>
+    <string name="error_message_no_camera">Device do not have camera</string>
     <string name="empty_expense_book">No expense book found</string>
     <string name="select_expense_book">Select Expense book</string>
     <string name="camera">Camera</string>
     <string name="documents">Documents</string>
+    <string name="comments">Comments</string>
+
+    <string-array name="bill_bottom_sheet_menu">
+        <item>Camera</item>
+        <item>Document</item>
+    </string-array>
 </resources>
