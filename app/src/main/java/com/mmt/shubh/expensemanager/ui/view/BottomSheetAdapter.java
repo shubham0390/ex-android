@@ -38,7 +38,7 @@ public class BottomSheetAdapter<T> extends RecyclerView.Adapter<BottomSheetAdapt
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bindText(data[position].toString());
         if (imgRes != null) {
-            holder.bindImage(imgRes[position]);
+            //holder.bindImage(imgRes[position]);
         }
     }
 
@@ -52,7 +52,7 @@ public class BottomSheetAdapter<T> extends RecyclerView.Adapter<BottomSheetAdapt
         @Bind(R.id.text_view)
         TextView textView;
         @Nullable
-        @Bind(R.id.image_view)
+       // @Bind(R.id.image_view)
         ImageView imageView;
 
         public ViewHolder(View itemView) {

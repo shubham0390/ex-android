@@ -178,7 +178,7 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_account_view;
+        return R.layout.account_detail_view_fragment;
     }
 
     @Override

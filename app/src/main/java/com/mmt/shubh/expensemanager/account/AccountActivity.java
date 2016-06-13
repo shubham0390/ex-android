@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class AccountActivity extends ToolBarActivity implements IAccountActivityView<List<Account>> {
 
-    @Bind(R.id.sliding_tabs)
+    @Bind(R.id.tabLayout)
     TabLayout mTabLayout;
 
     @Bind(R.id.viewPager)
@@ -35,12 +35,11 @@ public class AccountActivity extends ToolBarActivity implements IAccountActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.account_activity);
         ButterKnife.bind(this);
         initializeToolbar();
         toggleHomeBackButton(true);
         setTitle(R.string.account);
-
         mPresenter.attachView(this);
         mPresenter.loadAllAccounts();
     }

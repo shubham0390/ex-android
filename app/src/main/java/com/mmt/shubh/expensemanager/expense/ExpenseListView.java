@@ -50,6 +50,9 @@ public class ExpenseListView extends FrameLayout {
     public void init(Context context) {
         ListRecyclerView listRecyclerView = new ListRecyclerView(context);
         addView(listRecyclerView);
+        if (isInEditMode()) {
+            return;
+        }
         mExpenseListAdapter = new ExpenseListAdapter(listRecyclerView, mMode);
         listRecyclerView.setAdapter(mExpenseListAdapter);
         listRecyclerView.setOnItemClickListener(mItemClickListener);

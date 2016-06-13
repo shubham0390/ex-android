@@ -179,7 +179,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
 
         if (filter.getTimeFilter() > 1) {
             if (isExits) {
-                selection.append("AND");
+                selection.append(" AND ");
             }
             selection.append(EXPENSE_DATE);
             selection.append(" BETWEEN ");
@@ -191,7 +191,7 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
 
         if (filter.getCategoryId() > 0) {
             if (isExits) {
-                selection.append("AND");
+                selection.append(" AND ");
             }
             selection.append(CATEGORY_KEY);
             selection.append(" = ");

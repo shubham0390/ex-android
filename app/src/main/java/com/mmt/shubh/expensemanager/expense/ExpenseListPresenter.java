@@ -26,9 +26,12 @@ public class ExpenseListPresenter extends MVPAbstractPresenter<MVPLCEView<List<E
         implements MVPPresenter<MVPLCEView<List<ExpenseListViewModel>>> {
 
     protected Context mContext;
+
     @Inject
     ExpenseModel mExpenseModel;
+
     private String LOG_TAG = getClass().getName();
+
     private Observer<List<ExpenseListViewModel>> mExpenseObserver = new Observer<List<ExpenseListViewModel>>() {
         @Override
         public void onCompleted() {

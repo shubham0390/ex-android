@@ -10,11 +10,7 @@ import android.os.Bundle;
  */
 public interface IFragmentSwitcher {
 
-    void replaceFragment(String tag, Bundle bundle);
-
     void replaceFragment(int id, Bundle bundle);
-
-    void removeFragment(String tag, Bundle bundle);
 
     void removeFragment(int id, Bundle bundle);
 }

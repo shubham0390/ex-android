@@ -8,9 +8,6 @@ import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by subhamtyagi on 2/28/16.
- */
 @Module
 public class ModuleMemberDetailActivity {
 

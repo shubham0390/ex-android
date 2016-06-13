@@ -6,7 +6,7 @@ import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
-import com.mmt.shubh.expensemanager.expensebook.ExpenseBookSettingPresenter;
+import com.mmt.shubh.expensemanager.expensebook.setting.ExpenseBookSettingPresenter;
 
 import dagger.Module;
 import dagger.Provides;

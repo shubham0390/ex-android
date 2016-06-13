@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.base.DrawerBaseActivity;
 import com.mmt.shubh.expensemanager.expense.AddExpenseActivity;
-import com.mmt.shubh.expensemanager.expensebook.ExpenseBookAddUpdateActivity;
+import com.mmt.shubh.expensemanager.expensebook.add.ExpenseBookAddUpdateActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
