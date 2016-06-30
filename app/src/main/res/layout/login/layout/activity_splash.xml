@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/coins"/>
 
-    <com.mmt.shubh.expensemanager.ui.view.ExTextView
+    <com.mmt.shubh.expensemanager.core.view.ExTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:textSize="24sp"
         app:fontStyle="playfairDisplayRegular"/>
 
-    <com.mmt.shubh.expensemanager.ui.view.ExTextView
+    <com.mmt.shubh.expensemanager.core.view.ExTextView
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

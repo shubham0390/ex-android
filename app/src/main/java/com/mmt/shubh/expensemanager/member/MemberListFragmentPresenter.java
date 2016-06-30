@@ -2,10 +2,10 @@ package com.mmt.shubh.expensemanager.member;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
  * 11:53 AM
  * TODO:Add class comment.
  */
-public class MemberListFragmentPresenter extends MVPAbstractPresenter<MVPLCEView<List<Member>>>
+public class MemberListFragmentPresenter extends BasePresenter<MVPLCEView<List<Member>>>
         implements MVPPresenter<MVPLCEView<List<Member>>> {
 
     private Context mContext;
@@ -55,13 +55,20 @@ public class MemberListFragmentPresenter extends MVPAbstractPresenter<MVPLCEView
                 .subscribe(d -> getView().setData(d), e -> getView().showError(e, false));
     }
 
-    public void deleteMember(long id) {
-
-    }
-
     public void deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
-        mMemberModel.deleteMemberFromExpenseBook(memberId, expenseBookId);
-        getView().loadData(false);
+        mMemberModel.deleteMemberFromExpenseBook(memberId, expenseBookId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(res -> {
+                    if (res) {
+                        getView().loadData(false);
+                    }
+                }, error -> {
+
+                    getView().showError(error, false);
+
+                });
+
     }
 
 }

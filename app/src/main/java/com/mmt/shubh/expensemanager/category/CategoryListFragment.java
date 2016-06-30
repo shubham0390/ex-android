@@ -14,16 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewState;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewStateImpl;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -132,11 +130,6 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
 
     private void readCategoryFromDB() {
         getData();
-    }
-
-    @Override
-    public String getTitle() {
-        return null;
     }
 
     @Override

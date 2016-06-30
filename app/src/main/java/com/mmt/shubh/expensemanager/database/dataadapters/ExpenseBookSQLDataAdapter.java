@@ -1,7 +1,6 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
@@ -15,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 
 /**
@@ -23,12 +25,12 @@ import rx.Observable;
  * 4:04 PM
  * TODO:Add class comment.
  */
-public class ExpenseBookSQLDataAdapter extends AbstractSQLDataAdapter<ExpenseBook> implements ExpenseBookDataAdapter, ExpenseBookContract {
-    private Context mContext;
+@Singleton
+public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> implements ExpenseBookDataAdapter, ExpenseBookContract {
 
-    public ExpenseBookSQLDataAdapter(Context context, BriteDatabase briteDatabase) {
+    @Inject
+    public ExpenseBookSQLDataAdapter(BriteDatabase briteDatabase) {
         super(ExpenseBookContract.TABLE_NAME, briteDatabase);
-        mContext = context;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.mmt.shubh.expensemanager.account;
 
 import com.mmt.shubh.database.Selection;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
 
 import org.threeten.bp.LocalDate;
@@ -21,17 +21,14 @@ import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class AccountDetailPresenter extends MVPAbstractPresenter<IAccountDetailView>
-        implements MVPPresenter<IAccountDetailView> {
+public class AccountDetailPresenter extends BasePresenter<IAccountDetailView> {
 
-    private AccountDataAdapter mAccountDataAdapter;
 
-    private ExpenseDataAdapter mExpenseDataAdapter;
+    AccountModel mAccountModel;
 
     @Inject
-    public AccountDetailPresenter(AccountDataAdapter accountDataAdapter, ExpenseDataAdapter dataAdapter) {
-        mAccountDataAdapter = accountDataAdapter;
-        mExpenseDataAdapter = dataAdapter;
+    public AccountDetailPresenter(AccountModel accountModel) {
+        mAccountModel = accountModel;
     }
 
     @Override
@@ -53,7 +50,7 @@ public class AccountDetailPresenter extends MVPAbstractPresenter<IAccountDetailV
                 .appendOperation(Selection.AND)
                 .appendSelection(ExpenseContract.EXPENSE_DATE, Selection.GREATER, currentYearTimeInMilli);
 
-        mExpenseDataAdapter.getExpenses(builder.build())
+        mAccountModel.getExpenses(builder.build())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(d -> {
                     getView().showExpense(d);

@@ -5,8 +5,8 @@ import com.mmt.shubh.expensemanager.database.exception.EmptyDataException;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.mmt.shubh.expensemanager.expense.ExpenseModel;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 
-public class ExpenseBookDetailPresenter extends MVPAbstractPresenter<ExpenseBookDetailView> implements
+public class ExpenseBookDetailPresenter extends BasePresenter<ExpenseBookDetailView> implements
         MVPPresenter<ExpenseBookDetailView> {
 
 

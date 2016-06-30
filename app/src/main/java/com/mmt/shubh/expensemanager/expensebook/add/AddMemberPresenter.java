@@ -1,9 +1,9 @@
 package com.mmt.shubh.expensemanager.expensebook.add;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
 import com.mmt.shubh.expensemanager.member.ContactsMetaData;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by subhamtyagi on 2/28/16.
  */
-public class AddMemberPresenter extends MVPAbstractPresenter<AddUpdateExpenseView> implements MVPPresenter<AddUpdateExpenseView> {
+public class AddMemberPresenter extends BasePresenter<AddUpdateExpenseView> implements MVPPresenter<AddUpdateExpenseView> {
 
     ExpenseBookModel mExpenseBookModel;
 

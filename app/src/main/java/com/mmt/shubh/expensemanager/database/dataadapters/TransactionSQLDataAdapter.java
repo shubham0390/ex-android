@@ -9,6 +9,7 @@ import com.mmt.shubh.expensemanager.database.content.contract.TransactionContrac
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Subham Tyagi,
@@ -16,7 +17,8 @@ import javax.inject.Inject;
  * 5:33 PM
  * TODO:Add class comment.
  */
-public class TransactionSQLDataAdapter extends AbstractSQLDataAdapter<Transaction> implements TransactionDataAdapter,
+@Singleton
+public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> implements TransactionDataAdapter,
         TransactionContract {
 
     @Inject

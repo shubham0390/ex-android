@@ -2,7 +2,7 @@ package com.mmt.shubh.expensemanager.expensebook.add;
 
 import android.os.Bundle;
 
-import com.mmt.shubh.expensemanager.mvp.MVPView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPView;
 
 /**
  * Created by Subham Tyagi,

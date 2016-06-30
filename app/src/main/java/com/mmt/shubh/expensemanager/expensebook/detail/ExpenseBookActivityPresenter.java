@@ -1,10 +1,10 @@
 package com.mmt.shubh.expensemanager.expensebook.detail;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import rx.schedulers.Schedulers;
  * 10:07 PM
  * TODO:Add class comment.
  */
-public class ExpenseBookActivityPresenter extends MVPAbstractPresenter<MVPLCEView<List<ExpenseBook>>>
+public class ExpenseBookActivityPresenter extends BasePresenter<MVPLCEView<List<ExpenseBook>>>
         implements MVPPresenter<MVPLCEView<List<ExpenseBook>>> {
 
     ExpenseBookModel mExpenseBookModel;
@@ -38,9 +38,6 @@ public class ExpenseBookActivityPresenter extends MVPAbstractPresenter<MVPLCEVie
     }
 
 
-    public void deleteExpenseBook(long id) {
-        mExpenseBookModel.delete(id);
-    }
 
     public void loadExpenseBookList() {
         mExpenseBookModel.getAll()

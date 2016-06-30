@@ -21,15 +21,14 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.IFragmentSwitcher;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.mvp.MVPFragment;
-import com.mmt.shubh.expensemanager.mvp.MVPView;
-import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
+import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 import com.mmt.shubh.expensemanager.utils.Utilities;
 
 import org.parceler.Parcels;
@@ -49,7 +48,7 @@ import butterknife.OnClick;
  * @author Umang Chamaria
  *         TODO : save image uri and expense book name in database
  */
-public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBookFragmentPresenter>
+public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmentPresenter>
         implements IExpenseBookFragmentView {
 
     private final String TAG = AddUpdateExpenseBookFragment.class.getSimpleName();
@@ -83,7 +82,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
         Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true;
-            ExpenseBook expenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
+            ExpenseBook expenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_EXPENSE_BOOK));
             mExpenseName.setText(expenseBook.getName());
             mExpenseDescription.setText(expenseBook.getDescription());
         }
@@ -116,11 +115,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<MVPView, ExpenseBo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_create_new_expense_book, menu);
-    }
-
-    @Override
-    public String getTitle() {
-        return null;
     }
 
     @Override

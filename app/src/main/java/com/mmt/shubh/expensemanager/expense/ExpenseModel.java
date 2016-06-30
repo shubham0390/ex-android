@@ -67,15 +67,8 @@ public class ExpenseModel {
         deductAmountFromAccount(expense.getAccountKey(), expense.getExpenseAmount());
         long transactionId = createTransaction(expense);
         expense.setTransactionKey(transactionId);
-        mExpenseDataAdapter.create(expense)
-                .observeOn(Schedulers.immediate())
-                .subscribeOn(Schedulers.immediate())
-                .subscribe(d -> {
-                    addExpenseForMember(expense);
-
-                }, e -> {
-                    Timber.e("Unable to create expense.");
-                });
+        mExpenseDataAdapter.create(expense);
+        addExpenseForMember(expense);
     }
 
     private void addExpenseForMember(Expense expense) {
@@ -102,13 +95,7 @@ public class ExpenseModel {
             memberExpense.setBalanceAmount(paidAmount - sharedAmount);
             memberExpenses.add(memberExpense);
         }
-        mMemberExpenseDataAdapter.create(memberExpenses)
-                .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate())
-                .subscribe(d -> {
-                }, e -> {
-                    Timber.e(e.getMessage());
-                });
+        mMemberExpenseDataAdapter.create(memberExpenses);
         Logger.methodEnd(LOG_TAG, "addExpenseForMember");
     }
 
@@ -126,13 +113,7 @@ public class ExpenseModel {
         transaction.setDate(expense.getExpenseDate());
         transaction.setType(Transaction.TYPE_DEBIT);
         transaction.setAccountKey(expense.getAccountKey());
-        mTransactionDataAdapter.create(transaction)
-                .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate())
-                .subscribe(d -> {
-                }, e -> {
-                    Timber.e(e.getMessage());
-                });
+        mTransactionDataAdapter.create(transaction);
         Logger.methodEnd(LOG_TAG, "createTransaction");
         return transaction.getId();
     }
@@ -197,10 +178,9 @@ public class ExpenseModel {
     }
 
     public Observable<ExpenseBook> getExpenseBook(long expenseBookId) {
-        return mExpenseBookDataAdapter.get(expenseBookId);
-    }
+        return Observable.create(subscriber -> {
+            subscriber.onNext(mExpenseBookDataAdapter.get(expenseBookId));
+        });
 
-    public Observable<Account> getAccount(long accountId) {
-        return mAccountDataAdapter.get(accountId);
     }
 }

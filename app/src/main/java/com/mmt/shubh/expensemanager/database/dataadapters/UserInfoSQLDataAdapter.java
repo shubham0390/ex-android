@@ -1,20 +1,17 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
-import com.mmt.shubh.expensemanager.database.api.exceptions.ContentNotFoundException;
 import com.mmt.shubh.expensemanager.database.content.ModelFactory;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.content.contract.UserInfoContract;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Subham Tyagi,
@@ -22,8 +19,10 @@ import java.util.List;
  * 7:26 AM
  * TODO:Add class comment.
  */
-public class UserInfoSQLDataAdapter extends AbstractSQLDataAdapter<UserInfo> implements UserInfoDataAdapter, UserInfoContract {
+@Singleton
+public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<UserInfo> implements UserInfoDataAdapter, UserInfoContract {
 
+    @Inject
     public UserInfoSQLDataAdapter(BriteDatabase briteDatabase) {
         super(TABLE_NAME, briteDatabase);
     }

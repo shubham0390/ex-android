@@ -10,14 +10,16 @@ import com.mmt.shubh.expensemanager.database.content.ModelFactory;
 import com.mmt.shubh.expensemanager.database.content.contract.CategoryContract;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by styagi on 5/28/2015.
  */
-public class CategorySQLDataAdapter extends AbstractSQLDataAdapter<ExpenseCategory> implements CategoryDataAdapter, CategoryContract {
+@Singleton
+public class CategorySQLDataAdapter extends BaseSQLDataAdapter<ExpenseCategory> implements CategoryDataAdapter, CategoryContract {
 
-
+    @Inject
     public CategorySQLDataAdapter(BriteDatabase briteDatabase) {
         super(TABLE_NAME, briteDatabase);
     }

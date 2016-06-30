@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.disribution;
 
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 /**
  * Created by Subham Tyagi,
@@ -9,7 +9,7 @@ import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
  * 5:05 PM
  * TODO:Add class comment.
  */
-public class DistributionPresenter extends MVPAbstractPresenter<MVPLCEView<DistributionModel>>
+public class DistributionPresenter extends BasePresenter<MVPLCEView<DistributionModel>>
         implements IExpenseDistributionPresenter<MVPLCEView<DistributionModel>> {
 
     @Override

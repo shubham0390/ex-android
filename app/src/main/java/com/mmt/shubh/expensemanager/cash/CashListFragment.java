@@ -3,11 +3,13 @@ package com.mmt.shubh.expensemanager.cash;
 import android.os.Bundle;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
-import com.mmt.shubh.expensemanager.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 
-public class CashListFragment extends MVPFragment<ICashListFragmentView, CashListFragmentPresenter> implements ICashListFragmentView {
+public class CashListFragment extends MVPFragment<CashListFragmentPresenter> implements MVPLCEView {
 
     public CashListFragment() {
     }
@@ -22,16 +24,6 @@ public class CashListFragment extends MVPFragment<ICashListFragmentView, CashLis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadData(false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public String getTitle() {
-        return null;
     }
 
     @Override
@@ -56,10 +48,7 @@ public class CashListFragment extends MVPFragment<ICashListFragmentView, CashLis
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        CashActivityComponent component = DaggerCashActivityComponent.builder()
-                .cashActivityModule(new CashActivityModule())
-                .mainComponent(mainComponent).build();
-        component.inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseContr
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Subham Tyagi,
@@ -16,9 +17,9 @@ import javax.inject.Inject;
  * 9:34 PM
  * TODO:Add class comment.
  */
-public class MemberExpenseSQLDataAdapter extends AbstractSQLDataAdapter<MemberExpense> implements MemberExpenseDataAdapter {
+@Singleton
+public class MemberExpenseSQLDataAdapter extends BaseSQLDataAdapter<MemberExpense> implements MemberExpenseDataAdapter {
 
-    private String LOG_TAG = getClass().getName();
 
     @Inject
     public MemberExpenseSQLDataAdapter(BriteDatabase briteDatabase) {

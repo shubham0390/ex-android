@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.mmt.shubh.database.Select;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
@@ -26,6 +27,9 @@ import org.threeten.bp.temporal.ChronoField;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 
 /**
@@ -34,8 +38,10 @@ import rx.Observable;
  * 5:10 PM
  * TODO:Add class comment.
  */
-public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
+@Singleton
+public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implements ExpenseDataAdapter, ExpenseContract {
 
+    @Inject
     public ExpenseSqlDataAdapter(BriteDatabase briteDatabase) {
         super(ExpenseContract.TABLE_NAME, briteDatabase);
     }
@@ -341,6 +347,32 @@ public class ExpenseSqlDataAdapter extends AbstractSQLDataAdapter<Expense> imple
                 + " WHERE " + MemberExpenseContract.MEMBER_KEY + " = " + id
                 + " ) AND " + MemberExpenseContract.MEMBER_KEY + " = " + id2;
         return mBriteDatabase.createQuery(MemberExpenseContract.TABLE_NAME, s).mapToList(this::parseMemberExpense);
+    }
+
+    @Override
+    public boolean isAnyExpenseExists(long memberId, long expenseBookId) {
+        String query = new Select()
+                .addColumns(new String[]{ExpenseContract._ID})
+                .from(mTableName)
+                .where(ExpenseContract._ID).in(new Select()
+                        .addColumns(new String[]{MemberExpenseContract.EXPENSE_KEY})
+                        .where(MemberExpenseContract.MEMBER_KEY).equql(memberId))
+                .and()
+                .where(ExpenseContract.EXPENSE_BOOK_KEY).equql(expenseBookId).toString();
+        Cursor cursor = null;
+        try {
+
+            cursor = mBriteDatabase.query(query, null);
+            if (cursor != null) {
+                return cursor.getCount() > 0;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return false;
     }
 
     private MemberExpense parseMemberExpense(Cursor cursor) {

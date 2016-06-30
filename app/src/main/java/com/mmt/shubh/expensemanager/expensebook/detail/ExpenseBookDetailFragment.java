@@ -2,14 +2,14 @@ package com.mmt.shubh.expensemanager.expensebook.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
-import com.mmt.shubh.expensemanager.expense.graph.ExpenseBarGraphView;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class ExpenseBookDetailFragment extends SupportMVPFragment<ExpenseBookDetailView, ExpenseBookDetailPresenter>
+public class ExpenseBookDetailFragment extends MVPFragment<ExpenseBookDetailPresenter>
         implements ExpenseBookDetailView {
 
     long mExpenseBookId;
@@ -26,8 +26,10 @@ public class ExpenseBookDetailFragment extends SupportMVPFragment<ExpenseBookDet
     @Bind(R.id.expense_list)
     ExpenseListView expenseList;
 
-    @Bind(R.id.barGraph)
-    ExpenseBarGraphView mExpenseBarGraphView;
+    @Bind(R.id.detail_view_pager)
+    ViewPager mViewPager;
+    /*@Bind(R.id.barGraph)
+    ExpenseBarGraphView mExpenseBarGraphView;*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class ExpenseBookDetailFragment extends SupportMVPFragment<ExpenseBookDet
 
     @Override
     public void setGraphData(Map<Integer, Double> mapData) {
-        mExpenseBarGraphView.setData(mapData);
+        // mExpenseBarGraphView.setData(mapData);
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
@@ -26,7 +26,7 @@ import timber.log.Timber;
  * TODO:Add class comment.
  */
 @ActivityScope
-public class AccountSQLDataAdapter extends AbstractSQLDataAdapter<Account> implements AccountDataAdapter, AccountContract {
+public class AccountSQLDataAdapter extends BaseSQLDataAdapter<Account> implements AccountDataAdapter, AccountContract {
 
 
     @Inject

@@ -1,10 +1,7 @@
 package com.mmt.shubh.expensemanager.expensebook.add;
 
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
-import com.mmt.shubh.expensemanager.expensebook.add.AddMembersToExpenseBookFragment;
-import com.mmt.shubh.expensemanager.expensebook.add.AddUpdateExpenseBookFragment;
-import com.mmt.shubh.expensemanager.expensebook.add.ModuleExpenseBookUpdate;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 
 import dagger.Component;
 

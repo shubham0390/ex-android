@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.mmt.shubh.expensemanager.ui.view.CircleImageView
+<com.mmt.shubh.expensemanager.core.view.CircleImageView
     android:id="@+id/list_image_icon"
     style="@style/ListItemIcon"
     xmlns:android="http://schemas.android.com/apk/res/android"

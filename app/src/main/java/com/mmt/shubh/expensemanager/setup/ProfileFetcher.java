@@ -6,6 +6,7 @@ import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -16,20 +17,6 @@ import rx.schedulers.Schedulers;
  */
 public abstract class ProfileFetcher {
 
-    public abstract UserInfo fetchUserAccountDetails(Context context);
+    public abstract Observable<UserInfo> fetchUserAccountDetails();
 
-    UserInfoDataAdapter mUserInfoDataAdapter;
-
-    public ProfileFetcher(UserInfoDataAdapter mUserInfoDataAdapter) {
-        this.mUserInfoDataAdapter = mUserInfoDataAdapter;
-    }
-
-    public void update(UserInfo userInfo) {
-        mUserInfoDataAdapter.update(userInfo)
-                .observeOn(Schedulers.immediate())
-                .subscribeOn(Schedulers.immediate())
-                .subscribe(d -> {
-                }, e -> {
-                });
-    }
 }

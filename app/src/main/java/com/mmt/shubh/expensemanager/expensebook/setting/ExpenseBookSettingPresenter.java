@@ -1,8 +1,8 @@
 package com.mmt.shubh.expensemanager.expensebook.setting;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
  * 4:58 PM
  * TODO:Add class comment.
  */
-public class ExpenseBookSettingPresenter extends MVPAbstractPresenter<IExpenseBookSettingView> implements MVPPresenter<IExpenseBookSettingView> {
+public class ExpenseBookSettingPresenter extends BasePresenter<IExpenseBookSettingView> implements MVPPresenter<IExpenseBookSettingView> {
 
     ExpenseBookModel mExpenseBookModel;
 

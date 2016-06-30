@@ -18,7 +18,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.mmt.shubh.expensemanager.ui.view.CircleImageView
+        <com.mmt.shubh.expensemanager.core.view.CircleImageView
             android:id="@+id/list_image_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

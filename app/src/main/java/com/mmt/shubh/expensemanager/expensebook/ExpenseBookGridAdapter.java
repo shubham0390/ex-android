@@ -12,7 +12,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
+import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;

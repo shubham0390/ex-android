@@ -2,7 +2,7 @@ package com.mmt.shubh.expensemanager.expensebook.add;
 
 import android.content.Context;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;

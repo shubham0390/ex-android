@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.database.content.MemberExpense;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
@@ -24,9 +24,9 @@ import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookGridView;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookListView;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
-import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
-import com.mmt.shubh.expensemanager.ui.view.PaletteTransformation;
-import com.mmt.shubh.expensemanager.ui.view.SimpleImageView;
+import com.mmt.shubh.expensemanager.core.view.CircleImageView;
+import com.mmt.shubh.expensemanager.core.view.PaletteTransformation;
+import com.mmt.shubh.expensemanager.core.view.SimpleImageView;
 import com.mmt.shubh.expensemanager.utils.StringsUtils;
 import com.squareup.picasso.Callback;
 

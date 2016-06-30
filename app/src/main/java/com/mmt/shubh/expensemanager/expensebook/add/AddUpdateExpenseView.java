@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.expensebook.add;
 
-import com.mmt.shubh.expensemanager.mvp.MVPView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPView;
 
 /**
  * Created by subhamtyagi on 2/29/16.

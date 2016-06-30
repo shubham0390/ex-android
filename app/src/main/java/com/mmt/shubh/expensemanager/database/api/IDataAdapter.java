@@ -11,22 +11,22 @@ import rx.Observable;
  */
 public interface IDataAdapter<T> {
     @WorkerThread
-    Observable<T> create(T t);
+    T create(T t);
 
     @WorkerThread
-    Observable<List<T>> create(List<T> tList);
+    List<T> create(List<T> tList);
 
     @WorkerThread
-    Observable<T> update(T t);
+    T update(T t);
 
     @WorkerThread
-    Observable<Long> delete(long id);
+    long delete(long id);
 
     @WorkerThread
-    Observable<Boolean> deleteAll();
+    int deleteAll();
 
     @WorkerThread
-    Observable<T> get(long id);
+    T get(long id);
 
     @WorkerThread
     Observable<List<T>> getAll();

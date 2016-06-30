@@ -2,11 +2,11 @@ package com.mmt.shubh.expensemanager.expense;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.exception.EmptyDataException;
 import com.mmt.shubh.expensemanager.debug.Logger;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
  * 10:47 PM
  * TODO:Add class comment.
  */
-public class ExpenseListPresenter extends MVPAbstractPresenter<MVPLCEView<List<ExpenseListViewModel>>>
+public class ExpenseListPresenter extends BasePresenter<MVPLCEView<List<ExpenseListViewModel>>>
         implements MVPPresenter<MVPLCEView<List<ExpenseListViewModel>>> {
 
     protected Context mContext;

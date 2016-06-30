@@ -3,34 +3,27 @@ package com.mmt.shubh.expensemanager.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.facebook.FacebookSdk;
 import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity2;
+import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
 import com.mmt.shubh.expensemanager.home.HomeActivity;
-import com.mmt.shubh.expensemanager.base.ToolBarActivity;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
-public class LoginActivity extends ToolBarActivity implements ILoginActivityView {
+public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements ILoginActivityView {
 
     @Bind(R.id.plus_sign_in_button)
     SignInButton mPlusSignInButton;
@@ -45,27 +38,27 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     View mProgressView;
 
     @Inject
-    LoginActivityPresenter mLoginActivityPresenter;
+    LoginPresenter mLoginPresenter;
+
+    @Override
+    protected void injectDependencies(ConfigPersistentComponent component) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
         initializeToolbar();
         getSupportActionBar().setElevation(0);
-        mLoginActivityPresenter.setupFacebookLogin(mFacebookLoginButton, this);
-        mLoginActivityPresenter.setupGoogleLogin(mPlusSignInButton, this);
-        mLoginActivityPresenter.attachView(this);
+        mLoginPresenter.setupFacebookLogin(mFacebookLoginButton, this);
+        mLoginPresenter.setupGoogleLogin(mPlusSignInButton, this);
+        mLoginPresenter.attachView(this);
     }
 
     @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        LoginActivityComponent mComponent = DaggerLoginActivityComponent.builder()
-                .loginModule(new LoginModule(this))
-                .mainComponent(mainComponent).build();
-        mComponent.inject(this);
+    protected int getLayout() {
+        return R.layout.activity_login;
+
     }
 
     private void showBackButton(boolean value) {
@@ -120,7 +113,7 @@ public class LoginActivity extends ToolBarActivity implements ILoginActivityView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mLoginActivityPresenter.onActivityResult(requestCode, resultCode, data);
+        mLoginPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

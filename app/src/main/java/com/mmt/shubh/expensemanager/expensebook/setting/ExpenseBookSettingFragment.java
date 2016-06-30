@@ -1,23 +1,19 @@
 package com.mmt.shubh.expensemanager.expensebook.setting;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.base.IFragmentSwitcher;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.expensebook.add.ExpenseBookAddUpdateActivity;
 import com.mmt.shubh.expensemanager.expensebook.detail.DaggerExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.expensebook.detail.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.member.MemberListFragment;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.settings.SettingFragmentModule;
 
 import org.parceler.Parcels;
@@ -27,15 +23,10 @@ import butterknife.Bind;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookSettingView, ExpenseBookSettingPresenter>
+public class ExpenseBookSettingFragment extends MVPFragment<ExpenseBookSettingPresenter>
         implements IExpenseBookSettingView {
 
     public static final String TAG = "settingFragment";
-
-    IFragmentSwitcher mIFragmentSwitcher;
-
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     @Bind(R.id.created_by)
     TextView mCreatedByTextView;
@@ -57,50 +48,19 @@ public class ExpenseBookSettingFragment extends SupportMVPFragment<IExpenseBookS
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mIFragmentSwitcher = (IFragmentSwitcher) getActivity();
-        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
-
+        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_EXPENSE_BOOK));
         installMemberListFragment();
-        setupToolbar();
         mPresenter.loadOwnerDetails(mExpenseBook.getOwnerId());
-
-        if (!mExpenseBook.getType().equals("Private"))
-            addMenu();
-
     }
 
-    private void setupToolbar() {
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        mToolbar.setTitle(R.string.action_settings);
-        //mToolbar.setNavigationOnClickListener(view -> mIFragmentSwitcher.removeFragment(R.id.settings, null));
-    }
-
-    private void addMenu() {
-
-        mToolbar.inflateMenu(R.menu.menu_fragment_setting_expense_book);
-
-        mToolbar.setOnMenuItemClickListener(item -> {
-            Intent intent = new Intent(ExpenseBookSettingFragment.this.getActivity(), ExpenseBookAddUpdateActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
-            intent.putExtras(bundle);
-            intent.setAction(Constants.ACTION_ADD_MEMBERS);
-            ExpenseBookSettingFragment.this.startActivity(intent);
-            return true;
-        });
-    }
 
     private void installMemberListFragment() {
         Fragment fragment = new MemberListFragment();
-
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.EXTRA_EXPENSE_BOOK_ID, mExpenseBook.getId());
         bundle.putInt(Constants.EXTRA_TYPE, MemberListFragment.TYPE_EXPENSE_BOOK);
-        bundle.putBoolean(Constants.EXTRA_DELETE_MEMBER, !mExpenseBook.getType().equals("Private"));
-
+        bundle.putBoolean(Constants.EXTRA_DELETE_MEMBER, !mExpenseBook.getType().equals(ExpenseBook.TYPE_PERSONAL));
         fragment.setArguments(bundle);
-
         getFragmentManager().beginTransaction().add(R.id.member_list, fragment).commit();
     }
 

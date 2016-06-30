@@ -2,8 +2,8 @@ package com.mmt.shubh.expensemanager.home;
 
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import javax.inject.Inject;
 
@@ -11,7 +11,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class SummaryActivityPresenter extends MVPAbstractPresenter<ISummaryActivityView>
+public class SummaryActivityPresenter extends BasePresenter<ISummaryActivityView>
         implements MVPPresenter<ISummaryActivityView> {
 
     ExpenseDataAdapter expenseDataAdapter;

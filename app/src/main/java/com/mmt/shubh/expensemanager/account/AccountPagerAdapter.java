@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.database.content.Account;
 
 import org.parceler.Parcels;

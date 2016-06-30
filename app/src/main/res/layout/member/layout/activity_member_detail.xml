@@ -41,7 +41,7 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.mmt.shubh.expensemanager.ui.view.SimpleImageView
+            <com.mmt.shubh.expensemanager.core.view.SimpleImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="256dp"
@@ -75,7 +75,7 @@
                 android:layout_marginLeft="@dimen/spacing_medium"
                 android:orientation="horizontal">
 
-                <com.mmt.shubh.expensemanager.ui.view.CircleImageView
+                <com.mmt.shubh.expensemanager.core.view.CircleImageView
                     android:id="@+id/profile_image"
                     style="@style/ListItemIcon"
                     android:layout_width="60dp"

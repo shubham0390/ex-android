@@ -1,24 +1,17 @@
 package com.mmt.shubh.expensemanager.onboarding;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
+import com.mmt.shubh.expensemanager.core.mvp.MVPActivity2;
 import com.mmt.shubh.expensemanager.home.HomeActivity;
-import com.mmt.shubh.expensemanager.mvp.MVPActivity;
-import com.mmt.shubh.expensemanager.settings.UserSettings;
-import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPActivity;
 import com.mmt.shubh.expensemanager.login.LoginActivity;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,16 +21,19 @@ import javax.inject.Inject;
  * 12:00 AM
  * TODO:Add class comment.
  */
-public class SplashActivity extends MVPActivity implements SplashView {
-    Handler handler = new Handler();
+public class SplashActivity extends MVPActivity2<SplashPresenter> implements SplashView {
 
-    @Inject
-    SplashActivityPresenter mPresenter;
+    Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        mPresenter.attachView(this);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_splash;
     }
 
     @Override
@@ -55,7 +51,6 @@ public class SplashActivity extends MVPActivity implements SplashView {
     @Override
     protected void onResume() {
         super.onResume();
-        ;
         mPresenter.checkLoginStatus();
     }
 
@@ -80,11 +75,8 @@ public class SplashActivity extends MVPActivity implements SplashView {
     }
 
     @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        DaggerSplashActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .splashActivityModule(new SplashActivityModule())
-                .build()
+    protected void injectDependencies(ConfigPersistentComponent component) {
+        component.activityComponent(new ActivityModule(this))
                 .inject(this);
     }
 }

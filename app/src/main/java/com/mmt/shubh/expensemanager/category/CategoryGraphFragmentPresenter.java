@@ -1,8 +1,7 @@
 package com.mmt.shubh.expensemanager.category;
 
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 /**
  * Created by Subham Tyagi,
@@ -10,8 +9,8 @@ import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
  * 1:31 PM
  * TODO:Add class comment.
  */
-public class CategoryGraphFragmentPresenter extends MVPAbstractPresenter<MVPLCEView<CategoryModel>>
-        implements MVPPresenter<MVPLCEView<CategoryModel>> {
+public class CategoryGraphFragmentPresenter extends BasePresenter<MVPLCEView<CategoryModel>>
+         {
     @Override
     public void resume() {
 

@@ -18,9 +18,6 @@ import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by subhamtyagi on 2/20/16.
- */
 public class ExpenseBookListView extends LinearLayout {
 
     public static final int MODE_EXPENSE_BOOK = 0;
@@ -133,12 +130,12 @@ public class ExpenseBookListView extends LinearLayout {
         mProgressBar.setVisibility(GONE);
     }
 
-    public void setOnItemClickListener(ListRecyclerView.OnItemClickListener itemClickListener){
+    public void setOnItemClickListener(ListRecyclerView.OnItemClickListener itemClickListener) {
         mItemClickListener = itemClickListener;
         listRecyclerView.setOnItemClickListener(mItemClickListener);
     }
 
-    public ExpenseBook getItemAtPosition(int position){
+    public ExpenseBook getItemAtPosition(int position) {
         return mExpenseBookListAdapter.getItem(position);
     }
 

@@ -58,7 +58,7 @@
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_weight=".7">
 
-                <com.mmt.shubh.expensemanager.ui.view.CircleImageView
+                <com.mmt.shubh.expensemanager.core.view.CircleImageView
                     android:id="@+id/category_image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"

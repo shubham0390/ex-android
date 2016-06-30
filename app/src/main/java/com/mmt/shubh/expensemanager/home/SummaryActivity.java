@@ -10,8 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;

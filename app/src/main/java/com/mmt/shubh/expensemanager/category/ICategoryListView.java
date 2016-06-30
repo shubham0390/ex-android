@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.category;
 
 import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
 

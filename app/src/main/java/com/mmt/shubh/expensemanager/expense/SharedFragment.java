@@ -3,9 +3,9 @@ package com.mmt.shubh.expensemanager.expense;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookListDialog;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 
-public class SharedFragment extends SupportMVPFragment<SharedExpenseView, SharedExpenseFragmentPresenter>
+public class SharedFragment extends MVPFragment<SharedExpenseFragmentPresenter>
         implements SharedExpenseView {
 
     @Bind(R.id.action_expense_book)

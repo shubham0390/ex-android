@@ -1,9 +1,8 @@
 package com.mmt.shubh.expensemanager.login;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 /**
  * Created by Subham Tyagi,
@@ -11,14 +10,9 @@ import dagger.Component;
  * 5:37 PM
  * TODO:Add class comment.
  */
-@ActivityScope
-@Component(dependencies = MainComponent.class,
-        modules = LoginModule.class)
+@ConfigPersistent
+@Subcomponent(modules = LoginModule.class)
 public interface LoginActivityComponent {
 
     void inject(LoginActivity loginActivity);
-
-    void inject(SignInFragment signInFragment);
-
-    void inject(SignUpFragment signInFragment);
 }

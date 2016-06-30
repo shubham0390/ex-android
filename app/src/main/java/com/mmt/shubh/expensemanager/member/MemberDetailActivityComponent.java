@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.member;
 
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 
 import dagger.Component;
 

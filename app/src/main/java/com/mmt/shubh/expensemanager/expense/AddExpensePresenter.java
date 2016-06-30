@@ -2,10 +2,10 @@ package com.mmt.shubh.expensemanager.expense;
 
 import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.database.content.ModelFactory;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ import timber.log.Timber;
 /**
  * Created by subhamtyagi on 3/12/16.
  */
-public class AddExpensePresenter extends MVPAbstractPresenter<AddExpenseView> implements MVPPresenter<AddExpenseView> {
+public class AddExpensePresenter extends BasePresenter<AddExpenseView> implements MVPPresenter<AddExpenseView> {
 
     private ExpenseModel mExpenseModel;
 

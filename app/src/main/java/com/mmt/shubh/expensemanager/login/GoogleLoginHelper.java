@@ -96,11 +96,8 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
     @Override
     public void signOut() {
         Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // ...
-                    }
+                status -> {
+                    // ...
                 });
     }
 
@@ -110,11 +107,8 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
     @Override
     public void revokeAccess() {
         Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // TODO: 2/19/16 handle it gracefully
-                    }
+                status -> {
+                    // TODO: 2/19/16 handle it gracefully
                 });
 
     }

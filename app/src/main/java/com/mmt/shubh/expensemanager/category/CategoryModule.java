@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.category;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
 
 import dagger.Module;

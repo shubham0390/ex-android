@@ -11,6 +11,9 @@ import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -20,9 +23,10 @@ import rx.schedulers.Schedulers;
  * 6:31 PM
  * TODO:Add class comment.
  */
-public class MemberSQLDataAdapter extends AbstractSQLDataAdapter<Member> implements MemberDataAdapter, MemberContract {
+@Singleton
+public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements MemberDataAdapter, MemberContract {
 
-
+    @Inject
     public MemberSQLDataAdapter(BriteDatabase briteDatabase) {
         super(MemberContract.TABLE_NAME, briteDatabase);
     }
@@ -39,7 +43,6 @@ public class MemberSQLDataAdapter extends AbstractSQLDataAdapter<Member> impleme
         int coverPhotoIndex = cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL);
         if (coverPhotoIndex != -1)
             member.setCoverPhotoUrl(cursor.getString(coverPhotoIndex));
-
         return member;
     }
 
@@ -90,13 +93,10 @@ public class MemberSQLDataAdapter extends AbstractSQLDataAdapter<Member> impleme
     }
 
     @Override
-    public Observable<Boolean> deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
-        return Observable.create(subscriber -> {
-            mBriteDatabase.delete(MemberExpenseBookContract.TABLE_NAME, MemberExpenseBookContract.MEMBER_KEY + " = ?"
-                            + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " = ?", String.valueOf(memberId),
-                    String.valueOf(expenseBookId));
-            subscriber.onNext(true);
-            subscriber.onCompleted();
-        });
+    public boolean deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
+        int res = mBriteDatabase.delete(MemberExpenseBookContract.TABLE_NAME, MemberExpenseBookContract.MEMBER_KEY + " = ?"
+                        + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " = ?", String.valueOf(memberId),
+                String.valueOf(expenseBookId));
+        return res > 0;
     }
 }

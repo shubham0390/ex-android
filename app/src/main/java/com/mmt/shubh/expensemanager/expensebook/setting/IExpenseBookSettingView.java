@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.expensebook.setting;
 
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.mvp.MVPView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPView;
 
 /**
  * Created by Subham Tyagi,

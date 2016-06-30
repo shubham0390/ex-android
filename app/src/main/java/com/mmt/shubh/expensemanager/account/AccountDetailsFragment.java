@@ -14,14 +14,15 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.utils.MyYAxisValueFormatter;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
 
 import org.parceler.Parcels;
 
@@ -41,8 +42,7 @@ import timber.log.Timber;
  * 10:38 PM
  * TODO:Add class comment.
  */
-public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailView, AccountDetailPresenter>
-        implements IAccountDetailView {
+public class AccountDetailsFragment extends MVPFragment<AccountDetailPresenter> implements IAccountDetailView {
 
     @Bind(R.id.expense_list)
     ExpenseListView mExpenseListView;
@@ -169,11 +169,7 @@ public class AccountDetailsFragment extends SupportMVPFragment<IAccountDetailVie
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        DaggerAccountActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .moduleAccountDetailFragment(new ModuleAccountDetailFragment())
-                .build()
-                .inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

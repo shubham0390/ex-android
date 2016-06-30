@@ -1,8 +1,8 @@
 package com.mmt.shubh.expensemanager.disribution;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 
 /**
  * Created by Subham Tyagi,
@@ -10,17 +10,12 @@ import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
  * 4:53 PM
  * TODO:Add class comment.
  */
-public class ExpenseDistributionFragment extends SupportMVPFragment<MVPLCEView<DistributionModel>, DistributionPresenter> implements MVPLCEView<DistributionModel> {
+public class ExpenseDistributionFragment extends MVPFragment<DistributionPresenter> implements MVPLCEView<DistributionModel> {
 
 
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_distribution;
-    }
-
-    @Override
-    protected DistributionPresenter getPresenter() {
-        return new DistributionPresenter();
     }
 
     @Override

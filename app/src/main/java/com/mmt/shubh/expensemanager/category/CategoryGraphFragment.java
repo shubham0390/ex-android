@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.category;
 
-import com.mmt.shubh.expensemanager.mvp.MVPFragment;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 /**
  * Created by Subham Tyagi,
@@ -9,12 +9,7 @@ import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
  * 1:29 PM
  * TODO:Add class comment.
  */
-public class CategoryGraphFragment extends MVPFragment<MVPLCEView<CategoryModel>, CategoryGraphFragmentPresenter> implements MVPLCEView<CategoryModel> {
-
-    @Override
-    public String getTitle() {
-        return null;
-    }
+public class CategoryGraphFragment extends MVPFragment<CategoryGraphFragmentPresenter> implements MVPLCEView<CategoryModel> {
 
     @Override
     public void showLoading(boolean pullToRefresh) {

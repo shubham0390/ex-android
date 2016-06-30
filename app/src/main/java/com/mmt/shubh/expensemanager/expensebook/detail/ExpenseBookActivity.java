@@ -1,16 +1,24 @@
 package com.mmt.shubh.expensemanager.expensebook.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity;
+import com.mmt.shubh.expensemanager.expensebook.add.ExpenseBookAddUpdateActivity;
+import com.mmt.shubh.expensemanager.expensebook.setting.ExpenseBookSettingFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.utils.Constants;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -18,8 +26,11 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import icepick.State;
 
 public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<List<ExpenseBook>> {
+
+    private static final String TAG_SETTING_FRAGMENT = "settingFragment";
 
     @Inject
     ExpenseBookActivityPresenter mPresenter;
@@ -32,6 +43,14 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
 
     ExpenseBookFragmentAdapter adapter;
 
+    ExpenseBook mCurrentExpenseBook;
+
+    @State
+    boolean isSettingFragmentInstalled;
+
+    @State
+    int mCurrentPosition;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +61,35 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
         mPresenter.attachView(this);
         setToolbar();
         setTabs();
+        if (isSettingFragmentInstalled) {
+            installSettingFragment();
+        }
     }
+
 
     private void setTabs() {
         mViewPager.setAdapter(adapter);
+        mViewPager.addOnPageChangeListener(onPageChangeListener);
 
     }
+
+    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            mCurrentExpenseBook = adapter.getDataAtPosition(position);
+            mCurrentPosition = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -57,6 +99,7 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
 
 
     private void setToolbar() {
+        setTitle(R.string.expense_book);
         toggleHomeBackButton(true);
     }
 
@@ -67,29 +110,31 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.action_settings:
-                //installSettingFragment();
-                break;
-           /* case R.id.edit:
-                Utilities.hideKeyboard(this);
+            case R.id.action_add_expensebook:
                 Intent intent = new Intent(this, ExpenseBookAddUpdateActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
-                intent.putExtras(bundle);
-                startActivity(intent);*/
+                startActivity(intent);
+                return true;
+            default:
+                installSettingFragment();
+                return false;
         }
-        return true;
+    }
+
+    private void installSettingFragment() {
+        Fragment settingFragment = new ExpenseBookSettingFragment();
+        Bundle expenseBookInfo = new Bundle();
+        expenseBookInfo.putParcelable(Constants.EXTRA_EXPENSE_BOOK, Parcels.wrap(adapter.getDataAtPosition(mCurrentPosition)));
+        settingFragment.setArguments(expenseBookInfo);
+        isSettingFragmentInstalled = true;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.settings, settingFragment, TAG_SETTING_FRAGMENT)
+                .commit();
     }
 
     @Override
@@ -100,14 +145,6 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
                 .build();
         component.inject(this);
     }
-
-   /* private void installSettingFragment() {
-        ExpenseBookSettingFragment fragment = new ExpenseBookSettingFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(mExpenseBook));
-        fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.settings, fragment).commit();
-    }*/
 
     @Override
     public void showLoading(boolean pullToRefresh) {
@@ -130,10 +167,25 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
         mViewPager.setAdapter(adapter);
         adapter.addData(data);
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setCurrentItem(mCurrentPosition, true);
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         mPresenter.loadExpenseBookList();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (isSettingFragmentInstalled) {
+            isSettingFragmentInstalled = false;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment fragment = fragmentManager.findFragmentByTag(TAG_SETTING_FRAGMENT);
+            if (fragment != null)
+                fragmentManager.beginTransaction().remove(fragment).commit();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

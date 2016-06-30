@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_titile_delete_member">Delete Member ?</string>
+    <string name="delete">Delete</string>
+    <string name="message_removing_member">Removing member...</string>
+    <string name="remove">Remove</string>
+    <string name="error_message_member_cannot_be_removed">Member share some expense in this expense book</string>
+</resources>

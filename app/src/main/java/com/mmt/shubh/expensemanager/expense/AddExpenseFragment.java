@@ -17,15 +17,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Expense;
-import com.mmt.shubh.expensemanager.mvp.SupportMVPFragment;
-import com.mmt.shubh.expensemanager.ui.view.AutoResizeEditText;
-import com.mmt.shubh.expensemanager.ui.view.BottomSheet;
-import com.mmt.shubh.expensemanager.ui.view.BottomSheetAdapter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.core.view.AutoResizeEditText;
+import com.mmt.shubh.expensemanager.core.view.BottomSheet;
+import com.mmt.shubh.expensemanager.core.view.BottomSheetAdapter;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
 
 import org.parceler.Parcels;
@@ -40,7 +40,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddExpenseFragment extends SupportMVPFragment<AddExpenseView, AddExpensePresenter> implements AddExpenseView {
+public class AddExpenseFragment extends MVPFragment<AddExpensePresenter> implements AddExpenseView {
 
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;

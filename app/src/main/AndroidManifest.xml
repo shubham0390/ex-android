@@ -141,6 +141,9 @@
                 android:value=".home.HomeActivity"/>
         </activity>
         <activity android:name=".home.SummaryActivity"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9236b3dbe65454fd800e81052534fc2277c866ca" />
     </application>
 
 </manifest>

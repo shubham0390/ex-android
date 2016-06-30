@@ -1,5 +1,7 @@
 package com.mmt.shubh.expensemanager.member;
 
+import android.database.sqlite.SQLiteConstraintException;
+
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
@@ -39,7 +41,11 @@ public class MemberModel {
 
 
     public Observable<Member> getMemberDetails(final long id) {
-        return mMemberDataAdapter.get(id);
+        return Observable.create(subscriber -> {
+            subscriber.onNext(mMemberDataAdapter.get(id));
+            subscriber.onCompleted();
+        });
+
     }
 
     public Observable<List<Member>> getAllMembers() {
@@ -64,7 +70,16 @@ public class MemberModel {
     }
 
     public Observable<Boolean> deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
-        return mMemberDataAdapter.deleteMemberFromExpenseBook(memberId, expenseBookId);
+        return Observable.create(subscriber -> {
+            boolean expenseExists = mExpenseDataAdapter.isAnyExpenseExists(memberId, expenseBookId);
+            if (expenseExists) {
+                subscriber.onError(new SQLiteConstraintException(" Data is referenced in another table"));
+            } else {
+                boolean res = mMemberDataAdapter.deleteMemberFromExpenseBook(memberId, expenseBookId);
+                subscriber.onNext(res);
+                subscriber.onCompleted();
+            }
+        });
     }
 
     public Observable<List<MemberExpense>> getMemberExpenses(long id, long id2) {

@@ -1,8 +1,7 @@
 package com.mmt.shubh.expensemanager.category;
 
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.api.CategoryDataAdapter;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -10,8 +9,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by subhamtyagi on 4/7/16.
  */
-public class CategoryListFragmentPresenter extends MVPAbstractPresenter<ICategoryListView>
-        implements MVPPresenter<ICategoryListView> {
+public class CategoryListFragmentPresenter extends BasePresenter<ICategoryListView> {
 
     private CategoryDataAdapter mCategoryDataAdapter;
 

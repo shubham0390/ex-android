@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.common.eventbus.EventBus;
 import com.mmt.shubh.expensemanager.EventManager;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
+import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,9 +176,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             }
             if (mDeleteImageView != null && canDelete()) {
                 mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
-                mDeleteImageView.setOnClickListener(v -> {
-                    EventManager.getAnyBus().post(new MemberDeleteEvent());
-                });
+                mDeleteImageView.setOnClickListener(v -> EventManager.getAnyBus()
+                        .post(new MemberDeleteEvent(member.getId())));
             }
         }
 

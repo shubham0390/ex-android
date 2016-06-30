@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 
 import java.util.ArrayList;
@@ -47,5 +47,10 @@ public class ExpenseBookFragmentAdapter extends FragmentStatePagerAdapter {
     public void addData(List<ExpenseBook> data) {
         mExpenseBooks.addAll(data);
         notifyDataSetChanged();
+    }
+
+
+    public ExpenseBook getDataAtPosition(int position) {
+        return mExpenseBooks.get(position);
     }
 }

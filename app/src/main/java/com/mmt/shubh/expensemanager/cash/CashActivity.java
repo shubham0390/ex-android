@@ -5,17 +5,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
-import com.mmt.shubh.expensemanager.cash.CashActivityComponent;
-import com.mmt.shubh.expensemanager.cash.CashActivityModule;
-import com.mmt.shubh.expensemanager.mvp.MVPActivity;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity2;
+import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
+import com.mmt.shubh.expensemanager.core.mvp.MVPActivity;
+import com.mmt.shubh.expensemanager.core.mvp.MVPActivity2;
 
-public class CashActivity extends MVPActivity {
+public class CashActivity extends ToolBarActivity2<CashListFragmentPresenter> {
+
+    @Override
+    protected void injectDependencies(ConfigPersistentComponent component) {
+        component.activityComponent(new ActivityModule(this)).inject(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cash);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_cash;
     }
 
     @Override
@@ -39,11 +50,4 @@ public class CashActivity extends MVPActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        CashActivityComponent component = DaggerCashActivityComponent.builder()
-                .cashActivityModule(new CashActivityModule())
-                .mainComponent(mainComponent).build();
-        component.inject(this);
-    }
 }

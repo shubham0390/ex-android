@@ -1,7 +1,7 @@
 package com.mmt.shubh.expensemanager.expensebook.detail;
 
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
 import java.util.Map;

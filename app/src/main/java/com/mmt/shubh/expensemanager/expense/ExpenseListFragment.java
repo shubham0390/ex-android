@@ -21,13 +21,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.expense.adapters.ExpenseListAdapter;
 import com.mmt.shubh.expensemanager.home.DaggerSummaryActivityComponent;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
-import com.mmt.shubh.expensemanager.mvp.lce.SupportMVPLCEFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewState;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewStateImpl;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
 
 import java.util.List;

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -135,13 +134,13 @@ public class ExpenseBookModel {
     public Observable<ExpenseBook> addExpenseBook(ExpenseBook expenseBook, boolean isUpdate) {
         Logger.debug(TAG, "entered execute");
 
-        if (isUpdate) {
+       /* if (isUpdate) {
             Logger.debug(TAG, "Updating expense book");
             return mExpenseBookDataAdapter.update(expenseBook);
-        } else {
-            Logger.debug(TAG, "Creating new expense book");
-            return saveExpenseBookDetails(expenseBook);
-        }
+        } else {*/
+        Logger.debug(TAG, "Creating new expense book");
+        return saveExpenseBookDetails(expenseBook);
+        //    }
     }
 
     /**
@@ -151,41 +150,33 @@ public class ExpenseBookModel {
      */
     private Observable<ExpenseBook> saveExpenseBookDetails(ExpenseBook mExpenseBook) {
         Logger.debug(TAG, "entered saveExpenseBookDetails()");
+        return Observable.create(subscriber -> {
+            mExpenseBook.setType("public");
 
-        mExpenseBook.setType("public");
+            UserSettings userSettings = UserSettings.getInstance();
+            Member member = mMemberDataAdapter.get(userSettings.getUserInfo().getMemberKey());
 
-        UserSettings userSettings = UserSettings.getInstance();
-        mMemberDataAdapter.get(userSettings.getUserInfo().getMemberKey())
-                .observeOn(Schedulers.immediate())
-                .subscribeOn(Schedulers.immediate())
-                .subscribe(d -> {
-                    mExpenseBook.setOwner(d.getId());
-                });
+            mExpenseBook.setOwner(member.getId());
 
 
-        mExpenseBook.setCreationTime(System.currentTimeMillis());
-        Logger.debug(TAG, "exiting saveExpenseBookDetails()");
-        return mExpenseBookDataAdapter.create(mExpenseBook);
+            mExpenseBook.setCreationTime(System.currentTimeMillis());
+            Logger.debug(TAG, "exiting saveExpenseBookDetails()");
+            mExpenseBookDataAdapter.create(mExpenseBook);
+            subscriber.onNext(mExpenseBook);
+            subscriber.onCompleted();
+        });
 
     }
 
-    public Observable<Long> delete(long id) {
-        return mExpenseBookDataAdapter.delete(id);
-    }
 
     public Observable<List<ExpenseBook>> getAll() {
-        return mExpenseBookDataAdapter.getAll();/*.map(expenseBooks -> {
-            for (ExpenseBook expenseBook : expenseBooks) {
-                mMemberDataAdapter.getAllMemberByExpenseBookId(expenseBook.getId())
-                        .subscribeOn(Schedulers.immediate())
-                        .observeOn(Schedulers.immediate())
-                        .subscribe(d -> expenseBook.setMemberList(d));
-            }
-            return expenseBooks;
-        });*/
+        return mExpenseBookDataAdapter.getAll();
     }
 
     public Observable<Member> loadExpenseBookOwner(long ownerId) {
-        return mMemberDataAdapter.get(ownerId);
+        return Observable.create(subscriber -> {
+            subscriber.onNext(mMemberDataAdapter.get(ownerId));
+            subscriber.onCompleted();
+        });
     }
 }

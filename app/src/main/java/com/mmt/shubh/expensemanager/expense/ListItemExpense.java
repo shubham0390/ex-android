@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.ui.view.CircleImageView;
+import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 
 
 public class ListItemExpense extends LinearLayout {

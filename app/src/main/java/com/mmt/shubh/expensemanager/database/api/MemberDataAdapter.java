@@ -11,7 +11,9 @@ import rx.Observable;
  */
 public interface MemberDataAdapter extends IDataAdapter<Member> {
 
+
+
     Observable<List<Member>> getAllMemberByExpenseBookId(long expenseBookId);
 
-    Observable<Boolean> deleteMemberFromExpenseBook(long memberId, long expenseBookId);
+    boolean deleteMemberFromExpenseBook(long memberId, long expenseBookId);
 }

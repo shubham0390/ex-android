@@ -3,11 +3,11 @@ package com.mmt.shubh.expensemanager.expensebook.add;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import org.parceler.Parcels;
 
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * 5:14 PM
  * TODO:Add class comment.
  */
-public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseBookFragmentView>
+public class ExpenseBookFragmentPresenter extends BasePresenter<IExpenseBookFragmentView>
         implements MVPPresenter<IExpenseBookFragmentView> {
 
     ExpenseBookModel mExpenseBookModel;
@@ -55,7 +55,7 @@ public class ExpenseBookFragmentPresenter extends MVPAbstractPresenter<IExpenseB
                         getView().onExpenseBookUpdate();
                     else {
                         Bundle expenseBookInfo = new Bundle();
-                        expenseBookInfo.putParcelable(Constants.KEY_EXPENSE_BOOK, Parcels.wrap(d));
+                        expenseBookInfo.putParcelable(Constants.EXTRA_EXPENSE_BOOK, Parcels.wrap(d));
                         getView().addMemberFragment(expenseBookInfo);
                     }
                 }, e -> getView().showError(e.getMessage()));

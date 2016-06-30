@@ -1,24 +1,33 @@
 package com.mmt.shubh.expensemanager.member;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.expensebook.detail.DaggerExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.expensebook.detail.ExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewState;
-import com.mmt.shubh.expensemanager.mvp.lce.LCEViewStateImpl;
-import com.mmt.shubh.expensemanager.mvp.lce.MVPLCEView;
-import com.mmt.shubh.expensemanager.mvp.lce.SupportMVPLCEFragment;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewState;
+import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewStateImpl;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
+import com.mmt.shubh.expensemanager.core.mvp.lce.SupportMVPLCEFragment;
 import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.squareup.otto.Subscribe;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import static butterknife.ButterKnife.findById;
 
 /**
  * Created by Subham Tyagi,
@@ -27,16 +36,19 @@ import java.util.List;
  * TODO:Add class comment.
  */
 public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, List<Member>, MVPLCEView<List<Member>>,
-        MemberListFragmentPresenter> implements MemberListAdapterCallback {
+        MemberListFragmentPresenter> {
 
     public static final int TYPE_EXPENSE_BOOK = 1;
     public static final int TYPE_MEMBER = 2;
-    List<Member> mMemberList;
+    private List<Member> mMemberList;
     private MemberAdapter mListAdapter;
     private boolean mIsMemberDeletable;
     private Bundle mArguments;
     private int mType = 1;
     private long mExpenseBookId;
+    private TextView mDailogMessageTextView;
+    private Button mRemoveButton;
+    private Button mCancelButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,14 +84,6 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
             onMemberItemClick(position);
             return true;
         });
-        mContentView.setOnItemLongClickListener(((parent, view, position, id) -> {
-            MemberListFragment.this.deleteMember(id);
-            return true;
-        }));
-    }
-
-    private void deleteMember(long id) {
-        mPresenter.deleteMember(id);
     }
 
     private void onMemberItemClick(int position) {
@@ -133,8 +137,36 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
         component.inject(this);
     }
 
+    @Subscribe
+    public void onMemberDeleteEvent(MemberDeleteEvent event) {
+        AlertDialog alertDialog = null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.dialog_titile_delete_member);
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.setPositiveButton(R.string.delete, (dialog, which) -> {
+            mDailogMessageTextView.setText(R.string.message_removing_member);
+            mRemoveButton.setVisibility(View.GONE);
+            mCancelButton.setVisibility(View.GONE);
+            mPresenter.deleteMemberFromExpenseBook(event.mMemberId, mExpenseBookId);
+
+        });
+        alertDialog = builder.create();
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.setContentView(R.layout.member_delete_dialog);
+        mDailogMessageTextView = findById(alertDialog, R.id.message);
+        mRemoveButton = findById(alertDialog, R.id.removeMemberButton);
+        mCancelButton = findById(alertDialog, R.id.cancelButton);
+        alertDialog.show();
+    }
+
     @Override
-    public void onMemberDelete(long memberId, long expenseBookId) {
-        mPresenter.deleteMemberFromExpenseBook(memberId, expenseBookId);
+    public void showError(Throwable e, boolean pullToRefresh) {
+        if (e instanceof SQLiteConstraintException) {
+            mDailogMessageTextView.setText(R.string.error_message_member_cannot_be_removed);
+        } else {
+            super.showError(e, pullToRefresh);
+        }
     }
 }

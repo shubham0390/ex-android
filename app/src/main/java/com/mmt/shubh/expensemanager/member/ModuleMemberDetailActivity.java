@@ -1,6 +1,6 @@
 package com.mmt.shubh.expensemanager.member;
 
-import com.mmt.shubh.expensemanager.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;

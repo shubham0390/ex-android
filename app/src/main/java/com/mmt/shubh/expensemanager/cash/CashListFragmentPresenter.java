@@ -6,8 +6,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 
-import com.mmt.shubh.expensemanager.mvp.MVPAbstractPresenter;
-import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 /**
  * Created by Subham Tyagi,
@@ -15,8 +16,9 @@ import com.mmt.shubh.expensemanager.mvp.MVPPresenter;
  * 1:04 PM
  * TODO:Add class comment.
  */
-public class CashListFragmentPresenter extends MVPAbstractPresenter<ICashListFragmentView>
-        implements MVPPresenter<ICashListFragmentView>, LoaderManager.LoaderCallbacks<Object> {
+@ActivityScope
+public class CashListFragmentPresenter extends BasePresenter<MVPLCEView>
+        implements LoaderManager.LoaderCallbacks<Object> {
 
 
     private Context mContext;

@@ -7,19 +7,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.base.ToolBarActivity;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity2;
+import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
+import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.database.content.Account;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
-public class AccountActivity extends ToolBarActivity implements IAccountActivityView<List<Account>> {
+public class AccountActivity extends ToolBarActivity2<AccountActivityPresenter> implements MVPLCEView<List<Account>> {
 
     @Bind(R.id.tabLayout)
     TabLayout mTabLayout;
@@ -27,30 +26,26 @@ public class AccountActivity extends ToolBarActivity implements IAccountActivity
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
 
-    @Inject
-    AccountActivityPresenter mPresenter;
-
     AccountPagerAdapter mAccountPagerAdapter;
+
+    @Override
+    protected void injectDependencies(ConfigPersistentComponent component) {
+        component.activityComponent(new ActivityModule(this))
+                .inject(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_activity);
-        ButterKnife.bind(this);
-        initializeToolbar();
         toggleHomeBackButton(true);
-        setTitle(R.string.account);
+        setTitle(R.string.title_activity_account);
         mPresenter.attachView(this);
         mPresenter.loadAllAccounts();
     }
 
     @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        DaggerAccountActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .moduleAccountActivity(new ModuleAccountActivity())
-                .build()
-                .inject(this);
+    protected int getLayout() {
+        return R.layout.account_activity;
     }
 
     @Override

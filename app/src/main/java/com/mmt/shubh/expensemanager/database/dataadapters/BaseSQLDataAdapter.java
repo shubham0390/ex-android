@@ -1,186 +1,137 @@
-/*
- * Copyright (c) 2014. The MMT group Project
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Binder;
+import android.provider.BaseColumns;
 
-import com.mmt.shubh.expensemanager.database.DatabaseUtility;
-import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
-import com.mmt.shubh.expensemanager.database.provider.ProviderUnavailableException;
+import com.mmt.shubh.database.QueryBuilder;
+import com.mmt.shubh.database.Selection;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Subham Tyagi,
- * on 06/Sep/2015,
- * 5:49 PM
- * TODO:Add class comment.
- */
+import rx.Observable;
+
+
 public abstract class BaseSQLDataAdapter<T> {
 
+    protected BriteDatabase mBriteDatabase;
 
+    protected String mTableName;
 
-    // Newly created objects get this id
-    public static final int NOT_SAVED = -1;
-    // The id of the Content
-    public long mRecordId = NOT_SAVED;
-    // The base Uri that this piece of content came from
-    public Uri mBaseUri;
-
-    protected Context mContext;
-
-    public BaseSQLDataAdapter(Uri baseUri, Context context) {
-        mContext = context;
-        mBaseUri = baseUri;
+    public BaseSQLDataAdapter(String tableName, BriteDatabase briteDatabase) {
+        mTableName = tableName;
+        mBriteDatabase = briteDatabase;
     }
 
-    /**
-     * Restore a subclass of ExpenseContent from the database
-     *
-     * @param klass             the class to restore
-     * @param contentUri        the content uri of the ExpenseContent subclass
-     * @param contentProjection the content projection for the ExpenseContent subclass
-     * @param id                the unique id of the object
-     * @return the instantiated object
-     */
-    public T restoreContentWithId(Class<T> klass, Uri contentUri,
-                                  String[] contentProjection, long id) throws IllegalArgumentException {
-        long token = Binder.clearCallingIdentity();
-        Uri u = ContentUris.withAppendedId(contentUri, id);
-        Cursor c = mContext.getContentResolver().query(u, contentProjection, null, null, null);
-        if (c == null) throw new ProviderUnavailableException();
+    public abstract T parseCursor(Cursor cursor);
+
+    public abstract ContentValues toContentValues(T t);
+
+    protected abstract void setTaskId(T t, long id);
+
+
+    public List<ContentValues> toContentValues(List<T> list) {
+        List<ContentValues> contentValues = new ArrayList<>();
+        for (T t : list) {
+            contentValues.add(toContentValues(t));
+        }
+        return contentValues;
+    }
+
+    public T create(T t) {
+        long id = mBriteDatabase.insert(mTableName, toContentValues(t));
+        setTaskId(t, id);
+        return t;
+
+    }
+
+    public List<T> create(List<T> ts) {
+
+        BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
         try {
-            if (c.moveToFirst()) {
-                return getContent(c, klass);
-            } else {
-                return null;
+            for (T t : ts) {
+                long id = mBriteDatabase.insert(mTableName, toContentValues(t));
+                setTaskId(t, id);
             }
+            transaction.markSuccessful();
+
         } finally {
-            c.close();
-            Binder.restoreCallingIdentity(token);
+            transaction.close();
         }
+        return ts;
     }
 
-    /**
-     * Restore a subclass of ExpenseContent from the database
-     *
-     * @param klass             the class to restore
-     * @param contentUri        the content uri of the ExpenseContent subclass
-     * @param contentProjection the content projection for the ExpenseContent subclass
-     * @return the instantiated object
-     */
-    public List<T> restoreContent(Class<T> klass, Uri contentUri, String[] contentProjection) {
-        List<T> list = new ArrayList();
-        Cursor c = mContext.getContentResolver().query(contentUri, contentProjection, null, null, null);
-        if (c == null) throw new ProviderUnavailableException();
-        try {
-            while (c.moveToNext()) {
-                list.add(getContent(c, klass));
-            }
-        } finally {
-            c.close();
-        }
-        return list;
-    }
 
-    // The Content sub class must have a no-arg constructor
-    public T getContent(Cursor cursor, Class<T> klass) {
-        try {
-            T content = klass.newInstance();
-            restore(cursor, content);
-            return content;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+    public T update(T t) {
         return null;
     }
 
-    public int update(Uri baseUri, long id, ContentValues contentValues) {
-        return mContext.getContentResolver()
-                .update(ContentUris.withAppendedId(baseUri, id), contentValues, null, null);
+    public long delete(long id) {
+        Selection selection = new Selection(BaseColumns._ID, Selection.EQUAL, id);
+        return mBriteDatabase.delete(mTableName, selection.build());
     }
 
-    public int delete( Uri baseUri, long id) {
-        return mContext.getContentResolver()
-                .delete(ContentUris.withAppendedId(baseUri, id), null, null);
+
+    public int deleteAll() {
+        return mBriteDatabase.delete(mTableName, null);
     }
 
-    /**
-     * Generic count method that can be used for any ContentProvider
-     *
-     * @param uri           the Uri for the provider query
-     * @param selection     as with a query call
-     * @param selectionArgs as with a query call
-     * @return the number of items matching the query (or zero)
-     */
-    public int count(Uri uri, String selection, String[] selectionArgs) {
-        return DatabaseUtility.getFirstRowLong(mContext,
-                uri, BaseContract.COUNT_COLUMNS, selection, selectionArgs, null, 0, (long) 0).intValue();
+
+    public T get(long id) {
+        String s = "SELECT * FROM "
+                + mTableName
+                + " WHERE _id = " + id;
+        mBriteDatabase.createQuery(mTableName, s).map(query -> {
+            T t = null;
+            Cursor cursor = query.run();
+            try {
+                while (cursor.moveToNext()) {
+                    t = parseCursor(cursor);
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+            return t;
+        });
+        return null;
     }
 
-    /**
-     * Same as {@link BaseSQLDataAdapter#count(Uri)} (Context, Uri, String, String[])} without selection.
-     */
-    public int count(Uri uri) {
-        return count(uri, null, null);
+
+    public Observable<List<T>> getAll() {
+        QueryBuilder queryBuilder = new QueryBuilder();
+        queryBuilder.addFrom(mTableName)
+                .addProjection(null);
+        return mBriteDatabase.createQuery(mTableName, queryBuilder.build()).mapToList(this::parseCursor);
     }
 
-    static public Uri uriWithLimit(Uri uri, int limit) {
-        return uri.buildUpon().appendQueryParameter(BaseContract.PARAMETER_LIMIT,
-                Integer.toString(limit)).build();
+    public Observable<List<T>> getResultByColumn(String column, long value) {
+        return getResultByColumn(column, String.valueOf(value));
     }
 
-    // Write the Content into a ContentValues container
-    public abstract ContentValues toContentValues(T t);
-
-    // Read the Content from a ContentCursor
-    public abstract void restore(Cursor cursor, T t);
-
-
-    public boolean isSaved() {
-        return mRecordId != NOT_SAVED;
+    public Observable<List<T>> getResultByColumn(String column, String value) {
+        Selection selection = new Selection(column, Selection.EQUAL, value);
+        QueryBuilder queryBuilder = new QueryBuilder();
+        queryBuilder.addFrom(mTableName)
+                .addProjection(null).addSelection(selection);
+        return mBriteDatabase.createQuery(mTableName, queryBuilder.build()).mapToList(this::parseCursor);
     }
 
-    public Uri save(T t) {
-        /*if (isSaved()) {
-            throw new UnsupportedOperationException("Already saved");
-        }*/
-
-        Uri res = mContext.getContentResolver().insert(mBaseUri, toContentValues(t));
-        mRecordId = Long.parseLong(res.getLastPathSegment());
-        return res;
+    public Observable<T> getSingleResultByColumn(String column, long value) {
+        return getSingleResultByColumn(column, String.valueOf(value));
     }
 
-    public int update(ContentValues contentValues) {
-        if (!isSaved()) {
-            throw new UnsupportedOperationException();
-        }
-        return mContext.getContentResolver().update(mBaseUri, contentValues, null, null);
-    }
+    public Observable<T> getSingleResultByColumn(String column, String value) {
+        return Observable.create(subscriber -> {
 
-    public int delete() {
-        return mContext.getContentResolver().delete(mBaseUri, null, null);
+            String query = "SELECT * FROM " + mTableName + " WHERE " + column + " = " + value;
+            mBriteDatabase.createQuery(mTableName, query).map(query1 -> {
+                Cursor cursor = query1.run();
+                return parseCursor(cursor);
+            });
+        });
     }
-
 }

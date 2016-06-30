@@ -18,15 +18,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.mmt.shubh.expensemanager.Constants;
+import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
+import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.member.ContactPickerAdapter;
 import com.mmt.shubh.expensemanager.member.ContactsMetaData;
-import com.mmt.shubh.expensemanager.mvp.MVPFragment;
-import com.mmt.shubh.expensemanager.task.OnTaskCompleteListener;
-import com.mmt.shubh.expensemanager.task.TaskResult;
 
 import org.parceler.Parcels;
 
@@ -39,11 +37,10 @@ import timber.log.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpenseView, AddMemberPresenter>
-        implements SearchView.OnQueryTextListener, OnTaskCompleteListener, AddUpdateExpenseView {
+public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresenter>
+        implements SearchView.OnQueryTextListener, AddUpdateExpenseView {
 
     private static final int REQUEST_CONTACTS = 1;
-    private final String TAG = getClass().getSimpleName();
 
     @Bind((R.id.contacts_list))
     RecyclerView mContactsList;
@@ -65,7 +62,7 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpens
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.KEY_EXPENSE_BOOK));
+        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_EXPENSE_BOOK));
         setupRecyclerView();
     }
 
@@ -191,16 +188,7 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddUpdateExpens
         return filteredModelList;
     }
 
-    @Override
-    public void onTaskComplete(String action, TaskResult taskResult) {
-        // TODO: 9/18/2015 hide progress bar
-        getActivity().finish();
-    }
 
-    @Override
-    public String getTitle() {
-        return null;
-    }
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
