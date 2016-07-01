@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.database.api.exceptions;
 
+import com.mmt.shubh.expensemanager.database.api.IDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
 
 import com.mmt.shubh.expensemanager.database.api.DataAdapter;
@@ -14,10 +15,12 @@ import rx.Observable;
  * 3:30 PM
  * TODO:Add class comment.
  */
-public interface AccountDataAdapter extends DataAdapter<Account>{
+public interface AccountDataAdapter extends IDataAdapter<Account> {
     double getAccountBalance(long accountId);
 
     void updateAmount(long accountId, double balanceAmount);
 
     Observable<List<Account>> loadAllAccounts();
+
+    Observable<List<Account>> getAccountByMember(long memberId);
 }

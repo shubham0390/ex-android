@@ -22,6 +22,9 @@ import java.util.List;
 @Parcel(value = Parcel.Serialization.BEAN)
 public class ExpenseBook {
 
+    public static String TYPE_PERSONAL = "Private";
+    public static String TYPE_SHARED = "Shared";
+
     public String name;
     public String profileImagePath;
     public String description;
@@ -29,7 +32,10 @@ public class ExpenseBook {
     public long creationTime;
     public List<Member> memberList;
     private long id;
-    private Member owner;
+    private long mOwnerId;
+
+    private List<Member> members;
+
     public ExpenseBook() {
     }
 
@@ -81,12 +87,12 @@ public class ExpenseBook {
         this.memberList = memberList;
     }
 
-    public Member getOwner() {
-        return owner;
+    public long getOwnerId() {
+        return mOwnerId;
     }
 
-    public void setOwner(Member ownerId) {
-        owner = ownerId;
+    public void setOwner(long ownerId) {
+        this.mOwnerId = ownerId;
     }
 
     public long getCreationTime() {
@@ -97,5 +103,11 @@ public class ExpenseBook {
         this.creationTime = creationTime;
     }
 
+    public List<Member> getMembers() {
+        return members;
+    }
 
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 }

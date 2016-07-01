@@ -1,20 +1,15 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.api.TransactionDataAdapter;
-import com.mmt.shubh.expensemanager.database.content.Account;
 import com.mmt.shubh.expensemanager.database.content.Transaction;
-import com.mmt.shubh.expensemanager.database.content.contract.AccountContract;
 import com.mmt.shubh.expensemanager.database.content.contract.TransactionContract;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Subham Tyagi,
@@ -22,12 +17,24 @@ import javax.inject.Inject;
  * 5:33 PM
  * TODO:Add class comment.
  */
+@Singleton
 public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> implements TransactionDataAdapter,
         TransactionContract {
 
     @Inject
-    public TransactionSQLDataAdapter(Context context) {
-        super(TRANSACTION_URI, context);
+    public TransactionSQLDataAdapter(BriteDatabase briteDatabase) {
+        super(TABLE_NAME, briteDatabase);
+    }
+
+    @Override
+    public Transaction parseCursor(Cursor cursor) {
+        Transaction transaction = new Transaction();
+        transaction.setName(cursor.getString(cursor.getColumnIndex(TRANSACTION_NAME)));
+        transaction.setType(cursor.getString(cursor.getColumnIndex(TRANSACTION_TYPE)));
+        transaction.setAmount(cursor.getInt(cursor.getColumnIndex(TRANSACTION_AMOUNT)));
+        transaction.setDate(cursor.getLong(cursor.getColumnIndex(TRANSACTION_DATE)));
+        transaction.setAccountKey(cursor.getLong(cursor.getColumnIndex(ACCOUNT_KEY)));
+        return transaction;
     }
 
     @Override
@@ -37,71 +44,13 @@ public class TransactionSQLDataAdapter extends BaseSQLDataAdapter<Transaction> i
         values.put(TRANSACTION_AMOUNT, transaction.getAmount());
         values.put(TRANSACTION_DATE, transaction.getDate());
         values.put(TRANSACTION_TYPE, transaction.getType());
-        values.put(ACCOUNT_KEY,transaction.getAccountKey());
+        values.put(ACCOUNT_KEY, transaction.getAccountKey());
         return values;
     }
 
-    @Override
-    public void restore(Cursor cursor, Transaction transaction) {
-        transaction.setName(cursor.getString(cursor.getColumnIndex(TRANSACTION_NAME)));
-        transaction.setType(cursor.getString(cursor.getColumnIndex(TRANSACTION_TYPE)));
-        transaction.setAmount(cursor.getInt(cursor.getColumnIndex(TRANSACTION_AMOUNT)));
-        transaction.setDate(cursor.getLong(cursor.getColumnIndex(TRANSACTION_DATE)));
-        transaction.setAccountKey(cursor.getLong(cursor.getColumnIndex(ACCOUNT_KEY)));
-    }
 
     @Override
-    public long create(Transaction transaction) {
-        Uri uri = save(transaction);
-        List paths = uri.getPathSegments();
-        long id = Long.parseLong((String) paths.get(paths.size() - 1));
+    protected void setTaskId(Transaction transaction, long id) {
         transaction.setId(id);
-        return id;
-    }
-
-    @Override
-    public int update(Transaction transaction) {
-        return 0;
-    }
-
-    @Override
-    public int delete(Transaction transaction) {
-        return delete();
-    }
-
-    @Override
-    public int delete(long id) {
-        return 0;
-    }
-
-    @Override
-    public int deleteAll() {
-        return 0;
-    }
-
-    @Override
-    public Transaction get(long id) {
-        return restoreContentWithId(Transaction.class, TRANSACTION_URI, null, id);
-    }
-
-    @Override
-    public List<Transaction> getAll() {
-        String selection = ACCOUNT_KEY + " = (SELECT " + AccountContract._ID
-                + " FROM" + AccountContract.TABLE_NAME +
-                "WHERE " + AccountContract.ACCOUNT_TYPE + " = " + Account.TYPE_CASH + ")";
-        Cursor cursor = mContext.getContentResolver().query(TRANSACTION_URI, null, selection, null, null);
-
-        List<Transaction> transactionList = new ArrayList<>();
-        if (cursor != null)
-            try {
-                while (cursor.moveToNext()) {
-                    Transaction transaction = new Transaction();
-                    restore(cursor, transaction);
-                    transactionList.add(transaction);
-                }
-            } finally {
-                cursor.close();
-            }
-        return transactionList;
     }
 }

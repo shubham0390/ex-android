@@ -1,20 +1,21 @@
 package com.mmt.shubh.expensemanager.database.dataadapters;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
-import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.database.content.contract.BaseContract;
-import com.mmt.shubh.expensemanager.database.content.contract.ExpenseBookContract;
 import com.mmt.shubh.expensemanager.database.content.contract.MemberContract;
+import com.mmt.shubh.expensemanager.database.content.contract.MemberExpenseBookContract;
+import com.squareup.sqlbrite.BriteDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -22,11 +23,27 @@ import java.util.List;
  * 6:31 PM
  * TODO:Add class comment.
  */
+@Singleton
 public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements MemberDataAdapter, MemberContract {
 
+    @Inject
+    public MemberSQLDataAdapter(BriteDatabase briteDatabase) {
+        super(MemberContract.TABLE_NAME, briteDatabase);
+    }
 
-    public MemberSQLDataAdapter(Context context) {
-        super(MemberContract.MEMBER_URI, context);
+    @Override
+    public Member parseCursor(Cursor cursor) {
+        Member member = new Member();
+        member.setId(cursor.getLong(cursor.getColumnIndex(_ID)));
+        member.setMemberName(cursor.getString(cursor.getColumnIndex(MEMBER_NAME)));
+        member.setMemberEmail(cursor.getString(cursor.getColumnIndex(MEMBER_EMAIL)));
+        int profileUrlIndex = cursor.getColumnIndex(MEMBER_IMAGE_URI);
+        if (profileUrlIndex != -1)
+            member.setProfilePhotoUrl(cursor.getString(profileUrlIndex));
+        int coverPhotoIndex = cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL);
+        if (coverPhotoIndex != -1)
+            member.setCoverPhotoUrl(cursor.getString(coverPhotoIndex));
+        return member;
     }
 
     public ContentValues toContentValues(Member member) {
@@ -39,21 +56,9 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
         return values;
     }
 
-
-    public void restore(Cursor cursor, Member member) {
-        member.setId(cursor.getLong(cursor.getColumnIndex(_ID)));
-        member.setMemberName(cursor.getString(cursor.getColumnIndex(MEMBER_NAME)));
-        member.setMemberEmail(cursor.getString(cursor.getColumnIndex(MEMBER_EMAIL)));
-        int profileUrlIndex = cursor.getColumnIndex(MEMBER_IMAGE_URI);
-        if (profileUrlIndex != -1)
-            member.setProfilePhotoUrl(cursor.getString(profileUrlIndex));
-        int coverPhotoIndex = cursor.getColumnIndex(MEMBER_COVER_IMAGE_URL);
-        if (coverPhotoIndex != -1)
-            member.setCoverPhotoUrl(cursor.getString(coverPhotoIndex));
-    }
-
-    private ExpenseBook getExpenseBook(long aLong) {
-        return null;
+    @Override
+    protected void setTaskId(Member member, long id) {
+        member.setId(id);
     }
 
     /**
@@ -62,99 +67,36 @@ public class MemberSQLDataAdapter extends BaseSQLDataAdapter<Member> implements 
      * @return - true if Exists otherwise falls.
      */
     public boolean isExists(Member member) {
-
-        String SELECTION = MemberContract.MEMBER_EMAIL + "= ?";
-
-        Cursor cursor = null;
-        try {
-            cursor = mContext.getContentResolver().query(MEMBER_URI, BaseContract.ID_PROJECTION,
-                    SELECTION, new String[]{member.getMemberEmail()}, null);
-            if (cursor.getCount() > 0) {
-                return true;
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return false;
-    }
-
-
-    @Override
-    public long create(Member member) {
-        Uri uri = super.save(member);
-        List paths = uri.getPathSegments();
-        long id = Long.parseLong((String) paths.get(paths.size() - 1));
-        member.setId(id);
-        return id;
+        final boolean[] isExits = {false};
+        getSingleResultByColumn(MemberContract.MEMBER_EMAIL, member.getId())
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate()).subscribe(d -> {
+            isExits[0] = d != null;
+        });
+        return isExits[0];
     }
 
     @Override
-    public int update(Member member) {
-        return 0;
+    public Observable<List<Member>> getAllMemberByExpenseBookId(long expenseBookId) {
+
+        String query = "SELECT * FROM "
+                + MemberContract.TABLE_NAME
+                + " WHERE "
+                + MemberContract._ID
+                + " IN ( SELECT "
+                + MemberExpenseBookContract.MEMBER_KEY
+                + " FROM "
+                + MemberExpenseBookContract.TABLE_NAME
+                + " WHERE "
+                + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " = " + expenseBookId + ");";
+        return mBriteDatabase.createQuery(mTableName, query).mapToList(this::parseCursor);
     }
 
     @Override
-    public int delete(Member member) {
-        return 0;
-    }
-
-    @Override
-    public int delete(long id) {
-        return 0;
-    }
-
-    @Override
-    public int deleteAll() {
-        super.delete();
-        return 0;
-    }
-
-    @Override
-    public Member get(long id) {
-        return super.restoreContentWithId(Member.class, mBaseUri, null, id);
-    }
-
-    @Override
-    public List<Member> getAll() {
-        return restoreContent(Member.class, MemberContract.MEMBER_URI, null);
-    }
-
-    @Override
-    public long create(List<Member> list) {
-        List<Member> dbMemberList = getAll();
-        for (Member member : list) {
-            for (Member dbMember : dbMemberList)
-                if (!dbMember.equals(member)) {
-                    Uri uri = mContext.getContentResolver().insert(mBaseUri, toContentValues(member));
-                    List<String> paths = uri.getPathSegments();
-                    long id = Long.parseLong(paths.get(paths.size() - 1));
-                    member.setId(id);
-                } else {
-                    member.setId(dbMember.getId());
-                }
-        }
-        return 0;
-    }
-
-    @Override
-    public List<Member> getAllMemberByExpenseBookId(long expenseBookId) {
-        List<Member> accountList = new ArrayList<>();
-        Uri uri = ContentUris.withAppendedId(ExpenseBookContract.EXPENSE_BOOK_MEMBER_URI, expenseBookId);
-        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
-        if (cursor != null) {
-            try {
-                while (cursor.moveToNext()) {
-                    Member account = new Member();
-                    restore(cursor, account);
-                    accountList.add(account);
-                }
-            } finally {
-                cursor.close();
-            }
-
-        }
-        return accountList;
+    public boolean deleteMemberFromExpenseBook(long memberId, long expenseBookId) {
+        int res = mBriteDatabase.delete(MemberExpenseBookContract.TABLE_NAME, MemberExpenseBookContract.MEMBER_KEY + " = ?"
+                        + MemberExpenseBookContract.EXPENSE_BOOK_KEY + " = ?", String.valueOf(memberId),
+                String.valueOf(expenseBookId));
+        return res > 0;
     }
 }

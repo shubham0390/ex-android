@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    style="@style/ListItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_selector"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_medium"
+    >
+
+    <LinearLayout
+        style="@style/ListItemIcon"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.mmt.shubh.expensemanager.core.view.CircleImageView
+            android:id="@+id/list_image_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_black_24dp"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="8sp"
+            tool:text="Air/Railway Tickets"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        style="@style/ListItemText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/container1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/expense_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_micro"
+                android:layout_weight=".7"
+                android:ellipsize="marquee"
+                android:textSize="16sp"
+                tool:text="Expense Name12345676"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/expense_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tool:text="Rs. 10000"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/member_name"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:textSize="14sp"
+            tool:text="Yesterday"
+            />
+
+
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container1"
+            android:ellipsize="marquee"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="14sp"
+            tool:text="Paid By Subham T in ExpenseBook1"/>
+
+
+        <!--<android.support.v7.widget.AppCompatTextView
+            android:id="@+id/expense_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/member_name"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:background="@color/colorAccent"
+            android:drawableLeft="@drawable/ic_group_black_18dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_micro"
+            android:textSize="10sp"
+            tool:text="Expense Book"
+            />-->
+    </RelativeLayout>
+</LinearLayout>

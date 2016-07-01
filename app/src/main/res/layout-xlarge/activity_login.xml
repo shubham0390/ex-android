@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.mmt.shubh.expensemanager.ui.activity.LoginActivity"
+              tools:context=".login.LoginActivity"
     >
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:src="@drawable/coins"/>
 
 
-        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+        <com.mmt.shubh.expensemanager.core.view.ExTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:textSize="28sp"
             app:fontStyle="playfairDisplayBoldItalic"/>
 
-        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+        <com.mmt.shubh.expensemanager.core.view.ExTextView
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:src="@drawable/ic_play_arrow_white_48dp"
             />
 
-        <com.mmt.shubh.expensemanager.ui.view.ExTextView
+        <com.mmt.shubh.expensemanager.core.view.ExTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -68,7 +68,7 @@
 
     </LinearLayout>
 
-    <com.mmt.shubh.expensemanager.ui.view.ExTextView
+    <com.mmt.shubh.expensemanager.core.view.ExTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"

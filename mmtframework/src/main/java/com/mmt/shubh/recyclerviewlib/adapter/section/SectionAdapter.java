@@ -20,7 +20,6 @@ public abstract class SectionAdapter<D, VH extends SectionViewHolder> extends Re
 
     private static final int ITEM_VIEW_TYPE_SECTION = 0;
     private static final int ITEM_VIEW_TYPE_BASIC = 1;
-    private static final int ITEM_VIEW_TYPE_FOOTER = 2;
     private static final int VISIBLE_THRESHOLD = 10;
 
     protected List<D> mDataList = new ArrayList<>();
@@ -81,8 +80,6 @@ public abstract class SectionAdapter<D, VH extends SectionViewHolder> extends Re
                 return onCreateSectionViewHolder(parent, viewType);
             case ITEM_VIEW_TYPE_BASIC:
                 return onCreateItemViewHolder(parent, viewType);
-            case ITEM_VIEW_TYPE_FOOTER:
-                return onCreateFooterViewHolder(parent, viewType);
             default:
                 return null;
         }
@@ -98,14 +95,7 @@ public abstract class SectionAdapter<D, VH extends SectionViewHolder> extends Re
             case ITEM_VIEW_TYPE_BASIC:
                 onBindItemViewHolder((VH) holder, mAbsSecIndexer.getPositionForSection(position));
                 break;
-            case ITEM_VIEW_TYPE_FOOTER:
-                onBindFooterViewHolder(holder, mAbsSecIndexer.getPositionForSection(position));
-                break;
         }
-    }
-
-    protected void onBindFooterViewHolder(SectionViewHolder holder, int position) {
-
     }
 
     /**
@@ -125,7 +115,7 @@ public abstract class SectionAdapter<D, VH extends SectionViewHolder> extends Re
         return new SectionViewHolder(view);
     }
 
-    protected SectionViewHolder onCreateFooterViewHolder(ViewGroup parent, int viewType) {
+    protected SectionViewHolder onCreateFooterViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer, parent, false);
         return new ProgressViewHolder(view);
     }
@@ -139,8 +129,6 @@ public abstract class SectionAdapter<D, VH extends SectionViewHolder> extends Re
     public int getItemViewType(int position) {
         if (mAbsSecIndexer.isSectionPosition(position)) {
             return ITEM_VIEW_TYPE_SECTION;
-        } else if (mDataList.get(mAbsSecIndexer.getPositionForSection(position)) == null) {
-            return ITEM_VIEW_TYPE_FOOTER;
         } else {
             return ITEM_VIEW_TYPE_BASIC;
         }

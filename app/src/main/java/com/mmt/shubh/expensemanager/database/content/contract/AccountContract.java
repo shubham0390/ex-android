@@ -19,6 +19,7 @@ public interface AccountContract extends BaseContract {
     String ACCOUNT_BALANCE = "account_balance";
     String ACCOUNT_NUMBER = "account_number";
 
+
     Uri ACCOUNT_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(AUTHORITY)

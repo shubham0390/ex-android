@@ -2,11 +2,12 @@ package com.mmt.shubh.expensemanager.setup;
 
 import android.content.Context;
 
-import com.mmt.shubh.expensemanager.UserSettings;
-import com.mmt.shubh.expensemanager.database.content.Member;
+import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.MemberSQLDataAdapter;
 import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
+
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -16,11 +17,6 @@ import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter
  */
 public abstract class ProfileFetcher {
 
-    public abstract UserInfo fetchUserAccountDetails(Context context);
+    public abstract Observable<UserInfo> fetchUserAccountDetails();
 
-
-    public void update(Context context, UserInfo userInfo) {
-        UserInfoSQLDataAdapter sqlDataAdapter = new UserInfoSQLDataAdapter(context);
-        sqlDataAdapter.update(userInfo);
-    }
 }

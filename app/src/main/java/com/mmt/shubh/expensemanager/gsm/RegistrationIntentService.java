@@ -19,19 +19,14 @@ package com.mmt.shubh.expensemanager.gsm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.content.DeviceDetails;
-import com.mmt.shubh.expensemanager.service.ExpenseServiceManager;
+import com.mmt.shubh.expensemanager.service.ExpenseSyncManager;
 
 import java.io.IOException;
 
@@ -72,7 +67,7 @@ public class RegistrationIntentService extends IntentService {
      * @param account
      */
     private void sendRegistrationToServer(String token) {
-        ExpenseServiceManager expenseServiceManager = ExpenseServiceManager.getExpenseServiceManager(getApplicationContext());
+        ExpenseSyncManager expenseServiceManager = ExpenseSyncManager.getExpenseServiceManager(getApplicationContext());
         expenseServiceManager.registerDeviceWithServer();
     }
 

@@ -1,6 +1,6 @@
 package com.mmt.shubh.recyclerviewlib.adapter.section;
 
-public class BaseSection {
+public class BaseSection<T> {
 
     public int mFirstPosition;
     public int mSectionedIndex;
@@ -23,5 +23,9 @@ public class BaseSection {
     @Override
     public int hashCode() {
         return mSectionName.hashCode();
+    }
+
+    public void update(T section) {
+
     }
 }

@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".login.LoginActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/include_toolbar" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_below="@id/toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/coins" />
+
+
+    <LinearLayout
+        android:id="@+id/social_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/spacing_huge"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:orientation="vertical">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/plus_sign_in_button"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/facebook_login_button"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:background="#3b5998"
+            android:drawableLeft="@drawable/fb_f_logo__white"
+            android:drawablePadding="@dimen/spacing_micro"
+            android:gravity="center"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            android:textColor="@color/milky_white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

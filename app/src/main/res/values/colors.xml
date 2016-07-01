@@ -3,9 +3,9 @@
     <color name="milky_white">#FEFCFF</color>
     <color name="white">#ffffffff</color>
 
-    <color name="colorPrimary">#00695C</color>
-    <color name="colorPrimaryDark">#004D40</color>
-    <color name="colorAccent">#1DE9B6</color>
+    <color name="colorPrimary">#90afa3</color>
+    <color name="colorPrimaryDark">#6f9292</color>
+    <color name="colorAccent">#c9d3c9</color>
     <color name="colorControlHighlight">#00BFA5</color>
 
     <color name="colorPrimaryText">#212121</color>
@@ -16,5 +16,10 @@
 
     <color name="done_text_color_normal">#ff333333</color>
     <color name="done_text_color_disabled">#ffcccccc</color>
+
+    <color name="colorFAB1">#2196F3</color>
+    <color name="colorFAB2">#E040FB</color>
+    <color name="black">#FF000000</color>
+    <color name="color_boarder">@color/colorSecondaryText</color>
 
 </resources>

@@ -1,7 +1,5 @@
 package com.mmt.shubh.expensemanager.database.content.contract;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.provider.BaseColumns;
 
 public interface CategoryContract extends BaseColumns, BaseContract {
@@ -13,15 +11,4 @@ public interface CategoryContract extends BaseColumns, BaseContract {
     String CATEGORY_NAME = "category_name";
     String CATEGORY_TYPE = "category_type";
     String CATEGORY_IMAGE_NAME = "category_image";
-
-    public static final Uri CATEGORY_URI = new Uri.Builder()
-            .scheme(ContentResolver.SCHEME_CONTENT)
-            .authority(AUTHORITY)
-            .path(PATH_CATEGORY)
-            .build();
-
-    Uri CATEGORY_EXPENSE_URI = CATEGORY_URI.buildUpon()
-            .path(ExpenseContract.PATH_EXPENSE)
-            .build();
-
 }
