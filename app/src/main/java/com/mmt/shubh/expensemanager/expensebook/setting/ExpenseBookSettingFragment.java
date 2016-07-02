@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
 import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.expensebook.detail.DaggerExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.expensebook.detail.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.member.MemberListFragment;
-import com.mmt.shubh.expensemanager.settings.SettingFragmentModule;
 
 import org.parceler.Parcels;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,10 +26,10 @@ public class ExpenseBookSettingFragment extends MVPFragment<ExpenseBookSettingPr
 
     public static final String TAG = "settingFragment";
 
-    @Bind(R.id.created_by)
+    @BindView(R.id.created_by)
     TextView mCreatedByTextView;
 
-    @Bind(R.id.created_on)
+    @BindView(R.id.created_on)
     TextView mCreatedOnTextView;
 
 
@@ -66,10 +64,7 @@ public class ExpenseBookSettingFragment extends MVPFragment<ExpenseBookSettingPr
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        ExpenseBookDetailComponent component = DaggerExpenseBookDetailComponent.builder()
-                .settingFragmentModule(new SettingFragmentModule())
-                .mainComponent(mainComponent).build();
-        component.inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

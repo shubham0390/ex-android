@@ -65,13 +65,14 @@ public class SplashPresenter extends BasePresenter<SplashView> implements MVPPre
             getView().showLoginScreen();
         } else {
             UserSettings.getInstance().setUserInfo(userInfo);
-            mSplashModel.getPrivateExpenseBook()
+            getView().showHomeScreen();
+           /* mSplashModel.getPrivateExpenseBook()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(d -> {
                         UserSettings.getInstance().setPersonalExpenseBook(d.get(0));
                         getView().showHomeScreen();
-                    }, this::checkError);
+                    }, this::checkError);*/
         }
     }
 }

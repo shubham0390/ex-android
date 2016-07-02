@@ -9,10 +9,10 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.expense.ExpenseListView;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.mmt.shubh.expensemanager.expense.ListItemExpense;
-import com.mmt.shubh.recyclerviewlib.adapter.section.AbstractSectionIndexer;
-import com.mmt.shubh.recyclerviewlib.adapter.section.BaseSection;
-import com.mmt.shubh.recyclerviewlib.adapter.section.SectionAdapter;
-import com.mmt.shubh.recyclerviewlib.adapter.section.SectionViewHolder;
+import com.mmt.shubh.core.recyclerview.adapter.section.BaseSectionIndexer;
+import com.mmt.shubh.core.recyclerview.adapter.section.BaseSection;
+import com.mmt.shubh.core.recyclerview.adapter.section.SectionAdapter;
+import com.mmt.shubh.core.recyclerview.adapter.section.SectionViewHolder;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ExpenseListAdapter extends SectionAdapter<ExpenseListViewModel, Exp
         mMode = mode;
     }
 
-    private static AbstractSectionIndexer<ExpenseListViewModel> getSectionIndexer(int mode) {
+    private static BaseSectionIndexer<ExpenseListViewModel> getSectionIndexer(int mode) {
 
         switch (mode) {
             case ExpenseListView.MODE_ACCOUNT:

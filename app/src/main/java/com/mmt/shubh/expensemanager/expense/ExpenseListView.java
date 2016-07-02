@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.mmt.shubh.expensemanager.expense.adapters.ExpenseListAdapter;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 import java.util.List;
 

@@ -13,6 +13,7 @@ import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import icepick.Icepick;
 import timber.log.Timber;
 
@@ -46,7 +47,7 @@ public abstract class MVPFragment<P extends MVPPresenter> extends BaseFragment i
 
     @Inject
     protected P mPresenter;
-
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,15 +81,20 @@ public abstract class MVPFragment<P extends MVPPresenter> extends BaseFragment i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         mPresenter.attachView(this);
 
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
         mPresenter.detachView(getRetainInstance());
     }
 

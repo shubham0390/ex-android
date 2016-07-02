@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

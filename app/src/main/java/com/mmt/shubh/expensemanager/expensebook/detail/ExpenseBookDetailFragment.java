@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
 import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -14,7 +15,7 @@ import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -23,12 +24,12 @@ public class ExpenseBookDetailFragment extends MVPFragment<ExpenseBookDetailPres
 
     long mExpenseBookId;
 
-    @Bind(R.id.expense_list)
+    @BindView(R.id.expense_list)
     ExpenseListView expenseList;
 
-    @Bind(R.id.detail_view_pager)
+    @BindView(R.id.detail_view_pager)
     ViewPager mViewPager;
-    /*@Bind(R.id.barGraph)
+    /*@BindView(R.id.barGraph)
     ExpenseBarGraphView mExpenseBarGraphView;*/
 
     @Override
@@ -80,18 +81,13 @@ public class ExpenseBookDetailFragment extends MVPFragment<ExpenseBookDetailPres
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        ExpenseBookActivityComponent component = DaggerExpenseBookActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .expenseBookActivityModule(new ExpenseBookActivityModule())
-                .build();
-        component.inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
 

@@ -10,18 +10,17 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
+import com.mmt.shubh.expensemanager.member.detail.MemberDetailActivity;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.expensemanager.expensebook.detail.DaggerExpenseBookDetailComponent;
-import com.mmt.shubh.expensemanager.expensebook.detail.ExpenseBookDetailComponent;
 import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.core.mvp.lce.SupportMVPLCEFragment;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
-import com.squareup.otto.Subscribe;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 import org.parceler.Parcels;
 
@@ -131,13 +130,9 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        ExpenseBookDetailComponent component = DaggerExpenseBookDetailComponent.builder()
-                .memberListFragmentModule(new MemberListFragmentModule())
-                .mainComponent(mainComponent).build();
-        component.inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
-    @Subscribe
     public void onMemberDeleteEvent(MemberDeleteEvent event) {
         AlertDialog alertDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

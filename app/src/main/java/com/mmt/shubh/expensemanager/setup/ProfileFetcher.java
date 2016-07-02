@@ -1,13 +1,7 @@
 package com.mmt.shubh.expensemanager.setup;
 
-import android.content.Context;
-
-import com.mmt.shubh.expensemanager.database.api.UserInfoDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.UserInfo;
-import com.mmt.shubh.expensemanager.database.dataadapters.UserInfoSQLDataAdapter;
 
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -17,6 +11,6 @@ import rx.schedulers.Schedulers;
  */
 public abstract class ProfileFetcher {
 
-    public abstract Observable<UserInfo> fetchUserAccountDetails();
+    public abstract UserInfo fetchUserAccountDetails();
 
 }

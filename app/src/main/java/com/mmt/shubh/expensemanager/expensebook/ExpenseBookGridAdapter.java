@@ -17,7 +17,7 @@ import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -78,10 +78,10 @@ public class ExpenseBookGridAdapter extends RecyclerView.Adapter<ExpenseBookGrid
 
     class ExpenseBookViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.expense_book_title)
+        @BindView(R.id.expense_book_title)
         TextView TitleTextView;
 
-        @Bind(R.id.image)
+        @BindView(R.id.image)
         CircleImageView mProfileImage;
 
 

@@ -13,17 +13,17 @@ import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentCompon
 import com.mmt.shubh.expensemanager.expense.AddExpenseActivity;
 import com.mmt.shubh.expensemanager.expensebook.add.ExpenseBookAddUpdateActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class HomeActivity extends DrawerBaseActivity<HomePresenter> {
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
 
-    @Bind(R.id.add_expense_fab)
+    @BindView(R.id.add_expense_fab)
     FloatingActionButton mAddExpenseFab;
 
-    @Bind(R.id.add_expense_book_feb)
+    @BindView(R.id.add_expense_book_feb)
     FloatingActionButton mAddExpenseBookFab;
 
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.mmt.shubh.expensemanager.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -26,13 +26,13 @@ import butterknife.OnClick;
  */
 public class AddCategoryDialogFragment extends DialogFragment {
 
-    @Bind(R.id.category_image)
+    @BindView(R.id.category_image)
     ImageView mCategoryImage;
-    @Bind(R.id.category_name)
+    @BindView(R.id.category_name)
     EditText mCategoryName;
-    @Bind(R.id.ok_button)
+    @BindView(R.id.ok_button)
     TextView mOk;
-    @Bind(R.id.cancel_button)
+    @BindView(R.id.cancel_button)
     TextView mCancel;
 
     public AddCategoryDialogFragment() {

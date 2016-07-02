@@ -10,14 +10,14 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 
 public class SharedFragment extends MVPFragment<SharedExpenseFragmentPresenter>
         implements SharedExpenseView {
 
-    @Bind(R.id.action_expense_book)
+    @BindView(R.id.action_expense_book)
     TextView actionExpenseBook;
     private ExpenseBookListDialog mExpenseBookListDialog;
 

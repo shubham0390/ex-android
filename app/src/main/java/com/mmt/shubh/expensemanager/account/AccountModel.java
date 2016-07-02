@@ -1,10 +1,8 @@
 package com.mmt.shubh.expensemanager.account;
 
-import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
 import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.Account;
-import com.mmt.shubh.expensemanager.database.content.Expense;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-@ActivityScope
+@ConfigPersistent
 public class AccountModel {
 
     private AccountDataAdapter mAccountDataAdapter;

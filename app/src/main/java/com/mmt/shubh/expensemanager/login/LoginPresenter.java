@@ -5,6 +5,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.AnalyticsService;
 import com.google.android.gms.common.SignInButton;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
@@ -17,6 +18,9 @@ import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Subham Tyagi,
  * on 04/Sep/2015,
@@ -25,7 +29,7 @@ import javax.inject.Inject;
  */
 @ConfigPersistent
 public class LoginPresenter extends BasePresenter<ILoginActivityView>
-        implements MVPPresenter<ILoginActivityView>, SignUpCallback, ISignUpModel.SignUpModelCallback {
+        implements MVPPresenter<ILoginActivityView>, SignUpCallback {
 
     private final String TAG = getClass().getName();
 
@@ -39,7 +43,6 @@ public class LoginPresenter extends BasePresenter<ILoginActivityView>
     @Inject
     public LoginPresenter(ISignUpModel signUpModel) {
         mSignUpModel = signUpModel;
-        mSignUpModel.registerCallback(this);
 
     }
 
@@ -76,7 +79,15 @@ public class LoginPresenter extends BasePresenter<ILoginActivityView>
                 profileFetcher = new FacebookProfileFetcher();
                 break;
         }
-        mSignUpModel.registerUserWithSocial(profileFetcher);
+
+        mSignUpModel.registerUserWithSocial(profileFetcher)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(value -> {
+                    getView().navigateToHome();
+                }, error -> {
+                    onError(2);
+                });
     }
 
 
@@ -96,28 +107,12 @@ public class LoginPresenter extends BasePresenter<ILoginActivityView>
         getView().showProgress();
     }
 
-    @Override
-    public void onSuccess() {
-        getView().navigateToHome();
-    }
-
-    @Override
-    public void updateProgress(@StringRes int about) {
-
-    }
-
-    @Override
     public void onError(int statusCode) {
         if (statusCode == 2)
             getView().showError(R.string.no_internet_connection);
         else {
             getView().showError(R.string.login_failed);
         }
-    }
-
-    @Override
-    public void onMobileNoRequired() {
-        getView().showAskMobileScreen();
     }
 
     @Override

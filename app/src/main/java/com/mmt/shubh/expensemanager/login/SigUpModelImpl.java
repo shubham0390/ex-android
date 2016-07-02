@@ -14,6 +14,7 @@ import com.mmt.shubh.expensemanager.setup.SeedDataTask;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -31,7 +32,6 @@ public class SigUpModelImpl implements ISignUpModel {
     private ExpenseModel mExpenseModel;
     private ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private UserInfoDataAdapter mUserInfoDataAdapter;
-    private SignUpModelCallback mSignUpModelCallback;
     private MemberRestService mMemberRestService;
     private CategoryDataAdapter mCategoryDataAdapter;
 
@@ -48,30 +48,13 @@ public class SigUpModelImpl implements ISignUpModel {
     }
 
     @Override
-    public void registerCallback(SignUpModelCallback callback) {
-        mSignUpModelCallback = callback;
-    }
-
-    @Override
-    public void unregisterCallback() {
-        mSignUpModelCallback = null;
-    }
-
-    @Override
-    public void registerUserWithSocial(ProfileFetcher profileFetcher) {
-       /* SeedDataTask seedDataTask = new SeedDataTask(mExpenseModel, mExpenseBookDataAdapter, mCategoryDataAdapter);
-        profileFetcher.fetchUserAccountDetails()
-                .flatMap(userInfo1 -> mUserInfoDataAdapter.create(userInfo1))
-                //.flatMap(userInfo2 -> mMemberRestService.registerMember(createMember(userInfo2)))
-                .flatMap(userInfo -> seedDataTask.execute())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> {
-                    mSignUpModelCallback.onSuccess();
-                }, error -> {
-                    Timber.e(error.getMessage());
-                    mSignUpModelCallback.onError(123);
-                });*/
+    public Observable<Boolean> registerUserWithSocial(ProfileFetcher profileFetcher) {
+        return Observable.create(subscriber -> {
+            SeedDataTask seedDataTask = new SeedDataTask(mExpenseModel, mExpenseBookDataAdapter, mCategoryDataAdapter);
+            UserInfo userInfo = profileFetcher.fetchUserAccountDetails();
+            mUserInfoDataAdapter.create(userInfo);
+            seedDataTask.execute();
+        });
     }
 
     private Member createMember(UserInfo userInfo) {

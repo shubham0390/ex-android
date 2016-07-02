@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.mmt.shubh.expensemanager.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -49,10 +49,10 @@ public class BottomSheetAdapter<T> extends RecyclerView.Adapter<BottomSheetAdapt
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.text_view)
+        @BindView(R.id.text_view)
         TextView textView;
         @Nullable
-       // @Bind(R.id.image_view)
+       // @BindView(R.id.image_view)
         ImageView imageView;
 
         public ViewHolder(View itemView) {

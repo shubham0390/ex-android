@@ -4,7 +4,9 @@ import com.mmt.shubh.expensemanager.account.AccountActivity;
 import com.mmt.shubh.expensemanager.cash.CashActivity;
 import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
 import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.expensebook.detail.ExpenseBookActivity;
 import com.mmt.shubh.expensemanager.home.HomeActivity;
+import com.mmt.shubh.expensemanager.member.detail.MemberDetailActivity;
 import com.mmt.shubh.expensemanager.onboarding.SplashActivity;
 
 import dagger.Subcomponent;
@@ -20,4 +22,8 @@ public interface ActivityComponent {
     void inject(AccountActivity accountActivity);
 
     void inject(CashActivity cashActivity);
+
+    void inject(ExpenseBookActivity expenseBookActivity);
+
+    void inject(MemberDetailActivity memberDetailActivity);
 }

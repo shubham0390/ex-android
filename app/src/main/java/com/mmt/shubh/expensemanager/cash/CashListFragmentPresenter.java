@@ -7,8 +7,11 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 
 import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
+
+import javax.inject.Inject;
 
 /**
  * Created by Subham Tyagi,
@@ -16,14 +19,14 @@ import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
  * 1:04 PM
  * TODO:Add class comment.
  */
-@ActivityScope
+@ConfigPersistent
 public class CashListFragmentPresenter extends BasePresenter<MVPLCEView>
         implements LoaderManager.LoaderCallbacks<Object> {
 
 
     private Context mContext;
 
-
+    @Inject
     public CashListFragmentPresenter(Context context) {
         mContext = context;
     }

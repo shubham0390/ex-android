@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.expensebook.detail;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import com.mmt.shubh.expensemanager.expensebook.ExpenseBookModel;
@@ -19,6 +20,7 @@ import rx.schedulers.Schedulers;
  * 10:07 PM
  * TODO:Add class comment.
  */
+@ConfigPersistent
 public class ExpenseBookActivityPresenter extends BasePresenter<MVPLCEView<List<ExpenseBook>>>
         implements MVPPresenter<MVPLCEView<List<ExpenseBook>>> {
 
@@ -36,8 +38,6 @@ public class ExpenseBookActivityPresenter extends BasePresenter<MVPLCEView<List<
     @Override
     public void pause() {
     }
-
-
 
     public void loadExpenseBookList() {
         mExpenseBookModel.getAll()

@@ -33,7 +33,7 @@ import org.threeten.bp.LocalDateTime;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 
@@ -46,28 +46,28 @@ public class AddExpenseFragment extends MVPFragment<AddExpensePresenter> impleme
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
 
-    @Bind(R.id.expense_title)
+    @BindView(R.id.expense_title)
     EditText mTitleEditText;
 
-    @Bind(R.id.amount_edit_text)
+    @BindView(R.id.amount_edit_text)
     AutoResizeEditText mAmountEditText;
 
-    /*@Bind(R.id.keyboard)
+    /*@BindView(R.id.keyboard)
     KeyboardView keyboard;*/
 
-    @Bind(R.id.amount_edit_text_continer)
+    @BindView(R.id.amount_edit_text_continer)
     LinearLayout mContainer;
 
-    @Bind(R.id.action_date)
+    @BindView(R.id.action_date)
     Button mActionDate;
 
-    @Bind(R.id.action_receipt)
+    @BindView(R.id.action_receipt)
     Button mActionReceipt;
 
-    @Bind(R.id.action_comment)
+    @BindView(R.id.action_comment)
     Button mActionComment;
 
-    @Bind(R.id.bill_bottom_sheet)
+    @BindView(R.id.bill_bottom_sheet)
     BottomSheet mBottomSheet;
 
     private Expense mExpense;

@@ -1,6 +1,7 @@
 package com.mmt.shubh.expensemanager.expensebook.detail;
 
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.database.exception.EmptyDataException;
 import com.mmt.shubh.expensemanager.expense.ExpenseFilter;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
@@ -20,7 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-
+@ConfigPersistent
 public class ExpenseBookDetailPresenter extends BasePresenter<ExpenseBookDetailView> implements
         MVPPresenter<ExpenseBookDetailView> {
 

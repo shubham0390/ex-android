@@ -2,6 +2,7 @@ package com.mmt.shubh.expensemanager.member;
 
 import android.database.sqlite.SQLiteConstraintException;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
@@ -22,6 +23,7 @@ import rx.Observable;
  * 8:40 AM
  * TODO:Add class comment.
  */
+@ConfigPersistent
 public class MemberModel {
 
 

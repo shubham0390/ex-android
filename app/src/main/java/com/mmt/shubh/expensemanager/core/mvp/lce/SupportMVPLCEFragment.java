@@ -29,7 +29,7 @@ import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -59,20 +59,19 @@ import butterknife.OnClick;
 public abstract class SupportMVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>, P extends MVPPresenter<V>>
         extends MVPFragment<P> implements MVPLCEView<M> {
 
-    @Bind(R.id.loadingView)
+    @BindView(R.id.loadingView)
     protected View mLoadingView;
 
-    @Bind(R.id.contentView)
+    @BindView(R.id.contentView)
     protected CV mContentView;
 
-    @Bind(R.id.errorView)
+    @BindView(R.id.errorView)
     protected TextView mErrorView;
 
     /**
      * The viewstate will be instantiated by calling {@link #createViewState()} in {@link
      * #onViewCreated(View, Bundle)}. Don't instantiate it by hand.
      */
-    @Inject
     protected LCEViewState<M, V> mViewState;
 
     /**

@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              android:orientation="vertical">
 
-    <com.mmt.shubh.recyclerviewlib.ListRecyclerView
+    <com.mmt.shubh.core.recyclerview.ListRecyclerView
         android:id="@id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

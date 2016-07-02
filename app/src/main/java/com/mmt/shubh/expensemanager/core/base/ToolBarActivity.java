@@ -10,7 +10,7 @@ import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.mvp.MVPActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import timber.log.Timber;
 
 /**
@@ -23,7 +23,7 @@ public class ToolBarActivity extends MVPActivity {
 
     protected Tracker mTracker;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private boolean mToolbarInitialized;
 

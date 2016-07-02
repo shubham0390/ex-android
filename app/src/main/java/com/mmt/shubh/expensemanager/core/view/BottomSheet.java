@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 
 public class BottomSheet extends CardView {

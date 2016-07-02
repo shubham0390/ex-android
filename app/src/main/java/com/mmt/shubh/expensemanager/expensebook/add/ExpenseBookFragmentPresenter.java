@@ -3,6 +3,7 @@ package com.mmt.shubh.expensemanager.expensebook.add;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
@@ -11,6 +12,8 @@ import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
 import org.parceler.Parcels;
 
+import javax.inject.Inject;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -18,13 +21,14 @@ import rx.schedulers.Schedulers;
  * Created by Subham Tyagi,
  * on 11/Sep/2015,
  * 5:14 PM
- * TODO:Add class comment.
  */
+@ConfigPersistent
 public class ExpenseBookFragmentPresenter extends BasePresenter<IExpenseBookFragmentView>
         implements MVPPresenter<IExpenseBookFragmentView> {
 
-    ExpenseBookModel mExpenseBookModel;
+    private ExpenseBookModel mExpenseBookModel;
 
+    @Inject
     public ExpenseBookFragmentPresenter(ExpenseBookModel expenseBookModel) {
         mExpenseBookModel = expenseBookModel;
     }
@@ -35,11 +39,6 @@ public class ExpenseBookFragmentPresenter extends BasePresenter<IExpenseBookFrag
             getView().showEmptyError();
             return;
         }
-        // TODO: 2/29/16 Add a check for duplicate expense book via name
-        /*if (Validator.expenseNameExist(mContext, expenseName) && !isUpdate) {
-            getView().showDuplicateExpenseBook();
-            return;
-        }*/
 
         ExpenseBook expenseBook = new ExpenseBook();
 

@@ -28,7 +28,6 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
 
     private SignUpCallback mCallback;
 
-    private Activity mActivity;
 
     private View.OnClickListener mFacebookLoginButtonClickListener = new View.OnClickListener() {
         @Override
@@ -38,7 +37,6 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     };
 
     public FacebookLoginHelper(Activity applicationContext, SignUpCallback iSignUpPresenter) {
-        mActivity = applicationContext;
         mContext = applicationContext.getApplicationContext();
         mCallback = iSignUpPresenter;
     }
@@ -46,14 +44,11 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     public void setUp(Object object) {
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager, this);
-        ((TextView)object).setOnClickListener(v->{
-            signIn(mActivity);
-        });
+        ((TextView) object).setOnClickListener(mFacebookLoginButtonClickListener);
     }
 
     @Override
     public void signIn(Activity activity) {
-
         LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile", "user_friends"));
     }
 

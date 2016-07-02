@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.mmt.shubh.database.QueryBuilder;
-import com.mmt.shubh.database.Selection;
+import com.mmt.shubh.core.database.QueryBuilder;
+import com.mmt.shubh.core.database.Selection;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.ArrayList;

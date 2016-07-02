@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
 import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.R;
@@ -31,7 +32,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import timber.log.Timber;
 
 /**
@@ -42,7 +43,7 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
 
     private static final int REQUEST_CONTACTS = 1;
 
-    @Bind((R.id.contacts_list))
+    @BindView((R.id.contacts_list))
     RecyclerView mContactsList;
 
     private ContactPickerAdapter mContactPickerAdapter;
@@ -189,14 +190,9 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
     }
 
 
-
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        DaggerExpenseBookUpdateActivityComponent.builder()
-                //.moduleExpneseBookUpdate(new ModuleExpenseBookUpdate())
-                .mainComponent(mainComponent)
-                .build()
-                .inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.Account;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,19 +27,19 @@ import butterknife.OnClick;
 
 public class AddEditAccountFragment extends Fragment {
 
-    @Bind(R.id.account_name)
+    @BindView(R.id.account_name)
     EditText mAccountName;
 
-    @Bind(R.id.account_number)
+    @BindView(R.id.account_number)
     EditText mAccountNumber;
 
-    @Bind(R.id.account_balance)
+    @BindView(R.id.account_balance)
     EditText mAccountBalance;
 
-    @Bind(R.id.bank)
+    @BindView(R.id.bank)
     TextView mBank;
 
-    @Bind(R.id.account_type)
+    @BindView(R.id.account_type)
     Spinner mAccountType;
 
     @Nullable

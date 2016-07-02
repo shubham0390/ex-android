@@ -53,7 +53,6 @@ import timber.log.Timber;
 @ConfigPersistent
 public class SeedDataTask {
 
-    public static final String ACTION_SEED = "com.SeedData";
     ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private String LOG_TAG = getClass().getName();
     private ExpenseModel mExpenseModel;
@@ -66,17 +65,13 @@ public class SeedDataTask {
         mCategoryDataAdapter = categoryDataAdapter;
     }
 
-    public Observable<Boolean> execute() {
-        return Observable.create(subscriber -> {
-            createCategory(getJsonStringFromUrl("https://www.mockaroo.com/e1f31670/download?count=12&key=327934b0"));
-            addBankAccounts(getJsonStringFromUrl("https://www.mockaroo.com/cad293a0/download?count=5&key=327934b0"));
-            parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=10&key=327934b0"));
-            addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=5&key=327934b0"));
-            addExpenseBookMember(getJsonStringFromUrl("https://www.mockaroo.com/1d05f980/download?count=50&key=327934b0"));
-            createExpense(getJsonStringFromUrl("https://www.mockaroo.com/ca883930/download?count=300&key=327934b0"));
-            subscriber.onNext(true);
-            subscriber.onCompleted();
-        });
+    public void execute() {
+        createCategory(getJsonStringFromUrl("https://www.mockaroo.com/e1f31670/download?count=12&key=327934b0"));
+        addBankAccounts(getJsonStringFromUrl("https://www.mockaroo.com/cad293a0/download?count=5&key=327934b0"));
+        parseJsonMemberString(getJsonStringFromUrl("https://www.mockaroo.com/cad8aad0/download?count=10&key=327934b0"));
+        addExpenseBook(getJsonStringFromUrl("https://www.mockaroo.com/6831cac0/download?count=5&key=327934b0"));
+        addExpenseBookMember(getJsonStringFromUrl("https://www.mockaroo.com/1d05f980/download?count=50&key=327934b0"));
+        createExpense(getJsonStringFromUrl("https://www.mockaroo.com/ca883930/download?count=300&key=327934b0"));
 
     }
 

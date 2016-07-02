@@ -2,15 +2,15 @@ package com.mmt.shubh.expensemanager.expense.adapters;
 
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.mmt.shubh.expensemanager.utils.DateUtil;
-import com.mmt.shubh.recyclerviewlib.adapter.section.AbstractSectionIndexer;
-import com.mmt.shubh.recyclerviewlib.adapter.section.BaseSection;
+import com.mmt.shubh.core.recyclerview.adapter.section.BaseSectionIndexer;
+import com.mmt.shubh.core.recyclerview.adapter.section.BaseSection;
 
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
 
-public class ExpenseTimeSectionIndexer extends AbstractSectionIndexer<ExpenseListViewModel> {
+public class ExpenseTimeSectionIndexer extends BaseSectionIndexer<ExpenseListViewModel> {
 
     @Override
     protected BaseSection getSectionForData(ExpenseListViewModel data) {

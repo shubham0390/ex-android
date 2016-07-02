@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mmt.shubh.expensemanager.EventManager;
 import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.core.view.CircleImageView;
@@ -19,7 +18,8 @@ import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -132,18 +132,18 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
     public class MemberViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.member_name)
+        @BindView(R.id.member_name)
         TextView mMemberName;
 
         @Nullable
-        @Bind(R.id.member_email)
+        @BindView(R.id.member_email)
         TextView mMemberEmail;
 
-        @Bind(R.id.list_image_icon)
+        @BindView(R.id.list_image_icon)
         CircleImageView mProfileImage;
 
         @Nullable
-        @Bind(R.id.delete_member)
+        @BindView(R.id.delete_member)
         ImageView mDeleteImageView;
 
 
@@ -176,8 +176,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             }
             if (mDeleteImageView != null && canDelete()) {
                 mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
-                mDeleteImageView.setOnClickListener(v -> EventManager.getAnyBus()
-                        .post(new MemberDeleteEvent(member.getId())));
+               /* mDeleteImageView.setOnClickListener(v -> EventManager.getAnyBus()
+                        .post(new MemberDeleteEvent(member.getId())));*/
             }
         }
 

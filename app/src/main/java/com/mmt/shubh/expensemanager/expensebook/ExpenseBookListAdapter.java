@@ -16,7 +16,7 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -77,16 +77,16 @@ public class ExpenseBookListAdapter extends RecyclerView.Adapter<ExpenseBookList
 
     class ExpenseBookViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.expense_book_title)
+        @BindView(R.id.expense_book_title)
         TextView TitleTextView;
 
-        @Bind(R.id.expense_book_type)
+        @BindView(R.id.expense_book_type)
         TextView mTypeTextView;
 
-        @Bind(R.id.expense_book_description)
+        @BindView(R.id.expense_book_description)
         TextView mDescriptionTextView;
 
-        @Bind(R.id.image)
+        @BindView(R.id.image)
         ImageView mProfileImage;
 
 

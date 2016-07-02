@@ -1,5 +1,6 @@
 package com.mmt.shubh.expensemanager.expense;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
@@ -21,7 +22,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -30,6 +30,7 @@ import timber.log.Timber;
  * 5:17 PM
  * TODO:Add class comment.
  */
+@ConfigPersistent
 public class ExpenseModel {
     private String LOG_TAG = getClass().getName();
 

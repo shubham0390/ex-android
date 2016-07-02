@@ -28,7 +28,7 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 import com.mmt.shubh.expensemanager.core.view.CircleImageView;
 import com.mmt.shubh.expensemanager.core.view.SimpleImageView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Subham Tyagi,
@@ -38,13 +38,13 @@ import butterknife.Bind;
  */
 public abstract class DrawerBaseActivity<P extends MVPPresenter> extends ToolBarActivity2<P> {
 
-    @Bind(R.id.drawerLayout)
+    @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
 
     UserInfo mUserInfo;
 
     @Nullable
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
     @Override

@@ -1,9 +1,9 @@
 package com.mmt.shubh.expensemanager.login;
 
-import android.support.annotation.StringRes;
 
-import com.mmt.shubh.expensemanager.database.content.UserInfo;
 import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
+
+import rx.Observable;
 
 /**
  * Created by Subham Tyagi,
@@ -13,20 +13,5 @@ import com.mmt.shubh.expensemanager.setup.ProfileFetcher;
  */
 public interface ISignUpModel {
 
-    void registerCallback(SignUpModelCallback callback);
-
-    void unregisterCallback();
-
-    void registerUserWithSocial(ProfileFetcher profileFetcher);
-
-
-    interface SignUpModelCallback {
-        void onSuccess();
-
-        void updateProgress(@StringRes int about);
-
-        void onError(int statusCode);
-
-        void onMobileNoRequired();
-    }
+    Observable<Boolean> registerUserWithSocial(ProfileFetcher profileFetcher);
 }

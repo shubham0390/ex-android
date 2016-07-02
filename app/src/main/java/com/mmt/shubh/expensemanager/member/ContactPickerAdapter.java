@@ -16,7 +16,7 @@ import com.mmt.shubh.expensemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -139,11 +139,11 @@ public class ContactPickerAdapter extends RecyclerView.Adapter<ContactPickerAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final View mView;
-        @Bind(R.id.contact_image)
+        @BindView(R.id.contact_image)
         ImageView mContactImage;
-        @Bind(R.id.contact_name)
+        @BindView(R.id.contact_name)
         TextView mContactName;
-        @Bind(R.id.contact_selected)
+        @BindView(R.id.contact_selected)
         CheckBox mContactChecked;
 
         public ViewHolder(View view) {

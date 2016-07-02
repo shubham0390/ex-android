@@ -15,7 +15,7 @@ import com.mmt.shubh.expensemanager.database.content.ExpenseCategory;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -115,10 +115,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         View mView;
 
-        @Bind(R.id.category_name)
+        @BindView(R.id.category_name)
         TextView mCategoryName;
 
-        @Bind(R.id.category_image)
+        @BindView(R.id.category_image)
         ImageView mCategoryImage;
 
         public ViewHolder(View view) {

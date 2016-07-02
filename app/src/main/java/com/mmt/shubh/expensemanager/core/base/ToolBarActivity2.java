@@ -11,7 +11,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.mvp.MVPActivity2;
 import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import timber.log.Timber;
 
 /**
@@ -24,9 +24,8 @@ public abstract class ToolBarActivity2<P extends MVPPresenter> extends MVPActivi
 
     protected Tracker mTracker;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    private boolean mToolbarInitialized;
 
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -35,15 +34,6 @@ public abstract class ToolBarActivity2<P extends MVPPresenter> extends MVPActivi
         mTracker = application.getDefaultTracker();
         Timber.tag(getClass().getName());
         initializeToolbar();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!mToolbarInitialized) {
-            throw new IllegalStateException("You must run super.initializeToolbar at " +
-                    "the end of your onCreate method");
-        }
     }
 
     @Override
@@ -67,14 +57,12 @@ public abstract class ToolBarActivity2<P extends MVPPresenter> extends MVPActivi
 
     protected void initializeToolbar() {
         if (mToolbar == null) {
-            throw new IllegalStateException("Layout is required to include a Toolbar with id " +
-                    "'toolbar'");
+            throw new IllegalStateException("Layout is required to include a Toolbar with id 'toolbar'");
         }
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            mToolbarInitialized = true;
         }
     }
 

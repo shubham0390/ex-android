@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mmt.shubh.expensemanager.core.dagger.module.FragmentModule;
 import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.utils.Constants;
 import com.mmt.shubh.expensemanager.IFragmentDataSharer;
@@ -39,7 +40,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -55,13 +56,13 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
 
     private final int SELECT_IMAGE = 1;
 
-    @Bind(R.id.new_expense_book_name)
+    @BindView(R.id.new_expense_book_name)
     EditText mExpenseName;
 
-    @Bind(R.id.new_expense_book_description)
+    @BindView(R.id.new_expense_book_description)
     EditText mExpenseDescription;
 
-    @Bind(R.id.expense_book_image)
+    @BindView(R.id.expense_book_image)
     CircleImageView mExpenseImage;
 
     private Uri mOutputFileUri;
@@ -233,7 +234,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     @Override
     public void addMemberFragment(Bundle expenseBookInfo) {
         mFragmentDataSharer.passData(expenseBookInfo);
-        ((IFragmentSwitcher) getActivity()).replaceFragment(Constants.ADD_MEMBER_FRAGMENT, expenseBookInfo);
     }
 
     @Override
@@ -263,11 +263,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
 
     @Override
     protected void injectDependencies(MainComponent mainComponent) {
-        DaggerExpenseBookUpdateActivityComponent
-                .builder()
-                .mainComponent(mainComponent)
-                //.moduleExpneseBookUpdate(new ModuleExpenseBookUpdate())
-                .build()
-                .inject(this);
+        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 }

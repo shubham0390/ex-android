@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.mmt.shubh.expensemanager.database.content.Member;
-import com.mmt.shubh.recyclerviewlib.GridRecyclerView;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.core.recyclerview.GridRecyclerView;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 import java.util.List;
 

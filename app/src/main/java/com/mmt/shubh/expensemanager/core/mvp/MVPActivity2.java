@@ -11,6 +11,7 @@ import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import icepick.Icepick;
 
 
@@ -19,12 +20,14 @@ public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivit
     @Inject
     protected P mPresenter;
 
+    private Unbinder mUnbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
         Icepick.restoreInstanceState(this, savedInstanceState);
-        ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
     }
 
     @LayoutRes
@@ -36,5 +39,9 @@ public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivit
         Icepick.saveInstanceState(this, outState);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
+    }
 }

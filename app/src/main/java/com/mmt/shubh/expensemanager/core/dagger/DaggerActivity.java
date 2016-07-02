@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.mmt.shubh.expensemanager.ExpenseApplication;
 import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
 import com.mmt.shubh.expensemanager.core.dagger.component.DaggerConfigPersistentComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +32,6 @@ public abstract class DaggerActivity extends AppCompatActivity {
 
     private Long mActivityId;
 
-    /**
-     * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
-     * inject
-     * dependencies (i.e. by using dagger)
-     */
-    protected abstract void injectDependencies(ConfigPersistentComponent component);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +50,14 @@ public abstract class DaggerActivity extends AppCompatActivity {
         }
         injectDependencies(configPersistentComponent);
     }
+
+    /**
+     * This method will be called from {@link #onCreate(Bundle)} and this is the right place to
+     * inject
+     * dependencies (i.e. by using dagger)
+     */
+    protected abstract void injectDependencies(ConfigPersistentComponent component);
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

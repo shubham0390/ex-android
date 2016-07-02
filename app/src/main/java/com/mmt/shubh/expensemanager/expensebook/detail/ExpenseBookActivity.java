@@ -10,9 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mmt.shubh.expensemanager.R;
-import com.mmt.shubh.expensemanager.core.dagger.component.MainComponent;
+import com.mmt.shubh.expensemanager.core.base.ToolBarActivity2;
+import com.mmt.shubh.expensemanager.core.dagger.component.ConfigPersistentComponent;
+import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
-import com.mmt.shubh.expensemanager.core.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.expensebook.add.ExpenseBookAddUpdateActivity;
 import com.mmt.shubh.expensemanager.expensebook.setting.ExpenseBookSettingFragment;
 import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
@@ -22,23 +23,18 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 import icepick.State;
 
-public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<List<ExpenseBook>> {
+public class ExpenseBookActivity extends ToolBarActivity2<ExpenseBookActivityPresenter> implements MVPLCEView<List<ExpenseBook>> {
 
     private static final String TAG_SETTING_FRAGMENT = "settingFragment";
 
-    @Inject
-    ExpenseBookActivityPresenter mPresenter;
-
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager mViewPager;
 
-    @Bind(R.id.tabLayout)
+    @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
 
     ExpenseBookFragmentAdapter adapter;
@@ -51,13 +47,10 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
     @State
     int mCurrentPosition;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expense_book_detail);
-        ButterKnife.bind(this);
-        initializeToolbar();
-        getSupportActionBar().setElevation(0);
         mPresenter.attachView(this);
         setToolbar();
         setTabs();
@@ -66,6 +59,15 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
         }
     }
 
+    @Override
+    protected void injectDependencies(ConfigPersistentComponent component) {
+        component.activityComponent(new ActivityModule(this)).inject(this);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_expense_book_detail;
+    }
 
     private void setTabs() {
         mViewPager.setAdapter(adapter);
@@ -135,15 +137,6 @@ public class ExpenseBookActivity extends ToolBarActivity implements MVPLCEView<L
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.settings, settingFragment, TAG_SETTING_FRAGMENT)
                 .commit();
-    }
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        ExpenseBookActivityComponent component = DaggerExpenseBookActivityComponent.builder()
-                .expenseBookActivityModule(new ExpenseBookActivityModule())
-                .mainComponent(mainComponent)
-                .build();
-        component.inject(this);
     }
 
     @Override

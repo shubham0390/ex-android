@@ -1,9 +1,6 @@
 package com.mmt.shubh.expensemanager.account;
 
-import com.mmt.shubh.database.Selection;
-import com.mmt.shubh.expensemanager.core.dagger.module.ActivityModule;
-import com.mmt.shubh.expensemanager.database.api.ExpenseDataAdapter;
-import com.mmt.shubh.expensemanager.database.api.exceptions.AccountDataAdapter;
+import com.mmt.shubh.core.database.Selection;
 import com.mmt.shubh.expensemanager.database.content.contract.ExpenseContract;
 import com.mmt.shubh.expensemanager.expense.ExpenseListViewModel;
 import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;

@@ -27,35 +27,32 @@ public class FacebookProfileFetcher extends ProfileFetcher {
     private static final String TAG = FacebookProfileFetcher.class.getSimpleName();
 
     @Override
-    public Observable<UserInfo> fetchUserAccountDetails() {
-        return Observable.create(subscriber -> {
+    public UserInfo fetchUserAccountDetails() {
 
-            Profile profile = Profile.getCurrentProfile();
-            UserInfo userInfo = new UserInfo();
+        Profile profile = Profile.getCurrentProfile();
+        UserInfo userInfo = new UserInfo();
 
-            userInfo.setDisplayName(profile.getName());
-            userInfo.setProfilePhotoUrl(profile.getProfilePictureUri(512, 512).toString());
-            userInfo.setEmailAddress("");
-            userInfo.setStatus(UserInfo.Status.ACTIVE);
+        userInfo.setDisplayName(profile.getName());
+        userInfo.setProfilePhotoUrl(profile.getProfilePictureUri(512, 512).toString());
+        userInfo.setEmailAddress("");
+        userInfo.setStatus(UserInfo.Status.ACTIVE);
 
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> new GraphRequest(
-                    AccessToken.getCurrentAccessToken(), "/" + Profile.getCurrentProfile().getId(),
-                    null, HttpMethod.GET, response -> {
-                Profile profile1 = Profile.getCurrentProfile();
-                Log.d(TAG, response.toString());
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> new GraphRequest(
+                AccessToken.getCurrentAccessToken(), "/" + Profile.getCurrentProfile().getId(),
+                null, HttpMethod.GET, response -> {
+            Profile profile1 = Profile.getCurrentProfile();
+            Log.d(TAG, response.toString());
 
-                try {
-                    JSONObject jsonObject = response.getJSONObject();
-                    String emailID = jsonObject.getString("email");
-                    userInfo.setEmailAddress(emailID);
-                    userInfo.setProfilePhotoUrl(profile1.getProfilePictureUri(512, 512).toString());
-                    subscriber.onNext(userInfo);
-                    subscriber.onCompleted();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }).executeAndWait());
-        });
+            try {
+                JSONObject jsonObject = response.getJSONObject();
+                String emailID = jsonObject.getString("email");
+                userInfo.setEmailAddress(emailID);
+                userInfo.setProfilePhotoUrl(profile1.getProfilePictureUri(512, 512).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }).executeAndWait());
+        return userInfo;
     }
 }

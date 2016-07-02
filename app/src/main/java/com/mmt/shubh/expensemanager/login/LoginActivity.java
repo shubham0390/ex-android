@@ -20,21 +20,22 @@ import com.mmt.shubh.expensemanager.home.HomeActivity;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
+import butterknife.BindView;
 
 
 public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements ILoginActivityView {
 
-    @Bind(R.id.plus_sign_in_button)
+    @BindView(R.id.plus_sign_in_button)
     SignInButton mPlusSignInButton;
 
-    @Bind(R.id.facebook_login_button)
+    @BindView(R.id.facebook_login_button)
     AppCompatButton mFacebookLoginButton;
 
-    @Bind(R.id.social_container)
+    @BindView(R.id.social_container)
     LinearLayout mSocialContainer;
 
-    @Bind(R.id.login_progress)
+    @BindView(R.id.login_progress)
     View mProgressView;
 
     @Inject

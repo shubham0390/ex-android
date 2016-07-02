@@ -22,15 +22,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SummaryActivity extends ToolBarActivity implements ISummaryActivityView {
 
-    @Bind(R.id.time_filter_spinner)
+    @BindView(R.id.time_filter_spinner)
     AppCompatSpinner mTimeFilterSpinner;
 
-    @Bind(R.id.expense_list)
+    @BindView(R.id.expense_list)
     ExpenseListView mExpenseListView;
     @Inject
     SummaryActivityPresenter mPresenter;

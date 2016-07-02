@@ -33,7 +33,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import timber.log.Timber;
 
 /**
@@ -44,10 +44,10 @@ import timber.log.Timber;
  */
 public class AccountDetailsFragment extends MVPFragment<AccountDetailPresenter> implements IAccountDetailView {
 
-    @Bind(R.id.expense_list)
+    @BindView(R.id.expense_list)
     ExpenseListView mExpenseListView;
 
-    @Bind(R.id.accountSummaryChart)
+    @BindView(R.id.accountSummaryChart)
     BarChart mChart;
 
     Account mAccount;

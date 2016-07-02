@@ -27,7 +27,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.mvp.MVPFragment;
 import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -57,13 +57,13 @@ import butterknife.OnClick;
 public abstract class MVPLCEFragment<CV extends View, M, V extends MVPLCEView<M>, P extends MVPPresenter<V>>
         extends MVPFragment<P> implements MVPLCEView<M> {
 
-    @Bind(R.id.loadingView)
+    @BindView(R.id.loadingView)
     protected View mLoadingView;
 
-    @Bind(R.id.contentView)
+    @BindView(R.id.contentView)
     protected CV mContentView;
 
-    @Bind(R.id.errorView)
+    @BindView(R.id.errorView)
     protected TextView mErrorView;
 
 

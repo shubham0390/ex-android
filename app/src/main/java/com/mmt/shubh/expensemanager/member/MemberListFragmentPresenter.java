@@ -2,12 +2,16 @@ package com.mmt.shubh.expensemanager.member;
 
 import android.content.Context;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.core.mvp.BasePresenter;
 import com.mmt.shubh.expensemanager.database.content.Member;
 import com.mmt.shubh.expensemanager.core.mvp.MVPPresenter;
 import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -18,6 +22,7 @@ import rx.schedulers.Schedulers;
  * 11:53 AM
  * TODO:Add class comment.
  */
+@ConfigPersistent
 public class MemberListFragmentPresenter extends BasePresenter<MVPLCEView<List<Member>>>
         implements MVPPresenter<MVPLCEView<List<Member>>> {
 
@@ -25,6 +30,7 @@ public class MemberListFragmentPresenter extends BasePresenter<MVPLCEView<List<M
 
     private MemberModel mMemberModel;
 
+    @Inject
     public MemberListFragmentPresenter(Context context, MemberModel memberModel) {
         mContext = context;
         mMemberModel = memberModel;

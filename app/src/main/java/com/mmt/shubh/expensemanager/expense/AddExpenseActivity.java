@@ -8,7 +8,7 @@ import com.mmt.shubh.expensemanager.R;
 import com.mmt.shubh.expensemanager.core.base.ToolBarActivity;
 import com.mmt.shubh.expensemanager.expense.adapters.AddExpenseFragmentAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -16,10 +16,10 @@ import butterknife.ButterKnife;
  */
 public class AddExpenseActivity extends ToolBarActivity {
 
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout tabLayout;
 
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager mViewPager;
 
 

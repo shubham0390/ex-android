@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
+import com.mmt.shubh.expensemanager.core.dagger.scope.ActivityScope;
+import com.mmt.shubh.expensemanager.core.dagger.scope.ConfigPersistent;
 import com.mmt.shubh.expensemanager.database.api.ExpenseBookDataAdapter;
 import com.mmt.shubh.expensemanager.database.api.MemberDataAdapter;
 import com.mmt.shubh.expensemanager.database.content.ExpenseBook;
@@ -15,6 +17,8 @@ import com.mmt.shubh.expensemanager.settings.UserSettings;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 /**
@@ -23,6 +27,7 @@ import rx.Observable;
  * 10:08 AM
  * TODO:Add class comment.
  */
+@ConfigPersistent
 public class ExpenseBookModel {
 
     private final String TAG = getClass().getName();
@@ -33,8 +38,8 @@ public class ExpenseBookModel {
 
     private Context mContext;
 
-    public ExpenseBookModel(Context context, ExpenseBookDataAdapter dataAdapter,
-                            MemberDataAdapter memberDataAdapter) {
+    @Inject
+    public ExpenseBookModel(Context context, ExpenseBookDataAdapter dataAdapter, MemberDataAdapter memberDataAdapter) {
         mExpenseBookDataAdapter = dataAdapter;
         mContext = context;
         mMemberDataAdapter = memberDataAdapter;

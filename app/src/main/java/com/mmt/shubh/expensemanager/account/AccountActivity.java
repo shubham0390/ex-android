@@ -15,15 +15,15 @@ import com.mmt.shubh.expensemanager.database.content.Account;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 
 public class AccountActivity extends ToolBarActivity2<AccountActivityPresenter> implements MVPLCEView<List<Account>> {
 
-    @Bind(R.id.tabLayout)
+    @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
 
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager mViewPager;
 
     AccountPagerAdapter mAccountPagerAdapter;

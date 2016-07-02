@@ -28,7 +28,7 @@ import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewState;
 import com.mmt.shubh.expensemanager.core.mvp.lce.LCEViewStateImpl;
 import com.mmt.shubh.expensemanager.core.mvp.lce.MVPLCEView;
 import com.mmt.shubh.expensemanager.core.mvp.lce.SupportMVPLCEFragment;
-import com.mmt.shubh.recyclerviewlib.ListRecyclerView;
+import com.mmt.shubh.core.recyclerview.ListRecyclerView;
 
 import java.util.List;
 
