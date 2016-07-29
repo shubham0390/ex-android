@@ -1,12 +1,13 @@
 <resources>
 
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="size_fab">56dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_xlarge">48dp</dimen>
     <dimen name="spacing_huge">72dp</dimen>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">@dimen/spacing_normal</dimen>
     <dimen name="activity_vertical_margin">@dimen/spacing_normal</dimen>
@@ -31,8 +32,7 @@
     <!-- Margins for full screen activity-->
     <dimen name="text_view_margin">16dp</dimen>
     <dimen name="end_text_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="size_fab">56dp</dimen>
+
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="detail_backdrop_height1">200dp</dimen>
@@ -61,4 +61,14 @@
     <dimen name="tab_max_width">24dp</dimen>
     <dimen name="avatar_image_size">40dp</dimen>
     <dimen name="text_size_heading">18sp</dimen>
+
+
+    <integer name="kg_carousel_angle">75</integer>
+    <integer name="kg_glowpad_rotation_offset">0</integer>
+
+    <dimen name="btn_flat_corner_radius">1dp</dimen>
+    <dimen name="btn_flat_min_width">88dp</dimen>
+    <dimen name="btn_flat_min_height">36dp</dimen>
+    <dimen name="btn_flat_padding">8dp</dimen>
+    <dimen name="btn_flat_margin">4dp</dimen>
 </resources>

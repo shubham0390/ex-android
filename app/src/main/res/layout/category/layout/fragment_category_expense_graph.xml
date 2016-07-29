@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".category.CategoryExpenseGraphFragment">
+             tools:context="com.km2labs.android.spendview.category.CategoryExpenseGraphFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

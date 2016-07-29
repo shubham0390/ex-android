@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/spacing_medium"
     android:paddingStart="@dimen/spacing_medium"
     android:paddingTop="@dimen/spacing_medium"
-    tools:context=".category.AddCategoryDialogFragment">
+    tools:context="com.km2labs.android.spendview.category.AddCategoryDialogFragment">
 
 
     <RelativeLayout

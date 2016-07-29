@@ -9,7 +9,7 @@
         android:layout_height="1dp"
         android:background="@color/black" />
 
-    <com.mmt.shubh.expensemanager.expensebook.ExpenseBookListView
+    <com.km2labs.android.spendview.expensebook.ExpenseBookListView
         android:id="@+id/expense_book_list"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/spacing_normal"

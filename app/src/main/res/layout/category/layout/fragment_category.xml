@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".category.CategoryListFragment"
+    tools:context="com.km2labs.android.spendview.category.CategoryListFragment"
     tools:showIn="@layout/activity_category">
 
     <include layout="@layout/include_toolbar"/>
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.mmt.shubh.core.recyclerview.ListRecyclerView
+        <com.km2labs.shubh.core.recyclerview.ListRecyclerView
             android:id="@id/contentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

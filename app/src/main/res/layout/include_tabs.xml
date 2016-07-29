@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/member_fragment"
-        android:name="com.mmt.shubh.expensemanager.member.MemberListFragment"
+        android:name="com.km2labs.android.spendview.member.MemberListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_member_list" />

@@ -9,7 +9,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.mmt.shubh.expensemanager.core.view.CircleImageView
+    <com.km2labs.android.spendview.core.view.CircleImageView
         android:id="@+id/list_image_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".home.SummaryActivity">
+    tools:context="com.km2labs.android.spendview.home.SummaryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <com.mmt.shubh.expensemanager.expense.ExpenseListView
+    <com.km2labs.android.spendview.expense.ExpenseListView
         android:id="@+id/expense_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
