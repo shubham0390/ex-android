@@ -8,7 +8,7 @@
     android:background="@drawable/list_item_selector"
     android:orientation="vertical">
 
-    <com.mmt.shubh.expensemanager.core.view.CircleImageView
+    <com.km2labs.android.spendview.core.view.CircleImageView
         android:id="@+id/image"
         android:layout_width="48dp"
         android:layout_height="48dp"

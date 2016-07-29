@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".expensebook.add.ExpenseBookAddUpdateActivity">
+    tools:context="com.km2labs.android.spendview.expensebook.add.ExpenseBookAddUpdateActivity">
 
     <include layout="@layout/include_toolbar"/>
 

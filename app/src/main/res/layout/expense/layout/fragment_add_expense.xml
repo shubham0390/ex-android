@@ -70,7 +70,7 @@
                     android:layout_marginLeft="8sp"
                     android:layout_marginRight="16dp">
 
-                    <com.mmt.shubh.expensemanager.core.view.AutoResizeEditText
+                    <com.km2labs.android.spendview.core.view.AutoResizeEditText
                         android:id="@+id/amount_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -161,7 +161,7 @@
 
     </RelativeLayout>
 
-    <com.mmt.shubh.expensemanager.core.view.BottomSheet
+    <com.km2labs.android.spendview.core.view.BottomSheet
         android:id="@+id/bill_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

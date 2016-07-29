@@ -41,7 +41,7 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.mmt.shubh.expensemanager.core.view.SimpleImageView
+            <com.km2labs.android.spendview.core.view.SimpleImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -87,7 +87,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <com.mmt.shubh.expensemanager.core.view.CircleImageView
+    <com.km2labs.android.spendview.core.view.CircleImageView
         android:id="@+id/profile_image"
         style="@style/ListItemIcon"
         android:layout_width="72dp"
