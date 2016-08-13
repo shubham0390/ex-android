@@ -1,9 +1,24 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.onboarding;
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.android.spendview.database.content.UserInfo;
+import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.settings.UserSettings;
 
 import java.util.List;
@@ -39,8 +54,8 @@ public class SplashPresenter extends BasePresenter<SplashView> implements MVPPre
     }
 
     public void checkLoginStatus() {
-        UserInfo userInfo = UserSettings.getInstance().getUserInfo();
-        if (userInfo != null) {
+        User user = UserSettings.getInstance().getUser();
+        if (user != null) {
             getView().showHomeScreen();
         } else
             mSplashModel.getUserInfo()
@@ -49,7 +64,7 @@ public class SplashPresenter extends BasePresenter<SplashView> implements MVPPre
                     .subscribe(this::checkUserInfo, this::checkError);
     }
 
-    private void checkUserInfo(List<UserInfo> userInfos) {
+    private void checkUserInfo(List<User> userInfos) {
         if (userInfos != null && userInfos.size() > 0)
             checkUserInfo(userInfos.get(0));
         else
@@ -60,11 +75,11 @@ public class SplashPresenter extends BasePresenter<SplashView> implements MVPPre
         Timber.e(throwable.getMessage());
     }
 
-    private void checkUserInfo(UserInfo userInfo) {
-        if (userInfo == null) {
+    private void checkUserInfo(User user) {
+        if (user == null) {
             getView().showLoginScreen();
         } else {
-            UserSettings.getInstance().setUserInfo(userInfo);
+            UserSettings.getInstance().setUser(user);
             getView().showHomeScreen();
            /* mSplashModel.getPrivateExpenseBook()
                     .observeOn(AndroidSchedulers.mainThread())

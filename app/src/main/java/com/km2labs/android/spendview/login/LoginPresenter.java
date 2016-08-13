@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.login;
 
 import android.content.Intent;
@@ -6,17 +21,15 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
-import com.km2labs.android.spendview.setup.FacebookProfileFetcher;
-import com.km2labs.shubh.expensemanager.R;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
 import com.km2labs.android.spendview.debug.Logger;
+import com.km2labs.android.spendview.setup.FacebookProfileFetcher;
 import com.km2labs.android.spendview.setup.GoogleProfileFetcher;
 import com.km2labs.android.spendview.setup.ProfileFetcher;
+import com.km2labs.android.spendview.utils.RxUtils;
+import com.km2labs.spendview.android.R;
 
 import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -25,7 +38,7 @@ import rx.schedulers.Schedulers;
  * TODO:Add class comment.
  */
 @ConfigPersistent
-public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter, SignUpCallback {
+public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter, LoginCallback {
 
     private final String TAG = getClass().getName();
 
@@ -62,7 +75,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     @Override
-    public void onSignInComplete(ILoginHelper.Type type) {
+    public void onSignInComplete(ILoginHelper.Type type, String token) {
         ProfileFetcher profileFetcher = null;
         switch (type) {
             case GOOGLE:
@@ -71,38 +84,37 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 break;
             case FACEBOOK:
                 Logger.debug(TAG, "Facebook login finished. Fetching User profile");
-                profileFetcher = new FacebookProfileFetcher();
+                profileFetcher = new FacebookProfileFetcher(token);
                 break;
         }
 
-        mSignUpModel.registerUserWithSocial(profileFetcher)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(value -> {
-                    getView().navigateToHome();
-                }, error -> {
-                    onError(2);
-                });
+        mSignUpModel.createUser(profileFetcher).compose(RxUtils.applySchedulers())
+                .subscribe(this::signupComplete, this::onError);
+
+    }
+
+    private void signupComplete(boolean value) {
+        getView().navigateToHome();
+    }
+
+    private void onError(Throwable throwable) {
+        onError(2);
     }
 
 
     @Override
     public void onSignInFailed(String message) {
         getView().hideProgress();
+        onError(1);
     }
 
     @Override
     public void onSignInCanceled() {
         getView().hideProgress();
+        onError(1);
     }
 
-    @Override
-    public void onBlockingUI(boolean show) {
-        Logger.debug(TAG, "show progressbar");
-        getView().showProgress();
-    }
-
-    public void onError(int statusCode) {
+    private void onError(int statusCode) {
         if (statusCode == 2)
             getView().showError(R.string.no_internet_connection);
         else {

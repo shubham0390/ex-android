@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.login;
 
 import android.app.Activity;
@@ -6,6 +21,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -26,7 +42,7 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
 
     private CallbackManager mCallbackManager;
 
-    private SignUpCallback mCallback;
+    private LoginCallback mCallback;
 
 
     private View.OnClickListener mFacebookLoginButtonClickListener = new View.OnClickListener() {
@@ -36,8 +52,8 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
         }
     };
 
-    public FacebookLoginHelper(Activity applicationContext, SignUpCallback iSignUpPresenter) {
-        mContext = applicationContext.getApplicationContext();
+    public FacebookLoginHelper(Activity applicationContext, LoginCallback iSignUpPresenter) {
+        mContext = applicationContext;
         mCallback = iSignUpPresenter;
     }
 
@@ -74,7 +90,8 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        mCallback.onSignInComplete(Type.FACEBOOK);
+        AccessToken accessToken = loginResult.getAccessToken();
+        mCallback.onSignInComplete(Type.FACEBOOK, accessToken.getToken());
     }
 
     @Override

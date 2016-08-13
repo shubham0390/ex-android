@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.login;
 
 import android.app.Activity;
@@ -25,13 +40,13 @@ import timber.log.Timber;
  * 2:03 PM
  * TODO:Add class comment.
  */
-public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFailedListener {
+class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFailedListener {
 
-    public static final int OUR_REQUEST_CODE = 49404;
+    static final int OUR_REQUEST_CODE = 49404;
 
     private GoogleSignInOptions gso;
     private GoogleApiClient mPlusClient;
-    private SignUpCallback mCallback;
+    private LoginCallback mCallback;
     private WeakReference<AppCompatActivity> mActivityWeakReference;
     private Context mContext;
 
@@ -44,24 +59,18 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
         }
     };
 
-    public GoogleLoginHelper(AppCompatActivity context, SignUpCallback iSignUpPresenter) {
+    GoogleLoginHelper(AppCompatActivity context, LoginCallback loginCallback) {
         Timber.tag(getClass().getName());
         mActivityWeakReference = new WeakReference<>(context);
-        mCallback = iSignUpPresenter;
+        mCallback = loginCallback;
         mContext = context.getApplicationContext();
-        gso = new GoogleSignInOptions   .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestProfile()
-                .build();
-        mPlusClient =
-                new GoogleApiClient.Builder(context)
-                        .enableAutoManage(context, this)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestProfile().build();
+        mPlusClient = new GoogleApiClient.Builder(context).enableAutoManage(context, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
     }
 
     public void setUp(Object plusSignInButton) {
-
         SignInButton signInButton = (SignInButton) plusSignInButton;
         if (!supportsGooglePlayServices()) {
             signInButton.setVisibility(View.GONE);
@@ -83,7 +92,6 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
      */
     @Override
     public void signIn(Activity activity) {
-        mCallback.onBlockingUI(true);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mPlusClient);
         activity.startActivityForResult(signInIntent, OUR_REQUEST_CODE);
     }
@@ -120,10 +128,7 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
      */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-
-        if (result.hasResolution()) {
-            // TODO: 2/19/16 handle it gracefully
-        }
+        // TODO: 2/19/16 handle it gracefully
     }
 
 
@@ -135,17 +140,12 @@ public class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnec
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             mGoogleAccount = result.getSignInAccount();
-            mCallback.onSignInComplete(Type.GOOGLE);
-            mCallback.onBlockingUI(false);
-        } else {
-            // Signed out, show unauthenticated UI.
-
+            mCallback.onSignInComplete(Type.GOOGLE, mGoogleAccount.getIdToken());
         }
     }
 
-    public GoogleSignInAccount getGoogleAccount() {
+    GoogleSignInAccount getGoogleAccount() {
         return mGoogleAccount;
     }
 }

@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.home;
 
 import android.os.Bundle;
@@ -15,8 +30,7 @@ import com.km2labs.android.spendview.expense.ExpenseFilter;
 import com.km2labs.android.spendview.expense.ExpenseListView;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.shubh.expensemanager.R;
-import com.km2labs.shubh.expensemanager.home.DaggerSummaryActivityComponent;
+import com.km2labs.spendview.android.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +47,17 @@ public class SummaryActivity extends ToolBarActivity implements ISummaryActivity
 
     @BindView(R.id.expense_list)
     ExpenseListView mExpenseListView;
+
     @Inject
     SummaryActivityPresenter mPresenter;
+
     private ExpenseFilter mExpenseFilter = new ExpenseFilter();
+
     private AdapterView.OnItemSelectedListener mTimeFilterItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             mExpenseFilter.setTimeFilter(position);
-            mExpenseFilter.setMemberId(UserSettings.getInstance().getUserInfo().getId());
+            mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getId());
             mPresenter.loadExpenseWithFilters(mExpenseFilter);
         }
 
@@ -60,7 +77,7 @@ public class SummaryActivity extends ToolBarActivity implements ISummaryActivity
         toggleHomeBackButton(true);
         createSpinnerDropDown();
         mExpenseFilter.setTimeFilter(0);
-        mExpenseFilter.setMemberId(UserSettings.getInstance().getUserInfo().getId());
+        mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getId());
         mPresenter.loadExpenseWithFilters(mExpenseFilter);
     }
 

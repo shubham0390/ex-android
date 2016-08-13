@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.database.dataadapters;
 
 import android.content.ContentValues;
@@ -5,6 +20,7 @@ import android.database.Cursor;
 import android.provider.BaseColumns;
 
 import com.km2labs.android.spendview.core.QueryBuilder;
+import com.km2labs.android.spendview.core.Select;
 import com.km2labs.android.spendview.core.Selection;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -29,8 +45,7 @@ public abstract class BaseSQLDataAdapter<T> {
 
     public abstract ContentValues toContentValues(T t);
 
-    protected abstract void setTaskId(T t, long id);
-
+    protected abstract void setId(T t, long id);
 
     public List<ContentValues> toContentValues(List<T> list) {
         List<ContentValues> contentValues = new ArrayList<>();
@@ -42,23 +57,20 @@ public abstract class BaseSQLDataAdapter<T> {
 
     public T create(T t) {
         long id = mBriteDatabase.insert(mTableName, toContentValues(t));
-        setTaskId(t, id);
+        setId(t, id);
         return t;
 
     }
 
     public List<T> create(List<T> ts) {
 
-        BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction();
-        try {
+        try (BriteDatabase.Transaction transaction = mBriteDatabase.newTransaction()) {
             for (T t : ts) {
                 long id = mBriteDatabase.insert(mTableName, toContentValues(t));
-                setTaskId(t, id);
+                setId(t, id);
             }
             transaction.markSuccessful();
 
-        } finally {
-            transaction.close();
         }
         return ts;
     }
@@ -80,9 +92,8 @@ public abstract class BaseSQLDataAdapter<T> {
 
 
     public T get(long id) {
-        String s = "SELECT * FROM "
-                + mTableName
-                + " WHERE _id = " + id;
+
+        String s = new Select().all().from(mTableName).where(" _Id ").equql(id).toString();
         mBriteDatabase.createQuery(mTableName, s).map(query -> {
             T t = null;
             Cursor cursor = query.run();
@@ -126,8 +137,7 @@ public abstract class BaseSQLDataAdapter<T> {
 
     public Observable<T> getSingleResultByColumn(String column, String value) {
         return Observable.create(subscriber -> {
-
-            String query = "SELECT * FROM " + mTableName + " WHERE " + column + " = " + value;
+            String query = new Select().all().from(mTableName).where(column).equql(value).toString();
             mBriteDatabase.createQuery(mTableName, query).map(query1 -> {
                 Cursor cursor = query1.run();
                 return parseCursor(cursor);

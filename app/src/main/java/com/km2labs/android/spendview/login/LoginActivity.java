@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.login;
 
 import android.animation.Animator;
@@ -13,14 +28,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.common.SignInButton;
-import com.km2labs.shubh.expensemanager.R;
 import com.km2labs.android.spendview.core.base.ToolBarActivity2;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
 import com.km2labs.android.spendview.home.HomeActivity;
+import com.km2labs.spendview.android.R;
 
 import butterknife.BindView;
-
 
 public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements LoginContract.View {
 
@@ -35,7 +49,6 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
 
     @BindView(R.id.login_progress)
     View mProgressView;
-
 
     @Override
     protected void injectDependencies(ConfigPersistentComponent component) {
@@ -75,7 +88,6 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
     }
 
     private void showSocialLogin() {
-
         mSocialContainer.setVisibility(View.VISIBLE);
         showBackButton(false);
     }
@@ -121,8 +133,7 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         mSocialContainer.setVisibility(show ? View.GONE : View.VISIBLE);
-        mSocialContainer.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+        mSocialContainer.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mSocialContainer.setVisibility(show ? View.GONE : View.VISIBLE);
@@ -130,8 +141,7 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
         });
 
         mSocialContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+        mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);

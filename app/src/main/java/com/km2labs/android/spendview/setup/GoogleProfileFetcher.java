@@ -1,15 +1,28 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.setup;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.km2labs.android.spendview.database.content.UserInfo;
-import com.km2labs.android.spendview.debug.Logger;
+import com.km2labs.android.spendview.database.content.User;
 
 import timber.log.Timber;
 
 
-public class GoogleProfileFetcher extends ProfileFetcher {
-    private final String TAG = getClass().getName();
+public class GoogleProfileFetcher implements ProfileFetcher {
 
     private GoogleSignInAccount mGoogleSignInAccount;
 
@@ -19,20 +32,21 @@ public class GoogleProfileFetcher extends ProfileFetcher {
     }
 
     @Override
-    public UserInfo fetchUserAccountDetails() {
-        UserInfo userInfo = new UserInfo();
+    public User getUserProfileDetails() {
+        User user = new User();
         if (mGoogleSignInAccount != null) {
             Timber.d("Fetching user profile from google");
-            userInfo.setDisplayName(mGoogleSignInAccount.getDisplayName());
-            userInfo.setProfilePhotoUrl(mGoogleSignInAccount.getPhotoUrl().toString());
-            String email = mGoogleSignInAccount.getEmail();
-            userInfo.setEmailAddress(email);
-            userInfo.setStatus(UserInfo.Status.ACTIVE);
+            user.setName(mGoogleSignInAccount.getDisplayName());
+            user.setProfileImageUrl(mGoogleSignInAccount.getPhotoUrl().toString());
+            user.setEmail(mGoogleSignInAccount.getEmail());
         } else {
-            Logger.debug(TAG, "Unable to load user information");
+            Timber.d("Unable to load user information");
         }
-        return userInfo;
+        return user;
     }
 
-
+    @Override
+    public String getAuthenticationToken() {
+        return mGoogleSignInAccount.getIdToken();
+    }
 }

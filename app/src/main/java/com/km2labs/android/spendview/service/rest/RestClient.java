@@ -1,23 +1,37 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.service.rest;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.km2labs.android.spendview.service.network.ConnectivityHelper;
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * Created by Subham Tyagi,
@@ -27,13 +41,9 @@ import retrofit.Retrofit;
  */
 public class RestClient {
 
-    private static final String BASE_URL = "http://localhost:8080/expensemanager/rest";
+    private static final String BASE_URL = "http://localhost:8080/expensemanager/rest/";
 
     private final static long SIZE_OF_CACHE = 10 * 1024 * 1024; // 10 MB
-
-    public RestClient() {
-
-    }
 
     @NonNull
     public Retrofit getRetrofit(OkHttpClient okHttpClient) {
@@ -57,13 +67,10 @@ public class RestClient {
 
         // Create OkHttpClient
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setCache(cache);
-        okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
 
-        // Add Cache-Control Interceptor
+      /*  // Add Cache-Control Interceptor
         okHttpClient.networkInterceptors().add(mCacheControlInterceptor);
-        okHttpClient.networkInterceptors().add(new StethoInterceptor());
+        okHttpClient.networkInterceptors().add(new StethoInterceptor());*/
         return okHttpClient;
     }
 

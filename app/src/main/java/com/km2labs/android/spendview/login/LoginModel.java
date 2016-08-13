@@ -1,15 +1,27 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.login;
 
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
-import com.km2labs.android.spendview.database.api.CategoryDataAdapter;
-import com.km2labs.android.spendview.database.content.Member;
-import com.km2labs.android.spendview.database.content.UserInfo;
-import com.km2labs.android.spendview.expense.ExpenseModel;
-import com.km2labs.android.spendview.service.rest.service.MemberRestService;
-import com.km2labs.android.spendview.setup.ProfileFetcher;
-import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
 import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
+import com.km2labs.android.spendview.database.content.Device;
+import com.km2labs.android.spendview.database.content.User;
+import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.android.spendview.setup.ProfileFetcher;
 import com.km2labs.android.spendview.setup.SeedDataTask;
 
 import javax.inject.Inject;
@@ -27,44 +39,43 @@ import timber.log.Timber;
 @ConfigPersistent
 public class LoginModel implements LoginContract.Model {
 
-    private ExpenseModel mExpenseModel;
-    private ExpenseBookDataAdapter mExpenseBookDataAdapter;
     private UserInfoDataAdapter mUserInfoDataAdapter;
-    private MemberRestService mMemberRestService;
-    private CategoryDataAdapter mCategoryDataAdapter;
+    private LoginService mLoginService;
+    private SeedDataTask mSeedDataTask;
+    private SignupRequest mSignupRequest;
 
     @Inject
-    public LoginModel(ExpenseBookDataAdapter bookDataAdapter, ExpenseModel expenseModel
-            , UserInfoDataAdapter userInfoDataAdapter, MemberRestService memberRestService,
-                      CategoryDataAdapter categoryDataAdapter) {
-        this.mExpenseBookDataAdapter = bookDataAdapter;
-        mExpenseModel = expenseModel;
-        mUserInfoDataAdapter = userInfoDataAdapter;
-        mMemberRestService = memberRestService;
-        mCategoryDataAdapter = categoryDataAdapter;
+    public LoginModel(SeedDataTask seedDataTask, UserInfoDataAdapter userInfoDataAdapter, LoginService loginService) {
         Timber.tag(getClass().getSimpleName());
+        mUserInfoDataAdapter = userInfoDataAdapter;
+        mLoginService = loginService;
+        mSeedDataTask = seedDataTask;
+        mSignupRequest = new SignupRequest();
     }
 
     @Override
-    public Observable<Boolean> registerUserWithSocial(ProfileFetcher profileFetcher) {
+    public Observable<Boolean> createUser(ProfileFetcher profileFetcher) {
         return Observable.create(subscriber -> {
-            SeedDataTask seedDataTask = new SeedDataTask(mExpenseModel, mExpenseBookDataAdapter, mCategoryDataAdapter);
-            UserInfo userInfo = profileFetcher.fetchUserAccountDetails();
-            mUserInfoDataAdapter.create(userInfo);
-            seedDataTask.execute();
+            User user = profileFetcher.getUserProfileDetails();
+            user.setStatus(User.Status.USER_CREATED);
+            user = mUserInfoDataAdapter.create(user);
+            UserSettings.getInstance().setUser(user);
+            mSignupRequest.setAuthenticationToken(profileFetcher.getAuthenticationToken());
+            mSeedDataTask.execute();
         });
     }
 
-    private Member createMember(UserInfo userInfo) {
-        Member member = new Member();
-        if (userInfo != null) {
-            member.setCoverPhotoUrl(userInfo.getCoverPhotoUrl());
-            member.setMemberEmail(userInfo.getEmailAddress());
-            member.setMemberName(userInfo.getDisplayName());
-            member.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
-            member.setMemberPhoneNumber(String.valueOf(userInfo.getPhoneNumber()));
-            Timber.d("creating member finisdhed");
-        }
-        return member;
+    public Observable<Boolean> signupUser(String phoneNo, String loginType) {
+        return Observable.create(subscriber -> {
+            User user = UserSettings.getInstance().getUser();
+            user.setPhoneNumber(phoneNo);
+            Device device = new Device();
+            user.setDevice(device);
+
+            mSignupRequest.setUser(user);
+            mSignupRequest.setLoginType(loginType);
+            SignupResponse response = mLoginService.signup(mSignupRequest);
+            mUserInfoDataAdapter.updateDeviceId(response.getUser().getServerId());
+        });
     }
 }

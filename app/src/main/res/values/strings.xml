@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016. . The Km2Labs Project
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <resources xmlns:xliff="http://schemas.android.com/apk/res/android">
 
-    <string name="facebook_app_id">1812295508997930</string>
+    <string name="facebook_app_id">561734400675752</string>
 
     <!-- Common and app specific string -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -174,7 +189,9 @@
     <string name="title_activity_category">Categories</string>
     <string name="category_name">Category Name</string>
     <string name="expense_description">Expense Description</string>
-    <string name="create_category_message">Please provide new category name,optional category icon.</string>
+    <string name="create_category_message">Please provide new category name,optional category
+        icon.
+    </string>
     <string name="category_name_empty">Category name cannot be empty.</string>
     <string name="category_name_exists">Category name already exists.</string>
     <string name="add_category">Add Category</string>

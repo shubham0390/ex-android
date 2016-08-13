@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.km2labs.android.spendview.core.base;
 
 import android.content.Intent;
@@ -19,11 +34,11 @@ import com.km2labs.android.spendview.category.CategoryActivity;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
 import com.km2labs.android.spendview.core.view.CircleImageView;
 import com.km2labs.android.spendview.core.view.SimpleImageView;
-import com.km2labs.android.spendview.database.content.UserInfo;
+import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.expensebook.detail.ExpenseBookActivity;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.shubh.expensemanager.R;
+import com.km2labs.spendview.android.R;
 import com.km2labs.android.spendview.home.SummaryActivity;
 import com.km2labs.android.spendview.settings.SettingsActivity;
 
@@ -40,7 +55,7 @@ public abstract class DrawerBaseActivity<P extends MVPPresenter> extends ToolBar
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
 
-    UserInfo mUserInfo;
+    User mUser;
 
     @Nullable
     @BindView(R.id.nav_view)
@@ -131,24 +146,24 @@ public abstract class DrawerBaseActivity<P extends MVPPresenter> extends ToolBar
 
     protected void populateDrawerItems() {
 
-        mUserInfo = UserSettings.getInstance().getUserInfo();
-        if (mUserInfo != null) {
+        mUser = UserSettings.getInstance().getUser();
+        if (mUser != null) {
             View view = mNavigationView.getHeaderView(0);
             CircleImageView profileImage = (CircleImageView) view.findViewById(R.id.profile_image);
             SimpleImageView coverImage = (SimpleImageView) view.findViewById(R.id.cover_image_view);
             TextView displayName = (TextView) view.findViewById(R.id.account_name);
             TextView emailId = (TextView) view.findViewById(R.id.email_id);
 
-            if (!TextUtils.isEmpty(mUserInfo.getCoverPhotoUrl())) {
-                coverImage.loadImage(mUserInfo.getCoverPhotoUrl());
+            if (!TextUtils.isEmpty(mUser.getCoverPhotoUrl())) {
+                coverImage.loadImage(mUser.getCoverPhotoUrl());
             }
 
-            if (!TextUtils.isEmpty(mUserInfo.getProfilePhotoUrl())) {
-                profileImage.loadImage(mUserInfo.getCoverPhotoUrl());
+            if (!TextUtils.isEmpty(mUser.getProfilePhotoUrl())) {
+                profileImage.loadImage(mUser.getCoverPhotoUrl());
             }
 
-            displayName.setText(mUserInfo.getDisplayName());
-            emailId.setText(mUserInfo.getEmailAddress());
+            displayName.setText(mUser.getDisplayName());
+            emailId.setText(mUser.getEmailAddress());
         }
     }
 
