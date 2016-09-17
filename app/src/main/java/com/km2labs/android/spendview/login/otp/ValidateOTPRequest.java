@@ -13,25 +13,28 @@
  * limitations under the License.
  */
 
-package com.km2labs.android.spendview.core.mvp.lce;
+package com.km2labs.android.spendview.login.otp;
 
 /**
- * Created by Subham Tyagi,
- * on 21/Sep/2015,
- * 9:20 AM
- * TODO:Add class comment.
+ * Created by suze on 14/08/16.
  */
-public class LCEViewStateImpl<D, V extends MVPLCEView<D>> extends AbsLceViewState<D, V> {
+public class ValidateOTPRequest {
+    private String otp;
+    private long deviceId;
 
-    public int getCurrentState() {
-        return currentViewState;
+    public String getOtp() {
+        return otp;
     }
 
-    @Override
-    public void apply(V view, boolean retained) {
-        super.apply(view, retained);
-        if (currentViewState == 0) {
-            view.loadData(false);
-        }
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public long getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(long deviceId) {
+        this.deviceId = deviceId;
     }
 }
