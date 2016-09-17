@@ -15,12 +15,19 @@
 
 package com.km2labs.android.spendview.login;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
+import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
+import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
 import com.km2labs.android.spendview.core.mvp.MVPView;
-import com.km2labs.android.spendview.setup.ProfileFetcher;
+import com.km2labs.android.spendview.database.content.User;
 
+import dagger.Module;
+import dagger.Subcomponent;
 import rx.Observable;
 
 /**
@@ -28,6 +35,30 @@ import rx.Observable;
  */
 
 public interface LoginContract {
+
+
+    @Subcomponent(modules = {LoginModule.class})
+    @ConfigPersistent
+    interface LoginComponent {
+        void injectLoginActivity(LoginActivity loginActivity);
+    }
+
+    @Module
+    class LoginModule extends ActivityModule {
+
+        private View mView;
+
+        public LoginModule(Activity activity, @NonNull View view) {
+            super(activity);
+            mView = view;
+        }
+
+        @NonNull
+        public View provideView() {
+            return mView;
+        }
+    }
+
 
     interface View extends MVPView {
 
@@ -44,10 +75,11 @@ public interface LoginContract {
 
     interface Presenter extends MVPPresenter<View> {
 
+        void onActivityResult(int requestCode, int responseCode, Intent intent);
     }
 
     interface Model {
-        Observable<Boolean> createUser(ProfileFetcher profileFetcher);
+        Observable<Boolean> createUser(User user);
     }
 
 }

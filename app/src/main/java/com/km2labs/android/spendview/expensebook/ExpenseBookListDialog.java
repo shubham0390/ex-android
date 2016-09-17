@@ -19,7 +19,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatDialog;
 
 import com.km2labs.android.spendview.ItemSelectListener;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 
 import java.util.List;

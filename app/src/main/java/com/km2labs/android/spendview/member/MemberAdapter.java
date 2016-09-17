@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.database.content.Member;
 import com.km2labs.android.spendview.core.view.CircleImageView;
 
@@ -191,7 +191,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             if (mDeleteImageView != null && canDelete()) {
                 mDeleteImageView.setVisibility(mCanDelete ? View.VISIBLE : View.GONE);
                /* mDeleteImageView.setOnClickListener(v -> EventManager.getAnyBus()
-                        .post(new MemberDeleteEvent(member.getId())));*/
+                        .post(new MemberDeleteEvent(member.getLocalId())));*/
             }
         }
 

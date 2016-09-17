@@ -15,7 +15,7 @@
 
 package com.km2labs.android.spendview.disribution;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.mvp.lce.MVPLCEView;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 

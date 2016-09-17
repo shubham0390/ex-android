@@ -23,11 +23,8 @@ import com.google.android.gms.common.SignInButton;
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
 import com.km2labs.android.spendview.debug.Logger;
-import com.km2labs.android.spendview.setup.FacebookProfileFetcher;
-import com.km2labs.android.spendview.setup.GoogleProfileFetcher;
-import com.km2labs.android.spendview.setup.ProfileFetcher;
-import com.km2labs.android.spendview.utils.RxUtils;
-import com.km2labs.spendview.android.R;
+import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.expenseview.android.R;
 
 import javax.inject.Inject;
 
@@ -42,18 +39,19 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private final String TAG = getClass().getName();
 
-    private LoginModel mSignUpModel;
+    private UserModel mUserModel;
 
     private GoogleLoginHelper mGoogleLoginHelper;
 
     private FacebookLoginHelper mFacebookLoginHelper;
 
     @Inject
-    public LoginPresenter(LoginModel signUpModel) {
-        mSignUpModel = signUpModel;
+    public LoginPresenter(UserModel userModel) {
+        mUserModel = userModel;
 
     }
 
+    @Override
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == GoogleLoginHelper.OUR_REQUEST_CODE) {
             mGoogleLoginHelper.onActivityResult(requestCode, responseCode, intent);
@@ -63,44 +61,30 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     public void setupGoogleLogin(SignInButton plusSignInButton, AppCompatActivity activity) {
-        Logger.debug(TAG, "Setting Up Google login");
         mGoogleLoginHelper = new GoogleLoginHelper(activity, this);
         mGoogleLoginHelper.setUp(plusSignInButton);
     }
 
     public void setupFacebookLogin(TextView faceBookLoginButton, AppCompatActivity activity) {
-        Logger.debug(TAG, "Setting Up facebook login");
         mFacebookLoginHelper = new FacebookLoginHelper(activity, this);
         mFacebookLoginHelper.setUp(faceBookLoginButton);
     }
 
     @Override
     public void onSignInComplete(ILoginHelper.Type type, String token) {
-        ProfileFetcher profileFetcher = null;
+        UserSettings userSettings = UserSettings.getInstance();
         switch (type) {
             case GOOGLE:
+                userSettings.setLoginType(LoginType.GOOGLE);
                 Logger.debug(TAG, "Google login finished. Fetching User profile");
-                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getGoogleAccount());
                 break;
             case FACEBOOK:
+                userSettings.setLoginType(LoginType.FACEBOOK);
                 Logger.debug(TAG, "Facebook login finished. Fetching User profile");
-                profileFetcher = new FacebookProfileFetcher(token);
                 break;
         }
-
-        mSignUpModel.createUser(profileFetcher).compose(RxUtils.applySchedulers())
-                .subscribe(this::signupComplete, this::onError);
-
+        getView().showAskMobileScreen();
     }
-
-    private void signupComplete(boolean value) {
-        getView().navigateToHome();
-    }
-
-    private void onError(Throwable throwable) {
-        onError(2);
-    }
-
 
     @Override
     public void onSignInFailed(String message) {

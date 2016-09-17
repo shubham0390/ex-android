@@ -20,7 +20,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 
 public class ExpenseBookOverviewView extends RelativeLayout {

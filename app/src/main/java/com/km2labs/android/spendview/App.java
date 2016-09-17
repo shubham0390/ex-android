@@ -18,21 +18,23 @@ package com.km2labs.android.spendview;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
-import com.digits.sdk.android.Digits;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.core.dagger.component.api.DaggerObjectGraph;
-import com.km2labs.spendview.android.R;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.km2labs.expenseview.android.R;
+import com.urbanairship.UAirship;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -43,22 +45,24 @@ import io.fabric.sdk.android.Fabric;
  * 8:57 AM
  * TODO:Add class comment.
  */
-public class ExpenseApplication extends Application {
+public class App extends Application {
 
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "OOlmNKupKeuhkuDmZCJBraTPk";
-    private static final String TWITTER_SECRET = "br6Qk80BxzqKVaE26Um3eNauPnIR1a8zyH7Pa2ljlrW1iPMVUy";
-
+    public static final AtomicLong NEXT_ID = new AtomicLong(0);
     private static DaggerObjectGraph graph;
-    public static ExpenseApplication instance;
+    public static App instance;
+
     private Tracker mTracker;
 
     public static DaggerObjectGraph component() {
         return graph;
     }
 
-    public static ExpenseApplication get(Context context) {
-        return (ExpenseApplication) context.getApplicationContext();
+    public static App get(Context context) {
+        return (App) context.getApplicationContext();
+    }
+
+    public static MainComponent getAppComponent() {
+        return (MainComponent) graph;
     }
 
     public MainComponent getMainComponent() {
@@ -76,6 +80,14 @@ public class ExpenseApplication extends Application {
         buildComponentAndInject();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        FirebaseApp firebaseApp = FirebaseApp.getInstance();
+        FirebaseInstanceId instanceId = FirebaseInstanceId.getInstance(firebaseApp);
+        instanceId.getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("Expense");
+        UAirship.takeOff(this, airship -> {
+            airship.getPushManager().setUserNotificationsEnabled(true);
+        });
         new InitlizarionTask().execute();
     }
 
@@ -84,15 +96,13 @@ public class ExpenseApplication extends Application {
         @Override
         protected Void doInBackground(Void... params) {
 
-            TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-            Fabric.with(ExpenseApplication.this, new Crashlytics(), new TwitterCore(authConfig), new Digits());
-            //generateHashKey();
+            Fabric.with(App.this, new Crashlytics());
 
             Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
                     .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                     .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                     .build());
-            AndroidThreeTen.init(ExpenseApplication.instance);
+            AndroidThreeTen.init(App.instance);
             return null;
         }
     }
@@ -108,11 +118,5 @@ public class ExpenseApplication extends Application {
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 }

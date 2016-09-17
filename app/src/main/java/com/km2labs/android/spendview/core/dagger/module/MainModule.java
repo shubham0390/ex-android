@@ -20,7 +20,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.module.api.IMainModule;
 
 import javax.inject.Singleton;
@@ -31,9 +31,9 @@ import dagger.Provides;
 @Module
 public class MainModule implements IMainModule {
 
-    private final ExpenseApplication app;
+    private final App app;
 
-    public MainModule(ExpenseApplication application) {
+    public MainModule(App application) {
         app = application;
     }
 

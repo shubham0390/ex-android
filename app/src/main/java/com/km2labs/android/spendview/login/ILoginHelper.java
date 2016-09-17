@@ -29,14 +29,11 @@ public interface ILoginHelper {
         TWITEER,
     }
 
-    void setUp(Object object);
+    <T> void setUp(T object);
+
     void signIn(Activity activity);
 
-    void signOut();
-
-    void revokeAccess();
-
-    Object getClient();
+    <T> T getClient();
 
     void onActivityResult(int requestCode, int responseCode, Intent intent);
 }

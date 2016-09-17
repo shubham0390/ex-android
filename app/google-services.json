@@ -1,58 +1,63 @@
 {
   "project_info": {
-    "project_number": "793553780201",
-    "project_id": "expensemanager-b8e81"
+    "project_number": "764891183802",
+    "firebase_url": "https://expense-view.firebaseio.com",
+    "project_id": "expense-view",
+    "storage_bucket": "expense-view.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:793553780201:android:48f6e5245d979527",
+        "mobilesdk_app_id": "1:764891183802:android:a69ffac46d808d2f",
         "android_client_info": {
-          "package_name": "com.mmt.shubh.expensemanager"
+          "package_name": "com.km2labs.expenseview.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "793553780201-7nk7jirtnqc8h00ru9e4ahtbll3us4mb.apps.googleusercontent.com",
+          "client_id": "764891183802-69vk8654trdteui441pc5rqp3nrh7ca0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mmt.shubh.expensemanager",
-            "certificate_hash": "CEA6C2E7BFE3E0D3D4139483F1D4E50E922A3229"
+            "package_name": "com.km2labs.expenseview.android",
+            "certificate_hash": "AB7528C5093D2B76D6DC437F6B0BAAE2461522C2"
           }
         },
         {
-          "client_id": "793553780201-2u3dlm23omdclmkd9v3dlvq8i7i50clj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mmt.shubh.expensemanager",
-            "certificate_hash": "F21EA044388BB3B155A011D552A88A46257376CD"
-          }
+          "client_id": "764891183802-2t48vs06533gpcatij8etetiguqqvdtt.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
-          "client_id": "793553780201-pmmup83ov7l50pe9qoaa5astbsjmkhtl.apps.googleusercontent.com",
+          "client_id": "764891183802-bsn16j40p66g9hn5i7m3d6685fgvjkss.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "764891183802-jkr2eje2lab00bnhjsemhc5mo2u16qsr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCq1wspG2pbaSDfZfmy1XoBbCmXIyZxiQ4"
+          "current_key": "AIzaSyCbznVrNbxz8QQbRrj8E13P8fF8Rc-5_yQ"
         }
       ],
       "services": {
         "analytics_service": {
           "status": 2,
           "analytics_property": {
-            "tracking_id": "UA-63640256-2"
+            "tracking_id": "UA-82320837-1"
           }
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764891183802-2t48vs06533gpcatij8etetiguqqvdtt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 2,
-          "test_banner_ad_unit_id": "ca-app-pub-3940256099942544/6300978111",
-          "test_interstitial_ad_unit_id": "ca-app-pub-3940256099942544/1033173712"
+          "status": 2
         }
       }
     }

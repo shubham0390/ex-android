@@ -16,7 +16,7 @@
 package com.km2labs.android.spendview.core;
 
 
-import com.km2labs.android.spendview.core.util.CollectionUtil;
+import com.km2labs.android.spendview.core.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +55,12 @@ public class QueryBuilder {
         sb.append(SPACE);
 
         //adding projection to query
-        if (CollectionUtil.isEmpty(projection)) {
+        if (CollectionUtils.isEmpty(projection)) {
             sb.append(ALL);
             sb.append(SPACE);
         } else {
             String prefix = "";
-            if (!CollectionUtil.isEmpty(mJoins)) {
+            if (!CollectionUtils.isEmpty(mJoins)) {
                 prefix = mTableName + ".";
             }
             arrayToString(sb, projection, prefix);
@@ -121,7 +121,7 @@ public class QueryBuilder {
 
 
     public QueryBuilder addSortType(OrderBy sortType) {
-        if (CollectionUtil.isEmpty(mSortType)) {
+        if (CollectionUtils.isEmpty(mSortType)) {
             mSortType = new ArrayList<>();
         }
         mSortType.add(sortType);
@@ -161,13 +161,13 @@ public class QueryBuilder {
 
     public String build() {
         StringBuilder sb = createQuery(mTableName, mProjections);
-        if (CollectionUtil.isEmpty(mJoins)) {
+        if (CollectionUtils.isEmpty(mJoins)) {
             createJoin(sb);
         }
-        if (CollectionUtil.isEmpty(mSelections)) {
+        if (CollectionUtils.isEmpty(mSelections)) {
             createSelection(sb);
         }
-        if (!CollectionUtil.isEmpty(mSortType)) {
+        if (!CollectionUtils.isEmpty(mSortType)) {
             createSortType();
         }
         if (mGroupBy != null) {

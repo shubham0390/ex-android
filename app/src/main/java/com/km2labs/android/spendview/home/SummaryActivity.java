@@ -24,13 +24,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivity;
+import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.expense.ExpenseFilter;
 import com.km2labs.android.spendview.expense.ExpenseListView;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SummaryActivity extends ToolBarActivity implements ISummaryActivityView {
+public class SummaryActivity extends ToolBarActivityV3 implements ISummaryActivityView {
 
     @BindView(R.id.time_filter_spinner)
     AppCompatSpinner mTimeFilterSpinner;
@@ -57,7 +57,7 @@ public class SummaryActivity extends ToolBarActivity implements ISummaryActivity
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             mExpenseFilter.setTimeFilter(position);
-            mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getId());
+            mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getLocalId());
             mPresenter.loadExpenseWithFilters(mExpenseFilter);
         }
 
@@ -71,14 +71,29 @@ public class SummaryActivity extends ToolBarActivity implements ISummaryActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
         ButterKnife.bind(this);
         initializeToolbar();
         toggleHomeBackButton(true);
         createSpinnerDropDown();
         mExpenseFilter.setTimeFilter(0);
-        mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getId());
+        mExpenseFilter.setMemberId(UserSettings.getInstance().getUser().getLocalId());
         mPresenter.loadExpenseWithFilters(mExpenseFilter);
+    }
+
+    @Override
+    protected <T> T createComponent(MainComponent mainComponent) {
+        return null;
+    }
+
+    @Override
+    protected void injectDependencies(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected int getLayout() {
+        return 0;
     }
 
     @Override
@@ -124,15 +139,8 @@ public class SummaryActivity extends ToolBarActivity implements ISummaryActivity
     }
 
     @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        DaggerSummaryActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .build().inject(this);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.detachView(false);
+        mPresenter.unsubcribe(false);
     }
 }

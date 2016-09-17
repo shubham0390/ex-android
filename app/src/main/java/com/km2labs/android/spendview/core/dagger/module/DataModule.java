@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 
 import com.km2labs.android.spendview.database.api.CategoryDataAdapter;
 import com.km2labs.android.spendview.database.dataadapters.AccountSQLDataAdapter;
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.module.api.IDataModule;
 import com.km2labs.android.spendview.database.DatabaseHelper;
 import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
@@ -56,7 +56,7 @@ public class DataModule implements IDataModule {
 
     private BriteDatabase mBriteDatabase;
 
-    public DataModule(ExpenseApplication app) {
+    public DataModule(App app) {
         mContext = app.getApplicationContext();
     }
 

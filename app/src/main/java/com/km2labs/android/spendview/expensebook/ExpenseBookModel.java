@@ -173,7 +173,7 @@ public class ExpenseBookModel {
             mExpenseBook.setType("public");
 
             UserSettings userSettings = UserSettings.getInstance();
-            Member member = mMemberDataAdapter.get(userSettings.getUser().getMemberKey());
+            Member member = mMemberDataAdapter.get(Long.parseLong(userSettings.getUser().getServerId()));
 
             mExpenseBook.setOwner(member.getId());
 

@@ -19,8 +19,13 @@
     <string name="delete">Delete</string>
     <string name="message_removing_member">Removing member...</string>
     <string name="remove">Remove</string>
-    <string name="error_message_member_cannot_be_removed">Member share some expense in this expense book</string>
+    <string name="error_message_member_cannot_be_removed">Member share some expense in this expense
+        book
+    </string>
     <string name="otp">OTP</string>
     <string name="validate">Validate</string>
-    <string name="welcome">Welcome to Smart Expense Manager</string>
+    <string name="welcome">Welcome to Smart Expense View</string>
+    <string name="google_server_client_id">
+        764891183802-bsn16j40p66g9hn5i7m3d6685fgvjkss.apps.googleusercontent.com
+    </string>
 </resources>

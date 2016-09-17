@@ -29,6 +29,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.km2labs.android.spendview.utils.ResUtils;
+import com.km2labs.expenseview.android.R;
 
 import java.lang.ref.WeakReference;
 
@@ -49,12 +54,12 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
     private LoginCallback mCallback;
     private WeakReference<AppCompatActivity> mActivityWeakReference;
     private Context mContext;
-
-    private GoogleSignInAccount mGoogleAccount;
+    private FirebaseAuth mFirebaseAuth;
 
     private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Timber.i("User choose Google Login");
             GoogleLoginHelper.this.signIn(mActivityWeakReference.get());
         }
     };
@@ -64,9 +69,10 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
         mActivityWeakReference = new WeakReference<>(context);
         mCallback = loginCallback;
         mContext = context.getApplicationContext();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestProfile().build();
-        mPlusClient = new GoogleApiClient.Builder(context).enableAutoManage(context, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestProfile().requestEmail().requestIdToken(ResUtils.getString(R.string.google_server_client_id)).build();
+        mPlusClient = new GoogleApiClient.Builder(context).enableAutoManage(context, this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -96,36 +102,6 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
         activity.startActivityForResult(signInIntent, OUR_REQUEST_CODE);
     }
 
-    /**
-     * Sign out the user (so they can switch to another account).
-     */
-    @Override
-    public void signOut() {
-        Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
-                status -> {
-                    // ...
-                });
-    }
-
-    /**
-     * Revoke Google+ authorization completely.
-     */
-    @Override
-    public void revokeAccess() {
-        Auth.GoogleSignInApi.signOut(mPlusClient).setResultCallback(
-                status -> {
-                    // TODO: 2/19/16 handle it gracefully
-                });
-
-    }
-
-    /**
-     * Connection failed for some reason (called by PlusClient)
-     * Try and resolve the result.  Failure here is usually not an indication of a serious error,
-     * just that the user's input is needed.
-     *
-     * @see #onActivityResult(int, int, Intent)
-     */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // TODO: 2/19/16 handle it gracefully
@@ -140,12 +116,29 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
         if (result.isSuccess()) {
-            mGoogleAccount = result.getSignInAccount();
-            mCallback.onSignInComplete(Type.GOOGLE, mGoogleAccount.getIdToken());
+            GoogleSignInAccount googleAccount = result.getSignInAccount();
+            if (googleAccount == null) {
+                mCallback.onSignInFailed("Unable to sign in");
+                return;
+            }
+            loginWithFirebase(googleAccount);
+        } else {
+            mCallback.onSignInFailed("Unable to Signin");
         }
+
     }
 
-    GoogleSignInAccount getGoogleAccount() {
-        return mGoogleAccount;
+    private void loginWithFirebase(GoogleSignInAccount googleAccount) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(googleAccount.getIdToken(), null);
+
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(mActivityWeakReference.get(), task -> {
+                    Timber.d("signInWithCredential:onComplete:" + task.isSuccessful());
+                    if (!task.isSuccessful()) {
+                        Timber.w("signInWithCredential", task.getException());
+                    } else {
+                        mCallback.onSignInComplete(Type.GOOGLE, googleAccount.getIdToken());
+                    }
+                });
     }
 }

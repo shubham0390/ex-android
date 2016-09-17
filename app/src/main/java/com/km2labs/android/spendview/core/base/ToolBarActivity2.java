@@ -21,9 +21,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.analytics.Tracker;
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.mvp.MVPActivity2;
 
 import butterknife.BindView;
@@ -45,7 +45,7 @@ public abstract class ToolBarActivity2<P extends MVPPresenter> extends MVPActivi
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        ExpenseApplication application = (ExpenseApplication) getApplication();
+        App application = (App) getApplication();
         mTracker = application.getDefaultTracker();
         Timber.tag(getClass().getName());
         initializeToolbar();

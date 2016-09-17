@@ -21,13 +21,14 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivity;
+import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import butterknife.ButterKnife;
 
-public class ExpenseBookAddUpdateActivity extends ToolBarActivity {
+public class ExpenseBookAddUpdateActivity extends ToolBarActivityV3 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,21 @@ public class ExpenseBookAddUpdateActivity extends ToolBarActivity {
         if (!TextUtils.isEmpty(action) && Constants.ACTION_ADD_MEMBERS.equals(action)) {
         } else
             installExpenseBookFragment();
+    }
+
+    @Override
+    protected <T> T createComponent(MainComponent mainComponent) {
+        return null;
+    }
+
+    @Override
+    protected void injectDependencies(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected int getLayout() {
+        return 0;
     }
 
     private void installExpenseBookFragment() {

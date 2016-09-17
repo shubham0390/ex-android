@@ -29,8 +29,8 @@ public final class RxUtils {
             new Observable.Transformer<Observable, Observable>() {
                 @Override
                 public Observable<Observable> call(Observable<Observable> observableObservable) {
-                    return ((Observable) observableObservable).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread());
+                    return ((Observable) observableObservable).subscribeOn(Schedulers.computation())
+                            .observeOn(Schedulers.computation());
                 }
             };
 
@@ -39,7 +39,17 @@ public final class RxUtils {
             new Observable.Transformer<Observable, Observable>() {
                 @Override
                 public Observable<Observable> call(Observable<Observable> observableObservable) {
-                    return ((Observable) observableObservable).subscribeOn(Schedulers.io())
+                    return ((Observable) observableObservable).subscribeOn(AndroidSchedulers.mainThread())
+                            .observeOn(AndroidSchedulers.mainThread());
+                }
+            };
+
+    @SuppressWarnings("unchecked")
+    private static final Observable.Transformer schedulersMainIOTransformer =
+            new Observable.Transformer<Observable, Observable>() {
+                @Override
+                public Observable<Observable> call(Observable<Observable> observableObservable) {
+                    return ((Observable) observableObservable).subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread());
                 }
             };
@@ -52,6 +62,10 @@ public final class RxUtils {
     @SuppressWarnings("unchecked")
     public static <T> Observable.Transformer<T, T> applyMainSchedulers() {
         return (Observable.Transformer<T, T>) mainSchedulersTransformer;
+    }
+
+    public static <T> Observable.Transformer<T, T> applyMainIOSchedulers() {
+        return (Observable.Transformer<T, T>) schedulersMainIOTransformer;
     }
 
 }

@@ -15,27 +15,39 @@
 
 package com.km2labs.android.spendview.database.content;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 @Parcel(value = Parcel.Serialization.BEAN)
 public class User {
 
-    private long id;
+    private long localId;
+    @Expose
     private String name;
+    @Expose
     private String email;
+    @Expose
     private String phoneNumber;
+    @Expose
     private String profileImageUrl;
+    @Expose
     private String coverImageUrl;
+    @Expose
     private Status status;
+    @Expose
+    @SerializedName("id")
     private String serverId;
+    @Expose
     private Device device;
 
-    public long getId() {
-        return id;
+    public long getLocalId() {
+        return localId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLocalId(long localId) {
+        this.localId = localId;
     }
 
     public String getServerId() {
@@ -107,6 +119,4 @@ public class User {
         USER_CREATED,
         LOG_OUT
     }
-
-
 }

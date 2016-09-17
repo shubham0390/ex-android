@@ -18,6 +18,7 @@ package com.km2labs.android.spendview.core.dagger.module;
 import android.content.Context;
 
 import com.km2labs.android.spendview.core.dagger.module.api.INetworkModule;
+import com.km2labs.android.spendview.login.LoginService;
 import com.km2labs.android.spendview.service.rest.RestClient;
 import com.km2labs.android.spendview.service.rest.service.MemberRestService;
 
@@ -53,6 +54,12 @@ public class NetworkModule implements INetworkModule {
     @Singleton
     public MemberRestService provideMemberRestService(Retrofit retrofit) {
         return retrofit.create(MemberRestService.class);
+    }
+
+    @Provides
+    @Singleton
+    public LoginService provideLoginService(Retrofit retrofit) {
+        return retrofit.create(LoginService.class);
     }
 
 }

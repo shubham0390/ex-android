@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.km2labs.android.spendview.database.content.ExpenseCategory;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.ArrayList;
 import java.util.List;

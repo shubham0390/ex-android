@@ -26,7 +26,7 @@ import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentCompo
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
 import com.km2labs.android.spendview.core.mvp.lce.MVPLCEView;
 import com.km2labs.android.spendview.database.content.Account;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class AccountActivity extends ToolBarActivity2<AccountActivityPresenter> 
         super.onCreate(savedInstanceState);
         toggleHomeBackButton(true);
         setTitle(R.string.title_activity_account);
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
         mPresenter.loadAllAccounts();
     }
 
@@ -112,6 +112,6 @@ public class AccountActivity extends ToolBarActivity2<AccountActivityPresenter> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.detachView(false);
+        mPresenter.unsubcribe(false);
     }
 }

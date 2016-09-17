@@ -13,30 +13,23 @@
  * limitations under the License.
  */
 
-package com.km2labs.android.spendview.login;
+package com.km2labs.android.spendview.utils;
 
-import com.jakewharton.rxbinding.widget.TextViewAfterTextChangeEvent;
-import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.android.spendview.core.mvp.MVPView;
+import android.content.Context;
+import android.support.annotation.StringRes;
 
-import rx.functions.Func1;
+import com.km2labs.android.spendview.App;
 
 /**
- * Created by Subham Tyagi on 29/07/16.
+ * Created by : Subham Tyagi
+ * Created on :  14/08/16.
  */
 
-public interface OTPContract {
+public final class ResUtils {
 
-    interface View extends MVPView {
 
-    }
-
-    interface Presenter extends MVPPresenter<View> {
-
-        Func1<TextViewAfterTextChangeEvent, Boolean> isPhoneNumberValid();
-
-        Func1<TextViewAfterTextChangeEvent, Boolean> isValidOTP();
-
-        void generateOTP(String phoneNo);
+    public static String getString(@StringRes int id) {
+        Context context = App.instance.getApplicationContext();
+        return context.getString(id);
     }
 }

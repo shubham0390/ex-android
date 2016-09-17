@@ -16,7 +16,7 @@
 package com.km2labs.android.spendview.core;
 
 
-import com.km2labs.android.spendview.core.util.CollectionUtil;
+import com.km2labs.android.spendview.core.util.CollectionUtils;
 
 /**
  * TODO:Add class comment.
@@ -42,7 +42,7 @@ public class DBColumn {
         sb.append(mName);
         sb.append(" ");
         sb.append(mType);
-        if (!CollectionUtil.isEmpty(mConstraint)) {
+        if (!CollectionUtils.isEmpty(mConstraint)) {
             sb.append(" ");
             for (String aMConstraint : mConstraint) {
                 sb.append(aMConstraint);

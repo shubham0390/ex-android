@@ -18,31 +18,20 @@ package com.km2labs.android.spendview.category;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
-import com.km2labs.android.spendview.core.mvp.lce.LCEViewState;
-import com.km2labs.android.spendview.core.mvp.lce.LCEViewStateImpl;
-import com.km2labs.android.spendview.core.mvp.lce.MVPLCEFragment;
+import com.km2labs.android.spendview.core.base.RecyclerViewFragment;
 import com.km2labs.android.spendview.database.content.ExpenseCategory;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 
-
-public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<ExpenseCategory>,
-        ICategoryListView, CategoryListFragmentPresenter> implements SearchView.OnQueryTextListener {
+public class CategoryListFragment extends RecyclerViewFragment implements SearchView.OnQueryTextListener {
 
     private CategoryAdapter mCategoryAdapter;
 
@@ -51,25 +40,13 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
     public CategoryListFragment() {
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category, container, false);
-        ButterKnife.bind(this, view);
-        setupRecyclerView();
-        return view;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        loadData(false);
+        loadData();
     }
 
-    @Override
-    public LCEViewState<List<ExpenseCategory>, ICategoryListView> createViewState() {
-        return new LCEViewStateImpl<>();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,28 +55,6 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
 
     }
 
-    @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return getString(R.string.error_message_emptydata);
-    }
-
-    @Override
-    public List<ExpenseCategory> getData() {
-        return mExpenseCategoryList;
-    }
-
-    @Override
-    public void setData(List<ExpenseCategory> data) {
-        mExpenseCategoryList = data;
-        mCategoryAdapter.setData(data);
-    }
-
-    private void setupRecyclerView() {
-        mContentView.setLayoutManager(new GridLayoutManager(mContentView.getContext(), 4));
-        readCategoryFromDB();
-        mCategoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
-        mContentView.setAdapter(mCategoryAdapter);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -119,7 +74,6 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
     public boolean onQueryTextChange(String query) {
         final List<ExpenseCategory> filteredCategoryList = filter(mExpenseCategoryList, query);
         mCategoryAdapter.animateTo(filteredCategoryList);
-        mContentView.scrollToPosition(0);
         return true;
     }
 
@@ -143,26 +97,19 @@ public class CategoryListFragment extends MVPLCEFragment<RecyclerView, List<Expe
         return filteredCategory;
     }
 
-    private void readCategoryFromDB() {
-        getData();
-    }
-
-    @Override
-    public void loadData(boolean pullToRefresh) {
-        mPresenter.loadAllCategory();
-    }
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        DaggerCategoryComponent.builder()
-                .categoryModule(new CategoryModule())
-                .mainComponent(mainComponent)
-                .build().inject(this);
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.detachView(false);
+    }
+
+    @Override
+    protected LayoutManagerType getLayoutManagerType() {
+        return null;
+    }
+
+    @Override
+    protected void loadList() {
+
     }
 }

@@ -27,7 +27,7 @@ import android.view.MenuItem;
 import com.km2labs.android.spendview.core.base.ToolBarActivity2;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
 import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.expensebook.add.ExpenseBookAddUpdateActivity;
@@ -66,7 +66,7 @@ public class ExpenseBookActivity extends ToolBarActivity2<ExpenseBookActivityPre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
         setToolbar();
         setTabs();
         if (isSettingFragmentInstalled) {

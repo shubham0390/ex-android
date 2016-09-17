@@ -36,7 +36,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.List;
 

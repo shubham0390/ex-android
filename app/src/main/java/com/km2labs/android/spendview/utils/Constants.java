@@ -33,6 +33,6 @@ public interface Constants {
     int ADD_MEMBER_FRAGMENT = 1;
 
     /*Intents Actions*/
-    String ACTION_ADD_MEMBERS = "com.mmt.shubh.expensemanager.ACTION_ADD_MEMBERS";
-    String ACTION_SELECT_CONTACT = "com.mmt.shubh.expense.ACTION_SELECT_CONTACT";
+    String ACTION_ADD_MEMBERS = "com.km2labs.spendview.android.ACTION_ADD_MEMBERS";
+    String ACTION_SELECT_CONTACT = "com.km2labs.spendview.android.ACTION_SELECT_CONTACT";
 }

@@ -19,13 +19,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 
-import com.km2labs.android.spendview.expense.ExpenseListViewModel;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
-import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.spendview.android.R;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.expense.ExpenseListView;
+import com.km2labs.android.spendview.expense.ExpenseListViewModel;
+import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.expenseview.android.R;
 
 import java.util.List;
 import java.util.Map;
@@ -91,11 +89,6 @@ public class ExpenseBookDetailFragment extends MVPFragment<ExpenseBookDetailPres
     @Override
     public void loadData(boolean pullToRefresh) {
         mPresenter.loadExpenseByExpenseBookId(mExpenseBookId);
-    }
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
 

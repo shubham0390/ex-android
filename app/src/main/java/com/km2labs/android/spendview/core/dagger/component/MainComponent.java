@@ -19,7 +19,7 @@ package com.km2labs.android.spendview.core.dagger.component;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.component.api.DaggerObjectGraph;
 import com.km2labs.android.spendview.core.dagger.module.DataModule;
 import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
@@ -33,6 +33,7 @@ import com.km2labs.android.spendview.database.api.MemberExpenseDataAdapter;
 import com.km2labs.android.spendview.database.api.TransactionDataAdapter;
 import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
 import com.km2labs.android.spendview.database.api.exceptions.AccountDataAdapter;
+import com.km2labs.android.spendview.login.LoginService;
 import com.km2labs.android.spendview.service.rest.service.MemberRestService;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -48,6 +49,8 @@ import retrofit2.Retrofit;
         NetworkModule.class
 })
 public interface MainComponent extends DaggerObjectGraph {
+
+    ConfigPersistentComponentV2 plus();
 
     Context getApplicationContext();
 
@@ -77,11 +80,13 @@ public interface MainComponent extends DaggerObjectGraph {
 
     MemberRestService memberRestService();
 
+    LoginService loginService();
+
     final class Initializer {
         private Initializer() {
         } // No instances.
 
-        public static MainComponent init(ExpenseApplication app) {
+        public static MainComponent init(App app) {
             return DaggerMainComponent.builder()
                     .mainModule(new MainModule(app))
                     .dataModule(new DataModule(app))

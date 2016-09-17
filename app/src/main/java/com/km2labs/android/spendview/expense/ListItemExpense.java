@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.km2labs.android.spendview.core.view.CircleImageView;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 
 public class ListItemExpense extends LinearLayout {

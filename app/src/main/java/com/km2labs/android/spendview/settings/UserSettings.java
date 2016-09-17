@@ -16,11 +16,13 @@ package com.km2labs.android.spendview.settings;
 
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.database.content.User;
+import com.km2labs.android.spendview.login.LoginType;
 
 public class UserSettings {
 
     private volatile static UserSettings INSTANCE;
-    private String mLoginType;
+    private LoginType mLoginType;
+    private String mAuthToken;
     private User mUser;
     private ExpenseBook mPersonalExpenseBook;
 
@@ -41,7 +43,7 @@ public class UserSettings {
     }
 
     public long getUserId() {
-        return mUser.getId();
+        return mUser.getLocalId();
     }
 
 
@@ -61,11 +63,19 @@ public class UserSettings {
         return mPersonalExpenseBook;
     }
 
-    public String getLoginType() {
+    public LoginType getLoginType() {
         return mLoginType;
     }
 
-    public void setLoginType(String loginType) {
+    public void setLoginType(LoginType loginType) {
         mLoginType = loginType;
+    }
+
+    public void setAuthToken(String token) {
+        mAuthToken = token;
+    }
+
+    public String getAuthToken() {
+        return mAuthToken;
     }
 }

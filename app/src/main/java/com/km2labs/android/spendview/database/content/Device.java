@@ -20,7 +20,9 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.km2labs.android.spendview.App;
 
 import org.parceler.Parcel;
 
@@ -37,14 +39,20 @@ import java.util.UUID;
 public class Device {
     private static final String PREFS_FILE = "device_id.xml";
     private static final String PREFS_DEVICE_ID = "device_id";
-
     private volatile static UUID uuid;
-    private long id;
+
+
+    private long localId;
+    @Expose
     private String deviceUUID;
+    @Expose
     private String gcmToken;
+    @Expose
+    @SerializedName("id")
+    private String serverId;
 
     public Device() {
-        Context context = ExpenseApplication.instance;
+        Context context = App.instance;
         if (uuid == null) {
             final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
             final String id = prefs.getString(PREFS_DEVICE_ID, null);
@@ -77,12 +85,12 @@ public class Device {
         this.gcmToken = gcmToken;
     }
 
-    public long getId() {
-        return id;
+    public long getLocalId() {
+        return localId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLocalId(long localId) {
+        this.localId = localId;
     }
 
     public String getDeviceUUID() {
@@ -99,5 +107,13 @@ public class Device {
 
     public void setGcmToken(String gcmToken) {
         this.gcmToken = gcmToken;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 }

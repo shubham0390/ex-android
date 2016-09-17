@@ -15,16 +15,16 @@
 
 package com.km2labs.android.spendview.service.rest.service;
 
-import com.km2labs.android.spendview.database.content.Member;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.android.spendview.database.content.Member;
 
 import java.util.List;
 
-import retrofit.http.DELETE;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Query;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 /**
  * Created by Subham Tyagi

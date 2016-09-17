@@ -16,13 +16,17 @@
 package com.km2labs.android.spendview.login;
 
 
+import android.support.annotation.NonNull;
+
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
 import com.km2labs.android.spendview.database.content.Device;
 import com.km2labs.android.spendview.database.content.User;
+import com.km2labs.android.spendview.login.beans.LoginRequest;
+import com.km2labs.android.spendview.login.beans.SignupRequest;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.android.spendview.setup.ProfileFetcher;
 import com.km2labs.android.spendview.setup.SeedDataTask;
+import com.km2labs.android.spendview.utils.RxUtils;
 
 import javax.inject.Inject;
 
@@ -37,7 +41,7 @@ import timber.log.Timber;
  * TODO:Add class comment.
  */
 @ConfigPersistent
-public class LoginModel implements LoginContract.Model {
+public class UserModel implements LoginContract.Model {
 
     private UserInfoDataAdapter mUserInfoDataAdapter;
     private LoginService mLoginService;
@@ -45,7 +49,7 @@ public class LoginModel implements LoginContract.Model {
     private SignupRequest mSignupRequest;
 
     @Inject
-    public LoginModel(SeedDataTask seedDataTask, UserInfoDataAdapter userInfoDataAdapter, LoginService loginService) {
+    public UserModel(SeedDataTask seedDataTask, UserInfoDataAdapter userInfoDataAdapter, LoginService loginService) {
         Timber.tag(getClass().getSimpleName());
         mUserInfoDataAdapter = userInfoDataAdapter;
         mLoginService = loginService;
@@ -54,28 +58,37 @@ public class LoginModel implements LoginContract.Model {
     }
 
     @Override
-    public Observable<Boolean> createUser(ProfileFetcher profileFetcher) {
+    public Observable<Boolean> createUser(final User user) {
         return Observable.create(subscriber -> {
-            User user = profileFetcher.getUserProfileDetails();
             user.setStatus(User.Status.USER_CREATED);
-            user = mUserInfoDataAdapter.create(user);
             UserSettings.getInstance().setUser(user);
-            mSignupRequest.setAuthenticationToken(profileFetcher.getAuthenticationToken());
-            mSeedDataTask.execute();
+            mUserInfoDataAdapter.create(user);
         });
     }
 
-    public Observable<Boolean> signupUser(String phoneNo, String loginType) {
+    public Observable<User> login(LoginType loginType, String authToken, String mobileNo) {
         return Observable.create(subscriber -> {
-            User user = UserSettings.getInstance().getUser();
-            user.setPhoneNumber(phoneNo);
-            Device device = new Device();
-            user.setDevice(device);
-
-            mSignupRequest.setUser(user);
-            mSignupRequest.setLoginType(loginType);
-            SignupResponse response = mLoginService.signup(mSignupRequest);
-            mUserInfoDataAdapter.updateDeviceId(response.getUser().getServerId());
+            LoginRequest loginRequest = getLoginRequest(loginType, authToken, mobileNo);
+            mLoginService.login(loginRequest).compose(RxUtils.applySchedulers())
+                    .subscribe(loginResponse -> {
+                                subscriber.onNext(loginResponse.getUser());
+                            },
+                            subscriber::onError);
         });
+    }
+
+    @NonNull
+    private LoginRequest getLoginRequest(LoginType loginType, String authToken, String mobileNo) {
+        LoginRequest loginRequest = new LoginRequest();
+        Device device = new Device();
+        loginRequest.setDevice(device);
+        loginRequest.setLoginType(loginType.name());
+        loginRequest.setAuthenticationToken(authToken);
+        loginRequest.setMobileNo(mobileNo);
+        return loginRequest;
+    }
+
+    public void validateOTP(String otp) {
+
     }
 }

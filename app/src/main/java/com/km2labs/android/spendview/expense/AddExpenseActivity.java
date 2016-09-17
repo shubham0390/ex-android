@@ -19,9 +19,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivity;
-import com.km2labs.spendview.android.R;
+import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.expense.adapters.AddExpenseFragmentAdapter;
+import com.km2labs.expenseview.android.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * Created by shubham on 11/19/15.
  */
-public class AddExpenseActivity extends ToolBarActivity {
+public class AddExpenseActivity extends ToolBarActivityV3 {
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;
@@ -50,12 +51,27 @@ public class AddExpenseActivity extends ToolBarActivity {
 
     }
 
+    @Override
+    protected <T> T createComponent(MainComponent mainComponent) {
+        return null;
+    }
+
+    @Override
+    protected void injectDependencies(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected int getLayout() {
+        return 0;
+    }
+
     private void setup() {
         AddExpenseFragmentAdapter adapter = new AddExpenseFragmentAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());

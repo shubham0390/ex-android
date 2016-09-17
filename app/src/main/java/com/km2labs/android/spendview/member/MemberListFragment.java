@@ -16,7 +16,6 @@
 package com.km2labs.android.spendview.member;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -25,17 +24,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.km2labs.spendview.android.R;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
-import com.km2labs.android.spendview.core.mvp.lce.LCEViewState;
-import com.km2labs.android.spendview.core.mvp.lce.LCEViewStateImpl;
-import com.km2labs.android.spendview.core.mvp.lce.MVPLCEView;
-import com.km2labs.android.spendview.core.mvp.lce.SupportMVPLCEFragment;
-import com.km2labs.android.spendview.core.recyclerview.ListRecyclerView;
+import com.km2labs.android.spendview.core.base.RecyclerViewFragment;
 import com.km2labs.android.spendview.database.content.Member;
 import com.km2labs.android.spendview.member.detail.MemberDetailActivity;
 import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
@@ -49,8 +42,7 @@ import static butterknife.ButterKnife.findById;
  * 11:30 PM
  * TODO:Add class comment.
  */
-public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, List<Member>, MVPLCEView<List<Member>>,
-        MemberListFragmentPresenter> {
+public class MemberListFragment extends RecyclerViewFragment {
 
     public static final int TYPE_EXPENSE_BOOK = 1;
     public static final int TYPE_MEMBER = 2;
@@ -67,16 +59,8 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setRestoringViewState(true);
         mArguments = getArguments();
     }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.fragment_member_list;
-    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -88,16 +72,6 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
         }
         mListAdapter = new MemberAdapter();
         mListAdapter.setCanDelete(mIsMemberDeletable);
-        mContentView.setAdapter(mListAdapter);
-        setupListener();
-        getViewState().apply(this, true);
-    }
-
-    private void setupListener() {
-        mContentView.setOnItemClickListener((parent, view, position, id) -> {
-            onMemberItemClick(position);
-            return true;
-        });
     }
 
     private void onMemberItemClick(int position) {
@@ -105,47 +79,6 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
         Member member = mListAdapter.getItem(position);
         intent.putExtra(Constants.EXTRA_MEMBER, Parcels.wrap(member));
         startActivity(intent);
-    }
-
-    @Override
-    public LCEViewState<List<Member>, MVPLCEView<List<Member>>> createViewState() {
-        return new LCEViewStateImpl<>();
-    }
-
-    @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return "Unable to load members";
-    }
-
-    @Override
-    public List<Member> getData() {
-        return mMemberList;
-    }
-
-    @Override
-    public void setData(List<Member> data) {
-        showContent();
-        mMemberList = data;
-        mListAdapter.setMembers(data);
-
-    }
-
-    @Override
-    public void loadData(boolean pullToRefresh) {
-        showLoading(true);
-        switch (mType) {
-            case TYPE_EXPENSE_BOOK:
-                mPresenter.loadAllMembersByExpenseBook(mExpenseBookId);
-                break;
-            case TYPE_MEMBER:
-                mPresenter.loadAllMembers();
-                break;
-        }
-    }
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     public void onMemberDeleteEvent(MemberDeleteEvent event) {
@@ -159,7 +92,6 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
             mDailogMessageTextView.setText(R.string.message_removing_member);
             mRemoveButton.setVisibility(View.GONE);
             mCancelButton.setVisibility(View.GONE);
-            mPresenter.deleteMemberFromExpenseBook(event.mMemberId, mExpenseBookId);
 
         });
         alertDialog = builder.create();
@@ -171,12 +103,14 @@ public class MemberListFragment extends SupportMVPLCEFragment<ListRecyclerView, 
         alertDialog.show();
     }
 
+
     @Override
-    public void showError(Throwable e, boolean pullToRefresh) {
-        if (e instanceof SQLiteConstraintException) {
-            mDailogMessageTextView.setText(R.string.error_message_member_cannot_be_removed);
-        } else {
-            super.showError(e, pullToRefresh);
-        }
+    protected LayoutManagerType getLayoutManagerType() {
+        return null;
+    }
+
+    @Override
+    protected void loadList() {
+
     }
 }

@@ -22,7 +22,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 /**
  * Created by Subham Tyagi,

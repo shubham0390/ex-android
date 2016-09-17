@@ -13,18 +13,12 @@
  * limitations under the License.
  */
 
-package com.km2labs.android.spendview.core.dagger.scope;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import javax.inject.Qualifier;
+package com.km2labs.android.spendview.login;
 
 /**
- * Created by Subham on 30/06/16.
+ * Created by suze on 08/08/16.
  */
-
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ActivityContext {
+public enum LoginType {
+    FACEBOOK,
+    GOOGLE
 }

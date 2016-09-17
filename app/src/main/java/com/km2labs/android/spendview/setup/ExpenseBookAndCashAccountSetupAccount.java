@@ -16,13 +16,13 @@
 package com.km2labs.android.spendview.setup;
 
 
-import com.km2labs.android.spendview.database.content.User;
-import com.km2labs.android.spendview.expense.ExpenseModel;
-import com.km2labs.android.spendview.settings.UserSettings;
 import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
 import com.km2labs.android.spendview.database.api.exceptions.AccountDataAdapter;
 import com.km2labs.android.spendview.database.content.Account;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.android.spendview.database.content.User;
+import com.km2labs.android.spendview.expense.ExpenseModel;
+import com.km2labs.android.spendview.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +35,10 @@ import java.util.List;
 
 public class ExpenseBookAndCashAccountSetupAccount {
 
-    public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.mmt.shubh.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
+    public static final String ACTION_CREATE_ACCOUNT_EXPENSE_BOOK = "com.km2labs.spendview.android.ACTION_CREATE_ACCOUNT_EXPENSE_BOOK";
 
-    ExpenseModel mExpenseModel;
-    ExpenseBookDataAdapter mExpenseBookDataAdapter;
+    private ExpenseModel mExpenseModel;
+    private ExpenseBookDataAdapter mExpenseBookDataAdapter;
 
     public ExpenseBookAndCashAccountSetupAccount(ExpenseModel expenseModel,
                                                  ExpenseBookDataAdapter expenseBookDataAdapter) {
@@ -60,9 +60,9 @@ public class ExpenseBookAndCashAccountSetupAccount {
 
         ExpenseBook expenseBook = new ExpenseBook();
         expenseBook.setType(ExpenseBook.TYPE_PERSONAL);
-        expenseBook.setDescription("This is personal expense book of" + user.getEmailAddress());
-        expenseBook.setName(user.getDisplayName());
-        expenseBook.setProfileImagePath(user.getProfilePhotoUrl());
+        expenseBook.setDescription("This is personal expense book of" + user.getEmail());
+        expenseBook.setName(user.getName());
+        expenseBook.setProfileImagePath(user.getProfileImageUrl());
         expenseBook.setOwner(UserSettings.getInstance().getUserId());
         expenseBook.setCreationTime(System.currentTimeMillis());
 

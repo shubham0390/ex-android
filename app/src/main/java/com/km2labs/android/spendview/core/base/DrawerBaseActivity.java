@@ -38,7 +38,7 @@ import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.expensebook.detail.ExpenseBookActivity;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.home.SummaryActivity;
 import com.km2labs.android.spendview.settings.SettingsActivity;
 
@@ -154,16 +154,16 @@ public abstract class DrawerBaseActivity<P extends MVPPresenter> extends ToolBar
             TextView displayName = (TextView) view.findViewById(R.id.account_name);
             TextView emailId = (TextView) view.findViewById(R.id.email_id);
 
-            if (!TextUtils.isEmpty(mUser.getCoverPhotoUrl())) {
-                coverImage.loadImage(mUser.getCoverPhotoUrl());
+            if (!TextUtils.isEmpty(mUser.getCoverImageUrl())) {
+                coverImage.loadImage(mUser.getCoverImageUrl());
             }
 
-            if (!TextUtils.isEmpty(mUser.getProfilePhotoUrl())) {
-                profileImage.loadImage(mUser.getCoverPhotoUrl());
+            if (!TextUtils.isEmpty(mUser.getProfileImageUrl())) {
+                profileImage.loadImage(mUser.getProfileImageUrl());
             }
 
-            displayName.setText(mUser.getDisplayName());
-            emailId.setText(mUser.getEmailAddress());
+            displayName.setText(mUser.getName());
+            emailId.setText(mUser.getEmail());
         }
     }
 

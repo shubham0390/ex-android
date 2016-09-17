@@ -19,7 +19,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.dagger.component.DaggerConfigPersistentComponent;
 
@@ -50,14 +50,13 @@ public abstract class DaggerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivityId = savedInstanceState == null ? NEXT_ID.getAndIncrement()
-                : savedInstanceState.getLong(KEY_ACTIVITY_ID);
+        mActivityId = savedInstanceState == null ? NEXT_ID.getAndIncrement() : savedInstanceState.getLong(KEY_ACTIVITY_ID);
 
         ConfigPersistentComponent configPersistentComponent;
         if (!PERSISTENT_COMPONENT_MAP.containsKey(mActivityId)) {
             configPersistentComponent = DaggerConfigPersistentComponent
                     .builder()
-                    .mainComponent(ExpenseApplication.get(this).getMainComponent())
+                    .mainComponent(App.get(this).getMainComponent())
                     .build();
         } else {
             configPersistentComponent = PERSISTENT_COMPONENT_MAP.get(mActivityId);

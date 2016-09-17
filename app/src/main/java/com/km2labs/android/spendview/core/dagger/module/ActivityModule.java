@@ -18,7 +18,7 @@ package com.km2labs.android.spendview.core.dagger.module;
 import android.app.Activity;
 import android.content.Context;
 
-import com.km2labs.android.spendview.core.dagger.scope.ActivityContext;
+import com.km2labs.android.spendview.core.dagger.scope.ActivityScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,7 +41,7 @@ public class ActivityModule {
     }
 
     @Provides
-    @ActivityContext
+    @ActivityScope
     Context provideContext() {
         return mActivity;
     }

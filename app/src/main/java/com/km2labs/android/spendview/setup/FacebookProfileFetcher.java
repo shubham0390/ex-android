@@ -52,8 +52,8 @@ public class FacebookProfileFetcher implements ProfileFetcher {
 
         Profile profile = Profile.getCurrentProfile();
 
-        mUser.setDisplayName(profile.getName());
-        mUser.setProfilePhotoUrl(profile.getProfilePictureUri(512, 512).toString());
+        mUser.setName(profile.getName());
+        mUser.setProfileImageUrl(profile.getProfilePictureUri(512, 512).toString());
 
         GraphRequest graphRequest = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + Profile.getCurrentProfile().getId(),
                 null, HttpMethod.GET, mCallback);
@@ -72,8 +72,8 @@ public class FacebookProfileFetcher implements ProfileFetcher {
             try {
                 JSONObject jsonObject = response.getJSONObject();
                 String emailID = jsonObject.getString("email");
-                mUser.setEmailAddress(emailID);
-                mUser.setProfilePhotoUrl(profile1.getProfilePictureUri(512, 512).toString());
+                mUser.setEmail(emailID);
+                mUser.setProfileImageUrl(profile1.getProfilePictureUri(512, 512).toString());
 
             } catch (JSONException e) {
                 e.printStackTrace();

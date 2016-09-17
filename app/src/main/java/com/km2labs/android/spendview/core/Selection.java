@@ -17,7 +17,7 @@ package com.km2labs.android.spendview.core;
 
 import android.text.TextUtils;
 
-import com.km2labs.android.spendview.core.util.CollectionUtil;
+import com.km2labs.android.spendview.core.util.CollectionUtils;
 
 /**
  * Created by shubham on 12/31/15.
@@ -66,7 +66,7 @@ public class Selection {
         sb.append(QueryBuilder.SPACE);
         sb.append(mOperation);
 
-        if (CollectionUtil.isEmpty(mValues)) {
+        if (CollectionUtils.isEmpty(mValues)) {
             sb.append(" ( ");
             new QueryBuilder().arrayToString(sb, mValues, prefix);
             sb.append(" ) ");

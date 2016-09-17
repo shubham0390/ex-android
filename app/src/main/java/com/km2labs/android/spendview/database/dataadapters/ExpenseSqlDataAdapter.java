@@ -19,21 +19,21 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.km2labs.android.spendview.core.Select;
+import com.km2labs.android.spendview.database.api.ExpenseDataAdapter;
 import com.km2labs.android.spendview.database.content.Expense;
+import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.database.content.ExpenseCategory;
+import com.km2labs.android.spendview.database.content.MemberExpense;
+import com.km2labs.android.spendview.database.content.ModelFactory;
 import com.km2labs.android.spendview.database.content.contract.AccountContract;
+import com.km2labs.android.spendview.database.content.contract.CategoryContract;
 import com.km2labs.android.spendview.database.content.contract.ExpenseBookContract;
 import com.km2labs.android.spendview.database.content.contract.ExpenseContract;
 import com.km2labs.android.spendview.database.content.contract.MemberContract;
 import com.km2labs.android.spendview.database.content.contract.MemberExpenseContract;
 import com.km2labs.android.spendview.expense.ExpenseFilter;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
-import com.km2labs.android.spendview.core.Select;
-import com.km2labs.android.spendview.database.api.ExpenseDataAdapter;
-import com.km2labs.android.spendview.database.content.ExpenseBook;
-import com.km2labs.android.spendview.database.content.MemberExpense;
-import com.km2labs.android.spendview.database.content.ModelFactory;
-import com.km2labs.android.spendview.database.content.contract.CategoryContract;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import org.threeten.bp.LocalDate;
@@ -377,7 +377,7 @@ public class ExpenseSqlDataAdapter extends BaseSQLDataAdapter<Expense> implement
         Cursor cursor = null;
         try {
 
-            cursor = mBriteDatabase.query(query, null);
+            cursor = mBriteDatabase.query(query);
             if (cursor != null) {
                 return cursor.getCount() > 0;
             }

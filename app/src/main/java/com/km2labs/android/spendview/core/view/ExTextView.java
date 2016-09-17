@@ -21,7 +21,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 /**
  * Created by Subham Tyagi,

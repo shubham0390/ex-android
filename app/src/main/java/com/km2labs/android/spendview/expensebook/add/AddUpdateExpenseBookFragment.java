@@ -36,15 +36,13 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.km2labs.android.spendview.IFragmentDataSharer;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 import com.km2labs.android.spendview.core.view.CircleImageView;
+import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.android.spendview.utils.Utilities;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
-import com.km2labs.android.spendview.IFragmentDataSharer;
-import com.km2labs.spendview.android.R;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
-import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
@@ -275,8 +273,4 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
         exit();
     }
 
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
-    }
 }

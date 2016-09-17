@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.km2labs.android.spendview.core.view.SimpleImageView;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
 import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.base.ToolBarActivity2;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
@@ -72,7 +72,7 @@ public class MemberDetailActivity extends ToolBarActivity2<MemberDetailPresenter
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         toggleHomeBackButton(true);
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
         parseIntent();
 
     }
@@ -122,7 +122,7 @@ public class MemberDetailActivity extends ToolBarActivity2<MemberDetailPresenter
     protected void onStart() {
         super.onStart();
 
-       /* mMemberModel.loadAllExpneseBooksByMemberId(mMember.getId()).subscribeOn(Schedulers.io())
+       /* mMemberModel.loadAllExpneseBooksByMemberId(mMember.getLocalId()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(d -> {
                     if (d.size() < 0) {
@@ -136,7 +136,7 @@ public class MemberDetailActivity extends ToolBarActivity2<MemberDetailPresenter
                     Timber.e("Unable to load expense for member %s", e.getMessage());
                 });
 */
-        /*mMemberModel.getAllSharedExpense(mMember.getId(), UserSettings.getInstance().getUserId())
+        /*mMemberModel.getAllSharedExpense(mMember.getLocalId(), UserSettings.getInstance().getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(d -> {
@@ -150,7 +150,7 @@ public class MemberDetailActivity extends ToolBarActivity2<MemberDetailPresenter
                 }, e -> {
                     Timber.e("Unable to load expense for member %s", e.getMessage());
                 });*/
-      /*  mMemberModel.getMemberExpenses(mMember.getId(), UserSettings.getInstance().getUserId())
+      /*  mMemberModel.getMemberExpenses(mMember.getLocalId(), UserSettings.getInstance().getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(d -> {
@@ -160,7 +160,7 @@ public class MemberDetailActivity extends ToolBarActivity2<MemberDetailPresenter
                         otherRemainingAmount += memberExpense.getBalanceAmount();
                     }
                     final double finalOtherRemainingAmount = otherRemainingAmount;
-                    mMemberModel.getMemberExpenses(mMember.getId(), UserSettings.getInstance().getUserId())
+                    mMemberModel.getMemberExpenses(mMember.getLocalId(), UserSettings.getInstance().getUserId())
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
                             .subscribe(d2 -> {

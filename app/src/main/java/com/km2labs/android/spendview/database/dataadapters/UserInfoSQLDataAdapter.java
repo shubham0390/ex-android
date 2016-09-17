@@ -45,7 +45,7 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<User> implements 
     @Override
     public User parseCursor(Cursor cursor) {
         User user = ModelFactory.getUserInfo();
-        user.setId(cursor.getLong(cursor.getColumnIndex(RECORD_ID)));
+        user.setLocalId(cursor.getLong(cursor.getColumnIndex(RECORD_ID)));
         user.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(USER_PHONE_NUMBER)));
         user.setEmail(cursor.getString(cursor.getColumnIndex(USER_EMAIL_ADDRESS)));
         user.setCoverImageUrl(cursor.getString(cursor.getColumnIndex(USER_COVER_IMAGE_URL)));
@@ -81,11 +81,16 @@ public class UserInfoSQLDataAdapter extends BaseSQLDataAdapter<User> implements 
 
     @Override
     protected void setId(User user, long id) {
-        user.setId(id);
+        user.setLocalId(id);
     }
 
     @Override
     public void updateDeviceId(String id) {
+
+    }
+
+    @Override
+    public void updateUserId(String serverId) {
 
     }
 }

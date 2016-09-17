@@ -19,7 +19,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 public class CategoryActivity extends AppCompatActivity {
 

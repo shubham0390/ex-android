@@ -27,7 +27,7 @@ import com.km2labs.android.spendview.core.recyclerview.adapter.section.SectionVi
 import com.km2labs.android.spendview.expense.ExpenseListView;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
 import com.km2labs.android.spendview.expense.ListItemExpense;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import java.util.List;
 

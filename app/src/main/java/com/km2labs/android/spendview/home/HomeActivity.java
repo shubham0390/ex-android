@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.base.DrawerBaseActivity;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.expense.AddExpenseActivity;

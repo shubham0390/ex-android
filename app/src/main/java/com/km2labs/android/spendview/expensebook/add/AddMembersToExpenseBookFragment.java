@@ -33,14 +33,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
-import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
-import com.km2labs.spendview.android.R;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.member.ContactPickerAdapter;
 import com.km2labs.android.spendview.member.ContactsMetaData;
+import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
@@ -202,12 +200,6 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
             }
         }
         return filteredModelList;
-    }
-
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

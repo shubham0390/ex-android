@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

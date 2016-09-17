@@ -16,7 +16,7 @@
 package com.km2labs.android.spendview.core.mvp;
 
 
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 
 import java.lang.ref.WeakReference;
@@ -31,9 +31,9 @@ public abstract class BasePresenter<V extends MVPView> {
         Timber.tag(getClass().getName());
     }
 
-    public void attachView(V view) {
+    public void subcribe(V view) {
         viewRef = new WeakReference<>(view);
-        injectDependencies((MainComponent) ExpenseApplication.component());
+        injectDependencies((MainComponent) App.component());
         Timber.tag(getClass().getName());
     }
 
@@ -56,7 +56,7 @@ public abstract class BasePresenter<V extends MVPView> {
         return viewRef != null && viewRef.get() != null;
     }
 
-    public void detachView(boolean retainInstance) {
+    public void unsubcribe(boolean retainInstance) {
         if (viewRef != null) {
             viewRef.clear();
             viewRef = null;

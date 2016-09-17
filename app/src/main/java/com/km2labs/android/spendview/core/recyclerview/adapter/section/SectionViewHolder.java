@@ -19,7 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 
 public class SectionViewHolder extends RecyclerView.ViewHolder {

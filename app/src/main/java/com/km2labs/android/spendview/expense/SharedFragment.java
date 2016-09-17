@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 import com.km2labs.android.spendview.expensebook.ExpenseBookListDialog;
 import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 
 import java.util.List;

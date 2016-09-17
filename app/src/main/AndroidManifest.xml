@@ -15,7 +15,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.km2labs.spendview.android">
+          package="com.km2labs.expenseview.android">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -23,7 +23,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.SEND"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.mmt.shubh.gcm.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.km2labs.spendview.android.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
@@ -31,13 +31,13 @@
     <uses-feature android:name="android.hardware.camera"
                   android:required="true"/>
     <uses-permission android:name="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"/>
-    <uses-permission android:name="com.mmt.shubh.permission.ACCESS_PROVIDER"/>
 
     <permission
         android:name="com.km2labs.shubh.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature"/>
+
     <application
-        android:name="com.km2labs.android.spendview.ExpenseApplication"
+        android:name="com.km2labs.android.spendview.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,7 +58,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
 
-                <category android:name="com.mmt.shubh.expensemanager"/>
+                <category android:name="com.km2labs.spendview.android"/>
             </intent-filter>
         </receiver>
 

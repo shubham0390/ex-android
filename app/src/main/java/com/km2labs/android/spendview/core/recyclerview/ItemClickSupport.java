@@ -18,7 +18,7 @@ package com.km2labs.android.spendview.core.recyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 public class ItemClickSupport {
 

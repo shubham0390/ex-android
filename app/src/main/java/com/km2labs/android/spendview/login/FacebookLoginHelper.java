@@ -69,16 +69,6 @@ public class FacebookLoginHelper implements ILoginHelper, FacebookCallback<Login
     }
 
     @Override
-    public void signOut() {
-        LoginManager.getInstance().logOut();
-    }
-
-    @Override
-    public void revokeAccess() {
-
-    }
-
-    @Override
     public Object getClient() {
         return null;
     }

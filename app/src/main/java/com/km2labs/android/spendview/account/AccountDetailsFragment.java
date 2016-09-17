@@ -29,15 +29,13 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.km2labs.android.spendview.core.mvp.MVPFragment;
+import com.km2labs.android.spendview.database.content.Account;
+import com.km2labs.android.spendview.expense.ExpenseListView;
 import com.km2labs.android.spendview.expense.ExpenseListViewModel;
 import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.android.spendview.utils.MyYAxisValueFormatter;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
-import com.km2labs.android.spendview.core.mvp.MVPFragment;
-import com.km2labs.spendview.android.R;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
-import com.km2labs.android.spendview.database.content.Account;
-import com.km2labs.android.spendview.expense.ExpenseListView;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
@@ -180,11 +178,6 @@ public class AccountDetailsFragment extends MVPFragment<AccountDetailPresenter> 
     @Override
     public void loadData(boolean pullToRefresh) {
         mAccountDetailPresenter.loadExpenseByAccountId(mAccount.getId());
-    }
-
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
     }
 
     @Override

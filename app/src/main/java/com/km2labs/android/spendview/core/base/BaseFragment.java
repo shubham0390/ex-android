@@ -17,9 +17,10 @@ package com.km2labs.android.spendview.core.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.google.android.gms.analytics.Tracker;
-import com.km2labs.android.spendview.ExpenseApplication;
+import com.km2labs.android.spendview.App;
 
 /**
  * Created by Subham Tyagi,
@@ -27,7 +28,7 @@ import com.km2labs.android.spendview.ExpenseApplication;
  * 6:08 PM
  * TODO:Add class comment.
  */
-public abstract class BaseFragment extends DaggerFragment {
+public abstract class BaseFragment extends Fragment {
     protected Context mContext;
     protected Tracker mTracker;
 
@@ -37,7 +38,7 @@ public abstract class BaseFragment extends DaggerFragment {
         setHasOptionsMenu(true);
         mContext = getActivity().getApplicationContext();
         // Obtain the shared Tracker instance.
-        ExpenseApplication application = (ExpenseApplication) getActivity().getApplication();
+        App application = (App) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
     }
 

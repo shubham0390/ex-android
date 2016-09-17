@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.km2labs.android.spendview.core.recyclerview.ListRecyclerView;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 
 import java.util.ArrayList;

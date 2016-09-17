@@ -15,8 +15,14 @@
 
 package com.km2labs.android.spendview.login;
 
+import com.km2labs.android.spendview.login.beans.LoginRequest;
+import com.km2labs.android.spendview.login.beans.LoginResponse;
+import com.km2labs.android.spendview.login.beans.SignupRequest;
+import com.km2labs.android.spendview.login.beans.SignupResponse;
+
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * Created by Subham Tyagi on 30/07/16.
@@ -25,5 +31,8 @@ import retrofit2.http.POST;
 public interface LoginService {
 
     @POST("/user")
-    SignupResponse signup(@Body SignupRequest user);
+    Observable<SignupResponse> signup(@Body SignupRequest user);
+
+    @POST("/user/login")
+    Observable<LoginResponse> login(@Body LoginRequest loginRequest);
 }

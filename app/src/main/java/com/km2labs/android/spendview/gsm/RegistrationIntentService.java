@@ -22,10 +22,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmPubSub;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
-import com.km2labs.android.spendview.service.ExpenseSyncManager;
-import com.km2labs.spendview.android.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 
@@ -43,10 +40,9 @@ public class RegistrationIntentService extends IntentService {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         try {
             synchronized (TAG) {
-                InstanceID instanceID = InstanceID.getInstance(this);
-                String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                FirebaseInstanceId instanceID = FirebaseInstanceId.getInstance();
+                String token = instanceID.getToken();
                 Log.i(TAG, "GCM Registration Token: " + token);
-                sharedPreferences.edit().putString(QuickstartPreferences.REGISTRATION_TOKEN, token);
                 sendRegistrationToServer(token);
                 subscribeTopics(token);
             }
@@ -56,30 +52,16 @@ public class RegistrationIntentService extends IntentService {
         }
     }
 
-    /**
-     * Persist registration to third-party servers.
-     * <p/>
-     * Modify this method to associate the user's GCM registration token with any server-side account
-     * maintained by your application.
-     *
-     * @param token   The new token.
-     * @param account
-     */
     private void sendRegistrationToServer(String token) {
-        ExpenseSyncManager expenseServiceManager = ExpenseSyncManager.getExpenseServiceManager(getApplicationContext());
-        expenseServiceManager.registerDeviceWithServer();
+        //ExpenseSyncManager expenseServiceManager = ExpenseSyncManager.getExpenseServiceManager(getApplicationContext());
+        //expenseServiceManager.registerDeviceWithServer();
     }
 
-    /**
-     * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
-     *
-     * @param token GCM token
-     * @throws IOException if unable to reach the GCM PubSub service
-     */
+
     private void subscribeTopics(String token) throws IOException {
         for (String topic : TOPICS) {
             GcmPubSub pubSub = GcmPubSub.getInstance(this);
-            pubSub.subscribe(token, "/topics/" + topic, null);
+            pubSub.subscribe(token, "/ExpenseView/" + topic, null);
         }
     }
 }

@@ -28,15 +28,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.common.SignInButton;
-import com.km2labs.android.spendview.core.base.ToolBarActivity2;
-import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
-import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
+import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.home.HomeActivity;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements LoginContract.View {
+public class LoginActivity extends ToolBarActivityV3 implements LoginContract.View {
 
     @BindView(R.id.plus_sign_in_button)
     SignInButton mPlusSignInButton;
@@ -50,9 +51,18 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
     @BindView(R.id.login_progress)
     View mProgressView;
 
+    @Inject
+    LoginPresenter mPresenter;
+
     @Override
-    protected void injectDependencies(ConfigPersistentComponent component) {
-        component.activityComponent(new ActivityModule(this)).inject(this);
+    protected <T> T createComponent(MainComponent mainComponent) {
+        return (T) mainComponent.plus().plus(new LoginContract.LoginModule(this, this));
+    }
+
+    @Override
+    protected void injectDependencies(Bundle savedInstanceState) {
+        LoginContract.LoginComponent loginComponent = getComponent(savedInstanceState);
+        loginComponent.injectLoginActivity(this);
     }
 
     @Override
@@ -60,15 +70,15 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
         super.onCreate(savedInstanceState);
         initializeToolbar();
         getSupportActionBar().setElevation(0);
+        mPresenter.subcribe(this);
         mPresenter.setupFacebookLogin(mFacebookLoginButton, this);
         mPresenter.setupGoogleLogin(mPlusSignInButton, this);
-        mPresenter.attachView(this);
     }
+
 
     @Override
     protected int getLayout() {
         return R.layout.activity_login;
-
     }
 
     private void showBackButton(boolean value) {
@@ -116,7 +126,9 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
 
     @Override
     public void showAskMobileScreen() {
-
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -148,6 +160,5 @@ public class LoginActivity extends ToolBarActivity2<LoginPresenter> implements L
             }
         });
     }
-
 }
 

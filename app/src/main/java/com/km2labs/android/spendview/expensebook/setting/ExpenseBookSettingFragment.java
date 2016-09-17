@@ -20,14 +20,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
+import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.database.content.Member;
 import com.km2labs.android.spendview.member.MemberListFragment;
 import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
-import com.km2labs.spendview.android.R;
-import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
@@ -78,13 +76,8 @@ public class ExpenseBookSettingFragment extends MVPFragment<ExpenseBookSettingPr
     }
 
     @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        mainComponent.fragmentComponent(new FragmentModule()).inject(this);
-    }
-
-    @Override
     public void onOwnerLoaded(Member member) {
         mCreatedByTextView.setText(String.format(getString(R.string.created_by), member.getMemberName()));
-        mCreatedOnTextView.setText(String.format(getString(R.string.created_on), mExpenseBook.getCreationTime()));
+        //mCreatedOnTextView.setText(String.format(getString(R.string.created_on), mExpenseBook.getCreationTime()));
     }
 }

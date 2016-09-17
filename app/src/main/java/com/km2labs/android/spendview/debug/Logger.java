@@ -19,9 +19,8 @@ package com.km2labs.android.spendview.debug;
  * Created by STyagi on 4/4/14.
  */
 
+import android.support.design.BuildConfig;
 import android.util.Log;
-
-import com.km2labs.spendview.android.BuildConfig;
 
 
 /**

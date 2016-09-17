@@ -25,7 +25,7 @@ import java.util.Map;
  * Authored by : <A HREF="mailto:[SubhamTyagi@km2labs.com]">Subham Tyagi</A>
  * Created on  : 12/31/15 10:26 AM
  */
-public class CollectionUtil {
+public class CollectionUtils {
 
 
     public static boolean isEmpty(Object[] array) {

@@ -32,7 +32,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 import com.km2labs.android.spendview.core.view.AutoResizeEditText;
 import com.km2labs.android.spendview.core.view.BottomSheet;
@@ -41,7 +40,7 @@ import com.km2labs.android.spendview.database.content.Account;
 import com.km2labs.android.spendview.database.content.Expense;
 import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.android.spendview.utils.DateUtil;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 import org.threeten.bp.LocalDateTime;
@@ -56,7 +55,6 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class AddExpenseFragment extends MVPFragment<AddExpensePresenter> implements AddExpenseView {
-
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -212,14 +210,6 @@ public class AddExpenseFragment extends MVPFragment<AddExpensePresenter> impleme
 
     }
 
-    @Override
-    protected void injectDependencies(MainComponent mainComponent) {
-        DaggerAddExpenseActivityComponent.builder()
-                .mainComponent(mainComponent)
-                .addExpenseFragmentModule(new AddExpenseFragmentModule())
-                .build()
-                .inject(this);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

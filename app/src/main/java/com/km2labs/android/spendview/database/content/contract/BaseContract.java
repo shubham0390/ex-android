@@ -25,7 +25,7 @@ import android.provider.BaseColumns;
  */
 public interface BaseContract extends BaseColumns {
 
-    String AUTHORITY = "com.mmt.shubh.expensemanager.expenseprovider";
+    String AUTHORITY = "com.km2labs.spendview.android.expenseprovider";
 
     long NO_CONTENT = -1;
 

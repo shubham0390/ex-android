@@ -22,7 +22,7 @@ import android.os.Handler;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.android.spendview.login.LoginActivity;
-import com.km2labs.spendview.android.R;
+import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.mvp.MVPActivity2;
 
@@ -39,7 +39,7 @@ public class SplashActivity extends MVPActivity2<SplashPresenter> implements Spl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class SplashActivity extends MVPActivity2<SplashPresenter> implements Spl
     @Override
     protected void onStart() {
         super.onStart();
-        mPresenter.attachView(this);
+        mPresenter.subcribe(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mPresenter.detachView(false);
+        mPresenter.unsubcribe(false);
     }
 
     @Override
