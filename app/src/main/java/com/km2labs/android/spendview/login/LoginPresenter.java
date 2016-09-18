@@ -22,11 +22,19 @@ import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
+import com.km2labs.android.spendview.database.api.UserDataAdapter;
+import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.debug.Logger;
 import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.android.spendview.setup.FacebookProfileFetcher;
+import com.km2labs.android.spendview.setup.GoogleProfileFetcher;
+import com.km2labs.android.spendview.setup.ProfileFetcher;
+import com.km2labs.android.spendview.utils.RxUtils;
 import com.km2labs.expenseview.android.R;
 
 import javax.inject.Inject;
+
+import rx.Observable;
 
 /**
  * Created by Subham Tyagi,
@@ -39,16 +47,15 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private final String TAG = getClass().getName();
 
-    private UserModel mUserModel;
-
     private GoogleLoginHelper mGoogleLoginHelper;
 
     private FacebookLoginHelper mFacebookLoginHelper;
 
-    @Inject
-    public LoginPresenter(UserModel userModel) {
-        mUserModel = userModel;
+    private UserDataAdapter mUserDataAdapter;
 
+    @Inject
+    public LoginPresenter(UserDataAdapter userDataAdapter) {
+        mUserDataAdapter = userDataAdapter;
     }
 
     @Override
@@ -73,18 +80,38 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void onSignInComplete(ILoginHelper.Type type, String token) {
         UserSettings userSettings = UserSettings.getInstance();
+        ProfileFetcher profileFetcher;
         switch (type) {
             case GOOGLE:
+                profileFetcher = new GoogleProfileFetcher(mGoogleLoginHelper.getSignInAccount());
                 userSettings.setLoginType(LoginType.GOOGLE);
                 Logger.debug(TAG, "Google login finished. Fetching User profile");
                 break;
             case FACEBOOK:
+                profileFetcher = new FacebookProfileFetcher(token);
                 userSettings.setLoginType(LoginType.FACEBOOK);
                 Logger.debug(TAG, "Facebook login finished. Fetching User profile");
                 break;
+            default:
+                throw new IllegalStateException("Wrong Login type");
         }
-        getView().showAskMobileScreen();
+
+        createUser(profileFetcher).compose(RxUtils.applyMainIOSchedulers())
+                .subscribe(aBoolean -> {
+                    getView().showAskMobileScreen();
+                });
+
     }
+
+    private Observable<Boolean> createUser(ProfileFetcher profileFetcher) {
+        return Observable.create(subscriber -> {
+            User user = profileFetcher.getUserProfileDetails();
+            user.setStatus(User.Status.LOGGED_IN);
+            mUserDataAdapter.create(user);
+            subscriber.onNext(true);
+        });
+    }
+
 
     @Override
     public void onSignInFailed(String message) {

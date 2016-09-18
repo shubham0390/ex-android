@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.km2labs.android.spendview.IFragmentDataSharer;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 import com.km2labs.android.spendview.core.view.CircleImageView;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
@@ -81,9 +80,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
 
     private boolean isUpdate;
 
-    private IFragmentDataSharer mFragmentDataSharer;
-
-
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_add_expense_book;
@@ -105,17 +101,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     @OnClick(R.id.expense_book_image)
     void onImageClickListener() {
         openImageIntent();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mFragmentDataSharer = (IFragmentDataSharer) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement IFragmentDataSharer");
-        }
     }
 
     @Override
@@ -245,7 +230,6 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
 
     @Override
     public void addMemberFragment(Bundle expenseBookInfo) {
-        mFragmentDataSharer.passData(expenseBookInfo);
     }
 
     @Override

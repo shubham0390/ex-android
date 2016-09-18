@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 public interface RecyclerItemView {
 
-    RecyclerView.ViewHolder createViewHolder(@NonNull ViewGroup parent);
+    RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent);
 
-    void bindView(RecyclerView.ViewHolder holder);
+    void onBindViewHolder(RecyclerView.ViewHolder holder);
 }

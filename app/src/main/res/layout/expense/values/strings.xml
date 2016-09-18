@@ -28,4 +28,6 @@
     <string name="google_server_client_id">
         764891183802-bsn16j40p66g9hn5i7m3d6685fgvjkss.apps.googleusercontent.com
     </string>
+    <string name="retry">RETRY</string>
+    <string name="loading">LOADING...</string>
 </resources>

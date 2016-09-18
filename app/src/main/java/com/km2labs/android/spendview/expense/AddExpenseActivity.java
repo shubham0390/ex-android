@@ -19,7 +19,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.base.ToolBarActivity;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.expense.adapters.AddExpenseFragmentAdapter;
 import com.km2labs.expenseview.android.R;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * Created by shubham on 11/19/15.
  */
-public class AddExpenseActivity extends ToolBarActivityV3 {
+public class AddExpenseActivity extends ToolBarActivity {
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;

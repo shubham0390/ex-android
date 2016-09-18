@@ -13,12 +13,12 @@ public class ItemizedRecyclerAdapter extends RecyclerAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerItemView itemView = mViewTypeVsViewItemLookup.get(viewType);
-        return itemView.createViewHolder(parent);
+        return itemView.onCreateViewHolder(parent);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         RecyclerItemView itemView = mItems.get(position);
-        itemView.bindView(holder);
+        itemView.onBindViewHolder(holder);
     }
 }

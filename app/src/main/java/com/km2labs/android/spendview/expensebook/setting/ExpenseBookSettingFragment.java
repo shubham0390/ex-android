@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.km2labs.android.spendview.core.mvp.MVPFragment;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.database.content.Member;
-import com.km2labs.android.spendview.member.MemberListFragment;
+import com.km2labs.android.spendview.member.list.MemberListFragment;
 import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.expenseview.android.R;
 

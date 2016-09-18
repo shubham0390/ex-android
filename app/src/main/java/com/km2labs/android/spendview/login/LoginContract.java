@@ -52,11 +52,6 @@ public interface LoginContract {
             super(activity);
             mView = view;
         }
-
-        @NonNull
-        public View provideView() {
-            return mView;
-        }
     }
 
 

@@ -31,11 +31,11 @@ public interface MVPPresenterV2<V extends MVPView> {
     /**
      * Set or attach the view to this presenter
      */
-     void attachView(V view);
+    void subcribe(V view);
 
     /**
      * Will be called if the view has been destroyed. Typically this method will be invoked from
      * <code>Activity.unsubcribe()</code> or <code>Fragment.onDestroyView()</code>
      */
-     void detachView(boolean retainInstance);
+    void unsubscribe(boolean retainInstance);
 }

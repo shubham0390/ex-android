@@ -31,16 +31,15 @@ import android.widget.Toast;
 
 import com.km2labs.android.spendview.account.AccountActivity;
 import com.km2labs.android.spendview.category.CategoryActivity;
-import com.km2labs.android.spendview.core.mvp.MVPPresenter;
 import com.km2labs.android.spendview.core.view.CircleImageView;
 import com.km2labs.android.spendview.core.view.SimpleImageView;
 import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.expensebook.detail.ExpenseBookActivity;
 import com.km2labs.android.spendview.home.HomeActivity;
-import com.km2labs.android.spendview.settings.UserSettings;
-import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.home.SummaryActivity;
 import com.km2labs.android.spendview.settings.SettingsActivity;
+import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.expenseview.android.R;
 
 import butterknife.BindView;
 
@@ -50,7 +49,7 @@ import butterknife.BindView;
  * 9:59 AM
  * TODO:Add class comment.
  */
-public abstract class DrawerBaseActivity<P extends MVPPresenter> extends ToolBarActivity2<P> {
+public abstract class DrawerBaseActivity extends ToolBarActivity {
 
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;

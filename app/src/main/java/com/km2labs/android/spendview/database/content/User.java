@@ -39,8 +39,6 @@ public class User {
     @Expose
     @SerializedName("id")
     private String serverId;
-    @Expose
-    private Device device;
 
     public long getLocalId() {
         return localId;
@@ -96,14 +94,6 @@ public class User {
 
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
-    }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
     }
 
     public Status getStatus() {

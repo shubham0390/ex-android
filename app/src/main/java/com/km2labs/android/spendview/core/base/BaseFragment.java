@@ -19,7 +19,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.google.android.gms.analytics.Tracker;
 import com.km2labs.android.spendview.App;
 
 /**
@@ -30,7 +29,6 @@ import com.km2labs.android.spendview.App;
  */
 public abstract class BaseFragment extends Fragment {
     protected Context mContext;
-    protected Tracker mTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public abstract class BaseFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
         // Obtain the shared Tracker instance.
         App application = (App) getActivity().getApplication();
-        mTracker = application.getDefaultTracker();
     }
 
     @Override

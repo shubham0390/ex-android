@@ -17,7 +17,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'io.fabric'
 apply plugin: 'android-apt'
 
 android {
@@ -27,7 +26,6 @@ android {
         maven { url "https://clojars.org/repo/" }
         maven { url 'http://dl.bintray.com/amulyakhare/maven' }
         maven { url "https://jitpack.io" }
-        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://urbanairship.bintray.com/android" }
     }
 
@@ -61,12 +59,12 @@ android {
 
     defaultConfig {
         applicationId "com.km2labs.expenseview.android"
+
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        // Enabling multidex support.
-        multiDexEnabled true
+
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -168,12 +166,14 @@ dependencies {
 
     /*play service dependency*/
     compile "com.google.android.gms:play-services-analytics:$GOOGLE_PLAY_SERVICE"
-    compile "com.google.android.gms:play-services-gcm:$GOOGLE_PLAY_SERVICE"
-    compile "com.google.android.gms:play-services-auth:$GOOGLE_PLAY_SERVICE"
     compile "com.google.android.gms:play-services-location:$GOOGLE_PLAY_SERVICE"
+    compile "com.google.android.gms:play-services-auth:$GOOGLE_PLAY_SERVICE"
+    /*Firebase*/
+    compile "com.google.firebase:firebase-core:$GOOGLE_PLAY_SERVICE"
     compile "com.google.firebase:firebase-database:$GOOGLE_PLAY_SERVICE"
     compile "com.google.firebase:firebase-auth:$GOOGLE_PLAY_SERVICE"
     compile "com.google.firebase:firebase-messaging:$GOOGLE_PLAY_SERVICE"
+    compile "com.google.firebase:firebase-crash:$GOOGLE_PLAY_SERVICE"
 
     /*Facebook*/
     compile "com.facebook.android:facebook-android-sdk:4.0.0"
@@ -213,11 +213,6 @@ dependencies {
     /*Reactive programming*/
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.urbanairship.android:urbanairship-sdk:8.0.+'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
-        transitive = true;
-    }
 }
 apply plugin: 'com.google.gms.google-services'
 retrolambda {

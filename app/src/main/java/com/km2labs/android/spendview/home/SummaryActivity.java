@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.base.ToolBarActivity;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.expense.ExpenseFilter;
 import com.km2labs.android.spendview.expense.ExpenseListView;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SummaryActivity extends ToolBarActivityV3 implements ISummaryActivityView {
+public class SummaryActivity extends ToolBarActivity implements ISummaryActivityView {
 
     @BindView(R.id.time_filter_spinner)
     AppCompatSpinner mTimeFilterSpinner;

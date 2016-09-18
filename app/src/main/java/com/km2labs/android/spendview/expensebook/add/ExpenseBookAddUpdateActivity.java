@@ -21,14 +21,14 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.base.ToolBarActivity;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.expenseview.android.R;
 
 import butterknife.ButterKnife;
 
-public class ExpenseBookAddUpdateActivity extends ToolBarActivityV3 {
+public class ExpenseBookAddUpdateActivity extends ToolBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

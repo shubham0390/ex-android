@@ -30,6 +30,8 @@ import com.km2labs.expenseview.android.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+
 
 public abstract class RecyclerViewFragment extends BaseLoadingFragment {
 
@@ -44,7 +46,7 @@ public abstract class RecyclerViewFragment extends BaseLoadingFragment {
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
-    //@BindView(R.id.recycle_view)
+    @BindView(R.id.recycle_view)
     protected RecyclerView mRecyclerView;
 
     protected RecyclerAdapter mAdapter;

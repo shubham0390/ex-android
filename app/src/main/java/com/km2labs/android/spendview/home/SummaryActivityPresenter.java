@@ -17,8 +17,8 @@ package com.km2labs.android.spendview.home;
 
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.android.spendview.expense.ExpenseFilter;
 import com.km2labs.android.spendview.database.api.ExpenseDataAdapter;
+import com.km2labs.android.spendview.expense.ExpenseFilter;
 
 import javax.inject.Inject;
 
@@ -34,16 +34,6 @@ public class SummaryActivityPresenter extends BasePresenter<ISummaryActivityView
     @Inject
     public SummaryActivityPresenter(ExpenseDataAdapter expenseDataAdapter) {
         this.expenseDataAdapter = expenseDataAdapter;
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
     }
 
     public void loadExpenseWithFilters(ExpenseFilter expenseFilter) {

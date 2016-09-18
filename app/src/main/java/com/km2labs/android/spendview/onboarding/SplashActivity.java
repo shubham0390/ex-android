@@ -19,12 +19,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
+import com.km2labs.android.spendview.core.mvp.MVPActivity2;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.android.spendview.login.LoginActivity;
 import com.km2labs.expenseview.android.R;
-import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
-import com.km2labs.android.spendview.core.mvp.MVPActivity2;
 
 /**
  * Created by Subham Tyagi,

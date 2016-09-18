@@ -13,14 +13,17 @@
  * limitations under the License.
  */
 
-package com.km2labs.android.spendview.core.mvp;
+package com.km2labs.android.spendview.database.api;
+
+
+import com.km2labs.android.spendview.database.content.User;
 
 /**
- * Created by Subham Tyagi,
- * on 20/Aug/2015,
- * 9:08 AM
- * TODO:Add class comment.
+ * Created by styagi on 5/28/2015.
  */
-public interface MVPView {
-    
+public interface UserDataAdapter extends IDataAdapter<User> {
+
+    void updateDeviceId(String id);
+
+    void updateUserId(String serverId);
 }

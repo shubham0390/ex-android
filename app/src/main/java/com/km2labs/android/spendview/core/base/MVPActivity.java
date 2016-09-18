@@ -13,24 +13,19 @@
  * limitations under the License.
  */
 
-package com.km2labs.android.spendview.core.mvp;
+package com.km2labs.android.spendview.core.base;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 
-import com.km2labs.android.spendview.core.dagger.DaggerActivityV2;
-
-import javax.inject.Inject;
+import com.km2labs.android.spendview.core.dagger.DaggerActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import icepick.Icepick;
 
 
-public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivityV2 {
-
-    @Inject
-    protected P mPresenter;
+public abstract class MVPActivity extends DaggerActivity {
 
     private Unbinder mUnbinder;
 

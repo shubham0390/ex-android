@@ -59,7 +59,6 @@ public abstract class BaseSQLDataAdapter<T> {
         long id = mBriteDatabase.insert(mTableName, toContentValues(t));
         setId(t, id);
         return t;
-
     }
 
     public List<T> create(List<T> ts) {

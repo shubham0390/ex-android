@@ -22,15 +22,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.km2labs.expenseview.android.R;
+import com.google.firebase.database.FirebaseDatabase;
 import com.km2labs.android.spendview.core.base.DrawerBaseActivity;
-import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
-import com.km2labs.android.spendview.expense.AddExpenseActivity;
 import com.km2labs.android.spendview.expensebook.add.ExpenseBookAddUpdateActivity;
+import com.km2labs.expenseview.android.R;
 
 import butterknife.BindView;
 
-public class HomeActivity extends DrawerBaseActivity<HomePresenter> {
+public class HomeActivity extends DrawerBaseActivity {
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
@@ -51,8 +50,10 @@ public class HomeActivity extends DrawerBaseActivity<HomePresenter> {
                 animateFAB();
                 break;
             case R.id.add_expense_fab:
-                Intent intent = new Intent(HomeActivity.this, AddExpenseActivity.class);
-                startActivity(intent);
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                firebaseDatabase.getReference("users").setValue("Subham Tyagi");
+                //Intent intent = new Intent(HomeActivity.this, AddExpenseActivity.class);
+                //startActivity(intent);
                 break;
             case R.id.add_expense_book_feb:
                 Intent intent1 = new Intent(HomeActivity.this, ExpenseBookAddUpdateActivity.class);
@@ -60,12 +61,6 @@ public class HomeActivity extends DrawerBaseActivity<HomePresenter> {
                 break;
         }
     };
-
-    @Override
-    protected void injectDependencies(ConfigPersistentComponent component) {
-        /*component.activityComponent(new ActivityModule(this))
-                .inject(this);*/
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

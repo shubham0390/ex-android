@@ -15,13 +15,10 @@
 
 package com.km2labs.android.spendview.onboarding;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.database.content.User;
-import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
-import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
-import com.km2labs.android.spendview.database.content.ExpenseBook;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,22 +27,22 @@ import rx.Observable;
 @ConfigPersistent
 public class SplashModel {
 
-    private UserInfoDataAdapter userInfoDataAdapter;
-    private ExpenseBookDataAdapter expenseBookDataAdapter;
-
     @Inject
-    public SplashModel(UserInfoDataAdapter userInfoDataAdapter, ExpenseBookDataAdapter expenseBookDataAdapter) {
-        this.userInfoDataAdapter = userInfoDataAdapter;
-        this.expenseBookDataAdapter = expenseBookDataAdapter;
-
+    public SplashModel() {
     }
 
-    public Observable<List<User>> getUserInfo() {
-        //Assuming first row of the table
-        return userInfoDataAdapter.getAll();
-    }
-
-    public Observable<List<ExpenseBook>> getPrivateExpenseBook() {
-        return expenseBookDataAdapter.getPrivateExpenseBook();
+    public Observable<User> getUserInfo() {
+        return Observable.create(subscriber -> {
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (firebaseUser != null) {
+                User user = new User();
+                user.setStatus(User.Status.LOGGED_IN);
+                user.setEmail(firebaseUser.getEmail());
+                user.setName(firebaseUser.getDisplayName());
+                user.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
+                subscriber.onNext(user);
+                subscriber.onCompleted();
+            }
+        });
     }
 }

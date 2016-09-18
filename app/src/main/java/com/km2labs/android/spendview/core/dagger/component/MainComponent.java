@@ -22,35 +22,30 @@ import android.content.SharedPreferences;
 import com.km2labs.android.spendview.App;
 import com.km2labs.android.spendview.core.dagger.component.api.DaggerObjectGraph;
 import com.km2labs.android.spendview.core.dagger.module.DataModule;
-import com.km2labs.android.spendview.core.dagger.module.FragmentModule;
 import com.km2labs.android.spendview.core.dagger.module.MainModule;
-import com.km2labs.android.spendview.core.dagger.module.NetworkModule;
 import com.km2labs.android.spendview.database.api.CategoryDataAdapter;
 import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
 import com.km2labs.android.spendview.database.api.ExpenseDataAdapter;
 import com.km2labs.android.spendview.database.api.MemberDataAdapter;
 import com.km2labs.android.spendview.database.api.MemberExpenseDataAdapter;
 import com.km2labs.android.spendview.database.api.TransactionDataAdapter;
-import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
+import com.km2labs.android.spendview.database.api.UserDataAdapter;
 import com.km2labs.android.spendview.database.api.exceptions.AccountDataAdapter;
-import com.km2labs.android.spendview.login.LoginService;
-import com.km2labs.android.spendview.service.rest.service.MemberRestService;
 import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import retrofit2.Retrofit;
 
 @Singleton
 @Component(modules = {
         MainModule.class,
         DataModule.class,
-        NetworkModule.class
 })
 public interface MainComponent extends DaggerObjectGraph {
 
     ConfigPersistentComponentV2 plus();
+
 
     Context getApplicationContext();
 
@@ -70,17 +65,10 @@ public interface MainComponent extends DaggerObjectGraph {
 
     ExpenseBookDataAdapter getExpenseBookDataAdapter();
 
-    UserInfoDataAdapter getUserInfoDataAdapter();
+    UserDataAdapter getUserDataAdapter();
 
     CategoryDataAdapter getCategoryDataAdapter();
 
-    Retrofit getRetrofit();
-
-    FragmentComponent fragmentComponent(FragmentModule fragmentModule);
-
-    MemberRestService memberRestService();
-
-    LoginService loginService();
 
     final class Initializer {
         private Initializer() {
@@ -90,7 +78,6 @@ public interface MainComponent extends DaggerObjectGraph {
             return DaggerMainComponent.builder()
                     .mainModule(new MainModule(app))
                     .dataModule(new DataModule(app))
-                    .networkModule(new NetworkModule())
                     .build();
         }
     }

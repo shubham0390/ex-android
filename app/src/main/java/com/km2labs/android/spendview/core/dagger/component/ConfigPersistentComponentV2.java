@@ -17,7 +17,7 @@ package com.km2labs.android.spendview.core.dagger.component;
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.login.LoginContract;
-import com.km2labs.android.spendview.login.otp.OTPContract;
+import com.km2labs.android.spendview.member.list.MemberListContract;
 
 import dagger.Subcomponent;
 
@@ -25,7 +25,8 @@ import dagger.Subcomponent;
 @ConfigPersistent
 @Subcomponent
 public interface ConfigPersistentComponentV2 {
+
     LoginContract.LoginComponent plus(LoginContract.LoginModule loginModule);
 
-    OTPContract.OTPComponent plus(OTPContract.OTPModule otpModule);
+    MemberListContract.MemberListComponent plus(MemberListContract.MemberListModule module);
 }

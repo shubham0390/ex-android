@@ -51,9 +51,13 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
 
     private GoogleSignInOptions gso;
     private GoogleApiClient mPlusClient;
+    private GoogleSignInAccount mSignInAccount;
+
     private LoginCallback mCallback;
+
     private WeakReference<AppCompatActivity> mActivityWeakReference;
     private Context mContext;
+
     private FirebaseAuth mFirebaseAuth;
 
     private View.OnClickListener mGoogleLoginClickListener = new View.OnClickListener() {
@@ -91,11 +95,7 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
         return GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext) == ConnectionResult.SUCCESS;
     }
 
-    /**
-     * Try to sign in the user.
-     *
-     * @param activity
-     */
+
     @Override
     public void signIn(Activity activity) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mPlusClient);
@@ -116,16 +116,19 @@ class GoogleLoginHelper implements ILoginHelper, GoogleApiClient.OnConnectionFai
     public void onActivityResult(int requestCode, int responseCode, Intent intent) {
         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
         if (result.isSuccess()) {
-            GoogleSignInAccount googleAccount = result.getSignInAccount();
-            if (googleAccount == null) {
+            mSignInAccount = result.getSignInAccount();
+            if (mSignInAccount == null) {
                 mCallback.onSignInFailed("Unable to sign in");
                 return;
             }
-            loginWithFirebase(googleAccount);
+            loginWithFirebase(mSignInAccount);
         } else {
             mCallback.onSignInFailed("Unable to Signin");
         }
+    }
 
+    public GoogleSignInAccount getSignInAccount() {
+        return mSignInAccount;
     }
 
     private void loginWithFirebase(GoogleSignInAccount googleAccount) {

@@ -28,7 +28,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.common.SignInButton;
-import com.km2labs.android.spendview.core.base.ToolBarActivityV3;
+import com.km2labs.android.spendview.core.base.ToolBarActivity;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.expenseview.android.R;
@@ -37,7 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class LoginActivity extends ToolBarActivityV3 implements LoginContract.View {
+public class LoginActivity extends ToolBarActivity implements LoginContract.View {
 
     @BindView(R.id.plus_sign_in_button)
     SignInButton mPlusSignInButton;

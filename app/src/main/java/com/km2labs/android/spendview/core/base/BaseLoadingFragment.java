@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.km2labs.android.spendview.core.view.DotsView;
 import com.km2labs.expenseview.android.R;
 
+import butterknife.BindView;
+
 /**
  * Created by : Subham Tyagi
  * Created on :  28/08/16.
@@ -25,13 +27,13 @@ public abstract class BaseLoadingFragment extends DaggerFragment implements Swip
 
     private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
-    //@BindView(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     DotsView mProgressBar;
 
-    //@BindView(R.id.message)
+    @BindView(R.id.message)
     TextView mMessageTextView;
 
-    //@BindView(R.id.retry_button)
+    @BindView(R.id.retry_button)
     Button mRetryButton;
 
     @Override

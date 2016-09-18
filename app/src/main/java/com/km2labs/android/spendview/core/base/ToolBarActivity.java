@@ -21,10 +21,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.km2labs.android.spendview.App;
-import com.km2labs.android.spendview.core.mvp.MVPActivity2;
-import com.km2labs.android.spendview.core.mvp.MVPPresenter;
 import com.km2labs.expenseview.android.R;
 
+import butterknife.BindView;
 import timber.log.Timber;
 
 /**
@@ -33,8 +32,10 @@ import timber.log.Timber;
  * 6:40 PM
  * TODO:Add class comment.
  */
-public abstract class ToolBarActivity2<P extends MVPPresenter> extends MVPActivity2<P> {
+public abstract class ToolBarActivity extends MVPActivity {
 
+
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Override

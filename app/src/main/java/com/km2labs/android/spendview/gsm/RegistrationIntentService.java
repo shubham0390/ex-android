@@ -21,10 +21,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmPubSub;
 import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.io.IOException;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -44,7 +41,6 @@ public class RegistrationIntentService extends IntentService {
                 String token = instanceID.getToken();
                 Log.i(TAG, "GCM Registration Token: " + token);
                 sendRegistrationToServer(token);
-                subscribeTopics(token);
             }
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
@@ -55,13 +51,5 @@ public class RegistrationIntentService extends IntentService {
     private void sendRegistrationToServer(String token) {
         //ExpenseSyncManager expenseServiceManager = ExpenseSyncManager.getExpenseServiceManager(getApplicationContext());
         //expenseServiceManager.registerDeviceWithServer();
-    }
-
-
-    private void subscribeTopics(String token) throws IOException {
-        for (String topic : TOPICS) {
-            GcmPubSub pubSub = GcmPubSub.getInstance(this);
-            pubSub.subscribe(token, "/ExpenseView/" + topic, null);
-        }
     }
 }

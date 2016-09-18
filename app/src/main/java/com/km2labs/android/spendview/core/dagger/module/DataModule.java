@@ -28,7 +28,7 @@ import com.km2labs.android.spendview.database.api.ExpenseDataAdapter;
 import com.km2labs.android.spendview.database.api.MemberDataAdapter;
 import com.km2labs.android.spendview.database.api.MemberExpenseDataAdapter;
 import com.km2labs.android.spendview.database.api.TransactionDataAdapter;
-import com.km2labs.android.spendview.database.api.UserInfoDataAdapter;
+import com.km2labs.android.spendview.database.api.UserDataAdapter;
 import com.km2labs.android.spendview.database.api.exceptions.AccountDataAdapter;
 import com.km2labs.android.spendview.database.dataadapters.CategorySQLDataAdapter;
 import com.km2labs.android.spendview.database.dataadapters.ExpenseBookSQLDataAdapter;
@@ -36,7 +36,7 @@ import com.km2labs.android.spendview.database.dataadapters.ExpenseSqlDataAdapter
 import com.km2labs.android.spendview.database.dataadapters.MemberExpenseSQLDataAdapter;
 import com.km2labs.android.spendview.database.dataadapters.MemberSQLDataAdapter;
 import com.km2labs.android.spendview.database.dataadapters.TransactionSQLDataAdapter;
-import com.km2labs.android.spendview.database.dataadapters.UserInfoSQLDataAdapter;
+import com.km2labs.android.spendview.database.dataadapters.UserSQLDataAdapter;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -105,8 +105,8 @@ public class DataModule implements IDataModule {
 
     @Provides
     @Singleton
-    public UserInfoDataAdapter provideUserInfoDataAdapter() {
-        return new UserInfoSQLDataAdapter(getBriteDatabase());
+    public UserDataAdapter provideUserDataAdapter() {
+        return new UserSQLDataAdapter(getBriteDatabase());
     }
 
     @Provides

@@ -19,24 +19,17 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
 import com.km2labs.android.spendview.core.dagger.component.api.DaggerObjectGraph;
-import com.km2labs.expenseview.android.R;
-import com.urbanairship.UAirship;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import io.fabric.sdk.android.Fabric;
 
 
 /**
@@ -50,8 +43,6 @@ public class App extends Application {
     public static final AtomicLong NEXT_ID = new AtomicLong(0);
     private static DaggerObjectGraph graph;
     public static App instance;
-
-    private Tracker mTracker;
 
     public static DaggerObjectGraph component() {
         return graph;
@@ -85,9 +76,7 @@ public class App extends Application {
         FirebaseInstanceId instanceId = FirebaseInstanceId.getInstance(firebaseApp);
         instanceId.getToken();
         FirebaseMessaging.getInstance().subscribeToTopic("Expense");
-        UAirship.takeOff(this, airship -> {
-            airship.getPushManager().setUserNotificationsEnabled(true);
-        });
+
         new InitlizarionTask().execute();
     }
 
@@ -96,8 +85,6 @@ public class App extends Application {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Fabric.with(App.this, new Crashlytics());
-
             Stetho.initialize(Stetho.newInitializerBuilder(getApplicationContext())
                     .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
                     .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
@@ -105,18 +92,5 @@ public class App extends Application {
             AndroidThreeTen.init(App.instance);
             return null;
         }
-    }
-
-    /**
-     * Gets the default {@link Tracker} for this {@link Application}.
-     *
-     * @return tracker
-     */
-    synchronized public Tracker getDefaultTracker() {
-        if (mTracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(R.xml.global_tracker);
-        }
-        return mTracker;
     }
 }

@@ -17,12 +17,14 @@ package com.km2labs.android.spendview.core.dagger;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.AppCompatActivity;
 
 import com.km2labs.android.spendview.App;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
+import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
+import com.km2labs.android.spendview.core.dagger.component.DaggerConfigPersistentComponent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -31,39 +33,35 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p/>
  * <p>
  * If you want to use dependency injection libraries like dagger you can override {@link
- * #injectDependencies(Bundle)}  and implement dependency injection right there
+ * #injectDependencies(ConfigPersistentComponent)} and implement dependency injection right there
  * </p>
  * <p>
  * Created by Subham on 30/06/16.
  */
-public abstract class DaggerActivity extends AppCompatActivity {
+public abstract class DaggerActivityV2 extends AppCompatActivity {
 
     private static final String KEY_ACTIVITY_ID = "keyActivityId";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
-    private static final LongSparseArray<?> sPersistentComponentLookup = new LongSparseArray<>();
+    private static final Map<Long, ConfigPersistentComponent> PERSISTENT_COMPONENT_MAP = new HashMap<>();
+
     private Long mActivityId;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        injectDependencies(savedInstanceState);
-    }
-
-    public <T> T getComponent(@Nullable Bundle savedInstanceState) {
         mActivityId = savedInstanceState == null ? NEXT_ID.getAndIncrement() : savedInstanceState.getLong(KEY_ACTIVITY_ID);
-        T configPersistentComponent;
-        if (sPersistentComponentLookup.get(mActivityId) == null) {
-            configPersistentComponent = createComponent(App.get(this).getMainComponent());
+
+        ConfigPersistentComponent configPersistentComponent;
+        if (!PERSISTENT_COMPONENT_MAP.containsKey(mActivityId)) {
+            configPersistentComponent = DaggerConfigPersistentComponent
+                    .builder()
+                    .mainComponent(App.get(this).getMainComponent())
+                    .build();
         } else {
-            configPersistentComponent = (T) sPersistentComponentLookup.get(mActivityId);
+            configPersistentComponent = PERSISTENT_COMPONENT_MAP.get(mActivityId);
         }
-        return configPersistentComponent;
-
-    }
-
-    protected <T> T createComponent(MainComponent mainComponent) {
-        return null;
+        injectDependencies(configPersistentComponent);
     }
 
     /**
@@ -71,9 +69,7 @@ public abstract class DaggerActivity extends AppCompatActivity {
      * inject
      * dependencies (i.e. by using dagger)
      */
-    protected void injectDependencies(Bundle savedInstanceState) {
-
-    }
+    protected abstract void injectDependencies(ConfigPersistentComponent component);
 
 
     @Override
@@ -86,7 +82,7 @@ public abstract class DaggerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (!isChangingConfigurations()) {
-            sPersistentComponentLookup.remove(mActivityId);
+            PERSISTENT_COMPONENT_MAP.remove(mActivityId);
         }
     }
 }
