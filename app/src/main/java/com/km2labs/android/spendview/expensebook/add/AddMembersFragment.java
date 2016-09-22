@@ -16,31 +16,33 @@
 package com.km2labs.android.spendview.expensebook.add;
 
 
-import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.km2labs.android.spendview.core.mvp.MVPFragment;
-import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponentV2;
+import com.km2labs.android.spendview.core.mvp.MVPFragmentV3;
+import com.km2labs.android.spendview.expensebook.ExpenseBookComponent;
+import com.km2labs.android.spendview.expensebook.ExpensebookModule;
 import com.km2labs.android.spendview.member.ContactPickerAdapter;
 import com.km2labs.android.spendview.member.ContactsMetaData;
-import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.android.spendview.utils.RxEventBus;
 import com.km2labs.expenseview.android.R;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +51,13 @@ import butterknife.BindView;
 import timber.log.Timber;
 
 /**
- * A simple {@link Fragment} subclass.
  */
-public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresenter>
-        implements SearchView.OnQueryTextListener, AddUpdateExpenseView {
+public class AddMembersFragment extends MVPFragmentV3<AddMemberPresenter> implements SearchView.OnQueryTextListener, AddUpdateExpenseView {
 
+    public static final String ARG_EXPENSEBOOK_NAME = "Arg:AddMemberFragment:Expensebook:Name";
+    public static final String ARG_EXPENSEBOOK_OWNER_ID = "Arg:AddMemberFragment:Expensebook:OwnerId";
     private static final int REQUEST_CONTACTS = 1;
+
 
     @BindView((R.id.contacts_list))
     RecyclerView mContactsList;
@@ -63,20 +66,31 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
 
     private List<ContactsMetaData> mContactsMetaDataList;
 
-    private ExpenseBook mExpenseBook;
+    private String mName;
+    private String mOwnerId;
 
-    public AddMembersToExpenseBookFragment() {
+    public static Fragment getInstance(String name, String ownerId) {
+        Fragment fragment = new Fragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_EXPENSEBOOK_NAME, name);
+        bundle.putString(ARG_EXPENSEBOOK_OWNER_ID, ownerId);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
-    protected int getLayoutRes() {
-        return R.layout.fragment_add_members_to_expense_book;
+    protected View getFragmentView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_add_members_to_expense_book, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_EXPENSE_BOOK));
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mName = bundle.getString(ARG_EXPENSEBOOK_NAME);
+            mOwnerId = bundle.getString(ARG_EXPENSEBOOK_OWNER_ID);
+        }
         setupRecyclerView();
     }
 
@@ -87,12 +101,23 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
     }
 
     @Override
+    protected <T> T createComponent(ConfigPersistentComponentV2 plus) {
+        return (T) plus.plus(new ExpensebookModule());
+    }
+
+    @Override
+    public <T> void injectDependency(@Nullable Bundle t) {
+        ExpenseBookComponent component = getComponent(t);
+        component.inject(this);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_next) {
             Log.d("Selected contacts", mContactPickerAdapter.getSelectedItems().toString());
-            mPresenter.addMembersToExpenseBook(mContactsMetaDataList, mContactPickerAdapter.getSelectedItems()
-                    , mExpenseBook.getId());
+            mPresenter.addMembersToExpenseBook(getContext(), mContactsMetaDataList,
+                    mContactPickerAdapter.getSelectedItems(), mName, mOwnerId);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -115,12 +140,8 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
 
     private void setupRecyclerView() {
         mContactsList.setLayoutManager(new LinearLayoutManager(mContactsList.getContext()));
-        if (ActivityCompat.checkSelfPermission(getActivity(), "android.permission.READ_CONTACTS")
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{"android.permission.READ_CONTACTS"},
-                    REQUEST_CONTACTS);
-
+        if (ActivityCompat.checkSelfPermission(getActivity(), "android.permission.READ_CONTACTS") != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{"android.permission.READ_CONTACTS"}, REQUEST_CONTACTS);
         } else {
             readContacts();
             mContactPickerAdapter = new ContactPickerAdapter(mContactsMetaDataList);
@@ -204,7 +225,7 @@ public class AddMembersToExpenseBookFragment extends MVPFragment<AddMemberPresen
 
     @Override
     public void onMemberAdd(Boolean v) {
-        getActivity().finish();
+        RxEventBus.getInstance().post(ExpenseBookAddUpdateActivity.ACTION_ADD_MEMBER_COMPLETE);
     }
 
     @Override

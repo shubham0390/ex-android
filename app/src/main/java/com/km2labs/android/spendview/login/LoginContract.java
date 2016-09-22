@@ -65,7 +65,7 @@ public interface LoginContract {
 
         void showError(@StringRes int messageRes);
 
-        void showAskMobileScreen();
+        void onSocialAuthenticated();
     }
 
     interface Presenter extends MVPPresenter<View> {

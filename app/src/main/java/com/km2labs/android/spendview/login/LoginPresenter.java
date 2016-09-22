@@ -98,7 +98,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
         createUser(profileFetcher).compose(RxUtils.applyMainIOSchedulers())
                 .subscribe(aBoolean -> {
-                    getView().showAskMobileScreen();
+                    getView().onSocialAuthenticated();
                 });
 
     }
@@ -107,7 +107,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         return Observable.create(subscriber -> {
             User user = profileFetcher.getUserProfileDetails();
             user.setStatus(User.Status.LOGGED_IN);
-            mUserDataAdapter.create(user);
+            UserSettings.getInstance().setUser(user);
             subscriber.onNext(true);
         });
     }

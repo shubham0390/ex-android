@@ -66,4 +66,8 @@ public abstract class BasePresenter<V extends MVPView> {
     public void pause() {
 
     }
+
+    public void onError(Throwable throwable) {
+        Timber.e(throwable, "error");
+    }
 }

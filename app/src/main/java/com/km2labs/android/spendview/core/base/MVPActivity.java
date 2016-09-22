@@ -22,7 +22,6 @@ import com.km2labs.android.spendview.core.dagger.DaggerActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 
 public abstract class MVPActivity extends DaggerActivity {
@@ -33,7 +32,6 @@ public abstract class MVPActivity extends DaggerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-        Icepick.restoreInstanceState(this, savedInstanceState);
         mUnbinder = ButterKnife.bind(this);
     }
 
@@ -43,7 +41,6 @@ public abstract class MVPActivity extends DaggerActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

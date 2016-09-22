@@ -16,6 +16,8 @@
 package com.km2labs.android.spendview.core.dagger.component;
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
+import com.km2labs.android.spendview.expensebook.ExpenseBookComponent;
+import com.km2labs.android.spendview.expensebook.ExpensebookModule;
 import com.km2labs.android.spendview.login.LoginContract;
 import com.km2labs.android.spendview.member.list.MemberListContract;
 
@@ -29,4 +31,6 @@ public interface ConfigPersistentComponentV2 {
     LoginContract.LoginComponent plus(LoginContract.LoginModule loginModule);
 
     MemberListContract.MemberListComponent plus(MemberListContract.MemberListModule module);
+
+    ExpenseBookComponent plus(ExpensebookModule expensebookModule);
 }

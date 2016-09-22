@@ -59,7 +59,6 @@ public abstract class DaggerFragment extends BaseFragmentV2 {
         return null;
     }
 
-
     public <T> void injectDependency(@Nullable Bundle t) {
 
     }

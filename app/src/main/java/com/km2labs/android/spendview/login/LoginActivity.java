@@ -19,6 +19,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -30,7 +31,10 @@ import android.widget.LinearLayout;
 import com.google.android.gms.common.SignInButton;
 import com.km2labs.android.spendview.core.base.ToolBarActivity;
 import com.km2labs.android.spendview.core.dagger.component.MainComponent;
+import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.home.HomeActivity;
+import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.android.spendview.utils.Constants;
 import com.km2labs.expenseview.android.R;
 
 import javax.inject.Inject;
@@ -53,6 +57,9 @@ public class LoginActivity extends ToolBarActivity implements LoginContract.View
 
     @Inject
     LoginPresenter mPresenter;
+
+    @Inject
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected <T> T createComponent(MainComponent mainComponent) {
@@ -125,10 +132,32 @@ public class LoginActivity extends ToolBarActivity implements LoginContract.View
     }
 
     @Override
-    public void showAskMobileScreen() {
-        Intent intent = new Intent(this, HomeActivity.class);
+    public void onSocialAuthenticated() {
+       /* DigitsAuthButton digitsButton = new DigitsAuthButton(getApplicationContext());
+        digitsButton.setCallback(new AuthCallback() {
+            @Override
+            public void success(DigitsSession session, String phoneNumber) {
+                mSharedPreferences.edit().putString(Constants.SF_KEY_PHONE_NUMBER, phoneNumber).apply();
+                UserSettings.getInstance().getUser().setPhoneNumber(phoneNumber);
+                UserSettings.getInstance().getUser().setStatus(User.Status.LOGGED_IN);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void failure(DigitsException error) {
+                showError(R.string.error_message_member_cannot_be_removed);
+            }
+        });
+        digitsButton.performClick();*/
+        mSharedPreferences.edit().putString(Constants.SF_KEY_PHONE_NUMBER, "9663295153").apply();
+        UserSettings.getInstance().getUser().setPhoneNumber("9663295153");
+        UserSettings.getInstance().getUser().setStatus(User.Status.LOGGED_IN);
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     @Override

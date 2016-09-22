@@ -25,27 +25,13 @@
     tools:context="com.km2labs.android.spendview.expensebook.add.AddUpdateExpenseBookFragment">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/expense_book_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:clickable="true"
-            android:src="@drawable/ic_group_black"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/expense_book_image"
-            android:layout_toRightOf="@id/expense_book_image"
-            android:text="@string/expense_group_creation_message"/>
-    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/expense_group_creation_message"/>
 
 
     <android.support.design.widget.TextInputLayout

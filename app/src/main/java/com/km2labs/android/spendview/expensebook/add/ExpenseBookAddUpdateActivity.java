@@ -22,46 +22,59 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.km2labs.android.spendview.core.base.ToolBarActivity;
-import com.km2labs.android.spendview.core.dagger.component.MainComponent;
+import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.android.spendview.utils.RxEventBus;
 import com.km2labs.expenseview.android.R;
 
-import butterknife.ButterKnife;
+import org.parceler.Parcels;
 
 public class ExpenseBookAddUpdateActivity extends ToolBarActivity {
 
+    public static final String ACTION_ADD_MEMBER_COMPLETE = "Action:ExpenseBookAddUpdateActivity:ADD:Member";
+    public static final String ARG_EXPENSEBOOK = "Arg:AddMemberFragment:Expensebook";
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_expense_book);
-        ButterKnife.bind(this);
         initializeToolbar();
         toggleHomeBackButton(true);
 
         String action = getIntent().getAction();
+        Bundle bundle = getIntent().getExtras();
+        ExpenseBook expenseBook = null;
+        if (bundle != null)
+            expenseBook = Parcels.unwrap(bundle.getParcelable(ARG_EXPENSEBOOK));
         /*if action is not empty just install add memeber fragment*/
         if (!TextUtils.isEmpty(action) && Constants.ACTION_ADD_MEMBERS.equals(action)) {
-        } else
-            installExpenseBookFragment();
+            installMemberFragment(expenseBook.getName(), expenseBook.getOwnerId());
+        } else {
+            installExpenseBookFragment(expenseBook);
+        }
+        RxEventBus.getInstance().subscribe(String.class, string -> finish());
+        RxEventBus.getInstance().subscribe(ExpenseBook.class, expenseBook1 -> {
+            installMemberFragment(expenseBook1.getName(), expenseBook1.getOwnerId());
+        });
     }
 
-    @Override
-    protected <T> T createComponent(MainComponent mainComponent) {
-        return null;
-    }
-
-    @Override
-    protected void injectDependencies(Bundle savedInstanceState) {
-
+    private void installMemberFragment(String name, String ownerId) {
+        setTitle(R.string.add_member);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, AddMembersFragment.getInstance(name, ownerId)).commit();
     }
 
     @Override
     protected int getLayout() {
-        return 0;
+        return R.layout.activity_create_new_expense_book;
     }
 
-    private void installExpenseBookFragment() {
+    private void installExpenseBookFragment(ExpenseBook expenseBook) {
+        setTitle(R.string.add_expense_book);
         Fragment fragment = new AddUpdateExpenseBookFragment();
+        if (expenseBook != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.EXTRA_EXPENSE_BOOK, Parcels.wrap(expenseBook));
+        }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();
     }
 

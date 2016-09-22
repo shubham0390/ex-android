@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 
 public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivityV2 {
@@ -38,7 +37,6 @@ public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-        Icepick.restoreInstanceState(this, savedInstanceState);
         mUnbinder = ButterKnife.bind(this);
     }
 
@@ -48,7 +46,6 @@ public abstract class MVPActivity2<P extends MVPPresenter> extends DaggerActivit
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
     }
 
     @Override

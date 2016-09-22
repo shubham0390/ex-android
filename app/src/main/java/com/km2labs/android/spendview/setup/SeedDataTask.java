@@ -245,7 +245,6 @@ public class SeedDataTask {
                 expenseBook.setDescription(jsonObject.getString(ExpenseBookContract.EXPENSE_BOOK_NAME));
                 expenseBook.setName(jsonObject.getString(ExpenseBookContract.EXPENSE_BOOK_NAME));
                 expenseBook.setProfileImagePath(jsonObject.getString(ExpenseBookContract.EXPENSE_BOOK_PROFILE_IMAGE_URI));
-                expenseBook.setOwner(jsonObject.getLong(ExpenseBookContract.OWNER_KEY));
                 expenseBook.setCreationTime(jsonObject.getLong(ExpenseBookContract.EXPENSE_BOOK_CREATION_TIME));
                 expenseBooks.add(expenseBook);
             }

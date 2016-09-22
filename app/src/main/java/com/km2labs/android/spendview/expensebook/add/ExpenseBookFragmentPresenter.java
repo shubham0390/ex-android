@@ -15,22 +15,20 @@
 
 package com.km2labs.android.spendview.expensebook.add;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
-import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.android.spendview.expensebook.ExpenseBookModel;
-import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.android.spendview.database.FirebaseDataManager;
+import com.km2labs.android.spendview.database.api.exceptions.ContentNotFoundException;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.android.spendview.settings.UserSettings;
+import com.km2labs.android.spendview.utils.RxUtils;
 
-import org.parceler.Parcels;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Subham Tyagi,
@@ -38,53 +36,62 @@ import rx.schedulers.Schedulers;
  * 5:14 PM
  */
 @ConfigPersistent
-public class ExpenseBookFragmentPresenter extends BasePresenter<IExpenseBookFragmentView>
-        implements MVPPresenter<IExpenseBookFragmentView> {
+public class ExpenseBookFragmentPresenter extends BasePresenter<AddExpensebookFragmentContract.View>
+        implements AddExpensebookFragmentContract.Presenter {
 
-    private ExpenseBookModel mExpenseBookModel;
+    FirebaseDataManager mFirebaseDataManager;
 
     @Inject
-    public ExpenseBookFragmentPresenter(ExpenseBookModel expenseBookModel) {
-        mExpenseBookModel = expenseBookModel;
+    public ExpenseBookFragmentPresenter(FirebaseDataManager firebaseDataManager) {
+        mFirebaseDataManager = firebaseDataManager;
     }
 
-    public void validateExpenseNameAndProceed(String expenseName, String mOutputFileUri,
-                                              String expenseDescription, boolean isUpdate) {
+
+    @Override
+    public void validateExpenseNameAndProceed(String expenseName, String expenseDescription, boolean isUpdate) {
+
         if (TextUtils.isEmpty(expenseName)) {
-            getView().showEmptyError();
+            getView().onEmptyError();
             return;
         }
 
-        ExpenseBook expenseBook = new ExpenseBook();
+       // getView().onProgressUpdate();
 
-        expenseBook.setName(expenseName);
-        expenseBook.setProfileImagePath(mOutputFileUri);
-        expenseBook.setDescription(expenseDescription);
-        mExpenseBookModel.addExpenseBook(expenseBook, isUpdate)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(d -> {
-                    getView().hideProgress();
-                    if (isUpdate)
-                        getView().onExpenseBookUpdate();
-                    else {
-                        Bundle expenseBookInfo = new Bundle();
-                        expenseBookInfo.putParcelable(Constants.EXTRA_EXPENSE_BOOK, Parcels.wrap(d));
-                        getView().addMemberFragment(expenseBookInfo);
+        mFirebaseDataManager.getExpenseBookWithName(expenseName).compose(RxUtils.applyMainIOSchedulers())
+                .subscribe(expenseBook -> {
+                    if (expenseBook != null && !isUpdate) {
+                        //getView().onStopProgress();
+                        getView().onDuplicateExpenseBook();
+                        return;
                     }
-                }, e -> getView().showError(e.getMessage()));
-        getView().showCreatingExpenseBookProgress();
+                    ExpenseBook expenseBook1 = createExpenseBook(expenseName, expenseDescription);
+                    getView().onExpenseBookAdded(expenseBook1);
+                    //getView().onStopProgress();
+                }, throwable -> {
+
+                    if (throwable instanceof ContentNotFoundException) {
+                        ExpenseBook expenseBook = createExpenseBook(expenseName, expenseDescription);
+                        //getView().onStopProgress();
+                        getView().onExpenseBookAdded(expenseBook);
+                        return;
+                    }
+                    onError(throwable);
+                    getView().onStopProgress();
+                });
     }
 
-
-    @Override
-    public void resume() {
-
+    private ExpenseBook createExpenseBook(String expenseName, String expenseDescription) {
+        Map<String, Boolean> memberMap = new HashMap<>();
+        ExpenseBook expenseBook = new ExpenseBook();
+        expenseBook.setName(expenseName);
+        expenseBook.setDescription(expenseDescription);
+        expenseBook.setType(ExpenseBook.TYPE_SHARED);
+        expenseBook.setCreationTime(System.currentTimeMillis());
+        String phoneNo = UserSettings.getInstance().getUser().getPhoneNumber();
+        expenseBook.setOwnerId(phoneNo);
+        memberMap.put(phoneNo, true);
+        expenseBook.setMembers(memberMap);
+        mFirebaseDataManager.createExpenseBook(expenseBook);
+        return expenseBook;
     }
-
-    @Override
-    public void pause() {
-
-    }
-
 }

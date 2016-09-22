@@ -17,7 +17,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.km2labs.android.spendview.expensebook.add.AddMembersToExpenseBookFragment">
+             tools:context="com.km2labs.android.spendview.expensebook.add.AddMembersFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contacts_list"

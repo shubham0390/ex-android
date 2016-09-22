@@ -18,11 +18,11 @@ package com.km2labs.android.spendview;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.multidex.MultiDex;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -71,9 +71,7 @@ public class App extends Application {
         buildComponentAndInject();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-
-        FirebaseApp firebaseApp = FirebaseApp.getInstance();
-        FirebaseInstanceId instanceId = FirebaseInstanceId.getInstance(firebaseApp);
+        FirebaseInstanceId instanceId = FirebaseInstanceId.getInstance();
         instanceId.getToken();
         FirebaseMessaging.getInstance().subscribeToTopic("Expense");
 
@@ -92,5 +90,11 @@ public class App extends Application {
             AndroidThreeTen.init(App.instance);
             return null;
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.km2labs.spendview.android.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -49,19 +50,6 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-
-                <category android:name="com.km2labs.spendview.android"/>
-            </intent-filter>
-        </receiver>
-
         <service
             android:name="com.km2labs.android.spendview.gsm.ExpenseGCMListenerService"
             android:exported="false">
@@ -69,6 +57,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
+
         <service
             android:name="com.km2labs.android.spendview.gsm.ExpenseInstanceIDListenerService"
             android:exported="false">
@@ -76,6 +65,7 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
+
         <service
             android:name="com.km2labs.android.spendview.gsm.RegistrationIntentService"
             android:exported="false"/>
@@ -110,16 +100,19 @@
         <activity
             android:name="com.km2labs.android.spendview.account.AccountActivity"
             android:label="@string/title_activity_account"/>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
         <activity
             android:name="com.km2labs.android.spendview.category.CategoryActivity"
             android:label="@string/title_activity_category"
             android:theme="@style/AppTheme">
         </activity>
+
         <activity
             android:name="com.km2labs.android.spendview.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -128,6 +121,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.km2labs.android.spendview.home.HomeActivity"/>
         </activity>
+
         <activity
             android:name="com.km2labs.android.spendview.home.SummaryActivity"/>
 

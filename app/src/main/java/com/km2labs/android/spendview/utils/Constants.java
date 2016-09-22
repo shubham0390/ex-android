@@ -35,4 +35,7 @@ public interface Constants {
     /*Intents Actions*/
     String ACTION_ADD_MEMBERS = "com.km2labs.spendview.android.ACTION_ADD_MEMBERS";
     String ACTION_SELECT_CONTACT = "com.km2labs.spendview.android.ACTION_SELECT_CONTACT";
+
+    /*Shared Preferences*/
+    String SF_KEY_PHONE_NUMBER = "phoneNumber";
 }

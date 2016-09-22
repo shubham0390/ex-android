@@ -17,17 +17,24 @@
 #}
 #-keep public class * extends android.support.v7.RecyclerView
 #-keep public class * implements com.bumptech.glide.module.GlideModule
+-dontwarn java.lang.invoke.*
+-keepattributes *Annotation*
+-keepattributes Signature
+-dontwarn com.crashlytics.android.**
+-dontnote com.crashlytics.android
+-ignorewarnings
 
+# support libs
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
 
-
+# Parceler
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
-
 -keep class org.parceler.Parceler$$Parcels
 
--dontwarn java.lang.invoke.*
-
+-dontnote okhttp3.**, okio.**, retrofit2.**
 
  #Retrofit libs
 -dontwarn retrofit.**
@@ -49,25 +56,22 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
-#Support V7
--dontwarn android.support.v7.**
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
 
 #RxAndroid and RxJava
 -dontwarn rx.**
 
-# OkHttp
--keepattributes *Annotation*
--keep class com.squareup.okhttp.** { *; }
--keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
+#Stetho
+-keep class com.facebook.stetho.** { *; }
 
--dontwarn java.lang.invoke**
--dontwarn org.apache.lang.**
--dontwarn org.apache.commons.**
--dontwarn com.nhaarman.**
--dontwarn se.emilsjolander.**
+##AndroidMpchart
+-keep class com.github.mikephil.charting.** { *; }
+-dontwarn io.realm.**
+
+#Twitter
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
 
 # glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -75,10 +79,4 @@
   **[] $VALUES;
   public *;
 }
-
-# otto
--keepattributes *Annotation*
--keepclassmembers class ** {
-    @com.squareup.otto.Subscribe public *;
-    @com.squareup.otto.Produce public *;
-}
+-keep class com.km2labs.android.spendview.core.*{*;}

@@ -19,12 +19,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.crashlytics.android.Crashlytics;
+import com.digits.sdk.android.Digits;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
 import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
 import com.km2labs.android.spendview.core.mvp.MVPActivity2;
 import com.km2labs.android.spendview.home.HomeActivity;
 import com.km2labs.android.spendview.login.LoginActivity;
 import com.km2labs.expenseview.android.R;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Subham Tyagi,
@@ -34,11 +40,17 @@ import com.km2labs.expenseview.android.R;
  */
 public class SplashActivity extends MVPActivity2<SplashPresenter> implements SplashView {
 
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "DxPqTT8QxAhHaxP24sbj2z8P";
+    private static final String TWITTER_SECRET = "VX45xjnJLZTiLK4EMoVb4gBImilrMPNKw9i9dnSlyQf8MSbFx9";
+
     Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
         mPresenter.subcribe(this);
     }
 

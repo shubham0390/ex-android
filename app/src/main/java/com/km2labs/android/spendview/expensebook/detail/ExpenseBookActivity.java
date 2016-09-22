@@ -25,22 +25,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.km2labs.android.spendview.core.base.ToolBarActivity2;
-import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
-import com.km2labs.android.spendview.utils.Constants;
-import com.km2labs.expenseview.android.R;
 import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponent;
+import com.km2labs.android.spendview.core.dagger.module.ActivityModule;
+import com.km2labs.android.spendview.core.mvp.lce.MVPLCEView;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.expensebook.add.ExpenseBookAddUpdateActivity;
 import com.km2labs.android.spendview.expensebook.setting.ExpenseBookSettingFragment;
-import com.km2labs.android.spendview.core.mvp.lce.MVPLCEView;
+import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
 import java.util.List;
 
-
 import butterknife.BindView;
-import icepick.State;
 
 public class ExpenseBookActivity extends ToolBarActivity2<ExpenseBookActivityPresenter> implements MVPLCEView<List<ExpenseBook>> {
 
@@ -56,10 +54,8 @@ public class ExpenseBookActivity extends ToolBarActivity2<ExpenseBookActivityPre
 
     ExpenseBook mCurrentExpenseBook;
 
-    @State
     boolean isSettingFragmentInstalled;
 
-    @State
     int mCurrentPosition;
 
 

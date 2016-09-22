@@ -22,8 +22,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.km2labs.android.spendview.core.base.DrawerBaseActivity;
+import com.km2labs.android.spendview.expense.AddExpenseActivity;
 import com.km2labs.android.spendview.expensebook.add.ExpenseBookAddUpdateActivity;
 import com.km2labs.expenseview.android.R;
 
@@ -50,10 +50,8 @@ public class HomeActivity extends DrawerBaseActivity {
                 animateFAB();
                 break;
             case R.id.add_expense_fab:
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                firebaseDatabase.getReference("users").setValue("Subham Tyagi");
-                //Intent intent = new Intent(HomeActivity.this, AddExpenseActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this, AddExpenseActivity.class);
+                startActivity(intent);
                 break;
             case R.id.add_expense_book_feb:
                 Intent intent1 = new Intent(HomeActivity.this, ExpenseBookAddUpdateActivity.class);

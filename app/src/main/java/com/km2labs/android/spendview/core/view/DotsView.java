@@ -1,12 +1,15 @@
 package com.km2labs.android.spendview.core.view;
 
 import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 /**
  * Created by Miroslaw Stanek on 20.12.2015.
@@ -14,6 +17,7 @@ import android.view.View;
 public class DotsView extends View {
     private static final int DOTS_COUNT = 7;
     private static final int OUTER_DOTS_POSITION_ANGLE = 360 / DOTS_COUNT;
+    private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
     private static final int COLOR_1 = 0xFFFFC107;
     private static final int COLOR_2 = 0xFFFF9800;
@@ -38,6 +42,8 @@ public class DotsView extends View {
     private float currentRadius2 = 0;
 
     private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+
+    ObjectAnimator mAnimator;
 
     public DotsView(Context context) {
         super(context);
@@ -180,4 +186,23 @@ public class DotsView extends View {
             object.setCurrentProgress(value);
         }
     };
+
+    public void start() {
+        mAnimator = ObjectAnimator.ofFloat(this, DotsView.DOTS_PROGRESS, 0, 1f);
+        mAnimator.setDuration(900);
+        mAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mAnimator.setInterpolator(ACCELERATE_DECELERATE_INTERPOLATOR);
+        mAnimator.start();
+        setVisibility(View.VISIBLE);
+        setCurrentProgress(0);
+    }
+
+    public void stop() {
+        if (mAnimator != null)
+            mAnimator.cancel();
+        
+        setVisibility(GONE);
+
+    }
 }

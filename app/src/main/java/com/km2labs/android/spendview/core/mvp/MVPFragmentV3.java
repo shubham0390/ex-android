@@ -16,7 +16,6 @@
 package com.km2labs.android.spendview.core.mvp;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -46,8 +45,10 @@ public abstract class MVPFragmentV3<P extends MVPPresenter> extends DaggerFragme
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
+        if (mPresenter == null) {
+            throw new IllegalStateException("Presenter is not initialized");
+        }
         mPresenter.subcribe(this);
-
     }
 
     @Override
@@ -61,15 +62,4 @@ public abstract class MVPFragmentV3<P extends MVPPresenter> extends DaggerFragme
         super.onDestroy();
         mPresenter.unsubcribe(getRetainInstance());
     }
-
-    /**
-     * Return the layout resource like R.layout.my_layout
-     *
-     * @return the layout resource or zero ("0"), if you don't want to have an UI
-     */
-    @LayoutRes
-    protected int getLayoutRes() {
-        return 0;
-    }
-
 }

@@ -34,15 +34,16 @@ public class SplashModel {
     public Observable<User> getUserInfo() {
         return Observable.create(subscriber -> {
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            User user = null;
             if (firebaseUser != null) {
-                User user = new User();
+                user = new User();
                 user.setStatus(User.Status.LOGGED_IN);
                 user.setEmail(firebaseUser.getEmail());
                 user.setName(firebaseUser.getDisplayName());
                 user.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
-                subscriber.onNext(user);
-                subscriber.onCompleted();
             }
+            subscriber.onNext(user);
+            subscriber.onCompleted();
         });
     }
 }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "764891183802-uqij3imgj27381jm45mbb197h2rhu1u0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.km2labs.expenseview.android",
+            "certificate_hash": "511F61319F91530051579194F8C76401119E4179"
+          }
+        },
+        {
           "client_id": "764891183802-69vk8654trdteui441pc5rqp3nrh7ca0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -73,8 +73,8 @@ public class UserSQLDataAdapter extends BaseSQLDataAdapter<User> implements User
         if (!TextUtils.isEmpty(user.getProfileImageUrl())) {
             values.put(USER_PROFILE_IMAGE_URL, user.getProfileImageUrl());
         }
-        if (user.getStatus() != null) {
-            values.put(USER_STATUS, user.getStatus().name());
+        if (user.getStatusVal() != null) {
+            values.put(USER_STATUS, user.getStatusVal().name());
         }
         return values;
     }

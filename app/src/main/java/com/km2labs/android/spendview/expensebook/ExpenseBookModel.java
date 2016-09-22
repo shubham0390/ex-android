@@ -20,13 +20,13 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
-import com.km2labs.android.spendview.settings.UserSettings;
 import com.km2labs.android.spendview.database.api.ExpenseBookDataAdapter;
 import com.km2labs.android.spendview.database.api.MemberDataAdapter;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
 import com.km2labs.android.spendview.database.content.Member;
 import com.km2labs.android.spendview.debug.Logger;
 import com.km2labs.android.spendview.member.ContactsMetaData;
+import com.km2labs.android.spendview.settings.UserSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,16 +150,8 @@ public class ExpenseBookModel {
         Logger.methodEnd(TAG, "saveMemberDetailsToDB()");
     }
 
-    public Observable<ExpenseBook> addExpenseBook(ExpenseBook expenseBook, boolean isUpdate) {
-        Logger.debug(TAG, "entered execute");
-
-       /* if (isUpdate) {
-            Logger.debug(TAG, "Updating expense book");
-            return mExpenseBookDataAdapter.update(expenseBook);
-        } else {*/
-        Logger.debug(TAG, "Creating new expense book");
+    public Observable<ExpenseBook> addExpenseBook(ExpenseBook expenseBook) {
         return saveExpenseBookDetails(expenseBook);
-        //    }
     }
 
     /**
@@ -174,9 +166,6 @@ public class ExpenseBookModel {
 
             UserSettings userSettings = UserSettings.getInstance();
             Member member = mMemberDataAdapter.get(Long.parseLong(userSettings.getUser().getServerId()));
-
-            mExpenseBook.setOwner(member.getId());
-
 
             mExpenseBook.setCreationTime(System.currentTimeMillis());
             Logger.debug(TAG, "exiting saveExpenseBookDetails()");

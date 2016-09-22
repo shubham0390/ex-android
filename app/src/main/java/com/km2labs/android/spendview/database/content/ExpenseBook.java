@@ -17,7 +17,7 @@ package com.km2labs.android.spendview.database.content;
 
 import org.parceler.Parcel;
 
-import java.util.List;
+import java.util.Map;
 
 @Parcel(value = Parcel.Serialization.BEAN)
 public class ExpenseBook {
@@ -25,19 +25,21 @@ public class ExpenseBook {
     public static String TYPE_PERSONAL = "Private";
     public static String TYPE_SHARED = "Shared";
 
-    public String name;
-    public String profileImagePath;
-    public String description;
-    public String type;
-    public long creationTime;
-    public List<Member> memberList;
     private long id;
-    private long mOwnerId;
 
-    private List<Member> members;
+    private String name;
 
-    public ExpenseBook() {
-    }
+    private String profileImagePath;
+
+    private String description;
+
+    public String type;
+
+    private long creationTime;
+
+    private Map<String, Boolean> members;
+
+    private String mOwnerId;
 
     public long getId() {
         return id;
@@ -79,22 +81,6 @@ public class ExpenseBook {
         this.type = type;
     }
 
-    public List<Member> getMemberList() {
-        return memberList;
-    }
-
-    public void setMemberList(List<Member> memberList) {
-        this.memberList = memberList;
-    }
-
-    public long getOwnerId() {
-        return mOwnerId;
-    }
-
-    public void setOwner(long ownerId) {
-        this.mOwnerId = ownerId;
-    }
-
     public long getCreationTime() {
         return creationTime;
     }
@@ -103,11 +89,19 @@ public class ExpenseBook {
         this.creationTime = creationTime;
     }
 
-    public List<Member> getMembers() {
+    public String getOwnerId() {
+        return mOwnerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        mOwnerId = ownerId;
+    }
+
+    public Map<String, Boolean> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(Map<String, Boolean> members) {
         this.members = members;
     }
 }

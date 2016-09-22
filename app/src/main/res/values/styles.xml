@@ -103,7 +103,8 @@
         <item name="android:layout_margin">@dimen/spacing_normal</item>
     </style>
 
-    <style name="add_expense_action_button_style" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="add_expense_action_button_style"
+           parent="@style/Widget.AppCompat.Button.Borderless">
 
         <item name="android:layout_marginBottom">@dimen/spacing_micro</item>
         <item name="android:layout_marginTop">@dimen/spacing_micro</item>
@@ -112,6 +113,14 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DigitsTheme" parent="android:Theme.Light">
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:windowBackground">@color/colorLightPrimary</item>
+        <item name="android:textColorLink">@color/colorPrimaryDark</item>
+        <item name="dgts__accentColor">@color/colorAccent</item>
     </style>
 
 </resources>

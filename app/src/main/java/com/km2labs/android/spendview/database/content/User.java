@@ -15,12 +15,10 @@
 
 package com.km2labs.android.spendview.database.content;
 
+import com.google.firebase.database.Exclude;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
-@Parcel(value = Parcel.Serialization.BEAN)
 public class User {
 
     private long localId;
@@ -96,12 +94,22 @@ public class User {
         this.coverImageUrl = coverImageUrl;
     }
 
-    public Status getStatus() {
+    @Exclude
+    public Status getStatusVal() {
         return status;
     }
 
+    public String getStatus() {
+        return status.name();
+    }
+
+    @Exclude
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status);
     }
 
     public enum Status {

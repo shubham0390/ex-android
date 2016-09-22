@@ -16,43 +16,34 @@
 package com.km2labs.android.spendview.expensebook.add;
 
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.km2labs.android.spendview.core.mvp.MVPFragment;
-import com.km2labs.android.spendview.core.view.CircleImageView;
+import com.km2labs.android.spendview.core.dagger.component.ConfigPersistentComponentV2;
+import com.km2labs.android.spendview.core.mvp.MVPFragmentV3;
+import com.km2labs.android.spendview.core.view.DotsView;
 import com.km2labs.android.spendview.database.content.ExpenseBook;
+import com.km2labs.android.spendview.expensebook.ExpenseBookComponent;
+import com.km2labs.android.spendview.expensebook.ExpensebookModule;
 import com.km2labs.android.spendview.utils.Constants;
+import com.km2labs.android.spendview.utils.RxEventBus;
 import com.km2labs.android.spendview.utils.Utilities;
 import com.km2labs.expenseview.android.R;
 
 import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,12 +51,7 @@ import butterknife.OnClick;
  * @author Umang Chamaria
  *         TODO : save image uri and expense book name in database
  */
-public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmentPresenter>
-        implements IExpenseBookFragmentView {
-
-    private final String TAG = AddUpdateExpenseBookFragment.class.getSimpleName();
-
-    private final int SELECT_IMAGE = 1;
+public class AddUpdateExpenseBookFragment extends MVPFragmentV3<AddExpensebookFragmentContract.Presenter> implements AddExpensebookFragmentContract.View {
 
     @BindView(R.id.new_expense_book_name)
     EditText mExpenseName;
@@ -73,17 +59,8 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     @BindView(R.id.new_expense_book_description)
     EditText mExpenseDescription;
 
-    @BindView(R.id.expense_book_image)
-    CircleImageView mExpenseImage;
-
-    private Uri mOutputFileUri;
-
+    AlertDialog mProgressDialog;
     private boolean isUpdate;
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.fragment_add_expense_book;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -95,12 +72,22 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
             mExpenseName.setText(expenseBook.getName());
             mExpenseDescription.setText(expenseBook.getDescription());
         }
-
     }
 
-    @OnClick(R.id.expense_book_image)
-    void onImageClickListener() {
-        openImageIntent();
+    @Override
+    protected View getFragmentView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_add_expense_book, container, false);
+    }
+
+    @Override
+    public <T> void injectDependency(@Nullable Bundle t) {
+        ExpenseBookComponent bookComponent = getComponent(t);
+        bookComponent.inject(this);
+    }
+
+    @Override
+    protected <T> T createComponent(ConfigPersistentComponentV2 plus) {
+        return (T) plus.plus(new ExpensebookModule());
     }
 
     @Override
@@ -116,47 +103,10 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_IMAGE) {
-                final boolean isCamera;
-                if (data == null) {
-                    isCamera = true;
-                } else {
-                    final String action = data.getAction();
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    }
-                }
-
-                Uri selectedImageUri;
-                if (isCamera) {
-                    selectedImageUri = mOutputFileUri;
-                } else {
-                    selectedImageUri = data.getData();
-                }
-
-                final InputStream imageStream;
-                try {
-                    imageStream = getActivity().getContentResolver()
-                            .openInputStream(selectedImageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    mExpenseImage.setImageBitmap(selectedImage);
-                } catch (FileNotFoundException e) {
-                    Log.e(TAG, "file not found" + e.getMessage());
-                }
-            }
-        }
-    }
-
-    @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem update = menu.findItem(R.id.action_update);
         update.setVisible(isUpdate);
         super.onPrepareOptionsMenu(menu);
-
     }
 
     @Override
@@ -165,55 +115,14 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
         switch (id) {
             case R.id.action_next:
                 Utilities.hideKeyboard(getActivity());
-                mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(),
-                        mOutputFileUri != null ? mOutputFileUri.toString() : null, mExpenseDescription.getText().toString(), isUpdate);
+                mPresenter.validateExpenseNameAndProceed(mExpenseName.getText().toString(), mExpenseDescription.getText().toString(), isUpdate);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void openImageIntent() {
-
-        // Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator +
-                "ExpenseManager" + File.separator);
-        root.mkdirs();
-        final String expenseIconName = "expense_icon" + System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory = new File(root, expenseIconName);
-        mOutputFileUri = Uri.fromFile(sdImageMainDirectory);
-
-        // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getActivity().getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for (ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo
-                    .name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-            cameraIntents.add(intent);
-        }
-
-        // Filesystem.
-        final Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_PICK);
-
-        // Chooser of filesystem options.
-        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
-
-        // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new
-                Parcelable[cameraIntents.size()]));
-
-        startActivityForResult(chooserIntent, SELECT_IMAGE);
-    }
-
     @Override
-    public void showEmptyError() {
+    public void onEmptyError() {
         Toast.makeText(getActivity().getApplicationContext(), getString(R.string
                         .error_empty_expense_book_name),
                 Toast.LENGTH_LONG).show();
@@ -221,7 +130,7 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     }
 
     @Override
-    public void showDuplicateExpenseBook() {
+    public void onDuplicateExpenseBook() {
         Toast.makeText(getActivity().getApplicationContext(), getString(R.string
                         .error_expense_book_already_exists),
                 Toast.LENGTH_LONG).show();
@@ -229,32 +138,27 @@ public class AddUpdateExpenseBookFragment extends MVPFragment<ExpenseBookFragmen
     }
 
     @Override
-    public void addMemberFragment(Bundle expenseBookInfo) {
+    public void onExpenseBookAdded(ExpenseBook expenseBook) {
+        RxEventBus.getInstance().post(expenseBook);
     }
 
     @Override
-    public void showError(String payload) {
+    public void onProgressUpdate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(false);
+        mProgressDialog = builder.create();
+        mProgressDialog.setContentView(R.layout.dialog_progress);
+        mProgressDialog.show();
+        DotsView dotsView = (DotsView) mProgressDialog.findViewById(R.id.progress_bar);
+        dotsView.start();
+        TextView textView = (TextView) mProgressDialog.findViewById(R.id.message);
+        textView.setText("Creating Expense Book ...");
 
     }
 
     @Override
-    public void showCreatingExpenseBookProgress() {
-
+    public void onStopProgress() {
+        mProgressDialog.cancel();
     }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void exit() {
-        getActivity().runOnUiThread(() -> AddUpdateExpenseBookFragment.this.getActivity().finish());
-    }
-
-    @Override
-    public void onExpenseBookUpdate() {
-        exit();
-    }
-
 }
+

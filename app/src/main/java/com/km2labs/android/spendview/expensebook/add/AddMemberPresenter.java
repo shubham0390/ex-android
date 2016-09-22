@@ -15,28 +15,33 @@
 
 package com.km2labs.android.spendview.expensebook.add;
 
-import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
-import com.km2labs.android.spendview.core.mvp.MVPPresenter;
-import com.km2labs.android.spendview.expensebook.ExpenseBookModel;
-import com.km2labs.android.spendview.core.mvp.BasePresenter;
-import com.km2labs.android.spendview.member.ContactsMetaData;
+import android.content.Context;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 
+import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
+import com.km2labs.android.spendview.core.mvp.BasePresenter;
+import com.km2labs.android.spendview.core.mvp.MVPPresenter;
+import com.km2labs.android.spendview.database.FirebaseDataManager;
+import com.km2labs.android.spendview.database.content.Member;
+import com.km2labs.android.spendview.member.ContactsMetaData;
+import com.km2labs.android.spendview.utils.RxUtils;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 @ConfigPersistent
 public class AddMemberPresenter extends BasePresenter<AddUpdateExpenseView>
         implements MVPPresenter<AddUpdateExpenseView> {
 
-    ExpenseBookModel mExpenseBookModel;
+    FirebaseDataManager mFirebaseDataManager;
 
     @Inject
-    public AddMemberPresenter(ExpenseBookModel expenseBookModel) {
-        mExpenseBookModel = expenseBookModel;
+    public AddMemberPresenter(FirebaseDataManager firebaseDataManager) {
+        mFirebaseDataManager = firebaseDataManager;
     }
 
     @Override
@@ -49,14 +54,50 @@ public class AddMemberPresenter extends BasePresenter<AddUpdateExpenseView>
 
     }
 
-
-    public void addMembersToExpenseBook(List<ContactsMetaData> contactsMetaDataList, List<Integer> selectedItems, long id) {
-        mExpenseBookModel.addMemberToExpenseBook(contactsMetaDataList, selectedItems, id)
-                .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(v -> getView().onMemberAdd(v), e -> getView().onMemberAddError(e));
-
+    public void addMembersToExpenseBook(Context context, List<ContactsMetaData> contactsMetaDataList, List<Integer> selectedItems, String name, String ownerId) {
+        Map<String, Boolean> memberMap = new HashMap<>();
+        for (int selectedIndex : selectedItems) {
+            String contactId = contactsMetaDataList.get(selectedIndex).getContactId();
+            Member member = fetchContactDetails(context, contactId);
+            memberMap.put(member.getMemberPhoneNumber(), true);
+            mFirebaseDataManager.getMember(member.getMemberPhoneNumber()).compose(RxUtils.applyMainIOSchedulers())
+                    .subscribe(member2 -> {
+                    }, throwable -> {
+                        mFirebaseDataManager.createMember(member);
+                    });
+        }
+        mFirebaseDataManager.addMemberToExpenseBook(memberMap, name, ownerId);
     }
 
+    private Member fetchContactDetails(Context context, String contactId) {
 
+        Cursor contactsCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + " ?=", new
+                String[]{contactId}, ContactsContract.Contacts.DISPLAY_NAME);
+
+        Member member = new Member();
+
+        try {
+            if (contactsCursor != null && contactsCursor.moveToFirst()) {
+                String name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                String photoURI = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI));
+
+                Cursor phoneNumberCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " " + "=?", new String[]{contactId}, null);
+                int phoneNo = phoneNumberCursor.getInt(phoneNumberCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                String email = phoneNumberCursor.getString(phoneNumberCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+                member.setMemberName(name);
+                member.setMemberEmail(email);
+                member.setProfilePhotoUrl(photoURI);
+                member.setMemberPhoneNumber(String.valueOf(phoneNo));
+                member.setIsRegistered(false);
+            }
+        } finally {
+            if (contactsCursor != null) {
+                contactsCursor.close();
+            }
+        }
+        return member;
+
+    }
 }

@@ -16,8 +16,6 @@
 package com.km2labs.android.spendview.database.content;
 
 
-import java.util.List;
-
 @org.parceler.Parcel(value = org.parceler.Parcel.Serialization.BEAN)
 public class Member {
 
@@ -34,12 +32,6 @@ public class Member {
     private String profilePhotoUrl;
 
     private boolean isRegistered;
-
-    private boolean isActive;
-
-    private List<ExpenseBook> expenseBooks;
-
-    private List<Account> accounts;
 
     public long getId() {
         return id;
@@ -95,30 +87,6 @@ public class Member {
 
     public void setIsRegistered(boolean isRegistered) {
         this.isRegistered = isRegistered;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public List<ExpenseBook> getExpenseBooks() {
-        return expenseBooks;
-    }
-
-    public void setExpenseBooks(List<ExpenseBook> expenseBooks) {
-        this.expenseBooks = expenseBooks;
-    }
-
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
     }
 
     @Override

@@ -15,13 +15,15 @@
 
 package com.km2labs.android.spendview.onboarding;
 
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
 import com.km2labs.android.spendview.core.dagger.scope.ConfigPersistent;
 import com.km2labs.android.spendview.core.mvp.BasePresenter;
 import com.km2labs.android.spendview.core.mvp.MVPPresenter;
 import com.km2labs.android.spendview.database.content.User;
 import com.km2labs.android.spendview.settings.UserSettings;
-
-import java.util.List;
+import com.km2labs.android.spendview.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -36,10 +38,12 @@ import timber.log.Timber;
 public class SplashPresenter extends BasePresenter<SplashView> implements MVPPresenter<SplashView> {
 
     private SplashModel mSplashModel;
+    private SharedPreferences mSharedPreferences;
 
     @Inject
-    public SplashPresenter(SplashModel mSplashModel) {
+    public SplashPresenter(SplashModel mSplashModel, SharedPreferences sharedPreferences) {
         this.mSplashModel = mSplashModel;
+        mSharedPreferences = sharedPreferences;
         Timber.tag(getClass().getName());
     }
 
@@ -64,30 +68,18 @@ public class SplashPresenter extends BasePresenter<SplashView> implements MVPPre
                     .subscribe(this::checkUserInfo, this::checkError);
     }
 
-    private void checkUserInfo(List<User> userInfos) {
-        if (userInfos != null && userInfos.size() > 0)
-            checkUserInfo(userInfos.get(0));
-        else
-            getView().showLoginScreen();
-    }
-
     private void checkError(Throwable throwable) {
         Timber.e(throwable.getMessage());
     }
 
     private void checkUserInfo(User user) {
-        if (user == null) {
+        String phoneNumber = mSharedPreferences.getString(Constants.SF_KEY_PHONE_NUMBER, null);
+        if (user == null || TextUtils.isEmpty(phoneNumber)) {
             getView().showLoginScreen();
         } else {
+            user.setPhoneNumber(phoneNumber);
             UserSettings.getInstance().setUser(user);
             getView().showHomeScreen();
-           /* mSplashModel.getPrivateExpenseBook()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(d -> {
-                        UserSettings.getInstance().setPersonalExpenseBook(d.get(0));
-                        getView().showHomeScreen();
-                    }, this::checkError);*/
         }
     }
 }

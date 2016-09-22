@@ -56,7 +56,6 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
         expenseBook.setDescription(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_DESCRIPTION)));
         expenseBook.setType(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_TYPE)));
         expenseBook.setProfileImagePath(cursor.getString(cursor.getColumnIndex(EXPENSE_BOOK_PROFILE_IMAGE_URI)));
-        expenseBook.setOwner(cursor.getLong(cursor.getColumnIndex(OWNER_KEY)));
         expenseBook.setCreationTime(cursor.getLong(cursor.getColumnIndex(EXPENSE_BOOK_CREATION_TIME)));
         return expenseBook;
     }
@@ -69,7 +68,6 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
         values.put(EXPENSE_BOOK_DESCRIPTION, expenseBook.getDescription());
         values.put(EXPENSE_BOOK_TYPE, expenseBook.getType());
         values.put(EXPENSE_BOOK_CREATION_TIME, expenseBook.getCreationTime());
-        values.put(OWNER_KEY, expenseBook.getOwnerId());
         return values;
     }
 
@@ -119,7 +117,6 @@ public class ExpenseBookSQLDataAdapter extends BaseSQLDataAdapter<ExpenseBook> i
 
     @Override
     public void addMember(ExpenseBook expenseBook) {
-        addMembers(expenseBook.getMemberList(), expenseBook.getId());
     }
 
     @Override

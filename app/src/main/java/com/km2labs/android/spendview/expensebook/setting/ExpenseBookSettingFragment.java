@@ -61,7 +61,6 @@ public class ExpenseBookSettingFragment extends MVPFragment<ExpenseBookSettingPr
         super.onActivityCreated(savedInstanceState);
         mExpenseBook = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_EXPENSE_BOOK));
         installMemberListFragment();
-        mPresenter.loadOwnerDetails(mExpenseBook.getOwnerId());
     }
 
 
