@@ -23,7 +23,7 @@
     android:background="@drawable/list_item_selector"
     android:orientation="vertical">
 
-    <com.km2labs.android.spendview.core.view.CircleImageView
+    <com.enfle.spendview.core.view.CircleImageView
         android:id="@+id/image"
         android:layout_width="48dp"
         android:layout_height="48dp"

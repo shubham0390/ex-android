@@ -1,0 +1,80 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.enfle.spendview.database.content;
+
+/**
+ * Created by Subham Tyagi,
+ * on 07/Nov/2015,
+ * 7:32 PM
+ * TODO:Add class comment.
+ */
+public class MemberExpense {
+
+    private long mExpenseKey;
+
+    private long mMemberKey;
+
+    private double mShareAmount;
+
+    private double mDebitAmount;
+
+    private double mBalanceAmount;
+
+    public double getBalanceAmount() {
+        return mBalanceAmount;
+    }
+
+    public MemberExpense setBalanceAmount(double balanceAmount) {
+        mBalanceAmount = balanceAmount;
+        return this;
+    }
+
+    public double getDebitAmount() {
+        return mDebitAmount;
+    }
+
+    public MemberExpense setDebitAmount(double debitAmount) {
+        mDebitAmount = debitAmount;
+        return this;
+    }
+
+    public long getExpenseKey() {
+        return mExpenseKey;
+    }
+
+    public MemberExpense setExpenseKey(long expenseKey) {
+        mExpenseKey = expenseKey;
+        return this;
+    }
+
+    public long getMemberKey() {
+        return mMemberKey;
+    }
+
+    public MemberExpense setMemberKey(long memberKey) {
+        mMemberKey = memberKey;
+        return this;
+    }
+
+    public double getShareAmount() {
+        return mShareAmount;
+    }
+
+    public MemberExpense setShareAmount(double shareAmount) {
+        mShareAmount = shareAmount;
+        return this;
+    }
+}

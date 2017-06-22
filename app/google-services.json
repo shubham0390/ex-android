@@ -1,65 +1,53 @@
 {
   "project_info": {
-    "project_number": "764891183802",
-    "firebase_url": "https://expense-view.firebaseio.com",
-    "project_id": "expense-view",
-    "storage_bucket": "expense-view.appspot.com"
+    "project_number": "34880574409",
+    "firebase_url": "https://spend-view.firebaseio.com",
+    "project_id": "spend-view",
+    "storage_bucket": "spend-view.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:764891183802:android:a69ffac46d808d2f",
+        "mobilesdk_app_id": "1:34880574409:android:ca65f1b8e1f3c2c5",
         "android_client_info": {
-          "package_name": "com.km2labs.expenseview.android"
+          "package_name": "com.enfle.spendview"
         }
       },
       "oauth_client": [
         {
-          "client_id": "764891183802-uqij3imgj27381jm45mbb197h2rhu1u0.apps.googleusercontent.com",
+          "client_id": "34880574409-d9qh3hllf04i84ihcl073195g7amofpl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "34880574409-2j3mi8mie13j11ms8a3bb6abt1g1pn4g.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "34880574409-rv4de0a5oooiroftmmq7b5ovn0i22tag.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.km2labs.expenseview.android",
-            "certificate_hash": "511F61319F91530051579194F8C76401119E4179"
+            "package_name": "com.enfle.spendview",
+            "certificate_hash": "464b23b925445ea9bdde399067fba5f8bed7a9f0"
           }
-        },
-        {
-          "client_id": "764891183802-69vk8654trdteui441pc5rqp3nrh7ca0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.km2labs.expenseview.android",
-            "certificate_hash": "AB7528C5093D2B76D6DC437F6B0BAAE2461522C2"
-          }
-        },
-        {
-          "client_id": "764891183802-2t48vs06533gpcatij8etetiguqqvdtt.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "764891183802-bsn16j40p66g9hn5i7m3d6685fgvjkss.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "764891183802-jkr2eje2lab00bnhjsemhc5mo2u16qsr.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCbznVrNbxz8QQbRrj8E13P8fF8Rc-5_yQ"
+          "current_key": "AIzaSyANvKDlpNGZw7PNfTTSLYbuuPqClLDyKP8"
         }
       ],
       "services": {
         "analytics_service": {
           "status": 2,
           "analytics_property": {
-            "tracking_id": "UA-82320837-1"
+            "tracking_id": "UA-63640256-5"
           }
         },
         "appinvite_service": {
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "764891183802-2t48vs06533gpcatij8etetiguqqvdtt.apps.googleusercontent.com",
+              "client_id": "34880574409-d9qh3hllf04i84ihcl073195g7amofpl.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2016. . The Km2Labs Project
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.enfle.spendview.database.api;
+
+import com.enfle.spendview.database.content.Expense;
+import com.enfle.spendview.database.content.MemberExpense;
+import com.enfle.spendview.expense.ExpenseFilter;
+import com.enfle.spendview.expense.ExpenseListViewModel;
+
+import java.util.List;
+
+import rx.Observable;
+
+/**
+ * Created by styagi on 5/28/2015.
+ */
+public interface ExpenseDataAdapter extends IDataAdapter<Expense> {
+    Observable<List<ExpenseListViewModel>> getExpensesWithFilters(long memberId);
+
+    Observable<List<ExpenseListViewModel>> getExpenseByExpenseBookId(long expenseBookId);
+
+    Observable<List<ExpenseListViewModel>> getExpensesWithFilters(ExpenseFilter filter);
+
+    Observable<List<ExpenseListViewModel>> getExpenseByAccountId(long id);
+
+    Observable<List<ExpenseListViewModel>> getExpenses(String selection);
+
+    Observable<List<ExpenseListViewModel>> getAllSharedExpenseList(long id, long id2);
+
+    Observable<List<MemberExpense>> getSharedExpenseDetails(long id, long id2);
+
+    boolean isAnyExpenseExists(long memberId, long expenseBookId);
+}

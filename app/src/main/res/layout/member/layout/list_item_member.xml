@@ -25,7 +25,7 @@
     android:gravity="center_vertical"
     >
 
-    <com.km2labs.android.spendview.core.view.CircleImageView
+    <com.enfle.spendview.core.view.CircleImageView
         android:id="@+id/list_image_icon"
         style="@style/ListItemIcon"
         android:layout_centerVertical="true"

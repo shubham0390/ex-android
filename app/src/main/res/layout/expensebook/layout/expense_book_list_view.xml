@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.km2labs.android.spendview.core.recyclerview.ListRecyclerView
+        <com.enfle.spendview.core.recyclerview.ListRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

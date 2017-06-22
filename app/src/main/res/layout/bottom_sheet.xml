@@ -48,7 +48,7 @@
             android:layout_below="@id/title"
             android:background="@color/color_boarder" />
 
-        <com.km2labs.android.spendview.core.recyclerview.ListRecyclerView
+        <com.enfle.spendview.core.recyclerview.ListRecyclerView
             android:id="@+id/action_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

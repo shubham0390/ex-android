@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016. . The Km2Labs Project
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,19 +14,19 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="150dp"
-        android:layout_marginTop="144dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/coins"/>
+        android:layout_marginTop="144dp"
+        android:src="@drawable/coins" />
 
-    <com.km2labs.android.spendview.core.view.ExTextView
+    <com.enfle.spendview.core.view.ExTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +36,9 @@
         android:text="@string/app_name"
         android:textColor="@color/milky_white"
         android:textSize="24sp"
-        app:fontStyle="playfairDisplayRegular"/>
+        app:fontStyle="playfairDisplayRegular" />
 
-    <com.km2labs.android.spendview.core.view.ExTextView
+    <com.enfle.spendview.core.view.ExTextView
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,6 +48,6 @@
         android:text="Simplify your expenses"
         android:textColor="@color/milky_white"
         android:textSize="16sp"
-        app:fontStyle="playfairDisplayRegular"/>
+        app:fontStyle="playfairDisplayRegular" />
 
 </RelativeLayout>

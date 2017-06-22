@@ -18,17 +18,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.km2labs.android.spendview.settings.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.enfle.spendview.settings.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"
         android:icon="@drawable/ic_info_24dp"/>
 
     <header
-        android:fragment="com.km2labs.android.spendview.settings.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.enfle.spendview.settings.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"/>
 
     <header
-        android:fragment="com.km2labs.android.spendview.settings.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.enfle.spendview.settings.SettingsActivity$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync"
         android:icon="@drawable/ic_sync_black_24dp"/>
 
